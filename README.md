@@ -10,7 +10,7 @@ You can head to kodeWeave Touch's [public repository](https://github.com/mikethe
 MIT
 
 ### Availability
-kodeWeave editor is available for [Windows](http://sourceforge.net/projects/kodeweave/files/v1/kodeWeave-win.zip/download), [Mac](http://sourceforge.net/projects/kodeweave/files/latest/download?source=navbar), [Linux](http://sourceforge.net/projects/kodeweave/files/v1/kodeWeave-lin.tar.gz/download) and as a [Chrome](https://chrome.google.com/webstore/detail/kodeweave/pdooakoifjbjkjhjgfhlknnildhbnncl) Application.
+kodeWeave editor is available for [Windows](http://sourceforge.net/projects/kodeweave/files/v1/kodeWeave-win.zip/download), [Linux](http://sourceforge.net/projects/kodeweave/files/v1/kodeWeave-lin.tar.gz/download) and as a [Chrome](https://chrome.google.com/webstore/detail/kodeweave/pdooakoifjbjkjhjgfhlknnildhbnncl) Application. (Mac version coming soon...)
 
 ### Tech
 kodeWeave editor uses a number of open source projects to work properly:
