@@ -1,14 +1,14 @@
 // Handles CodeMirror Preview Delay
 var delay,
-  loader = $("[data-action=load]"),
-  c16 = $("[data-action=n16]"),
-  c32 = $("[data-action=n32]"),
-  c64 = $("[data-action=n64]"),
-  canvas = $("[data-action=holder]"),
-  ctx16 = c16[0].getContext("2d"),
-  ctx32 = c32[0].getContext("2d"),
-  ctx64 = c64[0].getContext("2d"),
-  ctx = canvas[0].getContext("2d");
+    loader = $("[data-action=load]"),
+    c16 = $("[data-action=n16]"),
+    c32 = $("[data-action=n32]"),
+    c64 = $("[data-action=n64]"),
+    canvas = $("[data-action=holder]"),
+    ctx16 = c16[0].getContext("2d"),
+    ctx32 = c32[0].getContext("2d"),
+    ctx64 = c64[0].getContext("2d"),
+    ctx = canvas[0].getContext("2d");
 
 function displayPreview(file) {
   var reader = new FileReader();
@@ -543,6 +543,13 @@ $(document).ready(function() {
         // Save Project
         shortcut.add("Ctrl+S", function() {
           $("[data-action=export]").trigger("click");
+        });
+        // Reload App
+        shortcut.add("Ctrl+R", function() {
+          location.reload(true);
+        });
+        shortcut.add("F11", function() {
+          location.reload(true);
         });
       },
       appDemos = function() {
@@ -1602,7 +1609,9 @@ $(document).ready(function() {
       reader.onload = function(e) {
         // Download as Windows App
         $("[data-action=export-as-win-app]").on("click", function() {
-          $("[data-action=download]").trigger("click");
+          if ( $("[data-action=download]").hasClass("active") ) {
+            $("[data-action=download]").trigger("click");
+          }
 
           JSZipUtils.getBinaryContent("YourWinApp.zip", function(err, data) {
             if(err) {
@@ -1614,7 +1623,8 @@ $(document).ready(function() {
             appName.load(data);
 
             // Your Web App
-            var htmlContent = openHTML.getValue() + $(".vprojectname").val() + closeHTML.getValue() + $("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\">\n" + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\">\n" + "    <link rel=\"stylesheet\" href=\"css/index.css\">\n" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + closeFinal.getValue();
+            closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/style.css\" /></textarea>" + "\n  </head>\n  <body>\n\n");
+            var htmlContent = openHTML.getValue() + $(".vprojectname").val() + closeHTML.getValue() + yourRefs.getValue() + closeRefs.getValue() + htmlEditor.getValue() + closeFinal.getValue();
             var Img16 = c16[0].toDataURL("image/png");
             var Img32 = c32[0].toDataURL("image/png");
             var Img64 = c64[0].toDataURL("image/png");
@@ -1630,7 +1640,7 @@ $(document).ready(function() {
             
             zip.file("README.md", otherEditor.getValue());
             eval( $("[data-action=ziplibs]").val().replace(/zip.file/g, "appName.file").replace(/libraries/g,"resources/default_app/libraries") );
-            eval( $("[data-action=fulljszipcode]").val().replace(/zip.file/g, "appName.file").split("css/").join("resources/default_app/css/").split("js/").join("resources/default_app/js/") );
+            eval( $("[data-action=fulljszipcode]").val().replace(/zip.file/g, "appName.file").split("css/").join("resources/default_app/css/").split("js/").join("resources/default_app/js/").replace(/libraries/g,"resources/default_app/libraries") );
             
             appName.file("resources/default_app/package.json", "{\n  \"name\": \""+ $(".vprojectname").val() +"\",\n  \"productName\": \""+ $(".vprojectname").val() +"\",\n  \"version\": \"1.0.0\",\n  \"main\": \"default_app.js\",\n  \"license\": \"MIT\"\n}\n");
             
@@ -1641,7 +1651,9 @@ $(document).ready(function() {
 
         // Download as Mac App
         $("[data-action=export-as-mac-app]").on("click", function() {
-          $("[data-action=download]").trigger("click");
+          if ( $("[data-action=download]").hasClass("active") ) {
+            $("[data-action=download]").trigger("click");
+          }
 
           JSZipUtils.getBinaryContent("YourMacApp.zip", function(err, data) {
             if(err) {
@@ -1651,7 +1663,8 @@ $(document).ready(function() {
             var zip = new JSZip(data);
 
             // Your Web App
-            var htmlContent = openHTML.getValue() + $(".vprojectname").val() + closeHTML.getValue() + $("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\">\n" + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\">\n" + "    <link rel=\"stylesheet\" href=\"css/index.css\">\n" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + closeFinal.getValue();
+            closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/style.css\" /></textarea>" + "\n  </head>\n  <body>\n\n");
+            var htmlContent = openHTML.getValue() + $(".vprojectname").val() + closeHTML.getValue() + yourRefs.getValue() + closeRefs.getValue() + htmlEditor.getValue() + closeFinal.getValue();
             var Img16 = c16[0].toDataURL("image/png");
             var Img32 = c32[0].toDataURL("image/png");
             var Img64 = c64[0].toDataURL("image/png");
@@ -1667,7 +1680,8 @@ $(document).ready(function() {
             zip.file("data/content/js/index.js", jsEditor.getValue());
             zip.file("README.md", otherEditor.getValue());
             eval( $("[data-action=ziplibs]").val().replace(/libraries/g,"data/content/libraries") );
-            eval( $("[data-action=fulljszipcode]").val().split("css/").join("data/content/css/").split("js/").join("data/content/js/") );
+            eval( $("[data-action=fulljszipcode]").val().split("css/").join("data/content/css/").split("js/").join("data/content/js/").replace(/libraries/g,"data/content/libraries") );
+            
             var content = zip.generate({type:"blob"});
             saveAs(content, $(".vprojectname").val().replace(/ /g, "-") + "-mac.zip");
           });
@@ -1675,7 +1689,9 @@ $(document).ready(function() {
 
         // Download as Linux App
         $("[data-action=export-as-lin-app]").on("click", function() {
-          $("[data-action=download]").trigger("click");
+          if ( $("[data-action=download]").hasClass("active") ) {
+            $("[data-action=download]").trigger("click");
+          }
 
           JSZipUtils.getBinaryContent("YourLinApp.zip", function(err, data) {
             if(err) {
@@ -1687,7 +1703,8 @@ $(document).ready(function() {
             appName.load(data);
 
             // Your Web App
-            var htmlContent = openHTML.getValue() + $(".vprojectname").val() + closeHTML.getValue() + $("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\">\n" + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\">\n" + "    <link rel=\"stylesheet\" href=\"css/index.css\">\n" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + closeFinal.getValue();
+            closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/style.css\" /></textarea>" + "\n  </head>\n  <body>\n\n");
+            var htmlContent = openHTML.getValue() + $(".vprojectname").val() + closeHTML.getValue() + yourRefs.getValue() + closeRefs.getValue() + htmlEditor.getValue() + closeFinal.getValue();
             var Img16 = c16[0].toDataURL("image/png");
             var Img32 = c32[0].toDataURL("image/png");
             var Img64 = c64[0].toDataURL("image/png");
@@ -1703,7 +1720,7 @@ $(document).ready(function() {
             appName.file("resources/default_app/js/index.js", jsEditor.getValue());
             zip.file("README.md", otherEditor.getValue(otherEditor.getValue() + "\n\n### Instructions\n 1. Extract the `"+ $(".vprojectname").val().replace(/ /g, "-") +"-lin.zip` folder anywhere on your computer except the home folder. \n 2. Open a terminal and then navigate to "+ $(".vprojectname").val().replace(/ /g, "-") +"'s directory and `run the make.sh file`.\n\n  **example**:\n  cd Downloads/"+ $(".vprojectname").val().replace(/ /g, "-") +"-lin\n\n 3. This will move the "+ $(".vprojectname").val().replace(/ /g, "-") +" sibling folder and it's decentants to your home directory and create an application launcher.\n"));
             eval( $("[data-action=ziplibs]").val().replace(/zip.file/g, "appName.file").replace(/libraries/g,"resources/default_app/libraries") );
-            eval( $("[data-action=fulljszipcode]").val().replace(/zip.file/g, "appName.file").split("css/").join("resources/default_app/css/").split("js/").join("resources/default_app/js/") );
+            eval( $("[data-action=fulljszipcode]").val().replace(/zip.file/g, "appName.file").split("css/").join("resources/default_app/css/").split("js/").join("resources/default_app/js/").replace(/libraries/g,"resources/default_app/libraries") );
             
             zip.file("make.sh", "if [ -d ${HOME}/"+ $(".vprojectname").val().replace(/ /g, "-") +" ]; then\n  typeset LP_FILE=${HOME}/"+ $(".vprojectname").val().replace(/ /g, "-") +"/"+ $(".vprojectname").val().replace(/ /g, "-") +".desktop\n\n  # Remove the target file if any\n  rm -f ${LP_FILE}\n  printf \"%s[Desktop Entry]\\nName="+ $(".vprojectname").val() +"\\nPath=${HOME}/"+ $(".vprojectname").val().replace(/ /g, "-") +"\\nActions=sudo\\nExec=./"+ $(".vprojectname").val().replace(/ /g, "-") +"/electron\\nIcon=${HOME}/"+ $(".vprojectname").val().replace(/ /g, "-") +"/resources/default_app/icons/128.png\\nTerminal=true\\nType=Application\\nStartupNotify=true > ${HOME}/"+ $(".vprojectname").val().replace(/ /g, "-") +".desktop\" >> ${LP_FILE}\n\n  echo 'Your application and launcher are now located at ${HOME}/"+ $(".vprojectname").val().replace(/ /g, "-") +"'\n  rm README.md\n  rm make.sh\n  cd ../\n  rmdir "+ $(".vprojectname").val().replace(/ /g, "-") +"-lin\n  cd ${HOME}/"+ $(".vprojectname").val().replace(/ /g, "-") +"/\n  chmod 775 electron\nfi\n\nif [ ! -d ${HOME}/"+ $(".vprojectname").val().replace(/ /g, "-") +" ]; then\n  mv "+ $(".vprojectname").val().replace(/ /g, "-") +" ${HOME}\n\n  typeset LP_FILE=${HOME}/"+ $(".vprojectname").val().replace(/ /g, "-") +"/"+ $(".vprojectname").val().replace(/ /g, "-") +".desktop\n\n  # Remove the target file if any\n  rm -f ${LP_FILE}\n  printf \"%s[Desktop Entry]\\nName="+ $(".vprojectname").val() +"\\nPath=${HOME}/"+ $(".vprojectname").val().replace(/ /g, "-") +"\\nActions=sudo\\nExec=./"+ $(".vprojectname").val().replace(/ /g, "-") +"/electron\\nIcon=${HOME}/"+ $(".vprojectname").val().replace(/ /g, "-") +"/resources/default_app/icons/128.png\\nTerminal=true\\nType=Application\\nStartupNotify=true > ${HOME}/"+ $(".vprojectname").val().replace(/ /g, "-") +".desktop\" >> ${LP_FILE}\n\n  echo 'Your application and launcher are now located at ${HOME}/"+ $(".vprojectname").val().replace(/ /g, "-") +"'\n  rm README.md\n  rm make.sh\n  cd ../\n  rmdir "+ $(".vprojectname").val().replace(/ /g, "-") +"-lin\n  cd ${HOME}/"+ $(".vprojectname").val().replace(/ /g, "-") +"/\n  chmod 775 electron\nfi\n\n# For Windows OS\n#if EXIST ${HOME}/"+ $(".vprojectname").val().replace(/ /g, "-") +" (\n  #echo Yes\n#) ELSE (\n  #echo No\n#)\n");
 
@@ -1719,7 +1736,9 @@ $(document).ready(function() {
 
         // Download as Chrome App
         $("[data-action=export-as-chrome-app]").on("click", function() {
-          $("[data-action=download]").trigger("click");
+          if ( $("[data-action=download]").hasClass("active") ) {
+            $("[data-action=download]").trigger("click");
+          }
           $("[data-action=chromedialog]").fadeIn();
         });
         $("[data-action=cancel]").on("click", function() {
@@ -1737,6 +1756,7 @@ $(document).ready(function() {
               var zip = new JSZip(data);
 
               // Your Web App
+              closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/style.css\" /></textarea>" + "\n  </head>\n  <body>\n\n");
               var htmlContent = openHTML.getValue() + $(".vprojectname").val() + closeHTML.getValue() + yourRefs.getValue() + closeRefs.getValue() + htmlEditor.getValue() + closeFinal.getValue();
               zip.file("app/index.html", htmlContent);
               zip.file("app/css/style.css", cssEditor.getValue());
@@ -1786,7 +1806,9 @@ $(document).ready(function() {
   
   // Export zip file
   $("[data-action=export]").click(function() {
-    $("[data-action=download]").trigger("click");
+    if ( $("[data-action=download]").hasClass("active") ) {
+      $("[data-action=download]").trigger("click");
+    }
     
     JSZipUtils.getBinaryContent("font-awesome.zip", function(err, data) {
       if(err) {
@@ -1796,6 +1818,7 @@ $(document).ready(function() {
       var zip = new JSZip(data);
       
       // Your Web App
+      closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/style.css\" /></textarea>" + "\n  </head>\n  <body>\n\n");
       var htmlContent = openHTML.getValue() + $(".vprojectname").val() + closeHTML.getValue() + yourRefs.getValue() + closeRefs.getValue() + htmlEditor.getValue() + closeFinal.getValue();
       zip.file("index.html", htmlContent);
       zip.file("css/style.css", cssEditor.getValue());
@@ -1808,13 +1831,9 @@ $(document).ready(function() {
     });
   });
   
-  // Save to browser
-  $("[data-action=save]").click(function() {
-    alertify.error("Not yet available...");
-  });
-
   appDemos();
   newProject();
   responsiveMagic();
   FileManager();
+  shortcutKeys();
 });
