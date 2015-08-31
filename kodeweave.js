@@ -1623,7 +1623,10 @@ $(document).ready(function() {
             appName.load(data);
 
             // Your Web App
-            closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/style.css\" /></textarea>" + "\n  </head>\n  <body>\n\n");
+            var grabString = "<script src=\"libraries/jquery/jquery.js\"></script\>",
+                replaceString = "<script src=\"libraries/jquery/jquery.js\"></script\>\n    <script>\n      try {\n        $ = jQuery = module.exports;\n        // If you want module.exports to be empty, uncomment:\n        // module.exports = {};\n      } catch(e) {}\n    </script\>";
+            
+            closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/style.css\" /></textarea>" + "\n  </head>\n  <body>\n\n");
             var htmlContent = openHTML.getValue() + $(".vprojectname").val() + closeHTML.getValue() + yourRefs.getValue() + closeRefs.getValue() + htmlEditor.getValue() + closeFinal.getValue();
             var Img16 = c16[0].toDataURL("image/png");
             var Img32 = c32[0].toDataURL("image/png");
@@ -1663,7 +1666,10 @@ $(document).ready(function() {
             var zip = new JSZip(data);
 
             // Your Web App
-            closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/style.css\" /></textarea>" + "\n  </head>\n  <body>\n\n");
+            var grabString = "<script src=\"libraries/jquery/jquery.js\"></script\>",
+                replaceString = "<script src=\"libraries/jquery/jquery.js\"></script\>\n    <script>\n      try {\n        $ = jQuery = module.exports;\n        // If you want module.exports to be empty, uncomment:\n        // module.exports = {};\n      } catch(e) {}\n    </script\>";
+            
+            closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/style.css\" /></textarea>" + "\n  </head>\n  <body>\n\n");
             var htmlContent = openHTML.getValue() + $(".vprojectname").val() + closeHTML.getValue() + yourRefs.getValue() + closeRefs.getValue() + htmlEditor.getValue() + closeFinal.getValue();
             var Img16 = c16[0].toDataURL("image/png");
             var Img32 = c32[0].toDataURL("image/png");
@@ -1703,7 +1709,10 @@ $(document).ready(function() {
             appName.load(data);
 
             // Your Web App
-            closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/style.css\" /></textarea>" + "\n  </head>\n  <body>\n\n");
+            var grabString = "<script src=\"libraries/jquery/jquery.js\"></script\>",
+                replaceString = "<script src=\"libraries/jquery/jquery.js\"></script\>\n    <script>\n      try {\n        $ = jQuery = module.exports;\n        // If you want module.exports to be empty, uncomment:\n        // module.exports = {};\n      } catch(e) {}\n    </script\>";
+            
+            closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/style.css\" /></textarea>" + "\n  </head>\n  <body>\n\n");
             var htmlContent = openHTML.getValue() + $(".vprojectname").val() + closeHTML.getValue() + yourRefs.getValue() + closeRefs.getValue() + htmlEditor.getValue() + closeFinal.getValue();
             var Img16 = c16[0].toDataURL("image/png");
             var Img32 = c32[0].toDataURL("image/png");
