@@ -538,7 +538,7 @@ $(document).ready(function() {
       shortcutKeys = function() {
         // New Project
         shortcut.add("Ctrl+N", function() {
-          $("[data-action=confirm-newproj]").trigger("click");
+          $("[data-action=newproj]").trigger("click");
         });
         // Save Project
         shortcut.add("Ctrl+S", function() {
