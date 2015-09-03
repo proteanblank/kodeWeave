@@ -1684,9 +1684,11 @@ $(document).ready(function() {
             zip.file("data/content/index.html", htmlContent);
             zip.file("data/content/css/style.css", cssEditor.getValue());
             zip.file("data/content/js/index.js", jsEditor.getValue());
-            zip.file("README.md", otherEditor.getValue());
             eval( $("[data-action=ziplibs]").val().replace(/libraries/g,"data/content/libraries") );
             eval( $("[data-action=fulljszipcode]").val().split("css/").join("data/content/css/").split("js/").join("data/content/js/").replace(/libraries/g,"data/content/libraries") );
+            zip.file("data/package.json", '{\n  "main"   : "content/index.html",\n  "name"   : "'+ $(".vprojectname").val() +'",\n  "window" : {\n    "toolbar": false\n  }\n}');
+            zip.file("README.md", otherEditor.getValue());
+            zip.file("run.sh", "open -a /Applications/"+ $(".vprojectname").val().replace(/ /g, "") +".app/Contents/data/"+ $(".vprojectname").val().replace(/ /g, "") +".app");
             
             var content = zip.generate({type:"blob"});
             saveAs(content, $(".vprojectname").val().replace(/ /g, "-") + "-mac.zip");
