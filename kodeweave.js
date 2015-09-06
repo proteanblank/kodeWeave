@@ -544,13 +544,6 @@ $(document).ready(function() {
         shortcut.add("Ctrl+S", function() {
           $("[data-action=export]").trigger("click");
         });
-        // Reload App
-        shortcut.add("Ctrl+R", function() {
-          location.reload(true);
-        });
-        shortcut.add("F11", function() {
-          location.reload(true);
-        });
       },
       appDemos = function() {
         $("[data-action=alphabetizer]").on("click", function() {
@@ -1653,7 +1646,7 @@ $(document).ready(function() {
         });
 
         // Download as Mac App
-        $("[data-action=export-as-mac-app-]").on("click", function() {
+        $("[data-action=export-as-mac-app-32]").on("click", function() {
           if ( $("[data-action=download]").hasClass("active") ) {
             $("[data-action=download]").trigger("click");
           }
@@ -1675,18 +1668,19 @@ $(document).ready(function() {
             var Img32 = c32[0].toDataURL("image/png");
             var Img64 = c64[0].toDataURL("image/png");
             var Img128 = canvas[0].toDataURL("image/png");
-            zip.file("data/content/icons/16.png", Img16.split('base64,')[1],{base64: true});
-            zip.file("data/content/icons/32.png", Img32.split('base64,')[1],{base64: true});
-            zip.file("data/content/icons/64.png", Img64.split('base64,')[1],{base64: true});
-            zip.file("data/content/icons/128.png", Img128.split('base64,')[1],{base64: true});
+            zip.file("data/content/app/icons/16.png", Img16.split('base64,')[1],{base64: true});
+            zip.file("data/content/app/icons/32.png", Img32.split('base64,')[1],{base64: true});
+            zip.file("data/content/app/icons/64.png", Img64.split('base64,')[1],{base64: true});
+            zip.file("data/content/app/icons/128.png", Img128.split('base64,')[1],{base64: true});
 
             var htmlContent = openHTML.getValue() + $(".vprojectname").val() + closeHTML.getValue() + yourRefs.getValue() + closeRefs.getValue() + htmlEditor.getValue() + closeFinal.getValue();
-            zip.file("data/content/index.html", htmlContent);
-            zip.file("data/content/css/style.css", cssEditor.getValue());
-            zip.file("data/content/js/index.js", jsEditor.getValue());
-            eval( $("[data-action=ziplibs]").val().replace(/libraries/g,"data/content/libraries") );
-            eval( $("[data-action=fulljszipcode]").val().split("css/").join("data/content/css/").split("js/").join("data/content/js/").replace(/libraries/g,"data/content/libraries") );
-            zip.file("data/package.json", '{\n  "main"   : "content/index.html",\n  "name"   : "'+ $(".vprojectname").val() +'",\n  "window" : {\n    "toolbar": false\n  }\n}');
+            zip.file("data/content/app/index.html", htmlContent);
+            zip.file("data/content/app/css/style.css", cssEditor.getValue());
+            zip.file("data/content/app/js/index.js", jsEditor.getValue());
+            eval( $("[data-action=ziplibs]").val().replace(/libraries/g,"data/content/app/libraries") );
+            eval( $("[data-action=fulljszipcode]").val().split("css/").join("data/content/app/css/").split("js/").join("data/content/app/js/").replace(/libraries/g,"data/content/app/libraries") );
+            zip.file("data/package.json", '{\n  "main"  : "content/index.html",\n  "name"  : "'+ $(".vprojectname").val() +'",\n  "window": {\n    "toolbar"    : false,\n    "frame"      : false,\n    "transparent": true\n  }\n}');
+            zip.file("data/content/index.html", '<!doctype html>\n<html>\n <head>\n    <title>'+ $(".vprojectname").val() +'</title>\n    <link rel="stylesheet" href="css/style.css">\n  </head>\n <body>\n    <div class="container">\n      <div class="titlebar txtcenter">\n        <div class="fl menubtns">\n          <a class="fl close">\n            <i class="fa fa-times"></i>\n          </a>\n          <a class="fl minimize">\n            <i class="fa fa-minus"></i>\n          </a>\n          <a class="fl maximize">\n            <i class="maxtr fa fa-caret-left"></i>\n            <i class="maxbl fa fa-caret-left"></i>\n          </a>\n        </div>\n        \n        <span data-set="appname"></span>\n      </div>\n\n      <iframe src="app/index.html"></iframe>\n    </div>\n\n    <script src="js/main.js"></script>\n  </body>\n</html>');
             zip.file("README.md", otherEditor.getValue());
             zip.file("run.sh", "open -a /Applications/"+ $(".vprojectname").val().replace(/ /g, "") +".app/Contents/data/"+ $(".vprojectname").val().replace(/ /g, "") +".app");
             
