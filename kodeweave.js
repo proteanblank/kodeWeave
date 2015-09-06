@@ -1658,7 +1658,7 @@ $(document).ready(function() {
             $("[data-action=download]").trigger("click");
           }
 
-          JSZipUtils.getBinaryContent("YourMacApp.zip", function(err, data) {
+          JSZipUtils.getBinaryContent("YourMacApp-32bit.zip", function(err, data) {
             if(err) {
               throw err; // or handle err
             }
