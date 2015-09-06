@@ -1653,12 +1653,12 @@ $(document).ready(function() {
         });
 
         // Download as Mac App
-        $("[data-action=export-as-mac-app]").on("click", function() {
+        $("[data-action=export-as-mac-app-32]").on("click", function() {
           if ( $("[data-action=download]").hasClass("active") ) {
             $("[data-action=download]").trigger("click");
           }
 
-          JSZipUtils.getBinaryContent("YourMacApp.zip", function(err, data) {
+          JSZipUtils.getBinaryContent("YourMacApp-32b.zip", function(err, data) {
             if(err) {
               throw err; // or handle err
             }
