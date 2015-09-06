@@ -41,5 +41,7 @@ Of course kodeWeave is free and open source, so you can always fork the project 
 
 ### Todos
 
+ - Release for Mac 64bits (utilizing Electron framework)
+ - Add Mac 64bit export (utilizing Electron framework)
  - Fix: All values to added files get pushed to whom joins lobby last in Teamwork, but everyone else gets no value. 
 
