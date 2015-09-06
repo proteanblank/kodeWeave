@@ -1653,7 +1653,7 @@ $(document).ready(function() {
         });
 
         // Download as Mac App
-        $("[data-action=export-as-mac-app]").on("click", function() {
+        $("[data-action=export-as-mac-app-]").on("click", function() {
           if ( $("[data-action=download]").hasClass("active") ) {
             $("[data-action=download]").trigger("click");
           }
