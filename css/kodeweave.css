@@ -277,7 +277,7 @@ a:active {
 }
 
 /* Editor */
-#splitWrapper, .CodeMirror, .fullscreen-html-toggle, .fullscreen-css-toggle, .fullscreen-js-toggle, .preview-mode-toggle {
+#splitWrapper, .CodeMirror, .fullscreen-html-toggle, .fullscreen-css-toggle, .fullscreen-js-toggle, .fullscreen-other-toggle, .preview-mode-toggle {
   z-index: 0;
 }
 .CodeMirror {
@@ -358,17 +358,17 @@ a:active {
   background-image: url("../js.svg");
 }
 
-.fullscreen-html-toggle, .fullscreen-css-toggle, .fullscreen-js-toggle, .preview-mode-toggle {
+.fullscreen-html-toggle, .fullscreen-css-toggle, .fullscreen-js-toggle, .fullscreen-other-toggle, .preview-mode-toggle {
   display: block;
   position: absolute;
   right: 20px;
   opacity: 0.6;
   font-size: 1.75em;
 }
-.fullscreen-html-toggle:hover, .fullscreen-css-toggle:hover, .fullscreen-js-toggle:hover, .preview-mode-toggle:hover {
+.fullscreen-html-toggle:hover, .fullscreen-css-toggle:hover, .fullscreen-js-toggle:hover, .fullscreen-other-toggle:hover, .preview-mode-toggle:hover {
   opacity: 1;
 }
-.fullscreen-html-toggle, .fullscreen-css-toggle, .fullscreen-js-toggle {
+.fullscreen-html-toggle, .fullscreen-css-toggle, .fullscreen-js-toggle, .fullscreen-other-toggle {
   top: 15px;
 }
 .preview-mode-toggle {
