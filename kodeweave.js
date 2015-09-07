@@ -102,7 +102,13 @@ var jsEditor = CodeMirror(document.querySelector("#jsEditor"), {
 var inlet = Inlet(jsEditor);
 var otherEditor = CodeMirror(document.querySelector("#otherEditor"), {
   mode: "text/x-markdown",
-  value: "Application Name\n----------------\n\n**About application**\ndescription...\n"
+  tabMode: "indent",
+  styleActiveLine: true,
+  lineNumbers: true,
+  lineWrapping: true,
+  gutters: ["CodeMirror-linenumbers"],
+  dragDrop: true,
+  value: "Welcome!\n===================\n\n![Placer text](http://kodeweave.sourceforge.net/logo.png)  \n\nHey! I'm your placement Markdown text.\n\n----------\n\n\nTypography\n-------------\n\n[kodeWeave Link](http://kodeweave.sourceforge.net/)  \n**bold text**  \n*italic text*  \n\n### Blockquote:\n\n> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\n### Bullet List\n\n - Green\n - Eggs\n - and\n - Ham\n\n### Numbered List\n\n 1. Green\n 2. Eggs\n 3. and\n 4. Ham"
 });
 var inlet = Inlet(otherEditor);
 
@@ -148,6 +154,26 @@ jsEditor.on("change", function() {
   clearTimeout(delay);
   delay = setTimeout(updatePreview, 300);
 });
+
+// Live preview for markdown README.md file
+otherEditor.on("change", function() {
+  clearTimeout(delay);
+  delay = setTimeout(markdownPreview, 300);
+});
+// $("#otherEditor").on("mouseup touchend", function() {
+  // setTimeout(markdownPreview, 300);
+// });
+
+function markdownPreview() {
+  var mdconverter = new Showdown.converter(),
+      previewFrame = document.getElementById("preview"),
+      preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
+
+  preview.open();
+  preview.write( mdconverter.makeHtml( otherEditor.getValue() ) );
+  preview.close();
+}
+setTimeout(markdownPreview, 300);
 
 // Don't add to code, replace with new drop file's code
 htmlEditor.on("drop", function() {
@@ -476,6 +502,83 @@ $(document).ready(function() {
               showSplitBar: false,
               panels: [{ size: "0%"},
                        { size: "100%"}]
+            });
+          }
+        });
+        $(".fullscreen-other-toggle").click(function() {
+          $(this).toggleClass("fill unfill");
+          if ( $(".fullscreen-other-toggle.unfill").is(":visible") ) {
+            $(this).html('<span class="fa fa-expand" id="fullscreen-other"></span>');
+            $("#mainSplitter").jqxSplitter({
+              height: "auto",
+              width: "100%",
+              orientation: "horizontal",
+              showSplitBar: true,
+              panels: [{ size: '70%',collapsible:false },
+                       { size: '30%' }]
+            });
+            $("#splitContainer").jqxSplitter({
+              height: "auto",
+              width: "100%",
+              orientation: "horizontal",
+              showSplitBar: true,
+              panels: [{ size: "50%",collapsible:false },
+                       { size: "50%" }]
+            });
+            $("#leftSplitter").jqxSplitter({
+              width: "100%",
+              height: "100%",
+              orientation: "vertical",
+              showSplitBar: true,
+              panels: [{
+                size: "50%",
+                collapsible: false
+              }]
+            });
+            $("#rightSplitter").jqxSplitter({
+              width: "100%",
+              height: "100%",
+              orientation: "vertical",
+              showSplitBar: true,
+              panels: [{
+                size: "50%",
+                collapsible: false
+              }]
+            });
+          } else if ( $(".fullscreen-other-toggle.fill").is(":visible") ) {
+            $(this).html('<span class="fa fa-compress" id="fullscreen-other"></span>');
+            $("#mainSplitter").jqxSplitter({
+              height: "auto",
+              width: "100%",
+              orientation: "horizontal",
+              showSplitBar: false,
+              panels: [{ size: '0%' },
+                       { size: '100%' }]
+            });
+            $("#splitContainer").jqxSplitter({
+              height: "auto",
+              width: "100%",
+              orientation: "horizontal",
+              panels: [{ size: "50%",collapsible:false },
+                       { size: "50%" }]
+            });
+            $("#leftSplitter").jqxSplitter({
+              width: "100%",
+              height: "100%",
+              orientation: "vertical",
+              panels: [{
+                size: "50%",
+                collapsible: false
+              }]
+            });
+            $("#rightSplitter").jqxSplitter({
+              width: "100%",
+              height: "100%",
+              orientation: "vertical",
+              panels: [{
+                size: "50%",
+                collapsible: false
+              }]
             });
           }
         });
@@ -1065,7 +1168,7 @@ $(document).ready(function() {
             $("#other-editor").append(editor);
             $("#todos").append(file);
           } else if (description.toLowerCase().substring(description.length - 3) === ".md") {
-            var otherCodemirror = 'var otherEditor'+ id +' = CodeMirror(document.getElementById("otherfile'+ id +'"), {  mode: "text/x-markdown",  tabMode: "indent",  styleActiveLine: true,  lineNumbers: true, dragDrop : true, gutters: ["CodeMirror-linenumbers"]}); var inlet = Inlet(otherEditor'+ id +'); otherEditor'+ id +'.on("change", function() { clearTimeout(delay); delay = setTimeout(updatePreview, 300); }); otherEditor'+ id +'.on("drop", function() { otherEditor'+ id +'.setValue(""); });';
+            var otherCodemirror = 'var otherEditor'+ id +' = CodeMirror(document.getElementById("otherfile'+ id +'"), {  mode: "text/x-markdown",  tabMode: "indent",  styleActiveLine: true,  lineNumbers: true,  lineWrapping: true, dragDrop : true, gutters: ["CodeMirror-linenumbers"]}); var inlet = Inlet(otherEditor'+ id +'); function markdownPreview'+ id +'() {\n  var mdconverter = new Showdown.converter(),\n      previewFrame = document.getElementById(\"preview\"),\n      preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;\n\n  preview.open();\n  preview.write( mdconverter.makeHtml( otherEditor'+ id +'.getValue() ) );\n  preview.close();\n}\nsetTimeout(markdownPreview'+ id +', 300); otherEditor'+ id +'.on("change", function() { clearTimeout(delay); delay = setTimeout(markdownPreview'+ id +', 300); }); otherEditor'+ id +'.on("drop", function() { otherEditor'+ id +'.setValue(""); });';
             var otherActiveEditor = '$("#otherfile'+ id +'").on("mouseup touchend", function() { if ( $(this).attr("id") === "otherfile'+ id +'" ) { $(".activeEditor").val("otherfile'+ id +'"); } });';
             var otherJSZip = "<textarea class='jszipcode hide'>zip.file('"+ description +"', otherEditor"+ id +".getValue()); </textarea>";
 
