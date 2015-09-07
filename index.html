@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -482,6 +483,17 @@
                   <li class="ldd-heading">S</li>
                   <li>
                     <a>
+                      <input data-action="check" class="check" type="checkbox" id="showdown" />
+                      <label for="showdown">Showdown (0.4.0)</label>
+                    </a>
+                    <div class="hide">
+                      <textarea class="libsources hide">    &lt;script src="libraries/showdown/Showdown.min.js"&gt;&lt;/script&gt;</textarea>
+                      <textarea class="showdown hide"></textarea>
+                      <textarea class="showdownzip jszipcode hide"></textarea>
+                    </div>
+                  </li>
+                  <li>
+                    <a>
                       <input data-action="check" class="check" type="checkbox" id="scriptaculous" />
                       <label for="scriptaculous">Script.aculo.us (1.9.0)</label>
                     </a>
@@ -585,6 +597,8 @@
         </div>
       </div>
       
+      <a class="skip" data-action="teamwork">Teamwork</a>
+      
       <a class="open-demos">Demos</a>
       <div class="demos-dialog dialog fl hide">
         <div class="adddemos-tablets">
@@ -603,6 +617,9 @@
                   <li><a data-action="dateclock">date and time</a></li>
                   <li><a data-action="detectorientation">detect orientation</a></li>
                   <li><a data-action="osdisplay">display operating system</a></li>
+                  <li>&nbsp;</li>
+                  <li class="ldd-heading">M</li>
+                  <li><a data-action="markdowneditor">markdown editor</a></li>
                   <li>&nbsp;</li>
                 </ul>
                 <ul>

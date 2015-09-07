@@ -240,10 +240,10 @@ $(document).ready(function() {
           
           // Dropdown Styles Demos
           if ( $(this).width() > 550 ) {
-            if ( $(this).height() > 330 ) {
+            if ( $(this).height() > 355 ) {
               $(".demos-dialog").css({
                 "width": "auto",
-                "height": "233px",
+                "height": "260px",
                 "overflow-y": "visible"
               });
             } else {
@@ -640,6 +640,22 @@ $(document).ready(function() {
           htmlEditor.setValue("<div data-output=\"os\"></div>");
           jsEditor.setValue("document.addEventListener(\"DOMContentLoaded\", function() {\n  document.querySelector(\"[data-output=os]\").innerHTML = \"<strong>Operating System</strong>: \" + navigator.platform;\n});");
           $(".open-demos").trigger("click");
+        });
+        $("[data-action=markdowneditor]").on("click", function() {
+          $("#todos").empty();
+          $(".check").attr("checked", false).trigger("change");
+          $(".vprojectname").val("Live Markdown Editor");
+          var demotitle = $(".vprojectname").val();
+          if (TogetherJS.running) {
+            TogetherJS.send({
+              type: "demo-title",
+              output: demotitle
+            });
+          }
+          htmlEditor.setValue("<div class=\"editor-and-preview-container\">\n  <div class=\"editor-container\">Markdown Editor</div>\n  <div class=\"preview-container\">Preview</div>\n</div>\n<div class=\"editor-and-preview-container\">\n  <div class=\"editor-container\">\n    <textarea id=\"editor\">Welcome!\n===================\n\n![Placer text](http://kodeweave.sourceforge.net/logo.png)  \n\nHey! I'm your placement Markdown text.\n\n----------\n\n\nTypography\n-------------\n\n[kodeWeave Link](http://kodeweave.sourceforge.net/)  \n**bold text**  \n*italic text*  \n\n### Blockquote:\n\n> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\n### Bullet List\n\n - Green\n - Eggs\n - and\n - Ham\n\n### Numbered List\n\n 1. Green\n 2. Eggs\n 3. and\n 4. Ham\n</textarea>\n  </div>\n  <div class=\"preview-container\">\n    <div id=\"preview\"></div>\n  </div>\n</div>");
+          cssEditor.setValue("* {\n  box-sizing: border-box;\n}\n\nbody {\n  line-height: 1.4;\n}\n\n.editor-and-preview-container {\n  padding: 1em;\n  width: 100%;\n  height: 100%;\n}\n\n.editor-container, .preview-container {\n  display: inline;\n  overflow: hidden;\n  float: left;\n  width: 50%;\n  height: 100%;\n}\n\n#editor {\n  display: inline-block;\n  width: 100%;\n  height: 500px;\n  resize: none;\n  padding: 1em;\n  line-height: 1.5;\n}\n#editor:focus {\n  outline: none;\n}\n\n#preview {\n  width: 100%;\n  height: 500px;\n  border: 1px green solid;\n  padding: 0 1em;\n  overflow: auto;\n}");
+          jsEditor.setValue('var mdconverter = new Showdown.converter();\nvar editor = $("#editor");\nvar preview = $("#preview");\nfunction updatePreview() {\n  preview.html(mdconverter.makeHtml(editor.val()));\n}\nupdatePreview();\neditor.on("keyup", function () {\n  updatePreview();\n});');
+          $(".open-demos, #normalize, #jquery, #showdown").trigger("click");
         });
         $("[data-action=packagezipfiles]").on("click", function() {
           $("#todos").empty();
@@ -1484,6 +1500,14 @@ $(document).ready(function() {
       $(".requirejszip").val("zip.file('libraries/require/require.js', $(\".requirejs\").val());");
     } else {
       $('.requirejs, .requirejszip').clear();
+    }
+    if ( $("#showdown").is(":checked") ) {
+      $('.showdown').clear();
+      download_to_textbox('libraries/showdown/Showdown.min.js', $('.showdown'));
+      $('.showdown').trigger("change");
+      $(".showdownzip").val("zip.file('libraries/showdown/Showdown.min.js', $(\".showdown\").val());");
+    } else {
+      $('.showdown, .showdownzip').clear();
     }
     if ( $("#scriptaculous").is(":checked") ) {
       $('.scriptaculous').clear();
