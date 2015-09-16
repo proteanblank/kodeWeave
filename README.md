@@ -4,7 +4,7 @@ The kodeWeave editor, unlike kodeWeave touch. It incorporates the use of multipl
 You can head to kodeWeave Touch's [public repository](https://github.com/mikethedj4/kodeWeave-Touch/) if you're looking for a mobile/touch friendly IDE. (Note: kodeWeave touch is just a basic prototyper like [jsfiddle.net](http://jsfiddle.net/) only difference is it was made to be a mobile/touch friendly alternative.
 
 ### Version
-1.0.0
+0.0.1
 
 ### License
 MIT
