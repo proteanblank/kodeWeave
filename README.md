@@ -18,11 +18,11 @@ Availability
 
 **Unstable Releases** *No longer supported*  
 
-[Windows](http://sourceforge.net/projects/kodeweave/files/v1/kodeWeave-win.zip/download), [Mac](http://sourceforge.net/projects/kodeweave/files/latest/download?source=navbar), and [Linux](http://sourceforge.net/projects/kodeweave/files/v1/kodeWeave-lin.tar.gz/download)
+[Mac](http://sourceforge.net/projects/kodeweave/files/v0.0.1/kodeWeaveTouch-mac.dmg/download) and [Linux](http://sourceforge.net/projects/kodeweave/files/v0.0.1/kodeWeaveTouch-lin.tar.gz/downloadd)
 
 **Stable Releases**
 
-[Chrome](https://chrome.google.com/webstore/detail/kodeweave-touch/blcgppajmopfndnmegepihhkilaejipf) Application.
+[Windows](http://sourceforge.net/projects/kodeweave/files/v0.0.1/kodeWeave-win32.zip/download) and [Chrome](https://chrome.google.com/webstore/detail/kodeweave-touch/blcgppajmopfndnmegepihhkilaejipf) Application.
 
 Tech
 -------------
