@@ -1,32 +1,49 @@
-# kodeWeave
-The kodeWeave editor, unlike kodeWeave touch. It incorporates the use of multiple files, has live preview integrated with them, and can load all your favorite libraries by simply checking a box.
+kodeWeave
+===================
 
-You can head to kodeWeave Touch's [public repository](https://github.com/mikethedj4/kodeWeave-Touch/) if you're looking for a mobile/touch friendly IDE. (Note: kodeWeave touch is just a basic prototyper like [jsfiddle.net](http://jsfiddle.net/) only difference is it was made to be a mobile/touch friendly alternative.
+kodeWeave is a realtime coding playground for HTML, CSS, and Javascript. Similar to [JSFiddle](http://jsfiddle.net/) and [JSBin](http://jsbin.com/), but kodeWeave was made as a prototyping application to build applications for desktop operating systems while on mobile devices. ([PhoneGap Build](http://build.phonegap.com/) is recommended for mobile devices)
 
-### Version
+Version
+-------------
+
 0.0.1
 
-### License
+License
+-------------
+
 MIT
 
-### Availability
-kodeWeave editor is available for [Windows](http://sourceforge.net/projects/kodeweave/files/v1/kodeWeave-win.zip/download), [Linux](http://sourceforge.net/projects/kodeweave/files/v1/kodeWeave-lin.tar.gz/download) and as a [Chrome](https://chrome.google.com/webstore/detail/kodeweave/pdooakoifjbjkjhjgfhlknnildhbnncl) Application. (Mac version coming soon...)
+Availability
+-------------
 
-### Tech
-kodeWeave editor uses a number of open source projects to work properly:
+**Unstable Releases** *No longer supported*  
+
+[Windows](http://sourceforge.net/projects/kodeweave/files/v1/kodeWeave-win.zip/download), [Mac](http://sourceforge.net/projects/kodeweave/files/latest/download?source=navbar), and [Linux](http://sourceforge.net/projects/kodeweave/files/v1/kodeWeave-lin.tar.gz/download)
+
+**Stable Releases**
+
+[Chrome](https://chrome.google.com/webstore/detail/kodeweave-touch/blcgppajmopfndnmegepihhkilaejipf) Application.
+
+Tech
+-------------
+
+kodeWeave uses a number of open source projects to work properly:
 
 * [jQuery](http://jquery.com/) - duh
 * [TogetherJS](https://togetherjs.com/) - awesome collaboration tool
-* [JQWidgets](http://www.jqwidgets.com/jquery-widgets-demo/demos/jqxsplitter/index.htm#demos/jqxsplitter/nested-splitters.htm) - awesome plugin for resizable columns 
+* [JQWidgets](http://www.jqwidgets.com/jquery-widgets-demo/demos/jqxsplitter/index.htm#demos/jqxsplitter/nested-splitters.htm) - awesome plugin for resizable columns
 * [Codemirror](http://codemirror.net/) - awesome web-based text editor
 * [Electron](http://electron.atom.io/) - makes web apps run on desktops (comes built with [node.js](http://nodejs.org/))
 * [node-webkit](http://nwjs.io/) - makes web apps run on desktops (comes built with [node.js](http://nodejs.org/))
 * [Inlet](https://github.com/enjalot/Inlet) - awesome inline color picker and numeric slider for Codemirror
-* [HTMLHint](http://htmlhint.com/) - for html syntax validation
+* [Emmet](http://emmet.io/) - Codemirror Plugin for Zen Coding
+* [Showdown](http://showdownjs.github.io/demo/) - Markdown to HTML converter
+* [js-beautifier](http://jsbeautifier.org/) - HTML/CSS/JS Beautifier
 * [CSSLint](http://csslint.net/) - for css syntax validation
 * [JSHint](http://jslint.com/) - for javascript syntax validation
 
-### Development
+Development
+-------------
 
 Want to contribute? Great!  
 
@@ -35,13 +52,6 @@ You can contact the software manager Michael at either [Facebook](http://faceboo
 
 You can also submit a pull request here on Github :)
 
-**Note:** kodeWeave is being developed on the [Koding Network](https://koding.com/R/mikethedj4). 
+**Note:** kodeWeave is being developed on the [Koding Network](https://koding.com/R/mikethedj4).
 
 Of course kodeWeave is free and open source, so you can always fork the project and have fun :)
-
-### Todos
-
- - Release for Mac 64bits (utilizing Electron framework)
- - Add Mac 64bit export (utilizing Electron framework)
- - Fix: All values to added files get pushed to whom joins lobby last in Teamwork, but everyone else gets no value. 
-

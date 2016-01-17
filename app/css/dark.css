@@ -1,0 +1,372 @@
+@import url("style.css");
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  background: transparent;
+}
+::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(157, 165, 180);
+  border: 0;
+  border-radius: 5em;
+}
+::-webkit-scrollbar-thumb:active {
+  background: rgb(53, 59, 69);
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+  border: 0;
+  border-radius: 5em;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Menubar */
+header {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#424951+0,33383f+100 */
+  background: #424951; /* Old browsers */
+/*
+  background: -moz-linear-gradient(top,  #424951 0%, #33383f 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#424951), color-stop(100%,#33383f));
+  background: -webkit-linear-gradient(top,  #424951 0%,#33383f 100%);
+  background: -o-linear-gradient(top,  #424951 0%,#33383f 100%);
+  background: -ms-linear-gradient(top,  #424951 0%,#33383f 100%);
+  background: linear-gradient(to bottom,  #424951 0%,#33383f 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#424951', endColorstr='#33383f',GradientType=0 );
+*/
+  
+}
+header a {
+  color: #fff;
+}
+header a:hover {
+  color: #fff;
+  opacity: 1;
+}
+.active {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+/*
+  border-bottom: 2px solid #6AB5EC;
+*/
+}
+#charmenu {
+  color: #797e83;
+}
+#charmenu a {
+  color: #fff;
+  text-shadow: 0 0  0.25em #333;
+  border: 1px solid #57606B;
+  border-radius: 1em;
+  background: #57606B;
+}
+#charmenu a:hover {
+  background: #458FC8;
+  border: 1px solid #2D74AB;
+  opacity: 1;
+}
+#charmenu a:active {
+  background: #366589;
+  border: 1px solid #2F6288;
+}
+
+/* Dialogs */
+.dialog a, h3 {
+  color: #9AC4CC;
+}
+.dialog a:hover {
+  color: #fff;
+}
+.dialog .large, .dialog .heading {
+  font: 1.3em Lato;
+  margin: 0 10px;
+  padding: 3px 6px;
+  color: #6B939A;
+}
+input[type=file] {
+  color: #C6C8CA;
+}
+input[type=text].heading {
+  background: #282C34;
+  border: 2px groove #5E6065;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+input[type=text].heading:focus {
+  border: 2px groove #282C34;
+}
+
+.dialog {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#3e4146+0,33383f+100 */
+  background: #3e4146; /* Old browsers */
+  background: -moz-linear-gradient(top,  #3e4146 0%, #33383f 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#3e4146), color-stop(100%,#33383f)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #3e4146 0%,#33383f 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #3e4146 0%,#33383f 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #3e4146 0%,#33383f 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #3e4146 0%,#33383f 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3e4146', endColorstr='#33383f',GradientType=0 ); /* IE6-9 */
+}
+
+.dialog {
+  border: 1px solid #585858;
+}
+.ldd-menu ul li a:hover{
+  color: #fff;
+/*
+  background: #0080FF;
+  color: #fff;
+*/
+}
+.ldd-menu ul {
+  border-left: 1px solid #585858;
+}
+.ldd-heading {
+  color: #C6C8CA;
+}
+.new {
+  color: #C6C8CA;
+}
+
+@media all and (max-width:924px) {
+  .addlibrary-tablets .ldd-menu ul {
+    border-top: 1px solid #585858!important;
+  }
+}
+@media all and (max-width:530px) {
+  .adddemos-tablets .ldd-menu ul {
+    border-top: 1px solid #585858!important;
+  }
+}
+
+/* Chrome Dialog */
+.dialog-bg {
+  background: rgb(255, 255, 255);
+  background: rgba(255, 255, 255, 0.25);
+}
+.chromeappwindow {
+  background: rgb(255, 255, 255);
+}
+.column > div {
+  background: #000;
+  background: rgba(34, 66, 108, 0.5);
+  color: #fff;
+}
+
+/* Editor */
+#splitContainer, .CodeMirror, .editor-container {
+  color: rgb(180, 214, 220);
+  border: 0;
+  background: transparent;
+}
+.editor-container > * {
+  background: transparent;
+}
+.lint-error {
+  background: #ffa; 
+  color: #a00; 
+}
+.lint-error-icon {
+  color: white; 
+  background-color: red; 
+}
+
+.html-editor, .css-editor, .js-editor, .md-editor {
+  background: rgb(40, 44, 52);
+}
+
+.html-editor, .css-editor, .js-editor, .md-editor {
+  background-size: auto 80%;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.html-editor {
+  background-image: url("../assets/html5.svg");
+}
+.css-editor {
+  background-image: url("../assets/css3.svg");
+}
+.js-editor {
+  background-image: url("../assets/js.svg");
+}
+.md-editor {
+  background-image: url("../assets/md.svg");
+}
+.preview-editor {
+  background: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+
+/*
+  CODEMIRROR THEME
+*/
+
+/* default */
+.box pre       { color: white!important; } 
+
+/* e.g. var, function */
+.cm-keyword    { color: #ddca7e!important; }
+
+/* e.g. #id */
+.cm-atom       { color: rgb(157, 165, 172)!important; }
+.cm-builtin       { color: #a00!important; }
+
+/* e.g. 20 */
+.cm-number     { color: #d0782a!important; }
+
+/* e.g. px, em */
+.cm-unit       { color: #d0782a!important; }
+
+/* e.g. @include, [this] */
+.cm-def       { color: rgb(168, 105, 189)!important; }
+
+/* e.g. $, i */ 
+.cm-variable   { color: #BBB081!important; }
+
+/* e.g. for key in [this], Markdown li */ 
+.cm-variable-2 { color: #809bbd!important; }
+
+/* e.g. getElementbyId, CSS properties */ 
+.cm-property       { color: rgb(75, 150, 161)!important; }
+
+/* e.g. CoffeeScript ->, CSS colons */ 
+.cm-operator   { color: #cccccc!important; }
+
+/* e.g. // comments */ 
+.cm-comment    { color: #666666!important; }
+
+/* e.g. "string" */ 
+.cm-string     { color: #96b38a!important; }
+
+/* e.g. some CSS values */ 
+.cm-string-2   { color: #FFFFFF!important; }
+
+/* e.g. @font-face */ 
+.cm-meta       { color: rgb(168, 105, 189)!important; }
+
+/* e.g. HTML elements */ 
+.cm-tag       { color: rgb(136, 173, 151)!important; }
+.cm-bracket       { color: rgb(157, 165, 180)!important; }
+
+/* e.g. class="" id="" */ 
+.cm-attribute       { color: rgb(209, 154, 102)!important; }
+
+/* e.g. .box */ 
+.cm-qualifier       { color: rgb(157, 165, 172)!important; }
+
+/* active line */ 
+.CodeMirror-activeline-background    { background: rgb(44, 50, 59)!important; }
+
+
+.CodeMirror-linenumber {
+  color: rgb(75, 83, 99)!important;
+  background: transparent!important;
+}
+.CodeMirror-linenumbers, .CodeMirror-gutters, .CodeMirror-gutter {
+  border: 0!important;
+  background: transparent!important;
+}
+
+.box {
+  background: rgb(33, 37, 43)!important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Custom Checkbox Styling */
+/* Base for label styling */
+.check:not(:checked),
+.check:checked {
+  position: absolute;
+  left: -9999px;
+}
+.check:not(:checked) + label,
+.check:checked + label {
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+}
+/* checkbox aspect */
+.check:not(:checked) + label:before,
+.check:checked + label:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  border: 1px solid #15171D;
+  background: #3D424C;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.3);
+}
+/* checked mark aspect */
+.check:not(:checked) + label:after,
+.check:checked + label:after {
+  content: '✔';
+  position: absolute;
+  top: -5px;
+  left: 5px;
+  font-size: 14px;
+  transition: all .2s;
+  color: #578AF3;
+}
+/* checked mark aspect changes */
+.check:not(:checked) + label:after {
+  opacity: 0;
+  transform: scale(0);
+}
+.check:checked + label:after {
+  opacity: 1;
+  transform: scale(1);
+}
+.check:disabled:checked + label:after {
+  color: #999;
+}
+.check:disabled + label {
+  color: #aaa;
+}
+/* disabled checkbox */
+.check:disabled:not(:checked) + label:before,
+.check:disabled:checked + label:before {
+  box-shadow: none;
+  border-color: #bbb;
+  background-color: #ddd;
+}
+
+/* accessibility */
+.check:checked:focus + label:before,
+.check:not(:checked):focus + label:before {
+  border: 1px dotted blue;
+}
+
+/* hover style just for information */
+label:hover:before {
+  border: 1px solid #4778d9!important;
+}
