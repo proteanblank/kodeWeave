@@ -73,13 +73,15 @@ $(window).load(function() {
   $("#htmlEditor, #cssEditor, #jsEditor, #mdEditor").on("mousedown touchend", function() {
     if ( $(this).attr("id") === "htmlEditor" ) {
       activeEditor.val("htmlEditor")
+      clearTimeout(htmlWaiting)
+      htmlWaiting = setTimeout(updateHTMLHints, 300)
       if ($("#function").is(":hidden")) {
         $("#function").show()
       }
-      for (var i = 0; i < widgets.length; ++i) {
-        cssEditor.removeLineWidget(widgets[i])
-        jsEditor.removeLineWidget(widgets[i])
-      }
+      // for (var i = 0; i < widgets.length; ++i) {
+      //   cssEditor.removeLineWidget(widgets[i])
+      //   jsEditor.removeLineWidget(widgets[i])
+      // }
     } else if ( $(this).attr("id") === "cssEditor" ) {
       activeEditor.val("cssEditor")
       clearTimeout(cssWaiting)

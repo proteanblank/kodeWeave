@@ -47,14 +47,36 @@ function updateCSSHints() {
     }
   })// end of cssEditor.operation
 }// end of updateCSSHints
-// Handles CodeMirror Preview Delay
+function updateHTMLHints() {
+  htmlEditor.operation(function() {
+    for (var i = 0; i < widgets.length; ++i){
+      htmlEditor.removeLineWidget(widgets[i])
+    }
+
+    widgets.length = 0
+
+    var messages = HTMLHint.verify(htmlEditor.getValue())
+
+    for (i = 0; i < messages.length; ++i) {
+      err = messages[i];
+      if (!err) continue
+      var msg = document.createElement("div")
+      var icon = msg.appendChild(document.createElement("span"))
+      icon.innerHTML = "!!"
+      icon.className = "lint-error-icon"
+      //***** HERE *****
+      msg.appendChild(document.createTextNode(err.message))
+      msg.className = "lint-error"
+      widgets.push(htmlEditor.addLineWidget(err.line - 1, msg, {coverGutter: false, noHScroll: true}))
+    }
+  })// end of editor.operation
+}// end of updateHTMLHints
 
 // Rules Specified for HTML Validation
 var ruleSets = {
   "tagname-lowercase": true,
   "attr-lowercase": true,
   "attr-value-double-quotes": true,
-  "doctype-first": false,
   "tag-pair": true,
   "spec-char-escape": true,
   "id-unique": true,
@@ -72,9 +94,9 @@ var htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
   autoCloseTags: true,
   foldGutter: true,
   dragDrop: true,
-  // lint: true,
-  // gutters: ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-  gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+  lint: true,
+  gutters: ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+  // gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
   extraKeys: {
     "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()) },
     "Ctrl-'": function(){ applyLowercase() },
@@ -202,11 +224,13 @@ var closeFinal = CodeMirror(document.querySelector("#closeFinal"), {
 // Live preview
 htmlEditor.on("change", function() {
   clearTimeout(delay)
+  clearTimeout(htmlWaiting)
   delay = setTimeout(updatePreview, 300)
-  for (var i = 0; i < widgets.length; ++i) {
-    cssEditor.removeLineWidget(widgets[i])
-    jsEditor.removeLineWidget(widgets[i])
-  }
+  htmlWaiting = setTimeout(updateHTMLHints, 300)
+  // for (var i = 0; i < widgets.length; ++i) {
+  //   cssEditor.removeLineWidget(widgets[i])
+  //   jsEditor.removeLineWidget(widgets[i])
+  // }
   localStorage.setItem("htmlData", htmlEditor.getValue())
 })
 cssEditor.on("change", function() {
@@ -262,6 +286,7 @@ function markdownPreview() {
 setTimeout(markdownPreview, 300)
 setTimeout(updatePreview, 300)
 setTimeout(updateCSSHints, 300)
+setTimeout(updateHTMLHints, 300)
 
 // Save Site Title Value for LocalStorage
 var JSValStatus = localStorage.getItem("JSValStatus")

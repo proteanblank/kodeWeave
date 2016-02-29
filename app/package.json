@@ -1,5 +1,5 @@
 {
-  "name": "kodeweave-touch",
+  "name": "kodeweave",
   "version": "0.0.1",
   "description": "node test server",
   "main": "server.js",
@@ -9,12 +9,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mikethedj4/kodeWeave-Touch.git"
+    "url": "git+https://github.com/mikethedj4/kodeWeave.git"
   },
   "author": "michael schwartz",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mikethedj4/kodeWeave-Touch/issues"
+    "url": "https://github.com/mikethedj4/kodeWeave/issues"
   },
-  "homepage": "https://github.com/mikethedj4/kodeWeave-Touch#readme"
+  "homepage": "https://github.com/mikethedj4/kodeWeave#readme"
 }

@@ -1,5 +1,6 @@
 var timeout,
     delay,
+    htmlWaiting,
     cssWaiting,
     jsWaiting,
     JSValEnabled = function() {
