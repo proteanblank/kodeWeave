@@ -27,7 +27,7 @@ Availability
 [Mac](http://sourceforge.net/projects/kodeweave/files/v0.0.1/kodeWeave-mac.zip/download)  
 [Linux 64](http://sourceforge.net/projects/kodeweave/files/v0.0.1/kodeWeave-lin.zip/download)  
 [Linux 32](http://sourceforge.net/projects/kodeweave/files/v0.0.1/kodeWeave-lin32.zip/download)  
-[Chrome](https://chrome.google.com/webstore/detail/kodeweave-touch/blcgppajmopfndnmegepihhkilaejipf) Application.
+[Chrome Application](https://chrome.google.com/webstore/detail/kodeweave-touch/blcgppajmopfndnmegepihhkilaejipf)
 
 Tech
 -------------
