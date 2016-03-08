@@ -794,6 +794,21 @@ var timeout,
           mdEditor.focus()
         }
       })
+      $("#zeninit").on("click", function() {
+        if ( activeEditor.val() === "htmlEditor" ) {
+          htmlEditor.execCommand("emmet.expand_abbreviation_with_tab")
+          htmlEditor.focus()
+        } else if ( activeEditor.val() === "cssEditor" ) {
+          cssEditor.execCommand("emmet.expand_abbreviation_with_tab")
+          cssEditor.focus()
+        } else if ( activeEditor.val() === "jsEditor" ) {
+          jsEditor.execCommand("emmet.expand_abbreviation_with_tab")
+          jsEditor.focus()
+        } else if ( activeEditor.val() === "mdEditor" ) {
+          mdEditor.execCommand("emmet.expand_abbreviation_with_tab")
+          mdEditor.focus()
+        }
+      })
       $("#charsym1").on("click", function() {
         if ( activeEditor.val() === "htmlEditor" ) {
           var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
