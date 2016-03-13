@@ -243,6 +243,30 @@ $("[data-value=version]").on("keyup change", function() {
   localStorage.setItem("appVersion", this.value)
 })
 
+// Save KeyWords for LocalStorage
+if ( localStorage.getItem("saveKeywords")) {
+  $("[data-action=sitekeywords]").val(localStorage.getItem("saveKeywords"))
+}
+$("[data-action=sitekeywords]").on("keyup change", function() {
+  this.value = this.value.replace(/ /g,",")
+  localStorage.setItem("saveKeywords", this.value)
+})
+// Save Description for LocalStorage
+if ( localStorage.getItem("saveDesc")) {
+  $("[data-action=sitedesc]").val(localStorage.getItem("saveDesc"))
+}
+$("[data-action=sitedesc]").on("keyup change", function() {
+  localStorage.setItem("saveDesc", this.value)
+})
+// Save Author for LocalStorage
+if ( localStorage.getItem("saveAuthor")) {
+  $("[data-action=siteauthor]").val(localStorage.getItem("saveAuthor"))
+}
+$("[data-action=siteauthor]").on("keyup change", function() {
+  localStorage.setItem("saveAuthor", this.value)
+})
+
+
 $(".call").click(function() {
   $("[data-action=load]").trigger("click")
 })
@@ -1447,18 +1471,27 @@ $("[data-action=check]").on("change", function() {
   localStorage.setItem("checkedInputs", JSON.stringify(lsChecked))
 })
 
+// If textbox has a value...
+// a clear icon will display to clear the input
+$(".metaboxes .heading").not("input[type=number]").clearSearch()
+
 shortcutKeys()
 initGenerators()
 fullscreenEditor()
 appDemos()
 charGeneration()
 
+// Test functions for debugging
 function TestDownload() {
   $("[data-action=download]").trigger("click")
   $("[data-action=download]").next(".dialog").addClass("testclass")
   $(".testclass .hide").removeClass("hide")
 }
 // TestDownload()
+function openTools() {
+  $("[data-action=tools]").trigger("click")
+}
+// openTools()
 
 // $(window).on("beforeunload", function() {
 //   return "Are you sure you wish to leave? All your changes maybe lost."

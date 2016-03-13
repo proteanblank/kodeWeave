@@ -81,14 +81,23 @@ header a:hover {
   color: #2882CA;
 }
 .dialog .large, .dialog .heading {
-  font: 1.25em Lato;
   margin: 0 10px;
+}
+.heading {
+  font: 1.25em Lato;
   color: #2882CA;
 }
-input[type=text].heading {
-  background: #fff;
+.metaboxes > .heading:first-child {
   margin-top: 5px;
-  margin-bottom: 20px;
+}
+.metaboxes > .heading {
+  background: #fff;
+  margin-bottom: 15px;
+}
+.metaboxes > [data-output],
+.metaboxes > [data-action=siteauthor],
+.metaboxes > .heading:last-child {
+  margin-bottom: 0;
 }
 .dialog {
   background: #fff;

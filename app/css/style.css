@@ -133,9 +133,7 @@ a:active {
 .dialog .large {
   font: 2em sans;
 }
-input[type=text].heading {
-  text-align: center;
-  margin-bottom: 10px;
+.metaboxes > .heading {
   background: transparent;
 }
 .headtxt {

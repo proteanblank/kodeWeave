@@ -110,6 +110,17 @@ $(window).load(function() {
       }
     }
   }
+
+  // Toolbox Dialog Height Fix
+  if ( $(this).height() < 492 ) {
+    $(".toolbox").css({
+      "height": $(window).height() - 90 + "px"
+    })
+  } else {
+    $(".toolbox").css({
+      "height": "auto"
+    })
+  }
 })
 
 
