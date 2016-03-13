@@ -44,7 +44,7 @@ $(window).load(function() {
     if ( $(this).height() > 465 ) {
       $(".demos-dialog").css({
         "width": "auto",
-        "height": "330px",
+        "height": "352px",
         "overflow-y": "visible"
       })
     } else {
@@ -55,7 +55,7 @@ $(window).load(function() {
       })
     }
   } else {
-    if ( $(this).height() < 330 ) {
+    if ( $(this).height() < 352 ) {
       $(".demos-dialog").css({
         "height": $(window).height() - 100 + "px",
         "overflow-y": "auto"
