@@ -3,7 +3,7 @@
   $.fn.clear = function() {
     $(this).val("")
   }
-}) (jQuery) ;
+}) (jQuery);
 
 var loader = $("[data-action=load]"),
     c16 = $("[data-action=n16]"),
@@ -1009,6 +1009,14 @@ $("[data-action=check]").on("change", function() {
     $(".alertifyzip").val("zip.file('libraries/alertify/themes/alertify.core.css', $(\".alertifyjs1\").val());\nzip.file('libraries/alertify/themes/alertify.default.css', $(\".alertifyjs2\").val());\nzip.file('libraries/alertify/alertify.min.js', $(\".alertifyjs3\").val());")
   } else {
     $('.alertifyjs, .alertifyzip').clear()
+  }
+  
+  if ( $("#angular").is(":checked") ) {
+    $('.angularjs').clear()
+    download_to_textbox('libraries/angular/angular.min.js', $('.angularjs'))
+    $(".angularzip").val("zip.file('libraries/angular/angular.min.js', $(\".angularjs\").val());")
+  } else {
+    $('.angularjs, .angularzip').clear()
   }
 
   if ( $("#bootstrap").is(":checked") ) {
