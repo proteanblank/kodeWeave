@@ -125,12 +125,12 @@ $(window).load(function() {
 
 
 // Choose Grid Scheme
-$("header a:not(.skip, .dialog a)").on("click", function() {
+$("header a:not(.skip, .dialog a, #charmenu *)").on("click", function() {
   $(this).not(".dialog a").toggleClass("active")
-  $(this).next(":not([data-action=download-zip], #collaborate, .grid-alignment)").not(".dialog a").toggleClass("hide")
+  $(this).next(":not([data-action=download-zip], #collaborate)").not(".dialog a, #charmenu *").toggleClass("hide")
 
   if ( $("[data-action=tools].active").is(":visible") || $(".add-source.active").is(":visible") || $("[data-action=download].active").is(":visible") || $(".open-demos.active").is(":visible")) {
-    $("header a:not(#collaborate, .grid-alignment)").not(".dialog a").not(this).removeClass("active").next().addClass("hide")
+    $("header a:not(#collaborate)").not(".dialog a, #charmenu *").not(this).removeClass("active").next().addClass("hide")
   }
 
   $(".dialog.fl").css({

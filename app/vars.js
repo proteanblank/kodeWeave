@@ -820,9 +820,6 @@ var timeout,
         } else if ( activeEditor.val() === "jsEditor" ) {
           jsEditor.execCommand("emmet.expand_abbreviation_with_tab")
           jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          mdEditor.execCommand("emmet.expand_abbreviation_with_tab")
-          mdEditor.focus()
         }
       })
       $("#charsym1").on("click", function() {
@@ -889,7 +886,7 @@ var timeout,
           mdEditor.focus()
           var str = ">"
           var mynum = str.length
-          var start_cursor = jsEditor.getCursor()  // Need to get the cursor position
+          var start_cursor = mdEditor.getCursor()  // Need to get the cursor position
           console.log(start_cursor)  // Cursor position
           var cursorLine = start_cursor.line
           var cursorCh = start_cursor.ch
@@ -2125,18 +2122,148 @@ var timeout,
 
           // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
           jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          mdEditor.replaceRange("function() {}", mdEditor.getCursor())
-          mdEditor.focus()
-          var str = "}"
-          var mynum = str.length
-          var start_cursor = mdEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
         }
+      })
+
+      // WYSIWYG Editor for Markdown
+      $("#bold").on("click", function() {
+        var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+        console.log(selected_text)  // Active Selection
+
+        mdEditor.replaceSelection("", mdEditor.getCursor())
+        mdEditor.replaceRange("**" + selected_text + "**", mdEditor.getCursor())
+        mdEditor.focus()
+      })
+      $("#italic").on("click", function() {
+        var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+        console.log(selected_text)  // Active Selection
+
+        mdEditor.replaceSelection("", mdEditor.getCursor())
+        mdEditor.replaceRange("*" + selected_text + "*", mdEditor.getCursor())
+        mdEditor.focus()
+      })
+      $("#strike").on("click", function() {
+        var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+        console.log(selected_text)  // Active Selection
+
+        mdEditor.replaceSelection("", mdEditor.getCursor())
+        mdEditor.replaceRange("<strike>" + selected_text + "</strike>", mdEditor.getCursor())
+        mdEditor.focus()
+      })
+      $("#anchor").on("click", function() {
+        alertify.prompt("Enter URL Below", "",
+        function(evt, value) {
+          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+          console.log(selected_text)  // Active Selection
+
+          mdEditor.replaceSelection("", mdEditor.getCursor())
+          mdEditor.replaceRange("["+ selected_text +"]("+ value +")", mdEditor.getCursor())
+          mdEditor.focus()
+        },
+        function() {
+          // User clicked cancel
+        }).set('basic', true)
+      })
+      $("#quote").on("click", function() {
+        var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+        console.log(selected_text)  // Active Selection
+
+        mdEditor.replaceSelection("", mdEditor.getCursor())
+        mdEditor.replaceRange("> " + selected_text, mdEditor.getCursor())
+        mdEditor.focus()
+      })
+      $("#code").on("click", function() {
+        var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+        console.log(selected_text)  // Active Selection
+
+        mdEditor.replaceSelection("", mdEditor.getCursor())
+        mdEditor.replaceRange("`" + selected_text + "`", mdEditor.getCursor())
+        mdEditor.focus()
+      })
+      $("#img").on("click", function() {
+        alertify.prompt("Enter Image URL Below", "",
+        function(evt, value) {
+          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+          console.log(selected_text)  // Active Selection
+
+          mdEditor.replaceSelection("", mdEditor.getCursor())
+          mdEditor.replaceRange("!["+ selected_text +"]("+ value +")", mdEditor.getCursor())
+          mdEditor.focus()
+        },
+        function() {
+          // User clicked cancel
+        }).set('basic', true)
+      })
+      $("#list-ol").on("click", function() {
+        var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+        console.log(selected_text)  // Active Selection
+
+        mdEditor.replaceSelection("", mdEditor.getCursor())
+        mdEditor.replaceRange(selected_text + "\n\n  1. \n\n", mdEditor.getCursor())
+        mdEditor.focus()
+      })
+      $("#list-ul").on("click", function() {
+        var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+        console.log(selected_text)  // Active Selection
+
+        mdEditor.replaceSelection("", mdEditor.getCursor())
+        mdEditor.replaceRange(selected_text + "\n\n  - \n\n", mdEditor.getCursor())
+        mdEditor.focus()
+      })
+      $("#h1").on("click", function() {
+        var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+        console.log(selected_text)  // Active Selection
+
+        mdEditor.replaceSelection("", mdEditor.getCursor())
+        mdEditor.replaceRange("# " + selected_text, mdEditor.getCursor())
+        mdEditor.focus()
+      })
+      $("#h2").on("click", function() {
+        var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+        console.log(selected_text)  // Active Selection
+
+        mdEditor.replaceSelection("", mdEditor.getCursor())
+        mdEditor.replaceRange("## " + selected_text, mdEditor.getCursor())
+        mdEditor.focus()
+      })
+      $("#h3").on("click", function() {
+        var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+        console.log(selected_text)  // Active Selection
+
+        mdEditor.replaceSelection("", mdEditor.getCursor())
+        mdEditor.replaceRange("### " + selected_text, mdEditor.getCursor())
+        mdEditor.focus()
+      })
+      $("#h4").on("click", function() {
+        var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+        console.log(selected_text)  // Active Selection
+
+        mdEditor.replaceSelection("", mdEditor.getCursor())
+        mdEditor.replaceRange("#### " + selected_text, mdEditor.getCursor())
+        mdEditor.focus()
+      })
+      $("#h5").on("click", function() {
+        var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+        console.log(selected_text)  // Active Selection
+
+        mdEditor.replaceSelection("", mdEditor.getCursor())
+        mdEditor.replaceRange("##### " + selected_text, mdEditor.getCursor())
+        mdEditor.focus()
+      })
+      $("#h6").on("click", function() {
+        var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+        console.log(selected_text)  // Active Selection
+
+        mdEditor.replaceSelection("", mdEditor.getCursor())
+        mdEditor.replaceRange("###### " + selected_text, mdEditor.getCursor())
+        mdEditor.focus()
+      })
+      $("#hr").on("click", function() {
+        var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+        console.log(selected_text)  // Active Selection
+
+        mdEditor.replaceSelection("", mdEditor.getCursor())
+        mdEditor.replaceRange(selected_text + "\n\n----------\n\n", mdEditor.getCursor())
+        mdEditor.focus()
       })
     }

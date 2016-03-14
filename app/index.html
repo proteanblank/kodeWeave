@@ -27,7 +27,7 @@
     <script src="lib/jszip/jszip-utils.js"></script>
     <script src="lib/jszip/FileSaver.js"></script>
     <script src="lib/jszip/Blob.js"></script>
-    <script src="libraries/alertify/alertify.min.js"></script>
+    <script src="lib/alertifyjs/alertify.min.js"></script>
     <script src="libraries/showdown/Showdown.min.js"></script>
 
     <script src="codemirror/codemirror.js"></script>
@@ -69,6 +69,8 @@
     <script src="codemirror/addon/lint/html-lint.js"></script>
     <script src="codemirror/addon/lint/css-lint.js"></script>
     <script src="codemirror/addon/lint/javascript-lint.js"></script>
+    <script src="codemirror/markdown.js"></script>
+    <script src="codemirror/continuelist.js"></script>
     <script src="codemirror/inlet.min.js"></script>
     <script src="codemirror/emmet.js"></script>
 
@@ -300,7 +302,9 @@
     &lt;script src="libraries/codemirror/addon/lint/javascript-lint.js"&gt;&lt;/script&gt;
     &lt;script src="libraries/codemirror/inlet.min.js"&gt;&lt;/script&gt;
     &lt;script src="libraries/codemirror/emmet.js"&gt;&lt;/script&gt;
-    &lt;script src="libraries/codemirror/addon/search/goto-line.js"&gt;&lt;/script&gt;</textarea>
+    &lt;script src="libraries/codemirror/addon/search/goto-line.js"&gt;&lt;/script&gt;
+    &lt;script src="libraries/codemirror/markdown.js"&gt;&lt;/script&gt;
+    &lt;script src="libraries/codemirror/continuelist.js"&gt;&lt;/script&gt;</textarea>
                       <textarea class="combinelibs hide">$("#codemirror").trigger("click");</textarea>
                       <textarea class="codemirror1 hide"></textarea>
                       <textarea class="codemirror2 hide"></textarea>
@@ -343,6 +347,8 @@
                       <textarea class="codemirror39 hide"></textarea>
                       <textarea class="codemirror40 hide"></textarea>
                       <textarea class="codemirror41 hide"></textarea>
+                      <textarea class="codemirror42 hide"></textarea>
+                      <textarea class="codemirror43 hide"></textarea>
                       <textarea class="codemirrorzip jszipcode hide"></textarea>
                     </div>
                   </li>
@@ -904,42 +910,81 @@
         <a id="redo"><span class="fa fa-repeat"></span></a>
         <a id="tabindent">+ tab</a>
         <a id="taboutdent">- tab</a>
-        <a id="zeninit">zen</a>
-        <a id="charsym1">&lt;&gt;</a>
-        <a id="charsym2">{}</a>
-        <a id="charsym3">""</a>
-        <a id="charsym4">''</a>
-        <a id="charsym5">+</a>
-        <a id="charsym6">-</a>
-        <a id="charsym7">.</a>
-        <a id="charsym8">()</a>
-        <a id="charsym9">:</a>
-        <a id="charsym10">;</a>
-        <a id="charsym11">_</a>
-        <a id="charsym12">[]</a>
-        <a id="charsym13">|</a>
-        <a id="charsym14">/</a>
-        <a id="charsym15">\</a>
-        <a id="charsym16">?</a>
-        <a id="charsym17">*</a>
-        <a id="charsym18">\n</a>
-        <a id="charsym19">&amp;</a>
-        <a id="charsym20">%</a>
-        <a id="charsym21">$</a>
-        <a id="charsym22">¢</a>
-        <a id="charsym23">£</a>
-        <a id="charsym24">¥</a>
-        <a id="charsym25">€</a>
-        <a id="charsym26">@</a>
-        <a id="charsym27">=</a>
-        <a id="charsym28">#</a>
-        <a id="charsym29">,</a>
-        <a id="charsym30">!</a>
-        <a id="charsym31">^</a>
-        <a id="charsym32">©</a>
-        <a id="charsym33">®</a>
-        <a id="charsym34">™</a>
-        <a id="function">function() {}</a>
+        <span class="md-chars hide">
+          <a id="bold"><span class="fa fa-bold"></span></a>
+          <a id="italic"><span class="fa fa-italic"></span></a>
+          <a id="strike"><span class="fa fa-strikethrough"></span></a>
+          <a id="anchor"><span class="fa fa-globe"></span></a>
+          <a id="quote"><span class="fa fa-quote-left"></span></a>
+          <a id="code"><span class="fa fa-code"></span></a>
+          <a id="img"><span class="fa fa-picture-o"></span></a>
+          <a id="list-ol"><span class="fa fa-list-ol"></span></a>
+          <a id="list-ul"><span class="fa fa-list-ul"></span></a>
+          <!-- <a id="header"><span class="fa fa-header"></span></a> -->
+          <!-- <a id="heading"><span class="fa fa-text-height"></span></a> -->
+          <a id="h1">h1</a>
+          <a id="h2">h2</a>
+          <a id="h3">h3</a>
+          <a id="h4">h4</a>
+          <a id="h5">h5</a>
+          <a id="h6">h6</a>
+          <a id="hr"><span class="fa fa-ellipsis-h"></span></a>
+
+          <!-- # Header 1 #
+          ## Header 2 ##
+          ### Header 3 ###
+          #### Header 4 ####
+          ##### Header 5 #####
+          ###### Header 6 ###### -->
+
+          <a id="charsym19">&amp;</a>
+          <a id="charsym21">$</a>
+          <a id="charsym22">¢</a>
+          <a id="charsym23">£</a>
+          <a id="charsym24">¥</a>
+          <a id="charsym25">€</a>
+          <a id="charsym32">©</a>
+          <a id="charsym33">®</a>
+          <a id="charsym34">™</a>
+        </span>
+       <span class="main-editor-chars">
+         <a id="zeninit">zen</a>
+          <a id="charsym1">&lt;&gt;</a>
+          <a id="charsym2">{}</a>
+          <a id="charsym3">""</a>
+          <a id="charsym4">''</a>
+          <a id="charsym5">+</a>
+          <a id="charsym6">-</a>
+          <a id="charsym7">.</a>
+          <a id="charsym8">()</a>
+          <a id="charsym9">:</a>
+          <a id="charsym10">;</a>
+          <a id="charsym11">_</a>
+          <a id="charsym12">[]</a>
+          <a id="charsym13">|</a>
+          <a id="charsym14">/</a>
+          <a id="charsym15">\</a>
+          <a id="charsym16">?</a>
+          <a id="charsym17">*</a>
+          <a id="charsym18">\n</a>
+          <a id="charsym19">&amp;</a>
+          <a id="charsym20">%</a>
+          <a id="charsym21">$</a>
+          <a id="charsym22">¢</a>
+          <a id="charsym23">£</a>
+          <a id="charsym24">¥</a>
+          <a id="charsym25">€</a>
+          <a id="charsym26">@</a>
+          <a id="charsym27">=</a>
+          <a id="charsym28">#</a>
+          <a id="charsym29">,</a>
+          <a id="charsym30">!</a>
+          <a id="charsym31">^</a>
+          <a id="charsym32">©</a>
+          <a id="charsym33">®</a>
+          <a id="charsym34">™</a>
+          <a id="function">function() {}</a>
+        </span>
       </div>
 
       <!-- Float Right -->
