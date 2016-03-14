@@ -48,6 +48,7 @@ kodeWeave uses a number of open source projects to work properly:
 * [CSSLint](http://csslint.net/) - for css syntax validation
 * [JSHint](http://jslint.com/) - for javascript syntax validation
 * [Cordova](https://cordova.apache.org/) - mobile application development framework
+* [WebDGap](https://webdgap.sourceforge.net/) - exports your application as a desktop application
 
 Development
 -------------
