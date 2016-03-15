@@ -244,6 +244,18 @@ a:active {
   }
 }
 
+.open-demos {
+  display: block;
+}
+@media all and (max-width:500px) {
+  .open-demos {
+    display: none;
+  }
+  #charmenu {
+    right: 0;
+  }
+}
+
 /* Chrome Dialog */
 .dialog-bg {
   z-index: 9999!important;
