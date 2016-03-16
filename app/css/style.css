@@ -1,17 +1,17 @@
 @import url("normalize.css");
 @import url("fonts/font-awesome.css");
 @import url("../libraries/jqueryui/jqueryui.css");
-@import url("../codemirror/codemirror.css");
-@import url("../codemirror/addon/fold/foldgutter.css");
-@import url("../codemirror/addon/lint/lint.css");
-@import url("../codemirror/addon/dialog/dialog.css");
-@import url("../codemirror/addon/hint/show-hint.css");
-@import url("../lib/alertifyjs/css/alertify.min.css");
-@import url("../lib/alertifyjs/css/themes/default.min.css");
-@import url("../jqwidgets/styles/jqx.base.css");
-@import url("../jqwidgets/styles/jqx.metro.css");
-@import url("../jqwidgets/styles/jqx.metrodark.css");
-@import url("../codemirror/inlet.css");
+@import url("../libraries/codemirror/codemirror.css");
+@import url("../libraries/codemirror/addon/fold/foldgutter.css");
+@import url("../libraries/codemirror/addon/lint/lint.css");
+@import url("../libraries/codemirror/addon/dialog/dialog.css");
+@import url("../libraries/codemirror/addon/hint/show-hint.css");
+@import url("../libraries/alertifyjs/css/alertify.min.css");
+@import url("../libraries/alertifyjs/css/themes/default.min.css");
+@import url("../libraries/jqwidgets/styles/jqx.base.css");
+@import url("../libraries/jqwidgets/styles/jqx.metro.css");
+@import url("../libraries/jqwidgets/styles/jqx.metrodark.css");
+@import url("../libraries/codemirror/inlet.css");
 @import url("polyui.css");
 /* @import url("http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900"); */
 

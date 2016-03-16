@@ -2164,13 +2164,13 @@ var timeout,
           // User clicked cancel
         }).set('basic', true)
       })
+      CodeMirror.commands.quoteSelection = function(cm) {
+        var from = cm.getCursor("from").line, to = cm.getCursor("to").line
+        for (var line = to; line >= from; line--)
+          cm.replaceRange("> ", {line: line, ch: 0})
+      }
       $("#quote").on("click", function() {
-        var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-        console.log(selected_text)  // Active Selection
-
-        mdEditor.replaceSelection("", mdEditor.getCursor())
-        mdEditor.replaceRange("> " + selected_text, mdEditor.getCursor())
-        mdEditor.focus()
+        mdEditor.execCommand("quoteSelection")
       })
       $("#code").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection

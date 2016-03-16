@@ -743,13 +743,17 @@ var desktopExport = function(file) {
     $("[data-action=app-confirm]").on("click", function() {
       if ( ($("[data-action=sitetitle]").val() === "") || ($("[data-action=app-descr]").val() === "") ) {
         alertify.error("Download failed! Please fill in all required fields.")
+        $(".preloader").addClass("hide")
       } else {
-        JSZipUtils.getBinaryContent("zips/font-awesome-chrome.zip", function(err, data) {
+        $("[data-action=chromeappdialog]").fadeOut()
+        JSZipUtils.getBinaryContent("zips/font-awesome.zip", function(err, data) {
           if(err) {
             throw err // or handle err
           }
 
           var zip = new JSZip(data)
+          var appName = zip.folder("app")
+          appName.load(data)
 
           // Your Web App
           // check if css editor has a value
@@ -824,8 +828,8 @@ var desktopExport = function(file) {
           var content = zip.generate({type:"blob"})
           saveAs(content, $("[data-action=sitetitle]").val().split(" ").join("-") + "-chromeapp.zip")
           $(".preloader").addClass("hide")
-        return false
           $(".dialog-bg").fadeOut()
+          return false
         })
       }
       return false
@@ -844,7 +848,9 @@ var desktopExport = function(file) {
     $("[data-action=ext-confirm]").on("click", function() {
       if ( ($("[data-action=sitetitle]").val() === "") || ($("[data-action=ext-descr]").val() === "") ) {
         alertify.error("Download failed! Please fill in all required fields.")
+        $(".preloader").addClass("hide")
       } else {
+        $("[data-action=chromeextdialog]").fadeOut()
         JSZipUtils.getBinaryContent("zips/font-awesome.zip", function(err, data) {
           if(err) {
             throw err // or handle err
@@ -909,8 +915,8 @@ var desktopExport = function(file) {
           var content = zip.generate({type:"blob"})
           saveAs(content, $("[data-action=sitetitle]").val().split(" ").join("-") + "-chromeext.zip")
           $(".preloader").addClass("hide")
-        return false
           $(".dialog-bg").fadeOut()
+          return false
         })
       }
       return false
@@ -1020,10 +1026,17 @@ $("[data-action=check]").on("change", function() {
 
   if ( $("#alertify").is(":checked") ) {
     $('.alertifyjs').clear()
-    download_to_textbox('libraries/alertify/themes/alertify.core.css', $('.alertifyjs1'))
-    download_to_textbox('libraries/alertify/themes/alertify.default.css', $('.alertifyjs2'))
-    download_to_textbox('libraries/alertify/alertify.min.js', $('.alertifyjs3'))
-    $(".alertifyzip").val("zip.file('libraries/alertify/themes/alertify.core.css', $(\".alertifyjs1\").val());\nzip.file('libraries/alertify/themes/alertify.default.css', $(\".alertifyjs2\").val());\nzip.file('libraries/alertify/alertify.min.js', $(\".alertifyjs3\").val());")
+    download_to_textbox('libraries/alertifyjs/css/alertify.min.css', $('.alertifyjs1'))
+    download_to_textbox('libraries/alertifyjs/css/themes/default.min.css', $('.alertifyjs2'))
+    download_to_textbox('libraries/alertifyjs/alertify.min.js', $('.alertifyjs3'))
+    download_to_textbox('libraries/alertifyjs/css/alertify.rtl.min.css', $('.alertifyjs4'))
+    download_to_textbox('libraries/alertifyjs/css/themes/bootstrap.min.css', $('.alertifyjs5'))
+    download_to_textbox('libraries/alertifyjs/css/themes/bootstrap.rtl.min.css', $('.alertifyjs6'))
+    download_to_textbox('libraries/alertifyjs/css/themes/default.rtl.min.css', $('.alertifyjs7'))
+    download_to_textbox('libraries/alertifyjs/css/themes/semantic.min.css', $('.alertifyjs8'))
+    download_to_textbox('libraries/alertifyjs/css/themes/semantic.rtl.min.css', $('.alertifyjs9'))
+
+    $(".alertifyzip").val("zip.file('libraries/alertifyjs/css/alertify.min.css', $(\".alertifyjs1\").val());\n    zip.file('libraries/alertifyjs/css/themes/default.min.css', $(\".alertifyjs2\").val());\n    zip.file('libraries/alertifyjs/alertify.min.js', $(\".alertifyjs3\").val());\n    zip.file('libraries/alertifyjs/css/alertify.rtl.min.css', $(\".alertifyjs4\").val());\n    zip.file('libraries/alertifyjs/css/themes/bootstrap.min.css', $(\".alertifyjs5\").val());\n    zip.file('libraries/alertifyjs/css/themes/bootstrap.rtl.min.css', $(\".alertifyjs6\").val());\n    zip.file('libraries/alertifyjs/css/themes/default.rtl.min.css', $(\".alertifyjs7\").val());\n    zip.file('libraries/alertifyjs/css/themes/semantic.min.css', $(\".alertifyjs8\").val());\n    zip.file('libraries/alertifyjs/css/themes/semantic.rtl.min.css', $(\".alertifyjs9\").val());")
   } else {
     $('.alertifyjs, .alertifyzip').clear()
   }

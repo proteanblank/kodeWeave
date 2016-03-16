@@ -174,9 +174,8 @@ var mdEditor = CodeMirror(document.getElementById("mdEditor"), {
   lineNumbers: true,
   lineWrapping: true,
   autoCloseTags: true,
-  foldGutter: true,
   dragDrop: true,
-  gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+  gutters: ["CodeMirror-linenumbers"],
   extraKeys: {
     "Enter": "newlineAndIndentContinueMarkdownList",
     "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()) },
