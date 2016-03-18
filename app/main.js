@@ -85,7 +85,7 @@ var ruleSets = {
 }
 
 // Initialize HTML editor
-var htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
+var htmlEditor = CodeMirror.fromTextArea(document.getElementById("htmlEditor"), {
   mode: "text/html",
   tabMode: "indent",
   styleActiveLine: true,
@@ -108,12 +108,12 @@ var htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
     "Shift-Cmd-'": function(){ applyMinify() },
     "Shift-Cmd-\\": function(){ applyBeautify() }
   },
-  value: "<!-- comment -->\nhello world!",
+  // value: "<!-- comment -->\nhello world!",
   paletteHints: true
 })
 Inlet(htmlEditor)
 emmetCodeMirror(htmlEditor)
-var cssEditor = CodeMirror(document.getElementById("cssEditor"), {
+var cssEditor = CodeMirror.fromTextArea(document.getElementById("cssEditor"), {
   mode: "text/css",
   tabMode: "indent",
   styleActiveLine: true,
@@ -139,7 +139,7 @@ var cssEditor = CodeMirror(document.getElementById("cssEditor"), {
 })
 Inlet(cssEditor)
 emmetCodeMirror(cssEditor)
-var jsEditor = CodeMirror(document.getElementById("jsEditor"), {
+var jsEditor = CodeMirror.fromTextArea(document.getElementById("jsEditor"), {
   mode: "text/javascript",
   tabMode: "indent",
   styleActiveLine: true,
@@ -166,7 +166,7 @@ var jsEditor = CodeMirror(document.getElementById("jsEditor"), {
 })
 Inlet(jsEditor)
 // emmetCodeMirror(jsEditor)
-var mdEditor = CodeMirror(document.getElementById("mdEditor"), {
+var mdEditor = CodeMirror.fromTextArea(document.getElementById("mdEditor"), {
   mode: "text/x-markdown",
   theme: "default",
   tabMode: "indent",

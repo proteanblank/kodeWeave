@@ -902,6 +902,12 @@
           </li>
           <li>
             <br>
+            <a data-action="save-online" title="Ctrl+E">
+              Export to the web
+            </a>
+          </li>
+          <li>
+            <br>
             <a data-action="download-zip" title="Ctrl+S">
               Download as .zip
             </a>
@@ -1044,7 +1050,7 @@
         <div id="mainSplitter">
           <div>
             <div class="editor-container md-editor">
-              <div id="mdEditor"></div>
+              <textarea id="mdEditor"></textarea>
             </div>
             <a class="fullscreen-md-toggle unfill">
               <span class="fa fa-expand" id="fullscreen-md"></span>
@@ -1059,7 +1065,8 @@
                 <div id="leftSplitter">
                   <div>
                     <div class="editor-container html-editor">
-                      <div id="htmlEditor"></div>
+                      <textarea id="htmlEditor"><!-- comment -->
+hello world!</textarea>
                     </div>
                     <a class="fullscreen-html-toggle unfill">
                       <span class="fa fa-expand" id="fullscreen-html"></span>
@@ -1070,7 +1077,7 @@
                   </div>
                   <div>
                     <div class="editor-container css-editor">
-                      <div id="cssEditor"></div>
+                      <textarea id="cssEditor"></textarea>
                     </div>
                     <a class="fullscreen-css-toggle unfill">
                       <span class="fa fa-expand" id="fullscreen-css"></span>
@@ -1085,7 +1092,7 @@
                 <div id="rightSplitter">
                   <div>
                     <div class="editor-container js-editor">
-                      <div id="jsEditor"></div>
+                      <textarea id="jsEditor"></textarea>
                     </div>
                     <a class="fullscreen-js-toggle unfill">
                       <span class="fa fa-expand" id="fullscreen-js"></span>

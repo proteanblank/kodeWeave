@@ -78,10 +78,6 @@ $(window).load(function() {
       if ($("#function").is(":hidden")) {
         $("#function").show()
       }
-      // for (var i = 0; i < widgets.length; ++i) {
-      //   cssEditor.removeLineWidget(widgets[i])
-      //   jsEditor.removeLineWidget(widgets[i])
-      // }
       $(".main-editor-chars").removeClass("hide")
       if ( $(".md-chars").is(":visible") ) {
         $(".md-chars").addClass("hide")
@@ -282,7 +278,6 @@ if ( localStorage.getItem("saveAuthor")) {
 $("[data-action=siteauthor]").on("keyup change", function() {
   localStorage.setItem("saveAuthor", this.value)
 })
-
 
 $(".call").click(function() {
   $("[data-action=load]").trigger("click")
@@ -949,6 +944,34 @@ $("[data-action=load]").on("change", function(evt) {
   }
 })
 
+// Save to the web
+$("[data-action=save-online]").on("click", function(e) {
+  if ( $("[data-action=download]").hasClass("active") ) {
+    $("[data-action=download]").trigger("click")
+  }
+
+  // Random string
+  var filename = randomString() + ".txt"
+  var outputstring = "hello world"
+
+  $.ajax({
+    type: "GET",
+    url: "submit.php",
+    data: {
+      "filename": filename,
+      "outputstring": outputstring,
+    },
+    cache: false,
+    success: function(msg) {
+      // alert(msg)
+      alertify.success("Your file was successfully created! - <a href='anon/"+ filename +"' target='_blank'>"+ filename +"</a>")
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      alertify.error("Some error occurred")
+    }
+  })
+})
+
 // Download as zip
 $("[data-action=download-zip]").on("click", function() {
   if ( $("[data-action=download]").hasClass("active") ) {
@@ -1534,6 +1557,9 @@ function openTools() {
   $("[data-action=tools]").trigger("click")
 }
 // openTools()
+
+// Test Save to Web
+$("[data-action=save-online]").click()
 
 // $(window).on("beforeunload", function() {
 //   return "Are you sure you wish to leave? All your changes maybe lost."

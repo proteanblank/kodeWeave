@@ -209,29 +209,22 @@ var timeout,
     },
     shortcutKeys = function() {
       // Load File
-      shortcut.add("Ctrl+O", function() {
+      shortcut.add("ctrl+O", function() {
         $("[data-action=open-file]").trigger("click")
       })
       // New Document
-      shortcut.add("Ctrl+N", function() {
-        $(".check").attr("checked", false).trigger("change")
-        $("[data-action=sitetitle]").val("site title").change()
-        $("[data-action=sitekeywords]").val("keywords,more,stuff").change()
-        $("[data-action=sitedesc]").val("sample description").change()
-        $("[data-action=siteauthor]").val("kodeWeave").change()
-        htmlEditor.setValue("<!-- comment -->\nhello world!")
-        cssEditor.setValue("")
-        jsEditor.setValue("")
+      shortcut.add("ctrl+N", function() {
+        $("[data-action=newdocument]").trigger("click")
       })
-      // Export layout hotkey
-      shortcut.add("Ctrl+S", function() {
+      // Download zip hotkey
+      shortcut.add("ctrl+S", function() {
         $("[data-action=download-zip]").trigger("click")
       })
       // Reload Application
       shortcut.add("F5", function() {
         location.reload(true)
       })
-      shortcut.add("Ctrl+R", function() {
+      shortcut.add("ctrl+R", function() {
         location.reload(true)
       })
       $("#restartapp").click(function() {
@@ -240,11 +233,7 @@ var timeout,
       // window.addEventListener("keydown", function(e) {
       // // New Document (CMD+N)
       //   if ( e.metaKey && e.keyCode == 78 ) {
-      //     $(".check").attr("checked", false).trigger("change")
-      //     htmlEditor.setValue("<!-- comment -->\nhello world!")
-      //     cssEditor.setValue("")
-      //     jsEditor.setValue("")
-      //     mdEditor.setValue("")
+      //     $("[data-action=newdocument]").trigger("click")
       //   }
       // // Export as Zip (CMD+S)
       //   if ( e.metaKey && e.keyCode == 83 ) {
@@ -2266,4 +2255,16 @@ var timeout,
         mdEditor.replaceRange(selected_text + "\n\n----------\n\n", mdEditor.getCursor())
         mdEditor.focus()
       })
-    }
+    },
+    randomString = function() {
+      var char = "0123456789abcdefghijklmnopqrstuvwxyz",
+      fullchar = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
+      genHash  = "",
+                 i;
+
+      for (i = 0; i < 8; i++) {
+        var rnum = Math.floor(Math.random() * char.length)
+        genHash += char.substring(rnum, rnum + 1)
+      }
+      return genHash
+    };
