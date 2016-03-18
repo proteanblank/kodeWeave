@@ -6,7 +6,7 @@ kodeWeave is a realtime coding playground for HTML, CSS and Javascript. Similar 
 Version
 -------------
 
-0.0.1
+1.0.5
 
 License
 -------------
