@@ -209,22 +209,28 @@ var timeout,
     },
     shortcutKeys = function() {
       // Load File
-      shortcut.add("ctrl+O", function() {
+      shortcut.add("Ctrl+O", function() {
         $("[data-action=open-file]").trigger("click")
       })
       // New Document
-      shortcut.add("ctrl+N", function() {
-        $("[data-action=newdocument]").trigger("click")
+      shortcut.add("Ctrl+N", function() {
+        $(".check").attr("checked", false).trigger("change")
+        $("[data-action=sitetitle]").val("site title").change()
+        $("[data-action=sitedesc]").val("sample description").change()
+        $("[data-action=siteauthor]").val("kodeWeave").change()
+        htmlEditor.setValue("<!-- comment -->\nhello world!")
+        cssEditor.setValue("")
+        jsEditor.setValue("")
       })
-      // Download zip hotkey
-      shortcut.add("ctrl+S", function() {
+      // Export layout hotkey
+      shortcut.add("Ctrl+S", function() {
         $("[data-action=download-zip]").trigger("click")
       })
       // Reload Application
       shortcut.add("F5", function() {
         location.reload(true)
       })
-      shortcut.add("ctrl+R", function() {
+      shortcut.add("Ctrl+R", function() {
         location.reload(true)
       })
       $("#restartapp").click(function() {
@@ -233,7 +239,11 @@ var timeout,
       // window.addEventListener("keydown", function(e) {
       // // New Document (CMD+N)
       //   if ( e.metaKey && e.keyCode == 78 ) {
-      //     $("[data-action=newdocument]").trigger("click")
+      //     $(".check").attr("checked", false).trigger("change")
+      //     htmlEditor.setValue("<!-- comment -->\nhello world!")
+      //     cssEditor.setValue("")
+      //     jsEditor.setValue("")
+      //     mdEditor.setValue("")
       //   }
       // // Export as Zip (CMD+S)
       //   if ( e.metaKey && e.keyCode == 83 ) {
@@ -551,7 +561,16 @@ var timeout,
       })
     },
     appDemos = function() {
+      var clearPreview = function() {
+        var previewFrame = document.getElementById("preview")
+        var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document
+        preview.open()
+        preview.write("")
+        preview.close()
+      };
+
       $("[data-action=alphabetizer]").on("click", function() {
+        clearPreview()
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("Alphabetizer").change()
@@ -572,6 +591,7 @@ var timeout,
           callCollabUpdate()
         })
       $("[data-action=applicator]").on("click", function() {
+        clearPreview()
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("Code Applicator").change()
@@ -582,6 +602,7 @@ var timeout,
         callCollabUpdate()
       })
       $("[data-action=charactermap]").on("click", function() {
+        clearPreview()
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("Character Map").change()
@@ -592,6 +613,7 @@ var timeout,
         callCollabUpdate()
       })
       $("[data-action=codeeditor]").on("click", function() {
+        clearPreview()
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("Code Editor").change()
@@ -602,6 +624,7 @@ var timeout,
         callCollabUpdate()
       })
       $("[data-action=convertforvalues]").on("click", function() {
+        clearPreview()
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("Convert for Values").change()
@@ -612,6 +635,7 @@ var timeout,
         callCollabUpdate()
       })
       $("[data-action=dateclock]").on("click", function() {
+        clearPreview()
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("Date and Time").change()
@@ -622,6 +646,7 @@ var timeout,
         callCollabUpdate()
       })
       $("[data-action=detectorientation]").on("click", function() {
+        clearPreview()
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("Detect Orientation").change()
@@ -632,6 +657,7 @@ var timeout,
         callCollabUpdate()
       })
       $("[data-action=osdisplay]").on("click", function() {
+        clearPreview()
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("Detect Operating System").change()
@@ -642,6 +668,7 @@ var timeout,
         callCollabUpdate()
       })
       $("[data-action=markdowneditor]").on("click", function() {
+        clearPreview()
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("Live Markdown Editor").change()
@@ -652,6 +679,7 @@ var timeout,
         callCollabUpdate()
       })
       $("[data-action=keylogger]").on("click", function() {
+        clearPreview()
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("Keylogger").change()
@@ -662,10 +690,10 @@ var timeout,
         callCollabUpdate()
       })
       $("[data-action=newdocument]").on("click", function() {
+        clearPreview()
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("site title").change()
-        $("[data-action=sitekeywords]").val("keywords,more,stuff").change()
         $("[data-action=sitedesc]").val("sample description").change()
         $("[data-action=siteauthor]").val("kodeWeave").change()
         htmlEditor.setValue("<!-- comment -->\nhello world!")
@@ -675,6 +703,7 @@ var timeout,
         callCollabUpdate()
       })
       $("[data-action=packagezipfiles]").on("click", function() {
+        clearPreview()
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("Package Zip Files [JSZip Demo]").change()
@@ -685,6 +714,7 @@ var timeout,
         callCollabUpdate()
       })
       $("[data-action=passwordgen]").on("click", function() {
+        clearPreview()
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("Password Generator").change()
@@ -695,6 +725,7 @@ var timeout,
         callCollabUpdate()
       })
       $("[data-action=pdfembed]").on("click", function() {
+        clearPreview()
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("Embed a PDF Example").change()
@@ -705,6 +736,7 @@ var timeout,
         callCollabUpdate()
       })
       $("[data-action=pictureviewer]").on("click", function() {
+        clearPreview()
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("FileReader Picture Viewer").change()
@@ -715,6 +747,7 @@ var timeout,
         callCollabUpdate()
       })
       $("[data-action=polyui]").on("click", function() {
+        clearPreview()
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("Poly UI Kit").change()
@@ -726,6 +759,7 @@ var timeout,
       })
 
       $("[data-action=simpleslideshow]").on("click", function() {
+        clearPreview()
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("Simplest jQuery Slideshow").change()
@@ -736,6 +770,7 @@ var timeout,
         callCollabUpdate()
       })
       $("[data-action=splitter]").on("click", function() {
+        clearPreview()
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("JQWidgets Splitter").change()
@@ -2115,6 +2150,14 @@ var timeout,
       })
 
       // WYSIWYG Editor for Markdown
+      $("#lorem").on("click", function() {
+        var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+        console.log(selected_text)  // Active Selection
+
+        mdEditor.replaceSelection("", mdEditor.getCursor())
+        mdEditor.replaceRange("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam impedit dolore magnam dolor, atque quia dicta voluptatum. Nam impedit distinctio, tempore molestiae voluptatibus ducimus ullam! Molestiae consectetur, recusandae labore? Cupiditate.", mdEditor.getCursor())
+        mdEditor.focus()
+      })
       $("#bold").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
         console.log(selected_text)  // Active Selection
@@ -2255,16 +2298,4 @@ var timeout,
         mdEditor.replaceRange(selected_text + "\n\n----------\n\n", mdEditor.getCursor())
         mdEditor.focus()
       })
-    },
-    randomString = function() {
-      var char = "0123456789abcdefghijklmnopqrstuvwxyz",
-      fullchar = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
-      genHash  = "",
-                 i;
-
-      for (i = 0; i < 8; i++) {
-        var rnum = Math.floor(Math.random() * char.length)
-        genHash += char.substring(rnum, rnum + 1)
-      }
-      return genHash
-    };
+    }

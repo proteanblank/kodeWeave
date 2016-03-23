@@ -14,7 +14,474 @@ var loader = $("[data-action=load]"),
     ctx32 = c32[0].getContext("2d"),
     ctx64 = c64[0].getContext("2d"),
     ctx = canvas[0].getContext("2d"),
-    holder = document.getElementById("holder");
+    holder = document.getElementById("holder"),
+    checkedLibs = function() {
+      if ( $("#alertify").is(":checked") ) {
+        $('.alertifyjs').clear()
+        download_to_textbox('libraries/alertifyjs/css/alertify.min.css', $('.alertifyjs1'))
+        download_to_textbox('libraries/alertifyjs/css/themes/default.min.css', $('.alertifyjs2'))
+        download_to_textbox('libraries/alertifyjs/alertify.min.js', $('.alertifyjs3'))
+        download_to_textbox('libraries/alertifyjs/css/alertify.rtl.min.css', $('.alertifyjs4'))
+        download_to_textbox('libraries/alertifyjs/css/themes/bootstrap.min.css', $('.alertifyjs5'))
+        download_to_textbox('libraries/alertifyjs/css/themes/bootstrap.rtl.min.css', $('.alertifyjs6'))
+        download_to_textbox('libraries/alertifyjs/css/themes/default.rtl.min.css', $('.alertifyjs7'))
+        download_to_textbox('libraries/alertifyjs/css/themes/semantic.min.css', $('.alertifyjs8'))
+        download_to_textbox('libraries/alertifyjs/css/themes/semantic.rtl.min.css', $('.alertifyjs9'))
+
+        $(".alertifyzip").val("zip.file('libraries/alertifyjs/css/alertify.min.css', $(\".alertifyjs1\").val());\n    zip.file('libraries/alertifyjs/css/themes/default.min.css', $(\".alertifyjs2\").val());\n    zip.file('libraries/alertifyjs/alertify.min.js', $(\".alertifyjs3\").val());\n    zip.file('libraries/alertifyjs/css/alertify.rtl.min.css', $(\".alertifyjs4\").val());\n    zip.file('libraries/alertifyjs/css/themes/bootstrap.min.css', $(\".alertifyjs5\").val());\n    zip.file('libraries/alertifyjs/css/themes/bootstrap.rtl.min.css', $(\".alertifyjs6\").val());\n    zip.file('libraries/alertifyjs/css/themes/default.rtl.min.css', $(\".alertifyjs7\").val());\n    zip.file('libraries/alertifyjs/css/themes/semantic.min.css', $(\".alertifyjs8\").val());\n    zip.file('libraries/alertifyjs/css/themes/semantic.rtl.min.css', $(\".alertifyjs9\").val());")
+      } else {
+        $('.alertifyjs, .alertifyzip').clear()
+      }
+
+      if ( $("#angular").is(":checked") ) {
+        $('.angularjs').clear()
+        download_to_textbox('libraries/angular/angular.min.js', $('.angularjs'))
+        $(".angularzip").val("zip.file('libraries/angular/angular.min.js', $(\".angularjs\").val());")
+      } else {
+        $('.angularjs, .angularzip').clear()
+      }
+
+      if ( $("#bootstrap").is(":checked") ) {
+        $('.bootstrap').clear()
+        download_to_textbox('libraries/bootstrap/bootstrap.css', $('.bootstrap1'))
+        download_to_textbox('libraries/bootstrap/bootstrap.js', $('.bootstrap2'))
+        $('.bootstrap1, .bootstrap2').trigger("change")
+        $(".bootstrapzip").val("zip.file('libraries/bootstrap/bootstrap.css', $('.bootstrap1').val());\n  zip.file('libraries/bootstrap/bootstrap.js', $('.bootstrap2').val());")
+      } else {
+        $('.bootstrap, .bootstrapzip').clear()
+      }
+
+      if ( $("#chartjs").is(":checked") ) {
+        $('.chartjs').clear()
+        download_to_textbox('libraries/chartjs/chart.min.js', $('.chartjs'))
+        $('.chartjs').trigger("change")
+        $(".chartjszip").val("zip.file('libraries/chartjs/chart.min.js', $('.chartjs').val());")
+      } else {
+        $('.chartjs, .chartjszip').clear()
+      }
+      if ( $("#codemirror").is(":checked") ) {
+        $('.codemirror').clear()
+
+        download_to_textbox('libraries/codemirror/codemirror.css', $('.codemirror1'))
+        download_to_textbox('libraries/codemirror/addon/fold/foldgutter.css', $('.codemirror2'))
+        download_to_textbox('libraries/codemirror/codemirror.js', $('.codemirror3'))
+        download_to_textbox('libraries/codemirror/javascripts/code-completion.js', $('.codemirror4'))
+        download_to_textbox('libraries/codemirror/javascripts/css-completion.js', $('.codemirror5'))
+        download_to_textbox('libraries/codemirror/javascripts/html-completion.js', $('.codemirror6'))
+        download_to_textbox('libraries/codemirror/mode/javascript/javascript.js', $('.codemirror7'))
+        download_to_textbox('libraries/codemirror/mode/xml/xml.js', $('.codemirror8'))
+        download_to_textbox('libraries/codemirror/mode/css/css.js', $('.codemirror9'))
+        download_to_textbox('libraries/codemirror/mode/htmlmixed/htmlmixed.js', $('.codemirror10'))
+        download_to_textbox('libraries/codemirror/addon/edit/closetag.js', $('.codemirror11'))
+        download_to_textbox('libraries/codemirror/addon/edit/matchbrackets.js', $('.codemirror12'))
+        download_to_textbox('libraries/codemirror/addon/selection/active-line.js', $('.codemirror13'))
+        download_to_textbox('libraries/codemirror/addon/fold/foldcode.js', $('.codemirror14'))
+        download_to_textbox('libraries/codemirror/addon/fold/foldgutter.js', $('.codemirror15'))
+        download_to_textbox('libraries/codemirror/addon/fold/brace-fold.js', $('.codemirror16'))
+        download_to_textbox('libraries/codemirror/addon/fold/xml-fold.js', $('.codemirror17'))
+        download_to_textbox('libraries/codemirror/addon/fold/comment-fold.js', $('.codemirror18'))
+        download_to_textbox('libraries/codemirror/addon/search/search.js', $('.codemirror19'))
+        download_to_textbox('libraries/codemirror/addon/search/searchcursor.js', $('.codemirror20'))
+        download_to_textbox('libraries/codemirror/addon/dialog/dialog.js', $('.codemirror21'))
+        download_to_textbox('libraries/codemirror/addon/hint/show-hint.js', $('.codemirror22'))
+        download_to_textbox('libraries/codemirror/addon/hint/xml-hint.js', $('.codemirror23'))
+        download_to_textbox('libraries/codemirror/addon/hint/html-hint.js', $('.codemirror24'))
+        download_to_textbox('libraries/codemirror/addon/hint/css-hint.js', $('.codemirror25'))
+        download_to_textbox('libraries/codemirror/addon/hint/javascript-hint.js', $('.codemirror26'))
+        download_to_textbox('libraries/codemirror/addon/search/match-highlighter.js', $('.codemirror27'))
+        download_to_textbox('libraries/codemirror/htmlhint.js', $('.codemirror28'))
+        download_to_textbox('libraries/codemirror/csslint.js', $('.codemirror29'))
+        download_to_textbox('libraries/codemirror/jshint.js', $('.codemirror30'))
+        download_to_textbox('libraries/codemirror/addon/lint/lint.js', $('.codemirror31'))
+        download_to_textbox('libraries/codemirror/addon/lint/html-lint.js', $('.codemirror32'))
+        download_to_textbox('libraries/codemirror/addon/lint/css-lint.js', $('.codemirror33'))
+        download_to_textbox('libraries/codemirror/addon/lint/javascript-lint.js', $('.codemirror34'))
+        download_to_textbox('libraries/codemirror/inlet.min.js', $('.codemirror35'))
+        download_to_textbox('libraries/codemirror/inlet.css', $('.codemirror36'))
+        download_to_textbox('libraries/codemirror/emmet.js', $('.codemirror37'))
+        download_to_textbox('libraries/codemirror/addon/lint/lint.css', $('.codemirror38'))
+        download_to_textbox('libraries/codemirror/addon/dialog/dialog.css', $('.codemirror39'))
+        download_to_textbox('libraries/codemirror/addon/hint/show-hint.css', $('.codemirror40'))
+        download_to_textbox('libraries/codemirror/addon/search/goto-line.js', $('.codemirror41'))
+        download_to_textbox('libraries/codemirror/markdown.js', $('.codemirror42'))
+        download_to_textbox('libraries/codemirror/continuelist.js', $('.codemirror43'))
+
+        // var grabCodemirror = [
+        //   "zip.file('libraries/codemirror/codemirror.css', $('.codemirror1').val());\n",
+        //   "zip.file('libraries/codemirror/addon/fold/foldgutter.css', $('.codemirror2').val());\n",
+        //   "zip.file('libraries/codemirror/codemirror.js', $('.codemirror3').val());\n",
+        //   "zip.file('libraries/codemirror/javascripts/code-completion.js', $('.codemirror4').val());\n",
+        //   "zip.file('libraries/codemirror/javascripts/css-completion.js', $('.codemirror5').val());\n",
+        //   "zip.file('libraries/codemirror/javascripts/html-completion.js', $('.codemirror6').val());\n",
+        //   "zip.file('libraries/codemirror/mode/javascript/javascript.js', $('.codemirror7').val());\n",
+        //   "zip.file('libraries/codemirror/mode/xml/xml.js', $('.codemirror8').val());\n",
+        //   "zip.file('libraries/codemirror/mode/css/css.js', $('.codemirror9').val());\n",
+        //   "zip.file('libraries/codemirror/mode/htmlmixed/htmlmixed.js', $('.codemirror10').val());\n",
+        //   "zip.file('libraries/codemirror/addon/edit/closetag.js', $('.codemirror11').val());\n",
+        //   "zip.file('libraries/codemirror/addon/edit/matchbrackets.js', $('.codemirror12').val());\n",
+        //   "zip.file('libraries/codemirror/addon/selection/active-line.js', $('.codemirror13').val());\n",
+        //   "zip.file('libraries/codemirror/addon/fold/foldcode.js', $('.codemirror14').val());\n",
+        //   "zip.file('libraries/codemirror/addon/fold/foldgutter.js', $('.codemirror15').val());\n",
+        //   "zip.file('libraries/codemirror/addon/fold/brace-fold.js', $('.codemirror16').val());\n",
+        //   "zip.file('libraries/codemirror/addon/fold/xml-fold.js', $('.codemirror17').val());\n",
+        //   "zip.file('libraries/codemirror/addon/fold/comment-fold.js', $('.codemirror18').val());\n",
+        //   "zip.file('libraries/codemirror/addon/search/search.js', $('.codemirror19').val());\n",
+        //   "zip.file('libraries/codemirror/addon/search/searchcursor.js', $('.codemirror20').val());\n",
+        //   "zip.file('libraries/codemirror/addon/dialog/dialog.js', $('.codemirror21').val());\n",
+        //   "zip.file('libraries/codemirror/addon/hint/show-hint.js', $('.codemirror22').val());\n",
+        //   "zip.file('libraries/codemirror/addon/hint/xml-hint.js', $('.codemirror23').val());\n",
+        //   "zip.file('libraries/codemirror/addon/hint/html-hint.js', $('.codemirror24').val());\n",
+        //   "zip.file('libraries/codemirror/addon/hint/css-hint.js', $('.codemirror25').val());\n",
+        //   "zip.file('libraries/codemirror/addon/hint/javascript-hint.js', $('.codemirror26').val());\n",
+        //   "zip.file('libraries/codemirror/addon/search/match-highlighter.js', $('.codemirror27').val());\n",
+        //   "zip.file('libraries/codemirror/htmlhint.js', $('.codemirror28').val());\n",
+        //   "zip.file('libraries/codemirror/csslint.js', $('.codemirror29').val());\n",
+        //   "zip.file('libraries/codemirror/jshint.js', $('.codemirror30').val());\n",
+        //   "zip.file('libraries/codemirror/addon/lint/lint.js', $('.codemirror31').val());\n",
+        //   "zip.file('libraries/codemirror/addon/lint/html-lint.js', $('.codemirror32').val());\n",
+        //   "zip.file('libraries/codemirror/addon/lint/css-lint.js', $('.codemirror33').val());\n",
+        //   "zip.file('libraries/codemirror/addon/lint/javascript-lint.js', $('.codemirror34').val());\n",
+        //   "zip.file('libraries/codemirror/inlet.min.js', $('.codemirror35').val());\n",
+        //   "zip.file('libraries/codemirror/inlet.css', $('.codemirror36').val());\n",
+        //   "zip.file('libraries/codemirror/emmet.js', $('.codemirror37').val());\n",
+        //   "zip.file('libraries/codemirror/addon/lint/lint.css', $('.codemirror38').val());\n",
+        //   "zip.file('libraries/codemirror/addon/dialog/dialog.css', $('.codemirror39').val());\n",
+        //   "zip.file('libraries/codemirror/addon/hint/show-hint.css', $('.codemirror40').val());\n",
+        //   "zip.file('libraries/codemirror/addon/search/goto-line.js', $('.codemirror41').val());\n",
+        //   "zip.file('libraries/codemirror/markdown.js', $('.codemirror42').val());\n",
+        //   "zip.file('libraries/codemirror/continuelist.js', $('.codemirror43').val());\n"
+        // ];
+
+        var grabCodemirror = "zip.file('libraries/codemirror/codemirror.css', $('.codemirror1').val());\n\n      zip.file('libraries/codemirror/addon/fold/foldgutter.css', $('.codemirror2').val());\n\n      zip.file('libraries/codemirror/codemirror.js', $('.codemirror3').val());\n\n      zip.file('libraries/codemirror/javascripts/code-completion.js', $('.codemirror4').val());\n\n      zip.file('libraries/codemirror/javascripts/css-completion.js', $('.codemirror5').val());\n\n      zip.file('libraries/codemirror/javascripts/html-completion.js', $('.codemirror6').val());\n\n      zip.file('libraries/codemirror/mode/javascript/javascript.js', $('.codemirror7').val());\n\n      zip.file('libraries/codemirror/mode/xml/xml.js', $('.codemirror8').val());\n\n      zip.file('libraries/codemirror/mode/css/css.js', $('.codemirror9').val());\n\n      zip.file('libraries/codemirror/mode/htmlmixed/htmlmixed.js', $('.codemirror10').val());\n\n      zip.file('libraries/codemirror/addon/edit/closetag.js', $('.codemirror11').val());\n\n      zip.file('libraries/codemirror/addon/edit/matchbrackets.js', $('.codemirror12').val());\n\n      zip.file('libraries/codemirror/addon/selection/active-line.js', $('.codemirror13').val());\n\n      zip.file('libraries/codemirror/addon/fold/foldcode.js', $('.codemirror14').val());\n\n      zip.file('libraries/codemirror/addon/fold/foldgutter.js', $('.codemirror15').val());\n\n      zip.file('libraries/codemirror/addon/fold/brace-fold.js', $('.codemirror16').val());\n\n      zip.file('libraries/codemirror/addon/fold/xml-fold.js', $('.codemirror17').val());\n\n      zip.file('libraries/codemirror/addon/fold/comment-fold.js', $('.codemirror18').val());\n\n      zip.file('libraries/codemirror/addon/search/search.js', $('.codemirror19').val());\n\n      zip.file('libraries/codemirror/addon/search/searchcursor.js', $('.codemirror20').val());\n\n      zip.file('libraries/codemirror/addon/dialog/dialog.js', $('.codemirror21').val());\n\n      zip.file('libraries/codemirror/addon/hint/show-hint.js', $('.codemirror22').val());\n\n      zip.file('libraries/codemirror/addon/hint/xml-hint.js', $('.codemirror23').val());\n\n      zip.file('libraries/codemirror/addon/hint/html-hint.js', $('.codemirror24').val());\n\n      zip.file('libraries/codemirror/addon/hint/css-hint.js', $('.codemirror25').val());\n\n      zip.file('libraries/codemirror/addon/hint/javascript-hint.js', $('.codemirror26').val());\n\n      zip.file('libraries/codemirror/addon/search/match-highlighter.js', $('.codemirror27').val());\n\n      zip.file('libraries/codemirror/htmlhint.js', $('.codemirror28').val());\n\n      zip.file('libraries/codemirror/csslint.js', $('.codemirror29').val());\n\n      zip.file('libraries/codemirror/jshint.js', $('.codemirror30').val());\n\n      zip.file('libraries/codemirror/addon/lint/lint.js', $('.codemirror31').val());\n\n      zip.file('libraries/codemirror/addon/lint/html-lint.js', $('.codemirror32').val());\n\n      zip.file('libraries/codemirror/addon/lint/css-lint.js', $('.codemirror33').val());\n\n      zip.file('libraries/codemirror/addon/lint/javascript-lint.js', $('.codemirror34').val());\n\n      zip.file('libraries/codemirror/inlet.min.js', $('.codemirror35').val());\n\n      zip.file('libraries/codemirror/inlet.css', $('.codemirror36').val());\n\n      zip.file('libraries/codemirror/emmet.js', $('.codemirror37').val());\n\n      zip.file('libraries/codemirror/addon/lint/lint.css', $('.codemirror38').val());\n\n      zip.file('libraries/codemirror/addon/dialog/dialog.css', $('.codemirror39').val());\n\n      zip.file('libraries/codemirror/addon/hint/show-hint.css', $('.codemirror40').val());\n\n      zip.file('libraries/codemirror/addon/search/goto-line.js', $('.codemirror41').val());\n\n      zip.file('libraries/codemirror/markdown.js', $('.codemirror42').val());\n\n      zip.file('libraries/codemirror/continuelist.js', $('.codemirror43').val());\n"
+
+        $('.codemirror').trigger("change")
+        $(".codemirrorzip").val(grabCodemirror)
+      } else {
+        $('.codemirror, .codemirrorzip').clear()
+      }
+      if ( $("#createjs").is(":checked") ) {
+        $('.createjs').clear()
+        download_to_textbox('libraries/createjs/createjs.min.js', $('.createjs1'))
+        download_to_textbox('libraries/createjs/easeljs.min.js', $('.createjs2'))
+        download_to_textbox('libraries/createjs/tweenjs.min.js', $('.createjs3'))
+        download_to_textbox('libraries/createjs/soundjs.min.js', $('.createjs4'))
+        download_to_textbox('libraries/createjs/preloadjs.min.js', $('.createjs5'))
+        $('.createjs').trigger("change")
+        $(".createjszip").val("zip.file('libraries/createjs/createjs.min.js', $('.createjs1').val());\nzip.file('libraries/createjs/easeljs.min.js', $('.createjs2').val());\nzip.file('libraries/createjs/tweenjs.min.js', $('.createjs3').val());\nzip.file('libraries/createjs/soundjs.min.js', $('.createjs4').val());\nzip.file('libraries/createjs/preloadjs.min.js', $('.createjs5').val());")
+      } else {
+        $('.createjs, .createjszip').clear()
+      }
+      if ( $("#d3").is(":checked") ) {
+        $('.d3').clear()
+        download_to_textbox('libraries/d3/d3.js', $('.d3'))
+        $('.d3').trigger("change")
+        $(".d3zip").val("zip.file('libraries/d3/d3.js', $(\".d3\").val());")
+      } else {
+        $('.d3, .d3zip').clear()
+      }
+      if ( $("#dojo").is(":checked") ) {
+        $('.dojo').clear()
+        download_to_textbox('libraries/dojo/dojo.js', $('.dojo'))
+        $('.dojo').trigger("change")
+        $(".dojozip").val("zip.file('libraries/dojo/dojo.js', $(\".dojo\").val());")
+      } else {
+        $('.dojo, .dojozip').clear()
+      }
+      if ( $("#fabric").is(":checked") ) {
+        $('.fabric').clear()
+        download_to_textbox('libraries/fabric/fabric.min.js', $('.fabric'))
+        $('.fabric').trigger("change")
+        $(".fabriczip").val("zip.file('libraries/fabric/fabric.min.js', $(\".fabric\").val());")
+      } else {
+        $('.fabric, .fabriczip').clear()
+      }
+      if ( $("#jquery").is(":checked") ) {
+        $('.jquery').clear()
+        download_to_textbox('libraries/jquery/jquery.js', $('.jquery'))
+        $('.jquery').trigger("change")
+        $(".jqueryzip").val("zip.file('libraries/jquery/jquery.js', $(\".jquery\").val());")
+      } else {
+        $('.jquery, .jqueryzip').clear()
+      }
+      if ( $("#jqueryui").is(":checked") ) {
+        $('.jqueryui').clear()
+        download_to_textbox('libraries/jqueryui/jqueryui.css', $('.jqueryui1'))
+        download_to_textbox('libraries/jqueryui/jqueryui.min.js', $('.jqueryui2'))
+        download_to_textbox('libraries/jqueryui/jquery.ui.touch-punch.min.js', $('.jqueryui3'))
+        $('.jqueryui').trigger("change")
+        $(".jqueryuizip").val("zip.file('libraries/jqueryui/jqueryui.css', $(\".jqueryui1\").val());\nzip.file('libraries/jqueryui/jqueryui.min.js', $(\".jqueryui2\").val());\nzip.file('libraries/jqueryui/jquery.ui.touch-punch.min.js', $(\".jqueryui3\").val());")
+      } else {
+        $('.jqueryui, .jqueryuizip').clear()
+      }
+      if ( $("#jquerytools").is(":checked") ) {
+        $('.jquerytools').clear()
+        download_to_textbox('libraries/jquerytools/jquery.tools.min.js', $('.jquerytools'))
+        $('.jquerytools').trigger("change")
+        $(".jquerytoolszip").val("zip.file('libraries/jquerytools/jquery.tools.min.js', $(\".jquerytools\").val());")
+      } else {
+        $('.jquerytools, .jquerytoolszip').clear()
+      }
+      if ( $("#jszip").is(":checked") ) {
+        $('.jszip').clear()
+        download_to_textbox('libraries/jszip/jszip.min.css', $('.jszip1'))
+        download_to_textbox('libraries/jszip/jszip-utils.js', $('.jszip2'))
+        download_to_textbox('libraries/jszip/FileSaver.js', $('.jszip3'))
+        download_to_textbox('libraries/jszip/Blob.js', $('.jszip4'))
+        $('.jszip').trigger("change")
+        $(".jszipzip").val("zip.file('libraries/jszip/jszip.min.js', $(\".jszip1\").val());\nzip.file('libraries/jszip/jszip-utils.js', $(\".jszip2\").val());\nzip.file('libraries/jszip/FileSaver.js', $(\".jszip3\").val());\nzip.file('libraries/jszip/Blob.js', $(\".jszip4\").val());")
+      } else {
+        $('.jszip, .jszipzip').clear()
+      }
+      if ( $("#jqxsplitter").is(":checked") ) {
+        $('.jqxsplitter').clear()
+
+        download_to_textbox('libraries/jqwidgets/styles/jqx.base.css', $('.jqwidgets1'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.android.css', $('.jqwidgets2'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.arctic.css', $('.jqwidgets3'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.black.css', $('.jqwidgets4'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.blackberry.css', $('.jqwidgets5'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.bootstrap.css', $('.jqwidgets6'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.classic.css', $('.jqwidgets7'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.darkblue.css', $('.jqwidgets8'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.energyblue.css', $('.jqwidgets9'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.fresh.css', $('.jqwidgets10'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.highcontrast.css', $('.jqwidgets11'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.metro.css', $('.jqwidgets12'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.metrodark.css', $('.jqwidgets13'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.mobile.css', $('.jqwidgets14'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.office.css', $('.jqwidgets15'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.orange.css', $('.jqwidgets16'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.shinyblack.css', $('.jqwidgets17'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.summer.css', $('.jqwidgets18'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.ui-darkness.css', $('.jqwidgets19'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.ui-le-frog.css', $('.jqwidgets20'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.ui-lightness.css', $('.jqwidgets21'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.ui-overcast.css', $('.jqwidgets22'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.ui-redmond.css', $('.jqwidgets23'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.ui-smoothness.css', $('.jqwidgets24'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.ui-start.css', $('.jqwidgets25'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.ui-sunny.css', $('.jqwidgets26'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.web.css', $('.jqwidgets27'))
+        download_to_textbox('libraries/jqwidgets/styles/jqx.windowsphone.css', $('.jqwidgets28'))
+        download_to_textbox('libraries/jqwidgets/jqxcore.js', $('.jqwidgets29'))
+        download_to_textbox('libraries/jqwidgets/jqxsplitter.js', $('.jqwidgets30'))
+
+        // var jqxsplitter = [
+        //   "zip.file('libraries/jqwidgets/styles/jqx.base.css', $('.jqwidgets1').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.android.css', $('.jqwidgets2').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.arctic.css', $('.jqwidgets3').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.black.css', $('.jqwidgets4').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.blackberry.css', $('.jqwidgets5').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.bootstrap.css', $('.jqwidgets6').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.classic.css', $('.jqwidgets7').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.darkblue.css', $('.jqwidgets8').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.energyblue.css', $('.jqwidgets9').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.fresh.css', $('.jqwidgets10').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.highcontrast.css', $('.jqwidgets11').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.metro.css', $('.jqwidgets12').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.metrodark.css', $('.jqwidgets13').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.mobile.css', $('.jqwidgets14').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.office.css', $('.jqwidgets15').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.orange.css', $('.jqwidgets16').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.shinyblack.css', $('.jqwidgets17').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.summer.css', $('.jqwidgets18').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.ui-darkness.css', $('.jqwidgets19').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.ui-le-frog.css', $('.jqwidgets20').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.ui-lightness.css', $('.jqwidgets21').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.ui-overcast.css', $('.jqwidgets22').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.ui-redmond.css', $('.jqwidgets23').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.ui-smoothness.css', $('.jqwidgets24').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.ui-start.css', $('.jqwidgets25').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.ui-sunny.css', $('.jqwidgets26').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.web.css', $('.jqwidgets27').val());\n",
+        //   "zip.file('libraries/jqwidgets/styles/jqx.windowsphone.css', $('.jqwidgets28').val());\n",
+        //   "zip.file('libraries/jqwidgets/jqxcore.js', $('.jqwidgets29').val());\n",
+        //   "zip.file('libraries/jqwidgets/jqxsplitter.js', $('.jqwidgets30').val());\n"
+        // ];
+
+        var jqxsplitter = "zip.file('libraries/jqwidgets/styles/jqx.base.css', $('.jqwidgets1').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.android.css', $('.jqwidgets2').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.arctic.css', $('.jqwidgets3').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.black.css', $('.jqwidgets4').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.blackberry.css', $('.jqwidgets5').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.bootstrap.css', $('.jqwidgets6').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.classic.css', $('.jqwidgets7').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.darkblue.css', $('.jqwidgets8').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.energyblue.css', $('.jqwidgets9').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.fresh.css', $('.jqwidgets10').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.highcontrast.css', $('.jqwidgets11').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.metro.css', $('.jqwidgets12').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.metrodark.css', $('.jqwidgets13').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.mobile.css', $('.jqwidgets14').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.office.css', $('.jqwidgets15').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.orange.css', $('.jqwidgets16').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.shinyblack.css', $('.jqwidgets17').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.summer.css', $('.jqwidgets18').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.ui-darkness.css', $('.jqwidgets19').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.ui-le-frog.css', $('.jqwidgets20').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.ui-lightness.css', $('.jqwidgets21').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.ui-overcast.css', $('.jqwidgets22').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.ui-redmond.css', $('.jqwidgets23').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.ui-smoothness.css', $('.jqwidgets24').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.ui-start.css', $('.jqwidgets25').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.ui-sunny.css', $('.jqwidgets26').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.web.css', $('.jqwidgets27').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.windowsphone.css', $('.jqwidgets28').val());\n\n      zip.file('libraries/jqwidgets/jqxcore.js', $('.jqwidgets29').val());\n\n      zip.file('libraries/jqwidgets/jqxsplitter.js', $('.jqwidgets30').val());\n"
+
+        $('.jqxsplitter').trigger("change")
+        $(".jqxsplitterzip").val(jqxsplitter)
+      } else {
+        $('.jqxsplitter, .jqxsplitterzip').clear()
+      }
+      if ( $("#kinetic").is(":checked") ) {
+        $('.kinetic').clear()
+        download_to_textbox('libraries/kinetic/kinetic.js', $('.kinetic'))
+        $('.kinetic').trigger("change")
+        $(".kineticzip").val("zip.file('libraries/kinetic/kinetic.js', $(\".kinetic\").val());")
+      } else {
+        $('.kinetic, .kineticzip').clear()
+      }
+      if ( $("#knockout").is(":checked") ) {
+        $('.knockout').clear()
+        download_to_textbox('libraries/knockout/knockout.js', $('.knockout'))
+        $('.knockout').trigger("change")
+        $(".knockoutzip").val("zip.file('libraries/knockout/knockout.js', $(\".knockout\").val());")
+      } else {
+        $('.knockout, .knockoutzip').clear()
+      }
+      if ( $("#modernizer").is(":checked") ) {
+        $('.modernizer').clear()
+        download_to_textbox('libraries/modernizer/modernizer.js', $('.modernizer'))
+        $('.modernizer').trigger("change")
+        $(".modernizerzip").val("zip.file('libraries/modernizer/modernizer.js', $(\".modernizer\").val());")
+      } else {
+        $('.modernizer, .modernizerzip').clear()
+      }
+      if ( $("#mootools").is(":checked") ) {
+        $('.mootools').clear()
+        download_to_textbox('libraries/mootools/mootools-yui-compressed.js', $('.mootools'))
+        $('.mootools').trigger("change")
+        $(".mootoolszip").val("zip.file('libraries/mootools/mootools-yui-compressed.js', $(\".mootools\").val());")
+      } else {
+        $('.mootools, .mootoolszip').clear()
+      }
+      if ( $("#normalize").is(":checked") ) {
+        $('.normalize').clear()
+        download_to_textbox('libraries/normalize/normalize.css', $('.normalize'))
+        $('.normalize').trigger("change")
+        $(".normalizezip").val("zip.file('libraries/normalize/normalize.css', $(\".normalize\").val());")
+      } else {
+        $('.normalize, .normalizezip').clear()
+      }
+      if ( $("#paperjs").is(":checked") ) {
+        $('.paperjs').clear()
+        download_to_textbox('libraries/paperjs/paperjs.js', $('.paperjs'))
+        $('.paperjs').trigger("change")
+        $(".paperjszip").val("zip.file('libraries/paperjs/paperjs.js', $(\".paperjs\").val());")
+      } else {
+        $('.paperjs, .paperjszip').clear()
+      }
+      if ( $("#polyui").is(":checked") ) {
+        $('.polyui').clear()
+        download_to_textbox('libraries/polyui/polyui.css', $('.polyui'))
+        $('.polyui').trigger("change")
+        $(".polyuizip").val("zip.file('libraries/polyui/polyui.css', $(\".polyui\").val());")
+      } else {
+        $('.polyui, .polyuizip').clear()
+      }
+      if ( $("#processingjs").is(":checked") ) {
+        $('.processingjs').clear()
+        download_to_textbox('libraries/processingjs/processingjs.js', $('.processingjs'))
+        $('.processingjs').trigger("change")
+        $(".processingjszip").val("zip.file('libraries/processingjs/processingjs.js', $(\".processingjs\").val());")
+      } else {
+        $('.processingjs, .processingjsszip').clear()
+      }
+      if ( $("#prototypejs").is(":checked") ) {
+        $('.prototypejs').clear()
+        download_to_textbox('libraries/processingjs/prototypejs.js', $('.prototypejs'))
+        $('.prototypejs').trigger("change")
+        $(".prototypejszip").val("zip.file('libraries/prototypejs/prototypejs.js', $(\".prototypejs\").val());")
+      } else {
+        $('.prototypejs, .prototypejszip').clear()
+      }
+      if ( $("#qooxdoo").is(":checked") ) {
+        $('.qooxdoo').clear()
+        download_to_textbox('libraries/qooxdoo/qooxdoo.js', $('.qooxdoo'))
+        $('.qooxdoo').trigger("change")
+        $(".qooxdooszip").val("zip.file('libraries/qooxdoo/qooxdoo.js', $(\".qooxdoo\").val());")
+      } else {
+        $('.qooxdoo, .qooxdooszip').clear()
+      }
+      if ( $("#raphael").is(":checked") ) {
+        $('.raphael').clear()
+        download_to_textbox('libraries/raphael/raphael.js', $('.raphael'))
+        $('.raphael').trigger("change")
+        $(".raphaelzip").val("zip.file('libraries/raphael/raphael.js', $(\".raphael\").val());")
+      } else {
+        $('.raphael, .raphaelzip').clear()
+      }
+      if ( $("#requirejs").is(":checked") ) {
+        $('.requirejs').clear()
+        download_to_textbox('libraries/require/require.js', $('.requirejs'))
+        $('.requirejs').trigger("change")
+        $(".requirejszip").val("zip.file('libraries/require/require.js', $(\".requirejs\").val());")
+      } else {
+        $('.requirejs, .requirejszip').clear()
+      }
+      if ( $("#showdown").is(":checked") ) {
+        $('.showdown').clear()
+        download_to_textbox('libraries/showdown/Showdown.min.js', $('.showdown'))
+        $('.showdown').trigger("change")
+        $(".showdownzip").val("zip.file('libraries/showdown/Showdown.min.js', $(\".showdown\").val());")
+      } else {
+        $('.showdown, .showdownzip').clear()
+      }
+      if ( $("#scriptaculous").is(":checked") ) {
+        $('.scriptaculous').clear()
+        download_to_textbox('libraries/scriptaculous/scriptaculous.js', $('.scriptaculous'))
+        $('.scriptaculous').trigger("change")
+        $(".scriptaculouszip").val("zip.file('libraries/scriptaculous/scriptaculous.js', $(\".scriptaculous\").val());")
+      } else {
+        $('.scriptaculous, .scriptaculouszip').clear()
+      }
+      if ( $("#snapsvg").is(":checked") ) {
+        $('.snapsvg').clear()
+        download_to_textbox('libraries/snap-svg/snap-svg.js', $('.snapsvg'))
+        $('.snapsvg').trigger("change")
+        $(".snapsvgzip").val("zip.file('libraries/snap-svg/snap-svg.js', $(\".snapsvg\").val());")
+      } else {
+        $('.snapsvg, .snapsvgzip').clear()
+      }
+      if ( $("#svgjs").is(":checked") ) {
+        $('.svgjs').clear()
+        download_to_textbox('libraries/svg-svg/svg-svg.js', $('.svgjs'))
+        $('.svgjs').trigger("change")
+        $(".svgjszip").val("zip.file('libraries/svg-svg/svg-svg.js', $(\".svgjs\").val());")
+      } else {
+        $('.svgjs, .svgjszip').clear()
+      }
+      if ( $("#threejs").is(":checked") ) {
+        $('.threejs').clear()
+        download_to_textbox('libraries/threejs/three.min.js', $('.threejs'))
+        $('.threejs').trigger("change")
+        $(".threejszip").val("zip.file('libraries/threejs/three.min.js', $(\".threejs\").val());")
+      } else {
+        $('.threejs, .threejszip').clear()
+      }
+      if ( $("#underscorejs").is(":checked") ) {
+        $('.underscorejs').clear()
+        download_to_textbox('libraries/underscore/underscore.js', $('.underscorejs'))
+        $('.underscorejs').trigger("change")
+        $(".underscorejszip").val("zip.file('libraries/underscore/underscore.js', $(\".underscorejs\").val());")
+      } else {
+        $('.underscorejs, .underscorejszip').clear()
+      }
+      if ( $("#webfontloader").is(":checked") ) {
+        $('.webfontloader').clear()
+        download_to_textbox('libraries/webfont/webfont.js', $('.webfontloader'))
+        $('.webfontloader').trigger("change")
+        $(".webfontloaderzip").val("zip.file('libraries/webfont/webfont.js', $(\".webfontloader\").val());")
+      } else {
+        $('.webfontloader, .webfontloaderzip').clear()
+      }
+      if ( $("#yui").is(":checked") ) {
+        $('.yui').clear()
+        download_to_textbox('libraries/yui/yui.js', $('.yui'))
+        $('.yui').trigger("change")
+        $(".yuizip").val("zip.file('libraries/yui/yui.js', $(\".yui\").val());")
+      } else {
+        $('.yui, .yuizip').clear()
+      }
+      if ( $("#zepto").is(":checked") ) {
+        $('.zepto').clear()
+        download_to_textbox('libraries/zepto/zepto.js', $('.zepto'))
+        $('.zepto').trigger("change")
+        $(".zeptozip").val("zip.file('libraries/zepto/zepto.js', $(\".zepto\").val());")
+      } else {
+        $('.zepto, .zeptozip').clear()
+      }
+
+      // Update JSZip (Applied dynamically from HTML div )
+      $("[data-action=ziplibs]").val(function() {
+        return $.map($(".jszipcode"), function (el) {
+          return el.value
+        }).join("")
+      })
+    };
 
 function displayPreview(file) {
   var reader = new FileReader()
@@ -256,14 +723,6 @@ $("[data-value=version]").on("keyup change", function() {
   localStorage.setItem("appVersion", this.value)
 })
 
-// Save KeyWords for LocalStorage
-if ( localStorage.getItem("saveKeywords")) {
-  $("[data-action=sitekeywords]").val(localStorage.getItem("saveKeywords"))
-}
-$("[data-action=sitekeywords]").on("keyup change", function() {
-  this.value = this.value.replace(/ /g,",")
-  localStorage.setItem("saveKeywords", this.value)
-})
 // Save Description for LocalStorage
 if ( localStorage.getItem("saveDesc")) {
   $("[data-action=sitedesc]").val(localStorage.getItem("saveDesc"))
@@ -278,6 +737,7 @@ if ( localStorage.getItem("saveAuthor")) {
 $("[data-action=siteauthor]").on("keyup change", function() {
   localStorage.setItem("saveAuthor", this.value)
 })
+
 
 $(".call").click(function() {
   $("[data-action=load]").trigger("click")
@@ -504,18 +964,18 @@ var desktopExport = function(file) {
         var Img32 = c32[0].toDataURL("image/png")
         var Img64 = c64[0].toDataURL("image/png")
         var Img128 = canvas[0].toDataURL("image/png")
-        zip.file("data/content/app/icons/16.png", Img16.split('base64,')[1],{base64: true})
-        zip.file("data/content/app/icons/32.png", Img32.split('base64,')[1],{base64: true})
-        zip.file("data/content/app/icons/64.png", Img64.split('base64,')[1],{base64: true})
-        zip.file("data/content/app/icons/128.png", Img128.split('base64,')[1],{base64: true})
+        zip.file("content/app/icons/16.png", Img16.split('base64,')[1],{base64: true})
+        zip.file("content/app/icons/32.png", Img32.split('base64,')[1],{base64: true})
+        zip.file("content/app/icons/64.png", Img64.split('base64,')[1],{base64: true})
+        zip.file("content/app/icons/128.png", Img128.split('base64,')[1],{base64: true})
 
         // check if css editor has a value
         if (cssEditor.getValue() !== "") {
           closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
           var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n    " + closeFinal.getValue()
 
-          zip.file("data/content/app/css/index.css", cssEditor.getValue())
-          zip.file("data/content/app/index.html", htmlContent)
+          zip.file("content/app/css/index.css", cssEditor.getValue())
+          zip.file("content/app/index.html", htmlContent)
         }
         // check if js editor has a value
         if ( jsEditor.getValue() !== "") {
@@ -526,36 +986,34 @@ var desktopExport = function(file) {
           }
           var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
-          zip.file("data/content/app/js/index.js", jsEditor.getValue())
-          zip.file("data/content/app/index.html", htmlContent)
+          zip.file("content/app/js/index.js", jsEditor.getValue())
+          zip.file("content/app/index.html", htmlContent)
         }
         // check if css and js editors have values
         if (cssEditor.getValue() !== "" && jsEditor.getValue() !== "") {
           closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
           htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
-          zip.file("data/content/app/css/index.css", cssEditor.getValue())
-          zip.file("data/content/app/js/index.js", jsEditor.getValue())
-          zip.file("data/content/app/index.html", htmlContent)
+          zip.file("content/app/css/index.css", cssEditor.getValue())
+          zip.file("content/app/js/index.js", jsEditor.getValue())
+          zip.file("content/app/index.html", htmlContent)
         }
         if (cssEditor.getValue() == "" && jsEditor.getValue() == "") {
           closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n")
           htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n" + closeFinal.getValue()
 
-          zip.file("data/content/index.html", htmlContent)
+          zip.file("content/index.html", htmlContent)
         }
         // check if markdown editor has a value
         if ( mdEditor.getValue() !== "") {
-          zip.file("data/README.md", mdEditor.getValue())
+          zip.file("README.md", mdEditor.getValue())
         }
 
-        eval( $("[data-action=ziplibs]").val().replace(/libraries/g,"data/content/app/libraries") )
+        eval( $("[data-action=ziplibs]").val().replace(/libraries/g,"content/app/libraries") )
 
-        zip.file("data/package.json", '{\n  "main"  : "content/index.html",\n  "name"  : "'+ $("[data-action=sitetitle]").val() +'",\n  "window": {\n    "toolbar"    : false\n  }\n}')
-        zip.file("data/content/index.html", '<!doctype html>\n<html>\n <head>\n    <title>'+ $("[data-action=sitetitle]").val() +'</title>\n    <style>\n      iframe {\n        position: absolute;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n        overflow: visible;\n        border: 0;\n      }\n    </style>\n  </head>\n <body>\n    <iframe src="app/index.html"></iframe>\n\n    <script src="js/main.js"></script>\n  </body>\n</html>')
-        zip.file("data/content/js/main.js", 'document.addEventListener("DOMContentLoaded", function() {\n  // Load library\n  var gui = require("nw.gui");\n\n  // Reference to window\n  var win = gui.Window.get();\n\n  // Create menu container\n  var Menu = new gui.Menu({\n    type: "menubar"\n  });\n\n  //initialize default mac menu\n  Menu.createMacBuiltin("'+ $("[data-action=sitetitle]").val() +'");\n\n  // Get the root menu from the default mac menu\n  var windowMenu = Menu.items[2].submenu;\n\n  // Append new item to root menu\n  windowMenu.insert(\n    new gui.MenuItem({\n      type: "normal",\n      label: "Toggle Fullscreen",\n      key: "F",\n      modifiers: "cmd",\n      click : function () {\n        win.toggleFullscreen();\n      }\n    })\n  );\n\n  windowMenu.insert(\n    new gui.MenuItem({\n      type: "normal",\n      label: "Reload App",\n      key: "r",\n      modifiers: "cmd",\n      click : function () {\n        win.reload();\n      }\n    })\n  );\n\n  // Append Menu to Window\n  gui.Window.get().menu = Menu;\n});')
-
-        zip.file("run.sh", "open -a /Applications/"+ $("[data-action=sitetitle]").val().replace(/ /g, "") +".app/Contents/data/"+ $("[data-action=sitetitle]").val().replace(/ /g, "") +".app")
+        zip.file("package.json", '{\n  "main"  : "content/index.html",\n  "name"  : "'+ $("[data-action=sitetitle]").val() +'",\n  "window": {\n    "toolbar"    : false\n  }\n}')
+        zip.file("content/index.html", '<!doctype html>\n<html>\n <head>\n    <title>'+ $("[data-action=sitetitle]").val() +'</title>\n    <style>\n      iframe {\n        position: absolute;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n        overflow: visible;\n        border: 0;\n      }\n    </style>\n  </head>\n <body>\n    <iframe src="app/index.html"></iframe>\n\n    <script src="js/main.js"></script>\n  </body>\n</html>')
+        zip.file("content/js/main.js", 'document.addEventListener("DOMContentLoaded", function() {\n  // Load library\n  var gui = require("nw.gui");\n\n  // Reference to window\n  var win = gui.Window.get();\n\n  // Create menu container\n  var Menu = new gui.Menu({\n    type: "menubar"\n  });\n\n  //initialize default mac menu\n  Menu.createMacBuiltin("'+ $("[data-action=sitetitle]").val() +'");\n\n  // Get the root menu from the default mac menu\n  var windowMenu = Menu.items[2].submenu;\n\n  // Append new item to root menu\n  windowMenu.insert(\n    new gui.MenuItem({\n      type: "normal",\n      label: "Toggle Fullscreen",\n      key: "F",\n      modifiers: "cmd",\n      click : function () {\n        win.toggleFullscreen();\n      }\n    })\n  );\n\n  windowMenu.insert(\n    new gui.MenuItem({\n      type: "normal",\n      label: "Reload App",\n      key: "r",\n      modifiers: "cmd",\n      click : function () {\n        win.reload();\n      }\n    })\n  );\n\n  // Append Menu to Window\n  gui.Window.get().menu = Menu;\n});')
 
         var content = zip.generate({type:"blob"})
         saveAs(content, $("[data-action=sitetitle]").val().split(" ").join("-") + "-mac.zip")
@@ -944,31 +1402,47 @@ $("[data-action=load]").on("change", function(evt) {
   }
 })
 
-// Save to the web
-$("[data-action=save-online]").on("click", function(e) {
-  if ( $("[data-action=download]").hasClass("active") ) {
-    $("[data-action=download]").trigger("click")
-  }
-
-  // Random string
-  var filename = randomString() + ".txt"
-  var outputstring = "hello world"
-
-  $.ajax({
-    type: "GET",
-    url: "submit.php",
-    data: {
-      "filename": filename,
-      "outputstring": outputstring,
-    },
-    cache: false,
-    success: function(msg) {
-      // alert(msg)
-      alertify.success("Your file was successfully created! - <a href='anon/"+ filename +"' target='_blank'>"+ filename +"</a>")
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-      alertify.error("Some error occurred")
+// Save anonymously
+$("[data-action=save-anon]").on("click", function() {
+  var data = {
+    // Description of the gist
+    description: $("[data-action=sitedesc]").val(),
+    // public or private?
+    public: true,
+    // This gist has a html file, named index.html
+    files: {
+      "index.html": {
+        "content": htmlEditor.getValue()
+      },
+      "index.css": {
+        "content": cssEditor.getValue()
+      },
+      "index.js": {
+        "content": jsEditor.getValue()
+      },
+      "README.md": {
+        "content": mdEditor.getValue()
+      }
     }
+  }
+  // Post on Github via JQuery Ajax
+  $.ajax({
+    url: "https://api.github.com/gists",
+    type: "POST",
+    dataType: "json",
+    data: JSON.stringify(data)
+  })
+  .success(function(e) {
+    alertify.success("Successfully saved:<br><a data-action=\"anon-saved\">"+ e.html_url +"</a>")
+    $("[data-action=anon-saved]").attr("href", e.html_url)
+                                 .attr("target", "_blank")
+
+    setTimeout(function() {
+      $("[data-action=anon-saved]").trigger("click")
+    }, 1500)
+  })
+  .error(function(e) {
+    alertify.error("gist save error: " + e)
   })
 })
 
@@ -1047,482 +1521,14 @@ if (localStorage.getItem("checkedLibraries")) {
 $("[data-action=check]").on("change", function() {
   var value = $(this).parent().nextAll("div").children(".libsources:first").val() + "\n"
 
-  if ( $("#alertify").is(":checked") ) {
-    $('.alertifyjs').clear()
-    download_to_textbox('libraries/alertifyjs/css/alertify.min.css', $('.alertifyjs1'))
-    download_to_textbox('libraries/alertifyjs/css/themes/default.min.css', $('.alertifyjs2'))
-    download_to_textbox('libraries/alertifyjs/alertify.min.js', $('.alertifyjs3'))
-    download_to_textbox('libraries/alertifyjs/css/alertify.rtl.min.css', $('.alertifyjs4'))
-    download_to_textbox('libraries/alertifyjs/css/themes/bootstrap.min.css', $('.alertifyjs5'))
-    download_to_textbox('libraries/alertifyjs/css/themes/bootstrap.rtl.min.css', $('.alertifyjs6'))
-    download_to_textbox('libraries/alertifyjs/css/themes/default.rtl.min.css', $('.alertifyjs7'))
-    download_to_textbox('libraries/alertifyjs/css/themes/semantic.min.css', $('.alertifyjs8'))
-    download_to_textbox('libraries/alertifyjs/css/themes/semantic.rtl.min.css', $('.alertifyjs9'))
-
-    $(".alertifyzip").val("zip.file('libraries/alertifyjs/css/alertify.min.css', $(\".alertifyjs1\").val());\n    zip.file('libraries/alertifyjs/css/themes/default.min.css', $(\".alertifyjs2\").val());\n    zip.file('libraries/alertifyjs/alertify.min.js', $(\".alertifyjs3\").val());\n    zip.file('libraries/alertifyjs/css/alertify.rtl.min.css', $(\".alertifyjs4\").val());\n    zip.file('libraries/alertifyjs/css/themes/bootstrap.min.css', $(\".alertifyjs5\").val());\n    zip.file('libraries/alertifyjs/css/themes/bootstrap.rtl.min.css', $(\".alertifyjs6\").val());\n    zip.file('libraries/alertifyjs/css/themes/default.rtl.min.css', $(\".alertifyjs7\").val());\n    zip.file('libraries/alertifyjs/css/themes/semantic.min.css', $(\".alertifyjs8\").val());\n    zip.file('libraries/alertifyjs/css/themes/semantic.rtl.min.css', $(\".alertifyjs9\").val());")
-  } else {
-    $('.alertifyjs, .alertifyzip').clear()
-  }
-
-  if ( $("#angular").is(":checked") ) {
-    $('.angularjs').clear()
-    download_to_textbox('libraries/angular/angular.min.js', $('.angularjs'))
-    $(".angularzip").val("zip.file('libraries/angular/angular.min.js', $(\".angularjs\").val());")
-  } else {
-    $('.angularjs, .angularzip').clear()
-  }
-
-  if ( $("#bootstrap").is(":checked") ) {
-    $('.bootstrap').clear()
-    download_to_textbox('libraries/bootstrap/bootstrap.css', $('.bootstrap1'))
-    download_to_textbox('libraries/bootstrap/bootstrap.js', $('.bootstrap2'))
-    $('.bootstrap1, .bootstrap2').trigger("change")
-    $(".bootstrapzip").val("zip.file('libraries/bootstrap/bootstrap.css', $('.bootstrap1').val());\n  zip.file('libraries/bootstrap/bootstrap.js', $('.bootstrap2').val());")
-  } else {
-    $('.bootstrap, .bootstrapzip').clear()
-  }
-
-  if ( $("#chartjs").is(":checked") ) {
-    $('.chartjs').clear()
-    download_to_textbox('libraries/chartjs/chart.min.js', $('.chartjs'))
-    $('.chartjs').trigger("change")
-    $(".chartjszip").val("zip.file('libraries/chartjs/chart.min.js', $('.chartjs').val());")
-  } else {
-    $('.chartjs, .chartjszip').clear()
-  }
-  if ( $("#codemirror").is(":checked") ) {
-    $('.codemirror').clear()
-
-    download_to_textbox('libraries/codemirror/codemirror.css', $('.codemirror1'))
-    download_to_textbox('libraries/codemirror/addon/fold/foldgutter.css', $('.codemirror2'))
-    download_to_textbox('libraries/codemirror/codemirror.js', $('.codemirror3'))
-    download_to_textbox('libraries/codemirror/javascripts/code-completion.js', $('.codemirror4'))
-    download_to_textbox('libraries/codemirror/javascripts/css-completion.js', $('.codemirror5'))
-    download_to_textbox('libraries/codemirror/javascripts/html-completion.js', $('.codemirror6'))
-    download_to_textbox('libraries/codemirror/mode/javascript/javascript.js', $('.codemirror7'))
-    download_to_textbox('libraries/codemirror/mode/xml/xml.js', $('.codemirror8'))
-    download_to_textbox('libraries/codemirror/mode/css/css.js', $('.codemirror9'))
-    download_to_textbox('libraries/codemirror/mode/htmlmixed/htmlmixed.js', $('.codemirror10'))
-    download_to_textbox('libraries/codemirror/addon/edit/closetag.js', $('.codemirror11'))
-    download_to_textbox('libraries/codemirror/addon/edit/matchbrackets.js', $('.codemirror12'))
-    download_to_textbox('libraries/codemirror/addon/selection/active-line.js', $('.codemirror13'))
-    download_to_textbox('libraries/codemirror/addon/fold/foldcode.js', $('.codemirror14'))
-    download_to_textbox('libraries/codemirror/addon/fold/foldgutter.js', $('.codemirror15'))
-    download_to_textbox('libraries/codemirror/addon/fold/brace-fold.js', $('.codemirror16'))
-    download_to_textbox('libraries/codemirror/addon/fold/xml-fold.js', $('.codemirror17'))
-    download_to_textbox('libraries/codemirror/addon/fold/comment-fold.js', $('.codemirror18'))
-    download_to_textbox('libraries/codemirror/addon/search/search.js', $('.codemirror19'))
-    download_to_textbox('libraries/codemirror/addon/search/searchcursor.js', $('.codemirror20'))
-    download_to_textbox('libraries/codemirror/addon/dialog/dialog.js', $('.codemirror21'))
-    download_to_textbox('libraries/codemirror/addon/hint/show-hint.js', $('.codemirror22'))
-    download_to_textbox('libraries/codemirror/addon/hint/xml-hint.js', $('.codemirror23'))
-    download_to_textbox('libraries/codemirror/addon/hint/html-hint.js', $('.codemirror24'))
-    download_to_textbox('libraries/codemirror/addon/hint/css-hint.js', $('.codemirror25'))
-    download_to_textbox('libraries/codemirror/addon/hint/javascript-hint.js', $('.codemirror26'))
-    download_to_textbox('libraries/codemirror/addon/search/match-highlighter.js', $('.codemirror27'))
-    download_to_textbox('libraries/codemirror/htmlhint.js', $('.codemirror28'))
-    download_to_textbox('libraries/codemirror/csslint.js', $('.codemirror29'))
-    download_to_textbox('libraries/codemirror/jshint.js', $('.codemirror30'))
-    download_to_textbox('libraries/codemirror/addon/lint/lint.js', $('.codemirror31'))
-    download_to_textbox('libraries/codemirror/addon/lint/html-lint.js', $('.codemirror32'))
-    download_to_textbox('libraries/codemirror/addon/lint/css-lint.js', $('.codemirror33'))
-    download_to_textbox('libraries/codemirror/addon/lint/javascript-lint.js', $('.codemirror34'))
-    download_to_textbox('libraries/codemirror/inlet.min.js', $('.codemirror35'))
-    download_to_textbox('libraries/codemirror/inlet.css', $('.codemirror36'))
-    download_to_textbox('libraries/codemirror/emmet.js', $('.codemirror37'))
-    download_to_textbox('libraries/codemirror/addon/lint/lint.css', $('.codemirror38'))
-    download_to_textbox('libraries/codemirror/addon/dialog/dialog.css', $('.codemirror39'))
-    download_to_textbox('libraries/codemirror/addon/hint/show-hint.css', $('.codemirror40'))
-    download_to_textbox('libraries/codemirror/addon/search/goto-line.js', $('.codemirror41'))
-    download_to_textbox('libraries/codemirror/markdown.js', $('.codemirror42'))
-    download_to_textbox('libraries/codemirror/continuelist.js', $('.codemirror43'))
-
-    // var grabCodemirror = [
-    //   "zip.file('libraries/codemirror/codemirror.css', $('.codemirror1').val());\n",
-    //   "zip.file('libraries/codemirror/addon/fold/foldgutter.css', $('.codemirror2').val());\n",
-    //   "zip.file('libraries/codemirror/codemirror.js', $('.codemirror3').val());\n",
-    //   "zip.file('libraries/codemirror/javascripts/code-completion.js', $('.codemirror4').val());\n",
-    //   "zip.file('libraries/codemirror/javascripts/css-completion.js', $('.codemirror5').val());\n",
-    //   "zip.file('libraries/codemirror/javascripts/html-completion.js', $('.codemirror6').val());\n",
-    //   "zip.file('libraries/codemirror/mode/javascript/javascript.js', $('.codemirror7').val());\n",
-    //   "zip.file('libraries/codemirror/mode/xml/xml.js', $('.codemirror8').val());\n",
-    //   "zip.file('libraries/codemirror/mode/css/css.js', $('.codemirror9').val());\n",
-    //   "zip.file('libraries/codemirror/mode/htmlmixed/htmlmixed.js', $('.codemirror10').val());\n",
-    //   "zip.file('libraries/codemirror/addon/edit/closetag.js', $('.codemirror11').val());\n",
-    //   "zip.file('libraries/codemirror/addon/edit/matchbrackets.js', $('.codemirror12').val());\n",
-    //   "zip.file('libraries/codemirror/addon/selection/active-line.js', $('.codemirror13').val());\n",
-    //   "zip.file('libraries/codemirror/addon/fold/foldcode.js', $('.codemirror14').val());\n",
-    //   "zip.file('libraries/codemirror/addon/fold/foldgutter.js', $('.codemirror15').val());\n",
-    //   "zip.file('libraries/codemirror/addon/fold/brace-fold.js', $('.codemirror16').val());\n",
-    //   "zip.file('libraries/codemirror/addon/fold/xml-fold.js', $('.codemirror17').val());\n",
-    //   "zip.file('libraries/codemirror/addon/fold/comment-fold.js', $('.codemirror18').val());\n",
-    //   "zip.file('libraries/codemirror/addon/search/search.js', $('.codemirror19').val());\n",
-    //   "zip.file('libraries/codemirror/addon/search/searchcursor.js', $('.codemirror20').val());\n",
-    //   "zip.file('libraries/codemirror/addon/dialog/dialog.js', $('.codemirror21').val());\n",
-    //   "zip.file('libraries/codemirror/addon/hint/show-hint.js', $('.codemirror22').val());\n",
-    //   "zip.file('libraries/codemirror/addon/hint/xml-hint.js', $('.codemirror23').val());\n",
-    //   "zip.file('libraries/codemirror/addon/hint/html-hint.js', $('.codemirror24').val());\n",
-    //   "zip.file('libraries/codemirror/addon/hint/css-hint.js', $('.codemirror25').val());\n",
-    //   "zip.file('libraries/codemirror/addon/hint/javascript-hint.js', $('.codemirror26').val());\n",
-    //   "zip.file('libraries/codemirror/addon/search/match-highlighter.js', $('.codemirror27').val());\n",
-    //   "zip.file('libraries/codemirror/htmlhint.js', $('.codemirror28').val());\n",
-    //   "zip.file('libraries/codemirror/csslint.js', $('.codemirror29').val());\n",
-    //   "zip.file('libraries/codemirror/jshint.js', $('.codemirror30').val());\n",
-    //   "zip.file('libraries/codemirror/addon/lint/lint.js', $('.codemirror31').val());\n",
-    //   "zip.file('libraries/codemirror/addon/lint/html-lint.js', $('.codemirror32').val());\n",
-    //   "zip.file('libraries/codemirror/addon/lint/css-lint.js', $('.codemirror33').val());\n",
-    //   "zip.file('libraries/codemirror/addon/lint/javascript-lint.js', $('.codemirror34').val());\n",
-    //   "zip.file('libraries/codemirror/inlet.min.js', $('.codemirror35').val());\n",
-    //   "zip.file('libraries/codemirror/inlet.css', $('.codemirror36').val());\n",
-    //   "zip.file('libraries/codemirror/emmet.js', $('.codemirror37').val());\n",
-    //   "zip.file('libraries/codemirror/addon/lint/lint.css', $('.codemirror38').val());\n",
-    //   "zip.file('libraries/codemirror/addon/dialog/dialog.css', $('.codemirror39').val());\n",
-    //   "zip.file('libraries/codemirror/addon/hint/show-hint.css', $('.codemirror40').val());\n",
-    //   "zip.file('libraries/codemirror/addon/search/goto-line.js', $('.codemirror41').val());\n",
-    //   "zip.file('libraries/codemirror/markdown.js', $('.codemirror42').val());\n",
-    //   "zip.file('libraries/codemirror/continuelist.js', $('.codemirror43').val());\n"
-    // ];
-
-    var grabCodemirror = "zip.file('libraries/codemirror/codemirror.css', $('.codemirror1').val());\n\n      zip.file('libraries/codemirror/addon/fold/foldgutter.css', $('.codemirror2').val());\n\n      zip.file('libraries/codemirror/codemirror.js', $('.codemirror3').val());\n\n      zip.file('libraries/codemirror/javascripts/code-completion.js', $('.codemirror4').val());\n\n      zip.file('libraries/codemirror/javascripts/css-completion.js', $('.codemirror5').val());\n\n      zip.file('libraries/codemirror/javascripts/html-completion.js', $('.codemirror6').val());\n\n      zip.file('libraries/codemirror/mode/javascript/javascript.js', $('.codemirror7').val());\n\n      zip.file('libraries/codemirror/mode/xml/xml.js', $('.codemirror8').val());\n\n      zip.file('libraries/codemirror/mode/css/css.js', $('.codemirror9').val());\n\n      zip.file('libraries/codemirror/mode/htmlmixed/htmlmixed.js', $('.codemirror10').val());\n\n      zip.file('libraries/codemirror/addon/edit/closetag.js', $('.codemirror11').val());\n\n      zip.file('libraries/codemirror/addon/edit/matchbrackets.js', $('.codemirror12').val());\n\n      zip.file('libraries/codemirror/addon/selection/active-line.js', $('.codemirror13').val());\n\n      zip.file('libraries/codemirror/addon/fold/foldcode.js', $('.codemirror14').val());\n\n      zip.file('libraries/codemirror/addon/fold/foldgutter.js', $('.codemirror15').val());\n\n      zip.file('libraries/codemirror/addon/fold/brace-fold.js', $('.codemirror16').val());\n\n      zip.file('libraries/codemirror/addon/fold/xml-fold.js', $('.codemirror17').val());\n\n      zip.file('libraries/codemirror/addon/fold/comment-fold.js', $('.codemirror18').val());\n\n      zip.file('libraries/codemirror/addon/search/search.js', $('.codemirror19').val());\n\n      zip.file('libraries/codemirror/addon/search/searchcursor.js', $('.codemirror20').val());\n\n      zip.file('libraries/codemirror/addon/dialog/dialog.js', $('.codemirror21').val());\n\n      zip.file('libraries/codemirror/addon/hint/show-hint.js', $('.codemirror22').val());\n\n      zip.file('libraries/codemirror/addon/hint/xml-hint.js', $('.codemirror23').val());\n\n      zip.file('libraries/codemirror/addon/hint/html-hint.js', $('.codemirror24').val());\n\n      zip.file('libraries/codemirror/addon/hint/css-hint.js', $('.codemirror25').val());\n\n      zip.file('libraries/codemirror/addon/hint/javascript-hint.js', $('.codemirror26').val());\n\n      zip.file('libraries/codemirror/addon/search/match-highlighter.js', $('.codemirror27').val());\n\n      zip.file('libraries/codemirror/htmlhint.js', $('.codemirror28').val());\n\n      zip.file('libraries/codemirror/csslint.js', $('.codemirror29').val());\n\n      zip.file('libraries/codemirror/jshint.js', $('.codemirror30').val());\n\n      zip.file('libraries/codemirror/addon/lint/lint.js', $('.codemirror31').val());\n\n      zip.file('libraries/codemirror/addon/lint/html-lint.js', $('.codemirror32').val());\n\n      zip.file('libraries/codemirror/addon/lint/css-lint.js', $('.codemirror33').val());\n\n      zip.file('libraries/codemirror/addon/lint/javascript-lint.js', $('.codemirror34').val());\n\n      zip.file('libraries/codemirror/inlet.min.js', $('.codemirror35').val());\n\n      zip.file('libraries/codemirror/inlet.css', $('.codemirror36').val());\n\n      zip.file('libraries/codemirror/emmet.js', $('.codemirror37').val());\n\n      zip.file('libraries/codemirror/addon/lint/lint.css', $('.codemirror38').val());\n\n      zip.file('libraries/codemirror/addon/dialog/dialog.css', $('.codemirror39').val());\n\n      zip.file('libraries/codemirror/addon/hint/show-hint.css', $('.codemirror40').val());\n\n      zip.file('libraries/codemirror/addon/search/goto-line.js', $('.codemirror41').val());\n\n      zip.file('libraries/codemirror/markdown.js', $('.codemirror42').val());\n\n      zip.file('libraries/codemirror/continuelist.js', $('.codemirror43').val());\n"
-
-    $('.codemirror').trigger("change")
-    $(".codemirrorzip").val(grabCodemirror)
-  } else {
-    $('.codemirror, .codemirrorzip').clear()
-  }
-  if ( $("#createjs").is(":checked") ) {
-    $('.createjs').clear()
-    download_to_textbox('libraries/createjs/createjs.min.js', $('.createjs1'))
-    download_to_textbox('libraries/createjs/easeljs.min.js', $('.createjs2'))
-    download_to_textbox('libraries/createjs/tweenjs.min.js', $('.createjs3'))
-    download_to_textbox('libraries/createjs/soundjs.min.js', $('.createjs4'))
-    download_to_textbox('libraries/createjs/preloadjs.min.js', $('.createjs5'))
-    $('.createjs').trigger("change")
-    $(".createjszip").val("zip.file('libraries/createjs/createjs.min.js', $('.createjs1').val());\nzip.file('libraries/createjs/easeljs.min.js', $('.createjs2').val());\nzip.file('libraries/createjs/tweenjs.min.js', $('.createjs3').val());\nzip.file('libraries/createjs/soundjs.min.js', $('.createjs4').val());\nzip.file('libraries/createjs/preloadjs.min.js', $('.createjs5').val());")
-  } else {
-    $('.createjs, .createjszip').clear()
-  }
-  if ( $("#d3").is(":checked") ) {
-    $('.d3').clear()
-    download_to_textbox('libraries/d3/d3.js', $('.d3'))
-    $('.d3').trigger("change")
-    $(".d3zip").val("zip.file('libraries/d3/d3.js', $(\".d3\").val());")
-  } else {
-    $('.d3, .d3zip').clear()
-  }
-  if ( $("#dojo").is(":checked") ) {
-    $('.dojo').clear()
-    download_to_textbox('libraries/dojo/dojo.js', $('.dojo'))
-    $('.dojo').trigger("change")
-    $(".dojozip").val("zip.file('libraries/dojo/dojo.js', $(\".dojo\").val());")
-  } else {
-    $('.dojo, .dojozip').clear()
-  }
-  if ( $("#fabric").is(":checked") ) {
-    $('.fabric').clear()
-    download_to_textbox('libraries/fabric/fabric.min.js', $('.fabric'))
-    $('.fabric').trigger("change")
-    $(".fabriczip").val("zip.file('libraries/fabric/fabric.min.js', $(\".fabric\").val());")
-  } else {
-    $('.fabric, .fabriczip').clear()
-  }
-  if ( $("#jquery").is(":checked") ) {
-    $('.jquery').clear()
-    download_to_textbox('libraries/jquery/jquery.js', $('.jquery'))
-    $('.jquery').trigger("change")
-    $(".jqueryzip").val("zip.file('libraries/jquery/jquery.js', $(\".jquery\").val());")
-  } else {
-    $('.jquery, .jqueryzip').clear()
-  }
-  if ( $("#jqueryui").is(":checked") ) {
-    $('.jqueryui').clear()
-    download_to_textbox('libraries/jqueryui/jqueryui.css', $('.jqueryui1'))
-    download_to_textbox('libraries/jqueryui/jqueryui.min.js', $('.jqueryui2'))
-    download_to_textbox('libraries/jqueryui/jquery.ui.touch-punch.min.js', $('.jqueryui3'))
-    $('.jqueryui').trigger("change")
-    $(".jqueryuizip").val("zip.file('libraries/jqueryui/jqueryui.css', $(\".jqueryui1\").val());\nzip.file('libraries/jqueryui/jqueryui.min.js', $(\".jqueryui2\").val());\nzip.file('libraries/jqueryui/jquery.ui.touch-punch.min.js', $(\".jqueryui3\").val());")
-  } else {
-    $('.jqueryui, .jqueryuizip').clear()
-  }
-  if ( $("#jquerytools").is(":checked") ) {
-    $('.jquerytools').clear()
-    download_to_textbox('libraries/jquerytools/jquery.tools.min.js', $('.jquerytools'))
-    $('.jquerytools').trigger("change")
-    $(".jquerytoolszip").val("zip.file('libraries/jquerytools/jquery.tools.min.js', $(\".jquerytools\").val());")
-  } else {
-    $('.jquerytools, .jquerytoolszip').clear()
-  }
-  if ( $("#jszip").is(":checked") ) {
-    $('.jszip').clear()
-    download_to_textbox('libraries/jszip/jszip.min.css', $('.jszip1'))
-    download_to_textbox('libraries/jszip/jszip-utils.js', $('.jszip2'))
-    download_to_textbox('libraries/jszip/FileSaver.js', $('.jszip3'))
-    download_to_textbox('libraries/jszip/Blob.js', $('.jszip4'))
-    $('.jszip').trigger("change")
-    $(".jszipzip").val("zip.file('libraries/jszip/jszip.min.js', $(\".jszip1\").val());\nzip.file('libraries/jszip/jszip-utils.js', $(\".jszip2\").val());\nzip.file('libraries/jszip/FileSaver.js', $(\".jszip3\").val());\nzip.file('libraries/jszip/Blob.js', $(\".jszip4\").val());")
-  } else {
-    $('.jszip, .jszipzip').clear()
-  }
-  if ( $("#jqxsplitter").is(":checked") ) {
-    $('.jqxsplitter').clear()
-
-    download_to_textbox('libraries/jqwidgets/styles/jqx.base.css', $('.jqwidgets1'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.android.css', $('.jqwidgets2'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.arctic.css', $('.jqwidgets3'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.black.css', $('.jqwidgets4'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.blackberry.css', $('.jqwidgets5'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.bootstrap.css', $('.jqwidgets6'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.classic.css', $('.jqwidgets7'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.darkblue.css', $('.jqwidgets8'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.energyblue.css', $('.jqwidgets9'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.fresh.css', $('.jqwidgets10'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.highcontrast.css', $('.jqwidgets11'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.metro.css', $('.jqwidgets12'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.metrodark.css', $('.jqwidgets13'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.mobile.css', $('.jqwidgets14'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.office.css', $('.jqwidgets15'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.orange.css', $('.jqwidgets16'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.shinyblack.css', $('.jqwidgets17'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.summer.css', $('.jqwidgets18'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.ui-darkness.css', $('.jqwidgets19'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.ui-le-frog.css', $('.jqwidgets20'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.ui-lightness.css', $('.jqwidgets21'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.ui-overcast.css', $('.jqwidgets22'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.ui-redmond.css', $('.jqwidgets23'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.ui-smoothness.css', $('.jqwidgets24'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.ui-start.css', $('.jqwidgets25'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.ui-sunny.css', $('.jqwidgets26'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.web.css', $('.jqwidgets27'))
-    download_to_textbox('libraries/jqwidgets/styles/jqx.windowsphone.css', $('.jqwidgets28'))
-    download_to_textbox('libraries/jqwidgets/jqxcore.js', $('.jqwidgets29'))
-    download_to_textbox('libraries/jqwidgets/jqxsplitter.js', $('.jqwidgets30'))
-
-    // var jqxsplitter = [
-    //   "zip.file('libraries/jqwidgets/styles/jqx.base.css', $('.jqwidgets1').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.android.css', $('.jqwidgets2').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.arctic.css', $('.jqwidgets3').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.black.css', $('.jqwidgets4').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.blackberry.css', $('.jqwidgets5').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.bootstrap.css', $('.jqwidgets6').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.classic.css', $('.jqwidgets7').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.darkblue.css', $('.jqwidgets8').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.energyblue.css', $('.jqwidgets9').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.fresh.css', $('.jqwidgets10').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.highcontrast.css', $('.jqwidgets11').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.metro.css', $('.jqwidgets12').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.metrodark.css', $('.jqwidgets13').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.mobile.css', $('.jqwidgets14').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.office.css', $('.jqwidgets15').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.orange.css', $('.jqwidgets16').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.shinyblack.css', $('.jqwidgets17').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.summer.css', $('.jqwidgets18').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.ui-darkness.css', $('.jqwidgets19').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.ui-le-frog.css', $('.jqwidgets20').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.ui-lightness.css', $('.jqwidgets21').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.ui-overcast.css', $('.jqwidgets22').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.ui-redmond.css', $('.jqwidgets23').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.ui-smoothness.css', $('.jqwidgets24').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.ui-start.css', $('.jqwidgets25').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.ui-sunny.css', $('.jqwidgets26').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.web.css', $('.jqwidgets27').val());\n",
-    //   "zip.file('libraries/jqwidgets/styles/jqx.windowsphone.css', $('.jqwidgets28').val());\n",
-    //   "zip.file('libraries/jqwidgets/jqxcore.js', $('.jqwidgets29').val());\n",
-    //   "zip.file('libraries/jqwidgets/jqxsplitter.js', $('.jqwidgets30').val());\n"
-    // ];
-
-    var jqxsplitter = "zip.file('libraries/jqwidgets/styles/jqx.base.css', $('.jqwidgets1').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.android.css', $('.jqwidgets2').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.arctic.css', $('.jqwidgets3').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.black.css', $('.jqwidgets4').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.blackberry.css', $('.jqwidgets5').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.bootstrap.css', $('.jqwidgets6').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.classic.css', $('.jqwidgets7').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.darkblue.css', $('.jqwidgets8').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.energyblue.css', $('.jqwidgets9').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.fresh.css', $('.jqwidgets10').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.highcontrast.css', $('.jqwidgets11').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.metro.css', $('.jqwidgets12').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.metrodark.css', $('.jqwidgets13').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.mobile.css', $('.jqwidgets14').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.office.css', $('.jqwidgets15').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.orange.css', $('.jqwidgets16').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.shinyblack.css', $('.jqwidgets17').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.summer.css', $('.jqwidgets18').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.ui-darkness.css', $('.jqwidgets19').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.ui-le-frog.css', $('.jqwidgets20').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.ui-lightness.css', $('.jqwidgets21').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.ui-overcast.css', $('.jqwidgets22').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.ui-redmond.css', $('.jqwidgets23').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.ui-smoothness.css', $('.jqwidgets24').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.ui-start.css', $('.jqwidgets25').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.ui-sunny.css', $('.jqwidgets26').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.web.css', $('.jqwidgets27').val());\n\n      zip.file('libraries/jqwidgets/styles/jqx.windowsphone.css', $('.jqwidgets28').val());\n\n      zip.file('libraries/jqwidgets/jqxcore.js', $('.jqwidgets29').val());\n\n      zip.file('libraries/jqwidgets/jqxsplitter.js', $('.jqwidgets30').val());\n"
-
-    $('.jqxsplitter').trigger("change")
-    $(".jqxsplitterzip").val(jqxsplitter)
-  } else {
-    $('.jqxsplitter, .jqxsplitterzip').clear()
-  }
-  if ( $("#kinetic").is(":checked") ) {
-    $('.kinetic').clear()
-    download_to_textbox('libraries/kinetic/kinetic.js', $('.kinetic'))
-    $('.kinetic').trigger("change")
-    $(".kineticzip").val("zip.file('libraries/kinetic/kinetic.js', $(\".kinetic\").val());")
-  } else {
-    $('.kinetic, .kineticzip').clear()
-  }
-  if ( $("#knockout").is(":checked") ) {
-    $('.knockout').clear()
-    download_to_textbox('libraries/knockout/knockout.js', $('.knockout'))
-    $('.knockout').trigger("change")
-    $(".knockoutzip").val("zip.file('libraries/knockout/knockout.js', $(\".knockout\").val());")
-  } else {
-    $('.knockout, .knockoutzip').clear()
-  }
-  if ( $("#modernizer").is(":checked") ) {
-    $('.modernizer').clear()
-    download_to_textbox('libraries/modernizer/modernizer.js', $('.modernizer'))
-    $('.modernizer').trigger("change")
-    $(".modernizerzip").val("zip.file('libraries/modernizer/modernizer.js', $(\".modernizer\").val());")
-  } else {
-    $('.modernizer, .modernizerzip').clear()
-  }
-  if ( $("#mootools").is(":checked") ) {
-    $('.mootools').clear()
-    download_to_textbox('libraries/mootools/mootools-yui-compressed.js', $('.mootools'))
-    $('.mootools').trigger("change")
-    $(".mootoolszip").val("zip.file('libraries/mootools/mootools-yui-compressed.js', $(\".mootools\").val());")
-  } else {
-    $('.mootools, .mootoolszip').clear()
-  }
-  if ( $("#normalize").is(":checked") ) {
-    $('.normalize').clear()
-    download_to_textbox('libraries/normalize/normalize.css', $('.normalize'))
-    $('.normalize').trigger("change")
-    $(".normalizezip").val("zip.file('libraries/normalize/normalize.css', $(\".normalize\").val());")
-  } else {
-    $('.normalize, .normalizezip').clear()
-  }
-  if ( $("#paperjs").is(":checked") ) {
-    $('.paperjs').clear()
-    download_to_textbox('libraries/paperjs/paperjs.js', $('.paperjs'))
-    $('.paperjs').trigger("change")
-    $(".paperjszip").val("zip.file('libraries/paperjs/paperjs.js', $(\".paperjs\").val());")
-  } else {
-    $('.paperjs, .paperjszip').clear()
-  }
-  if ( $("#polyui").is(":checked") ) {
-    $('.polyui').clear()
-    download_to_textbox('libraries/polyui/polyui.css', $('.polyui'))
-    $('.polyui').trigger("change")
-    $(".polyuizip").val("zip.file('libraries/polyui/polyui.css', $(\".polyui\").val());")
-  } else {
-    $('.polyui, .polyuizip').clear()
-  }
-  if ( $("#processingjs").is(":checked") ) {
-    $('.processingjs').clear()
-    download_to_textbox('libraries/processingjs/processingjs.js', $('.processingjs'))
-    $('.processingjs').trigger("change")
-    $(".processingjszip").val("zip.file('libraries/processingjs/processingjs.js', $(\".processingjs\").val());")
-  } else {
-    $('.processingjs, .processingjsszip').clear()
-  }
-  if ( $("#prototypejs").is(":checked") ) {
-    $('.prototypejs').clear()
-    download_to_textbox('libraries/processingjs/prototypejs.js', $('.prototypejs'))
-    $('.prototypejs').trigger("change")
-    $(".prototypejszip").val("zip.file('libraries/prototypejs/prototypejs.js', $(\".prototypejs\").val());")
-  } else {
-    $('.prototypejs, .prototypejszip').clear()
-  }
-  if ( $("#qooxdoo").is(":checked") ) {
-    $('.qooxdoo').clear()
-    download_to_textbox('libraries/qooxdoo/qooxdoo.js', $('.qooxdoo'))
-    $('.qooxdoo').trigger("change")
-    $(".qooxdooszip").val("zip.file('libraries/qooxdoo/qooxdoo.js', $(\".qooxdoo\").val());")
-  } else {
-    $('.qooxdoo, .qooxdooszip').clear()
-  }
-  if ( $("#raphael").is(":checked") ) {
-    $('.raphael').clear()
-    download_to_textbox('libraries/raphael/raphael.js', $('.raphael'))
-    $('.raphael').trigger("change")
-    $(".raphaelzip").val("zip.file('libraries/raphael/raphael.js', $(\".raphael\").val());")
-  } else {
-    $('.raphael, .raphaelzip').clear()
-  }
-  if ( $("#requirejs").is(":checked") ) {
-    $('.requirejs').clear()
-    download_to_textbox('libraries/require/require.js', $('.requirejs'))
-    $('.requirejs').trigger("change")
-    $(".requirejszip").val("zip.file('libraries/require/require.js', $(\".requirejs\").val());")
-  } else {
-    $('.requirejs, .requirejszip').clear()
-  }
-  if ( $("#showdown").is(":checked") ) {
-    $('.showdown').clear()
-    download_to_textbox('libraries/showdown/Showdown.min.js', $('.showdown'))
-    $('.showdown').trigger("change")
-    $(".showdownzip").val("zip.file('libraries/showdown/Showdown.min.js', $(\".showdown\").val());")
-  } else {
-    $('.showdown, .showdownzip').clear()
-  }
-  if ( $("#scriptaculous").is(":checked") ) {
-    $('.scriptaculous').clear()
-    download_to_textbox('libraries/scriptaculous/scriptaculous.js', $('.scriptaculous'))
-    $('.scriptaculous').trigger("change")
-    $(".scriptaculouszip").val("zip.file('libraries/scriptaculous/scriptaculous.js', $(\".scriptaculous\").val());")
-  } else {
-    $('.scriptaculous, .scriptaculouszip').clear()
-  }
-  if ( $("#snapsvg").is(":checked") ) {
-    $('.snapsvg').clear()
-    download_to_textbox('libraries/snap-svg/snap-svg.js', $('.snapsvg'))
-    $('.snapsvg').trigger("change")
-    $(".snapsvgzip").val("zip.file('libraries/snap-svg/snap-svg.js', $(\".snapsvg\").val());")
-  } else {
-    $('.snapsvg, .snapsvgzip').clear()
-  }
-  if ( $("#svgjs").is(":checked") ) {
-    $('.svgjs').clear()
-    download_to_textbox('libraries/svg-svg/svg-svg.js', $('.svgjs'))
-    $('.svgjs').trigger("change")
-    $(".svgjszip").val("zip.file('libraries/svg-svg/svg-svg.js', $(\".svgjs\").val());")
-  } else {
-    $('.svgjs, .svgjszip').clear()
-  }
-  if ( $("#threejs").is(":checked") ) {
-    $('.threejs').clear()
-    download_to_textbox('libraries/threejs/three.min.js', $('.threejs'))
-    $('.threejs').trigger("change")
-    $(".threejszip").val("zip.file('libraries/threejs/three.min.js', $(\".threejs\").val());")
-  } else {
-    $('.threejs, .threejszip').clear()
-  }
-  if ( $("#underscorejs").is(":checked") ) {
-    $('.underscorejs').clear()
-    download_to_textbox('libraries/underscore/underscore.js', $('.underscorejs'))
-    $('.underscorejs').trigger("change")
-    $(".underscorejszip").val("zip.file('libraries/underscore/underscore.js', $(\".underscorejs\").val());")
-  } else {
-    $('.underscorejs, .underscorejszip').clear()
-  }
-  if ( $("#webfontloader").is(":checked") ) {
-    $('.webfontloader').clear()
-    download_to_textbox('libraries/webfont/webfont.js', $('.webfontloader'))
-    $('.webfontloader').trigger("change")
-    $(".webfontloaderzip").val("zip.file('libraries/webfont/webfont.js', $(\".webfontloader\").val());")
-  } else {
-    $('.webfontloader, .webfontloaderzip').clear()
-  }
-  if ( $("#yui").is(":checked") ) {
-    $('.yui').clear()
-    download_to_textbox('libraries/yui/yui.js', $('.yui'))
-    $('.yui').trigger("change")
-    $(".yuizip").val("zip.file('libraries/yui/yui.js', $(\".yui\").val());")
-  } else {
-    $('.yui, .yuizip').clear()
-  }
-  if ( $("#zepto").is(":checked") ) {
-    $('.zepto').clear()
-    download_to_textbox('libraries/zepto/zepto.js', $('.zepto'))
-    $('.zepto').trigger("change")
-    $(".zeptozip").val("zip.file('libraries/zepto/zepto.js', $(\".zepto\").val());")
-  } else {
-    $('.zepto, .zeptozip').clear()
-  }
-
-  // Update JSZip (Applied dynamically from HTML div )
-  $("[data-action=ziplibs]").val(function() {
-    return $.map($(".jszipcode"), function (el) {
-      return el.value
-    }).join("")
-  })
-
+  checkedLibs()
 
   var libsTextarea = $("[data-action=libstextarea]")
-  var libsValue = $(this).parent().nextAll("div").children(".combinelibs:first").val() + "\n"
 
   if ( $(this).prop("checked") === true ) {
     textarea.val( textarea.val() + value )
-    libsTextarea.val( libsTextarea.val() + libsValue )
   } else {
     textarea.val( textarea.val().replace( value, "") )
-    libsTextarea.val( libsTextarea.val().replace( libsValue, "") )
   }
 
   setTimeout(updatePreview, 300)
@@ -1543,6 +1549,7 @@ $(".metaboxes .heading").not("input[type=number]").clearSearch()
 shortcutKeys()
 initGenerators()
 fullscreenEditor()
+checkedLibs()
 appDemos()
 charGeneration()
 
@@ -1557,9 +1564,6 @@ function openTools() {
   $("[data-action=tools]").trigger("click")
 }
 // openTools()
-
-// Test Save to Web
-$("[data-action=save-online]").click()
 
 // $(window).on("beforeunload", function() {
 //   return "Are you sure you wish to leave? All your changes maybe lost."

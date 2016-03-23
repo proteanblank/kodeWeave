@@ -63,33 +63,6 @@ a:active {
 .fl, header a {
   float: left;
 }
-.fn {
-  float: none;
-}
-.block {
-  display: block;
-}
-.iblock {
-  display: inline-block;
-}
-.hide {
-  display: none;
-}
-.pointer {
-  cursor: pointer;
-}
-.nopadding {
-  padding: 0;
-}
-.nomar {
-  margin: 0;
-}
-.tl {
-  text-align: left;
-}
-.tr {
-  text-align: right;
-}
 #add-library, #add-demo {
   font-size: 1.6em;
   padding: 0 5px 0 0 ;
@@ -254,6 +227,11 @@ a:active {
   #charmenu {
     right: 0;
   }
+}
+
+/* Download Dialog */
+.download-dialog li:not(.hide) {
+  display: table;
 }
 
 /* Chrome Dialog */
@@ -559,4 +537,39 @@ textarea {
     -webkit-transform: scale(1);
     transform: scale(1);
   }
+}
+
+/* Variable Classes */
+.fr {
+  float: right;
+}
+.fl {
+  float: left;
+}
+.fn {
+  float: none;
+}
+.block {
+  display: block;
+}
+.iblock {
+  display: inline-block;
+}
+.hide {
+  display: none;
+}
+.pointer {
+  cursor: pointer;
+}
+.nopadding {
+  padding: 0;
+}
+.nomar {
+  margin: 0;
+}
+.tl {
+  text-align: left;
+}
+.tr {
+  text-align: right;
 }

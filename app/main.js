@@ -85,7 +85,7 @@ var ruleSets = {
 }
 
 // Initialize HTML editor
-var htmlEditor = CodeMirror.fromTextArea(document.getElementById("htmlEditor"), {
+var htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
   mode: "text/html",
   tabMode: "indent",
   styleActiveLine: true,
@@ -108,12 +108,12 @@ var htmlEditor = CodeMirror.fromTextArea(document.getElementById("htmlEditor"), 
     "Shift-Cmd-'": function(){ applyMinify() },
     "Shift-Cmd-\\": function(){ applyBeautify() }
   },
-  // value: "<!-- comment -->\nhello world!",
+  value: "<!-- comment -->\nhello world!",
   paletteHints: true
 })
 Inlet(htmlEditor)
 emmetCodeMirror(htmlEditor)
-var cssEditor = CodeMirror.fromTextArea(document.getElementById("cssEditor"), {
+var cssEditor = CodeMirror(document.getElementById("cssEditor"), {
   mode: "text/css",
   tabMode: "indent",
   styleActiveLine: true,
@@ -139,7 +139,7 @@ var cssEditor = CodeMirror.fromTextArea(document.getElementById("cssEditor"), {
 })
 Inlet(cssEditor)
 emmetCodeMirror(cssEditor)
-var jsEditor = CodeMirror.fromTextArea(document.getElementById("jsEditor"), {
+var jsEditor = CodeMirror(document.getElementById("jsEditor"), {
   mode: "text/javascript",
   tabMode: "indent",
   styleActiveLine: true,
@@ -166,7 +166,7 @@ var jsEditor = CodeMirror.fromTextArea(document.getElementById("jsEditor"), {
 })
 Inlet(jsEditor)
 // emmetCodeMirror(jsEditor)
-var mdEditor = CodeMirror.fromTextArea(document.getElementById("mdEditor"), {
+var mdEditor = CodeMirror(document.getElementById("mdEditor"), {
   mode: "text/x-markdown",
   theme: "default",
   tabMode: "indent",
@@ -210,12 +210,11 @@ var openHTML = CodeMirror(document.querySelector("#openHTML"), {
   mode: "text/html",
   value: "<!DOCTYPE html>\n<html>\n  <head>\n    <title>"
 })
-var sitekeywords = ( $("[data-action=sitekeywords]").val() === "" ? "" : "    <meta name=\"keywords\" content=\""+ $("[data-action=sitekeywords]").val().replace(/ /g,",") +"\">\n" )
 var sitedesc = ( $("[data-action=sitedesc]").val() === "" ? "" : "    <meta name=\"description\" content=\""+ $("[data-action=sitedesc]").val() +"\">\n" )
 var siteauthor = ( $("[data-action=siteauthor]").val() === "" ? "" : "    <meta name=\"author\" content=\""+ $("[data-action=siteauthor]").val() +"\">\n" )
 var closeHTML = CodeMirror(document.querySelector("#closeHTML"), {
   mode: "text/html",
-  value: "</title>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"initial-scale=1.0\">\n" + sitekeywords + sitedesc + siteauthor + "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=9\" />\n"
+  value: "</title>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"initial-scale=1.0\">\n" + sitedesc + siteauthor + "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=9\" />\n"
 })
 var closeRefs = CodeMirror(document.querySelector("#closeRefs"), {
   mode: "text/html",
@@ -226,16 +225,15 @@ var closeFinal = CodeMirror(document.querySelector("#closeFinal"), {
   value: "\n  </body>\n</html>"
 })
 
-$("[data-action=sitekeywords], [data-action=sitedesc], [data-action=siteauthor]").bind("keyup change", function() {
-  var sitekeywords = ( $("[data-action=sitekeywords]").val() === "" ? "" : "    <meta name=\"keywords\" content=\""+ $("[data-action=sitekeywords]").val().replace(/ /g,",") +"\">\n" )
+$("[data-action=sitedesc], [data-action=siteauthor]").bind("keyup change", function() {
   var sitedesc = ( $("[data-action=sitedesc]").val() === "" ? "" : "    <meta name=\"description\" content=\""+ $("[data-action=sitedesc]").val() +"\">\n" )
   var siteauthor = ( $("[data-action=siteauthor]").val() === "" ? "" : "    <meta name=\"author\" content=\""+ $("[data-action=siteauthor]").val() +"\">\n" )
-  closeHTML.setValue("</title>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"initial-scale=1.0\">\n" + sitekeywords + sitedesc + siteauthor + "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=9\" />\n")
+  closeHTML.setValue("</title>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"initial-scale=1.0\">\n" + sitedesc + siteauthor + "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=9\" />\n")
   updatePreview()
 })
 
 $(".clear_input").click(function() {
-  $("[data-action=sitekeywords], [data-action=sitedesc], [data-action=siteauthor]").trigger("change")
+  $("[data-action=sitedesc], [data-action=siteauthor]").trigger("change")
 })
 
 // Live preview
