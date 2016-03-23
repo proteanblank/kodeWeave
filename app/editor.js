@@ -1402,50 +1402,6 @@ $("[data-action=load]").on("change", function(evt) {
   }
 })
 
-// Save anonymously
-$("[data-action=save-anon]").on("click", function() {
-  var data = {
-    // Description of the gist
-    description: $("[data-action=sitedesc]").val(),
-    // public or private?
-    public: true,
-    // This gist has a html file, named index.html
-    files: {
-      "index.html": {
-        "content": htmlEditor.getValue()
-      },
-      "index.css": {
-        "content": cssEditor.getValue()
-      },
-      "index.js": {
-        "content": jsEditor.getValue()
-      },
-      "README.md": {
-        "content": mdEditor.getValue()
-      }
-    }
-  }
-  // Post on Github via JQuery Ajax
-  $.ajax({
-    url: "https://api.github.com/gists",
-    type: "POST",
-    dataType: "json",
-    data: JSON.stringify(data)
-  })
-  .success(function(e) {
-    alertify.success("Successfully saved:<br><a data-action=\"anon-saved\">"+ e.html_url +"</a>")
-    $("[data-action=anon-saved]").attr("href", e.html_url)
-                                 .attr("target", "_blank")
-
-    setTimeout(function() {
-      $("[data-action=anon-saved]").trigger("click")
-    }, 1500)
-  })
-  .error(function(e) {
-    alertify.error("gist save error: " + e)
-  })
-})
-
 // Download as zip
 $("[data-action=download-zip]").on("click", function() {
   if ( $("[data-action=download]").hasClass("active") ) {
