@@ -1,12 +1,12 @@
 kodeWeave
 ===================
 
-kodeWeave is a realtime coding playground for HTML, CSS and Javascript. Similar to [JSFiddle](http://jsfiddle.net/) and [JSBin](http://jsbin.com/), but kodeWeave was made to work offline but also as a prototyping application to build applications for desktop operating systems while on mobile devices. ([PhoneGap Build](http://build.phonegap.com/) is recommended for mobile devices)
+kodeWeave is a realtime HTML/CSS/Javascript and Markdown coding playground. Similar to [JSFiddle](http://jsfiddle.net/) and [JSBin](http://jsbin.com/), but kodeWeave was made to work offline but also as a prototyping application to build applications for desktop operating systems while on mobile devices. ([PhoneGap Build](http://build.phonegap.com/) is recommended for mobile devices)
 
 Version
 -------------
 
-1.0.5
+1.0.7
 
 License
 -------------
@@ -16,17 +16,14 @@ MIT
 Availability
 -------------
 
-**Unstable Releases**
-
-[Android](https://sourceforge.net/projects/kodeweave/files/v0.0.1/kodeWeave-android.apk/download)
-
 **Stable Releases**
 
-[Windows 64](http://sourceforge.net/projects/kodeweave/files/v0.0.1/kodeWeave-win.zip/download)  
-[Windows 32](http://sourceforge.net/projects/kodeweave/files/v0.0.1/kodeWeave-win32.zip/download)  
-[Mac](http://sourceforge.net/projects/kodeweave/files/v0.0.1/kodeWeave-mac.zip/download)  
-[Linux 64](http://sourceforge.net/projects/kodeweave/files/v0.0.1/kodeWeave-lin.zip/download)  
-[Linux 32](http://sourceforge.net/projects/kodeweave/files/v0.0.1/kodeWeave-lin32.zip/download)  
+[Android](https://play.google.com/store/apps/details?id=com.michael.kodeweave)
+[Windows 64](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-win.zip/download)  
+[Windows 32](http://sourceforge.net/projects/kodeweave/files/1.0.5/kodeWeave-win32.zip/download)  
+[Mac](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-mac.zip/download)  
+[Linux 64](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-lin.zip/download)  
+[Linux 32](http://sourceforge.net/projects/kodeweave/files/1.0.5/kodeWeave-lin32.zip/download)  
 [Chrome Application](https://chrome.google.com/webstore/detail/kodeweave-touch/blcgppajmopfndnmegepihhkilaejipf)
 
 Tech
@@ -55,11 +52,6 @@ Development
 
 Want to contribute? Great!  
 
-If you'd like to become a kodeWeave developer.  
-You can contact the software manager Michael at either [Facebook](http://facebook.com/mikethedj4) [Twitter](http://twitter.com/mikethedj4) or via [Email](mailto:mikethedj4@yahoo.com).
-
-You can also submit a pull request here on Github :)
-
-**Note:** kodeWeave is being developed on the [Koding Network](https://koding.com/R/mikethedj4).
+You can submit a pull request or simply share the project :)
 
 Of course kodeWeave is free and open source, so you can always fork the project and have fun :)

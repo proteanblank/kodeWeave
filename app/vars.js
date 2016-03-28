@@ -613,7 +613,7 @@ var timeout,
         $("[data-action=sitetitle]").val("Package Zip Files [JSZip Demo]").change()
         htmlEditor.setValue("<div class=\"grid\">\n  <div class=\"grid__col--12\">\n    <button class=\"btn--default download\">Run</button>\n    <textarea class=\"form__input\" id=\"jszipdemo\" rows=\"7\" placeholder=\"Demo code here...\">var zip = new JSZip();\nzip.file(\"Hello.txt\", \"Hello World\");\nvar folder = zip.folder(\"images\");\nfolder.file(\"folder.txt\", \"I'm a file in a new folder\");\nvar content = zip.generate({type:\"blob\"});\n// see FileSaver.js\nsaveAs(content, \"example.zip\");</textarea>\n  </div>\n</div>\n")
         cssEditor.setValue("")
-        jsEditor.setValue("$(\".download\").click(function() {\n  eval( $(\"#jszipdemo\").val() )\n})\n")
+        jsEditor.setValue("$(\".download\").click(function() {\n  setTimeout($(\"#jszipdemo\").val(), 0)\n})\n")
         $(".open-demos, #polyui, #jquery, #jszip").trigger("click")
         callCollabUpdate()
       })
