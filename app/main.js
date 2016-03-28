@@ -407,6 +407,10 @@ $(window).load(function() {
 
   // Select active editor when clicked/touched
   $("#htmlEditor, #cssEditor, #jsEditor, #mdEditor").on("mousedown touchend", function() {
+    if ( $(".active").is(":visible") ) {
+      $(".active").trigger("click")
+    }
+
     if ( $(this).attr("id") === "htmlEditor" ) {
       activeEditor.val("htmlEditor")
       clearTimeout(htmlWaiting)
@@ -460,10 +464,6 @@ $(window).load(function() {
         $(".md-chars").removeClass("hide")
         $(".main-editor-chars").addClass("hide")
       }
-    }
-
-    if ( $(".active").is(":visible") ) {
-      $(".active").trigger("click")
     }
   })
   $("#htmlEditor, #cssEditor, #jsEditor").on("mouseup touchend", function() {
