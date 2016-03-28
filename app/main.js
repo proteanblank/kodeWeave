@@ -397,3 +397,318 @@ TogetherJS.hub.on("update-md", function(msg) {
   }
   mdEditor.setValue(msg.output)
 })
+
+// Adjust User Interface for RWD
+$(window).load(function() {
+  // Splitter Theme
+  $("#mainSplitter, #splitContainer, #leftSplitter, #rightSplitter").jqxSplitter({
+    theme: "metro"
+  })
+
+  // Select active editor when clicked/touched
+  $("#htmlEditor, #cssEditor, #jsEditor, #mdEditor").on("mousedown touchend", function() {
+    if ( $(this).attr("id") === "htmlEditor" ) {
+      activeEditor.val("htmlEditor")
+      clearTimeout(htmlWaiting)
+      htmlWaiting = setTimeout(updateHTMLHints, 300)
+      if ($("#function").is(":hidden")) {
+        $("#function").show()
+      }
+      $(".main-editor-chars").removeClass("hide")
+      if ( $(".md-chars").is(":visible") ) {
+        $(".md-chars").addClass("hide")
+      }
+    } else if ( $(this).attr("id") === "cssEditor" ) {
+      activeEditor.val("cssEditor")
+      clearTimeout(cssWaiting)
+      cssWaiting = setTimeout(updateCSSHints, 300)
+      if ($("#function").is(":visible")) {
+        $("#function").hide()
+      }
+      $(".main-editor-chars").removeClass("hide")
+      if ( $(".md-chars").is(":visible") ) {
+        $(".md-chars").addClass("hide")
+      }
+    } else if ( $(this).attr("id") === "jsEditor" ) {
+      activeEditor.val("jsEditor")
+      $(".main-editor-chars").removeClass("hide")
+      if ( $(".md-chars").is(":visible") ) {
+        $(".md-chars").addClass("hide")
+      }
+      if ( $("#myjsvalidationswitch").is(":checked") ) {
+        jsWaiting = setTimeout(updateJSHints, 300)
+        clearTimeout(jsWaiting)
+        setTimeout(updateJSHints, 300)
+        return false
+      } else {
+        clearTimeout(jsWaiting)
+        for (var i = 0; i < widgets.length; ++i) {
+          jsEditor.removeLineWidget(widgets[i])
+        }
+        return false
+      }
+      if ($("#function").is(":hidden")) {
+        $("#function").show()
+      }
+    } else if ( $(this).attr("id") === "mdEditor" ) {
+      activeEditor.val("mdEditor")
+      if ($("#function").is(":hidden")) {
+        $("#function").show()
+      }
+      $(".md-chars").removeClass("hide")
+      if ( $(".main-editor-chars").is(":visible") ) {
+        $(".md-chars").removeClass("hide")
+        $(".main-editor-chars").addClass("hide")
+      }
+    }
+
+    if ( $(".active").is(":visible") ) {
+      $(".active").trigger("click")
+    }
+  })
+  $("#htmlEditor, #cssEditor, #jsEditor").on("mouseup touchend", function() {
+    if ( $("body").hasClass("live-markdown-preview") ) {
+      $("body").removeClass("live-markdown-preview")
+      if ( !$("body").hasClass("app") ) {
+        $("body").addClass("app")
+        clearTimeout(delay)
+        delay = setTimeout(updatePreview, 300)
+      }
+    } else if ( !$("body").hasClass("app") ) {
+      $("body").addClass("app")
+      clearTimeout(delay)
+      delay = setTimeout(updatePreview, 300)
+    }
+  })
+  $("#mdEditor").on("mouseup touchend", function() {
+    if ( $("body").hasClass("app") ) {
+      $("body").removeClass("app")
+      if ( !$("body").hasClass("live-markdown-preview") ) {
+        $("body").addClass("live-markdown-preview")
+        clearTimeout(delay)
+        delay = setTimeout(markdownPreview, 300)
+      }
+    } else if ( !$("body").hasClass("live-markdown-preview") ) {
+      $("body").addClass("live-markdown-preview")
+      clearTimeout(delay)
+      delay = setTimeout(markdownPreview, 300)
+    }
+  })
+}).on("resize", function() {
+  // Dropdown Styles Libraries
+  if ( $(this).width() > 924 ) {
+    if ( $(this).height() > 552 ) {
+      $(".libraries-dialog").css({
+        "width": "auto",
+        "height": "auto",
+        "overflow-y": "auto"
+      })
+    } else {
+      $(".libraries-dialog").css({
+        "width": "auto",
+        "overflow-y": "auto",
+        "height": $(window).height() - 100 + "px"
+      })
+    }
+  } else {
+    if ( $(this).height() < 552 ) {
+      $(".libraries-dialog").css({
+        "height": $(window).height() - 100 + "px",
+        "overflow-y": "auto"
+      })
+    } else {
+      $(".libraries-dialog").css({
+        "height": $(window).height() - 100 + "px",
+        "overflow-y": "auto"
+      })
+    }
+
+    if ( $(this).width() > 551 ) {
+      $(".libraries-dialog").css({
+        "width": "212px"
+      })
+    }
+  }
+
+  // Dropdown Styles Demos
+  if ( $(this).width() > 530 ) {
+    if ( $(this).height() > 465 ) {
+      $(".demos-dialog").css({
+        "width": "auto",
+        "height": "352px",
+        "overflow-y": "visible"
+      })
+    } else {
+      $(".demos-dialog").css({
+        "width": "auto",
+        "height": $(window).height() - 100 + "px",
+        "overflow-y": "auto"
+      })
+    }
+  } else {
+    if ( $(this).height() < 352 ) {
+      $(".demos-dialog").css({
+        "height": $(window).height() - 100 + "px",
+        "overflow-y": "auto"
+      })
+    } else {
+      $(".demos-dialog").css({
+        "height": $(window).height() - 100 + "px",
+        "overflow-y": "auto"
+      })
+    }
+
+    if ( $(this).width() > 538 ) {
+      $(".demos-dialog").css({
+        "width": "212px"
+      })
+    }
+  }
+
+  // Download Dialog Height Fix
+  if ( $(this).width() <= 500 ) {
+    $(".download-dialog").css({
+      "left": "0",
+      "width": "325px",
+      "overflow-y": "auto"
+    })
+    if ( $(this).height() < 480 ) {
+      if ($(".imagehasloaded").is(":visible")) {
+        $(".download-dialog").css({
+          "height": $(window).height() - 100 + "px"
+        })
+      } else {
+        $(".download-dialog").css({
+        "height": "auto"
+        })
+      }
+    }
+  } else {
+    $(".download-dialog").css({
+      "left": "154.359px",
+      "width": "",
+      "overflow-y": "auto"
+    })
+    if ( $(this).height() < 480 ) {
+      if ($(".imagehasloaded").is(":visible")) {
+        $(".download-dialog").css({
+          "height": $(window).height() - 100 + "px"
+        })
+      } else {
+        $(".download-dialog").css({
+          "height": "auto"
+        })
+      }
+    }
+  }
+
+  // Toolbox Dialog Height Fix
+  if ( $(this).height() < 492 ) {
+    $(".toolbox").css({
+      "height": $(window).height() - 90 + "px"
+    })
+  } else {
+    $(".toolbox").css({
+      "height": "auto"
+    })
+  }
+})
+
+
+// Choose Grid Scheme
+$("header a:not(.skip, .dialog a, #charmenu *)").on("click", function() {
+  $(this).not(".dialog a").toggleClass("active")
+  $(this).next(":not([data-action=download-zip], #collaborate)").not(".dialog a, #charmenu *").toggleClass("hide")
+
+  if ( $("[data-action=tools].active").is(":visible") || $(".add-source.active").is(":visible") || $("[data-action=download].active").is(":visible") || $(".open-demos.active").is(":visible")) {
+    $("header a:not(#collaborate)").not(".dialog a, #charmenu *").not(this).removeClass("active").next().addClass("hide")
+  }
+
+  $(".dialog.fl").css({
+    "left": $(this).offset().left
+  })
+  if ( $(window).width() <= 500 ) {
+    $(".download-dialog").css({
+      "left": "0",
+      "width": "325px",
+      "overflow-y": "auto"
+    })
+    if ( $(window).height() <= 480 ) {
+      if ($(".imagehasloaded").is(":visible")) {
+        $(".download-dialog").css({
+          "height": $(window).height() - 100 + "px"
+        })
+      } else {
+        $(".download-dialog").css({
+        "height": "auto"
+        })
+      }
+    }
+  } else {
+    $(".download-dialog").css({
+      "left": $(this).offset().left,
+      "width": "",
+      "overflow-y": "auto"
+    })
+    if ( $(window).height() <= 480 ) {
+      if ($(".imagehasloaded").is(":visible")) {
+        $(".download-dialog").css({
+          "height": $(window).height() - 100 + "px"
+        })
+      } else {
+        $(".download-dialog").css({
+          "height": "auto"
+        })
+      }
+    }
+  }
+})
+
+// Grids
+function GridScheme() {
+  $("#mainSplitter").jqxSplitter({
+    height: "auto",
+    width: "100%",
+    orientation: "vertical",
+    showSplitBar: true,
+    panels: [{ size: '25%' },
+             { size: '75%',collapsible:false }]
+  }).jqxSplitter("collapse")
+  $("#splitContainer").jqxSplitter({
+    height: "auto",
+    width: "100%",
+    orientation: "horizontal",
+    showSplitBar: true,
+    panels: [{ size: "50%",collapsible:false },
+             { size: "50%" }]
+  })
+  $("#leftSplitter").jqxSplitter({
+    width: "100%",
+    height: "100%",
+    orientation: "vertical",
+    showSplitBar: true,
+    panels: [{
+      size: "50%",
+      collapsible: false
+    }]
+  })
+  $("#rightSplitter").jqxSplitter({
+    width: "100%",
+    height: "100%",
+    orientation: "vertical",
+    showSplitBar: true,
+    panels: [{
+      size: "50%",
+      collapsible: false
+    }]
+  })
+}
+GridScheme()
+$("#mainSplitter").jqxSplitter({
+  height: "auto",
+  width: "100%",
+  orientation: "vertical",
+  showSplitBar: true,
+  panels: [{ size: '25%' },
+           { size: '75%',collapsible:false }]
+}).jqxSplitter("collapse")

@@ -39,70 +39,22 @@ var timeout,
       if ( activeEditor.val() === "htmlEditor" ) {
         var selected_text = htmlEditor.getSelection().toLowerCase()  // Need to grab the Active Selection
 
-        htmlEditor.replaceSelection("", htmlEditor.getCursor())
-        htmlEditor.replaceRange("", htmlEditor.getCursor())
-        htmlEditor.focus()
-        var str = ""
-        var mynum = str.length
-        var start_cursor = htmlEditor.getCursor()  // Need to get the cursor position
-        console.log(start_cursor)  // Cursor position
-        var cursorLine = start_cursor.line
-        var cursorCh = start_cursor.ch
-
-        // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-        htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-        htmlEditor.replaceRange(selected_text, htmlEditor.getCursor())
+        htmlEditor.replaceSelection(selected_text)
         htmlEditor.focus()
       } else if ( activeEditor.val() === "cssEditor" ) {
         var selected_text = cssEditor.getSelection().toLowerCase()  // Need to grab the Active Selection
 
-        cssEditor.replaceSelection("", cssEditor.getCursor())
-        cssEditor.replaceRange("", cssEditor.getCursor())
-        cssEditor.focus()
-        var str = ""
-        var mynum = str.length
-        var start_cursor = cssEditor.getCursor()  // Need to get the cursor position
-        console.log(start_cursor)  // Cursor position
-        var cursorLine = start_cursor.line
-        var cursorCh = start_cursor.ch
-
-        // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-        cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-        cssEditor.replaceRange(selected_text, cssEditor.getCursor())
+        cssEditor.replaceSelection(selected_text)
         cssEditor.focus()
       } else if ( activeEditor.val() === "jsEditor" ) {
         var selected_text = jsEditor.getSelection().toLowerCase()  // Need to grab the Active Selection
 
-        jsEditor.replaceSelection("", jsEditor.getCursor())
-        jsEditor.replaceRange("", jsEditor.getCursor())
-        jsEditor.focus()
-        var str = ""
-        var mynum = str.length
-        var start_cursor = jsEditor.getCursor()  // Need to get the cursor position
-        console.log(start_cursor)  // Cursor position
-        var cursorLine = start_cursor.line
-        var cursorCh = start_cursor.ch
-
-        // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-        jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-        jsEditor.replaceRange(selected_text, jsEditor.getCursor())
+        jsEditor.replaceSelection(selected_text)
         jsEditor.focus()
       } else if ( activeEditor.val() === "mdEditor" ) {
         var selected_text = mdEditor.getSelection().toLowerCase()  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("", mdEditor.getCursor())
-        mdEditor.replaceRange("", mdEditor.getCursor())
-        mdEditor.focus()
-        var str = ""
-        var mynum = str.length
-        var start_cursor = mdEditor.getCursor()  // Need to get the cursor position
-        console.log(start_cursor)  // Cursor position
-        var cursorLine = start_cursor.line
-        var cursorCh = start_cursor.ch
-
-        // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-        mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-        mdEditor.replaceRange(selected_text, mdEditor.getCursor())
+        mdEditor.replaceSelection(selected_text)
         mdEditor.focus()
       }
     },
@@ -110,70 +62,22 @@ var timeout,
       if ( activeEditor.val() === "htmlEditor" ) {
         var selected_text = htmlEditor.getSelection().toUpperCase()  // Need to grab the Active Selection
 
-        htmlEditor.replaceSelection("", htmlEditor.getCursor())
-        htmlEditor.replaceRange("", htmlEditor.getCursor())
-        htmlEditor.focus()
-        var str = ""
-        var mynum = str.length
-        var start_cursor = htmlEditor.getCursor()  // Need to get the cursor position
-        console.log(start_cursor)  // Cursor position
-        var cursorLine = start_cursor.line
-        var cursorCh = start_cursor.ch
-
-        // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-        htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-        htmlEditor.replaceRange(selected_text, htmlEditor.getCursor())
+        htmlEditor.replaceSelection(selected_text)
         htmlEditor.focus()
       } else if ( activeEditor.val() === "cssEditor" ) {
         var selected_text = cssEditor.getSelection().toUpperCase()  // Need to grab the Active Selection
 
-        cssEditor.replaceSelection("", cssEditor.getCursor())
-        cssEditor.replaceRange("", cssEditor.getCursor())
-        cssEditor.focus()
-        var str = ""
-        var mynum = str.length
-        var start_cursor = cssEditor.getCursor()  // Need to get the cursor position
-        console.log(start_cursor)  // Cursor position
-        var cursorLine = start_cursor.line
-        var cursorCh = start_cursor.ch
-
-        // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-        cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-        cssEditor.replaceRange(selected_text, cssEditor.getCursor())
+        cssEditor.replaceSelection(selected_text)
         cssEditor.focus()
       } else if ( activeEditor.val() === "jsEditor" ) {
         var selected_text = jsEditor.getSelection().toUpperCase()  // Need to grab the Active Selection
 
-        jsEditor.replaceSelection("", jsEditor.getCursor())
-        jsEditor.replaceRange("", jsEditor.getCursor())
-        jsEditor.focus()
-        var str = ""
-        var mynum = str.length
-        var start_cursor = jsEditor.getCursor()  // Need to get the cursor position
-        console.log(start_cursor)  // Cursor position
-        var cursorLine = start_cursor.line
-        var cursorCh = start_cursor.ch
-
-        // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-        jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-        jsEditor.replaceRange(selected_text, jsEditor.getCursor())
+        jsEditor.replaceSelection(selected_text)
         jsEditor.focus()
       } else if ( activeEditor.val() === "mdEditor" ) {
         var selected_text = mdEditor.getSelection().toUpperCase()  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("", mdEditor.getCursor())
-        mdEditor.replaceRange("", mdEditor.getCursor())
-        mdEditor.focus()
-        var str = ""
-        var mynum = str.length
-        var start_cursor = mdEditor.getCursor()  // Need to get the cursor position
-        console.log(start_cursor)  // Cursor position
-        var cursorLine = start_cursor.line
-        var cursorCh = start_cursor.ch
-
-        // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-        mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-        mdEditor.replaceRange(selected_text, mdEditor.getCursor())
+        mdEditor.replaceSelection(selected_text)
         mdEditor.focus()
       }
     },
@@ -849,1347 +753,212 @@ var timeout,
       $("#charsym1").on("click", function() {
         if ( activeEditor.val() === "htmlEditor" ) {
           var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange("<>", htmlEditor.getCursor())
-          htmlEditor.focus()
-          var str = ">"
-          var mynum = str.length
-          var start_cursor = htmlEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          htmlEditor.replaceRange(selected_text, htmlEditor.getCursor())
+          htmlEditor.replaceSelection("<" + selected_text + ">")
           htmlEditor.focus()
         } else if ( activeEditor.val() === "cssEditor" ) {
           var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange("<>", cssEditor.getCursor())
-          cssEditor.focus()
-          var str = ">"
-          var mynum = str.length
-          var start_cursor = cssEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          cssEditor.replaceRange(selected_text, cssEditor.getCursor())
+          cssEditor.replaceSelection("<" + selected_text + ">")
           cssEditor.focus()
         } else if ( activeEditor.val() === "jsEditor" ) {
           var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange("<>", jsEditor.getCursor())
-          jsEditor.focus()
-          var str = ">"
-          var mynum = str.length
-          var start_cursor = jsEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          jsEditor.replaceRange(selected_text, jsEditor.getCursor())
+          jsEditor.replaceSelection("<" + selected_text + ">")
           jsEditor.focus()
         } else if ( activeEditor.val() === "mdEditor" ) {
           var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange("<>", mdEditor.getCursor())
-          mdEditor.focus()
-          var str = ">"
-          var mynum = str.length
-          var start_cursor = mdEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          mdEditor.replaceRange(selected_text, mdEditor.getCursor())
+          mdEditor.replaceSelection("<" + selected_text + ">")
           mdEditor.focus()
         }
       })
       $("#charsym2").on("click", function() {
         if ( activeEditor.val() === "htmlEditor" ) {
           var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange("{}", htmlEditor.getCursor())
-          htmlEditor.focus()
-          var str = "}"
-          var mynum = str.length
-          var start_cursor = htmlEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          htmlEditor.replaceRange(selected_text, htmlEditor.getCursor())
+          htmlEditor.replaceSelection("{" + selected_text + "}")
           htmlEditor.focus()
         } else if ( activeEditor.val() === "cssEditor" ) {
           var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange("{}", cssEditor.getCursor())
-          cssEditor.focus()
-          var str = "}"
-          var mynum = str.length
-          var start_cursor = cssEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          cssEditor.replaceRange(selected_text, cssEditor.getCursor())
+          cssEditor.replaceSelection("{" + selected_text + "}")
           cssEditor.focus()
         } else if ( activeEditor.val() === "jsEditor" ) {
           var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange("{}", jsEditor.getCursor())
-          jsEditor.focus()
-          var str = "}"
-          var mynum = str.length
-          var start_cursor = jsEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          jsEditor.replaceRange(selected_text, jsEditor.getCursor())
+          jsEditor.replaceSelection("{" + selected_text + "}")
           jsEditor.focus()
         } else if ( activeEditor.val() === "mdEditor" ) {
           var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange("{}", mdEditor.getCursor())
-          mdEditor.focus()
-          var str = "}"
-          var mynum = str.length
-          var start_cursor = jsEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          mdEditor.replaceRange(selected_text, mdEditor.getCursor())
+          mdEditor.replaceSelection("{" + selected_text + "}")
           mdEditor.focus()
         }
       })
       $("#charsym3").on("click", function() {
         if ( activeEditor.val() === "htmlEditor" ) {
           var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange('""', htmlEditor.getCursor())
-          htmlEditor.focus()
-          var str = '"'
-          var mynum = str.length
-          var start_cursor = htmlEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          htmlEditor.replaceRange(selected_text, htmlEditor.getCursor())
+          htmlEditor.replaceSelection('"' + selected_text + '"')
           htmlEditor.focus()
         } else if ( activeEditor.val() === "cssEditor" ) {
           var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange('""', cssEditor.getCursor())
-          cssEditor.focus()
-          var str = '"'
-          var mynum = str.length
-          var start_cursor = cssEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          cssEditor.replaceRange(selected_text, cssEditor.getCursor())
+          cssEditor.replaceSelection('"' + selected_text + '"')
           cssEditor.focus()
         } else if ( activeEditor.val() === "jsEditor" ) {
           var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange('""', jsEditor.getCursor())
-          jsEditor.focus()
-          var str = '"'
-          var mynum = str.length
-          var start_cursor = jsEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          jsEditor.replaceRange(selected_text, jsEditor.getCursor())
+          jsEditor.replaceSelection('"' + selected_text + '"')
           jsEditor.focus()
         } else if ( activeEditor.val() === "mdEditor" ) {
           var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange('""', mdEditor.getCursor())
-          mdEditor.focus()
-          var str = '"'
-          var mynum = str.length
-          var start_cursor = jsEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          mdEditor.replaceRange(selected_text, mdEditor.getCursor())
+          mdEditor.replaceSelection('"' + selected_text + '"')
           mdEditor.focus()
         }
       })
       $("#charsym4").on("click", function() {
         if ( activeEditor.val() === "htmlEditor" ) {
           var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange("''", htmlEditor.getCursor())
-          htmlEditor.focus()
-          var str = "'"
-          var mynum = str.length
-          var start_cursor = htmlEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          htmlEditor.replaceRange(selected_text, htmlEditor.getCursor())
+          htmlEditor.replaceSelection("'" + selected_text + "'")
           htmlEditor.focus()
         } else if ( activeEditor.val() === "cssEditor" ) {
           var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange("''", cssEditor.getCursor())
-          cssEditor.focus()
-          var str = "'"
-          var mynum = str.length
-          var start_cursor = cssEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          cssEditor.replaceRange(selected_text, cssEditor.getCursor())
+          cssEditor.replaceSelection("'" + selected_text + "'")
           cssEditor.focus()
         } else if ( activeEditor.val() === "jsEditor" ) {
           var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange("''", jsEditor.getCursor())
-          jsEditor.focus()
-          var str = "'"
-          var mynum = str.length
-          var start_cursor = jsEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          jsEditor.replaceRange(selected_text, jsEditor.getCursor())
+          jsEditor.replaceSelection("'" + selected_text + "'")
           jsEditor.focus()
         } else if ( activeEditor.val() === "mdEditor" ) {
           var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange("''", mdEditor.getCursor())
-          mdEditor.focus()
-          var str = "'>'"
-          var mynum = str.length
-          var start_cursor = jsEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          mdEditor.replaceRange(selected_text, mdEditor.getCursor())
+          mdEditor.replaceSelection("'" + selected_text + "'")
           mdEditor.focus()
         }
       })
       $("#charsym5").on("click", function() {
         if ( activeEditor.val() === "htmlEditor" ) {
           var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "+", htmlEditor.getCursor())
+          htmlEditor.replaceSelection("(" + selected_text + ")")
           htmlEditor.focus()
         } else if ( activeEditor.val() === "cssEditor" ) {
           var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + "+", cssEditor.getCursor())
+          cssEditor.replaceSelection("(" + selected_text + ")")
           cssEditor.focus()
         } else if ( activeEditor.val() === "jsEditor" ) {
           var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "+", jsEditor.getCursor())
+          jsEditor.replaceSelection("(" + selected_text + ")")
           jsEditor.focus()
         } else if ( activeEditor.val() === "mdEditor" ) {
           var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "+", mdEditor.getCursor())
+          mdEditor.replaceSelection("(" + selected_text + ")")
           mdEditor.focus()
         }
       })
       $("#charsym6").on("click", function() {
         if ( activeEditor.val() === "htmlEditor" ) {
           var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "-", htmlEditor.getCursor())
+          htmlEditor.replaceSelection("[" + selected_text + "]")
           htmlEditor.focus()
         } else if ( activeEditor.val() === "cssEditor" ) {
           var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + "-", cssEditor.getCursor())
+          cssEditor.replaceSelection("[" + selected_text + "]")
           cssEditor.focus()
         } else if ( activeEditor.val() === "jsEditor" ) {
           var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "-", jsEditor.getCursor())
+          jsEditor.replaceSelection("[" + selected_text + "]")
           jsEditor.focus()
         } else if ( activeEditor.val() === "mdEditor" ) {
           var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "-", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym7").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + ".", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + ".", cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + ".", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + ".", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym8").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange("()", htmlEditor.getCursor())
-          htmlEditor.focus()
-          var str = ")"
-          var mynum = str.length
-          var start_cursor = htmlEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          htmlEditor.replaceRange(selected_text, htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange("()", cssEditor.getCursor())
-          cssEditor.focus()
-          var str = ")"
-          var mynum = str.length
-          var start_cursor = cssEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          cssEditor.replaceRange(selected_text, cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange("()", jsEditor.getCursor())
-          jsEditor.focus()
-          var str = ")"
-          var mynum = str.length
-          var start_cursor = jsEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          jsEditor.replaceRange(selected_text, jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange("()", mdEditor.getCursor())
-          mdEditor.focus()
-          var str = ")"
-          var mynum = str.length
-          var start_cursor = mdEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          mdEditor.replaceRange(selected_text, mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym9").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + ":", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + ":", cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + ":", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + ":", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym10").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + ";", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + ";", cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + ";", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + ";", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym11").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "_", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + "_", cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "_", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "_", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym12").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange("[]", htmlEditor.getCursor())
-          htmlEditor.focus()
-          var str = "]"
-          var mynum = str.length
-          var start_cursor = htmlEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          htmlEditor.replaceRange(selected_text, htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange("[]", cssEditor.getCursor())
-          cssEditor.focus()
-          var str = "]"
-          var mynum = str.length
-          var start_cursor = cssEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          cssEditor.replaceRange(selected_text, cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange("[]", jsEditor.getCursor())
-          jsEditor.focus()
-          var str = "]"
-          var mynum = str.length
-          var start_cursor = jsEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          jsEditor.replaceRange(selected_text, jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange("[]", mdEditor.getCursor())
-          mdEditor.focus()
-          var str = "]"
-          var mynum = str.length
-          var start_cursor = mdEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
-
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
-          mdEditor.replaceRange(selected_text, mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym13").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "|", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + "|", cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "|", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "|", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym14").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "/", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + "/", cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "/", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "/", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym15").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "\\", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + "\\", cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "\\", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "\\", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym16").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "?", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + "?", cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "?", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "?", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym17").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "*", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + "*", cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "*", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "*", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym18").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "\\n", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          alertify.alert("Can't add <strong>\"\\n\"</strong> into CSS")
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "\\n", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "\\n", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym19").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "&", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + "&", cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "&", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "&", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym20").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "%", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + "%", cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "%", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "%", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym21").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "$", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          alertify.alert("Can't add <strong>\"$\"</strong> into CSS")
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "$", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "$", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym22").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "&cent", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          alertify.alert("Can't add <strong>\"&cent;\"</strong> into CSS")
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "&cent", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "&cent;", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym23").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "&pound;", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          alertify.alert("Can't add <strong>\"&pound;\"</strong> into CSS")
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "&pound", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "&pound;", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym24").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "&yen;", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          alertify.alert("Can't add <strong>\"&yen;\"</strong> into CSS")
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "&yen;", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "&yen;", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym25").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "&euro;", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          alertify.alert("Can't add <strong>\"&euro;\"</strong> into CSS")
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "&euro;", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "&euro;", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym26").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "@", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + "@", cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "@", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "@", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym27").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "=", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + "=", cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "=", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "=", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym28").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "#", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + "#", cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "#", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "#", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym29").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + ",", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + ",", cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + ",", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + ",", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym30").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "!", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + "!", cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "!", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "!", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym31").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "^", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          cssEditor.replaceSelection("", cssEditor.getCursor())
-          cssEditor.replaceRange(selected_text + "^", cssEditor.getCursor())
-          cssEditor.focus()
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "^", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "^", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym32").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "&copy;", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          alertify.alert("Can't add <strong>\"&copy;\"</strong> into CSS")
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "&copy;", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "&copy;", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym33").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "&reg;", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          alertify.alert("Can't add <strong>\"&reg;\"</strong> into CSS")
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "&reg;", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "&reg;", mdEditor.getCursor())
-          mdEditor.focus()
-        }
-      })
-      $("#charsym34").on("click", function() {
-        if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          htmlEditor.replaceSelection("", htmlEditor.getCursor())
-          htmlEditor.replaceRange(selected_text + "&trade;", htmlEditor.getCursor())
-          htmlEditor.focus()
-        } else if ( activeEditor.val() === "cssEditor" ) {
-          alertify.alert("Can't add <strong>\"&trade;\"</strong> into CSS")
-        } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          jsEditor.replaceSelection("", jsEditor.getCursor())
-          jsEditor.replaceRange(selected_text + "&trade;", jsEditor.getCursor())
-          jsEditor.focus()
-        } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
-
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange(selected_text + "&trade;", mdEditor.getCursor())
+          mdEditor.replaceSelection("[" + selected_text + "]")
           mdEditor.focus()
         }
       })
       $("#function").on("click", function() {
         if ( activeEditor.val() === "htmlEditor" ) {
-          htmlEditor.replaceRange("function() {}", htmlEditor.getCursor())
-          htmlEditor.focus()
-          var str = "}"
-          var mynum = str.length
-          var start_cursor = htmlEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
+          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
 
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
+          htmlEditor.replaceSelection("function() {}")
+          htmlEditor.focus()
         } else if ( activeEditor.val() === "cssEditor" ) {
           alertify.alert("Can't add <strong>\"function() {}\"</strong> into CSS")
         } else if ( activeEditor.val() === "jsEditor" ) {
-          jsEditor.replaceRange("function() {}", jsEditor.getCursor())
-          jsEditor.focus()
-          var str = "}"
-          var mynum = str.length
-          var start_cursor = jsEditor.getCursor()  // Need to get the cursor position
-          console.log(start_cursor)  // Cursor position
-          var cursorLine = start_cursor.line
-          var cursorCh = start_cursor.ch
+          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
 
-          // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
-          jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum })
+          jsEditor.replaceSelection("function() {}")
+          jsEditor.focus()
+        }
+      })
+      $("[data-add=sym]").on("click", function() {
+        if ( activeEditor.val() === "htmlEditor" ) {
+          var selected_text = htmlEditor.getSelection()  // Need to grab the Active Selection
+
+          htmlEditor.replaceSelection(selected_text + this.textContent)
+          htmlEditor.focus()
+        } else if ( activeEditor.val() === "cssEditor" ) {
+          var selected_text = cssEditor.getSelection()  // Need to grab the Active Selection
+
+          cssEditor.replaceSelection(selected_text + this.textContent)
+          cssEditor.focus()
+        } else if ( activeEditor.val() === "jsEditor" ) {
+          var selected_text = jsEditor.getSelection()  // Need to grab the Active Selection
+
+          jsEditor.replaceSelection(selected_text + this.textContent)
+          jsEditor.focus()
+        } else if ( activeEditor.val() === "mdEditor" ) {
+          var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+
+          mdEditor.replaceSelection(selected_text + this.textContent)
+          mdEditor.focus()
         }
       })
 
       // WYSIWYG Editor for Markdown
       $("#lorem").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-        console.log(selected_text)  // Active Selection
 
-        mdEditor.replaceSelection("", mdEditor.getCursor())
-        mdEditor.replaceRange("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam impedit dolore magnam dolor, atque quia dicta voluptatum. Nam impedit distinctio, tempore molestiae voluptatibus ducimus ullam! Molestiae consectetur, recusandae labore? Cupiditate.", mdEditor.getCursor())
+        mdEditor.replaceSelection("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam impedit dolore magnam dolor, atque quia dicta voluptatum. Nam impedit distinctio, tempore molestiae voluptatibus ducimus ullam! Molestiae consectetur, recusandae labore? Cupiditate.")
         mdEditor.focus()
       })
       $("#bold").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-        console.log(selected_text)  // Active Selection
 
-        mdEditor.replaceSelection("", mdEditor.getCursor())
-        mdEditor.replaceRange("**" + selected_text + "**", mdEditor.getCursor())
+        mdEditor.replaceSelection("**" + selected_text + "**")
         mdEditor.focus()
       })
       $("#italic").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-        console.log(selected_text)  // Active Selection
 
-        mdEditor.replaceSelection("", mdEditor.getCursor())
-        mdEditor.replaceRange("*" + selected_text + "*", mdEditor.getCursor())
+        mdEditor.replaceSelection("*" + selected_text + "*")
         mdEditor.focus()
       })
       $("#strike").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-        console.log(selected_text)  // Active Selection
 
-        mdEditor.replaceSelection("", mdEditor.getCursor())
-        mdEditor.replaceRange("<strike>" + selected_text + "</strike>", mdEditor.getCursor())
+        mdEditor.replaceSelection("<strike>" + selected_text + "</strike>")
         mdEditor.focus()
       })
       $("#anchor").on("click", function() {
         alertify.prompt("Enter URL Below", "",
         function(evt, value) {
           var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange("["+ selected_text +"]("+ value +")", mdEditor.getCursor())
+          mdEditor.replaceSelection("")
+          mdEditor.replaceSelection("["+ selected_text +"]("+ value +")")
           mdEditor.focus()
         },
         function() {
@@ -2199,27 +968,24 @@ var timeout,
       CodeMirror.commands.quoteSelection = function(cm) {
         var from = cm.getCursor("from").line, to = cm.getCursor("to").line
         for (var line = to; line >= from; line--)
-          cm.replaceRange("> ", {line: line, ch: 0})
+          cm.replaceSelection("> ", {line: line, ch: 0})
       }
       $("#quote").on("click", function() {
         mdEditor.execCommand("quoteSelection")
       })
       $("#code").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-        console.log(selected_text)  // Active Selection
 
-        mdEditor.replaceSelection("", mdEditor.getCursor())
-        mdEditor.replaceRange("`" + selected_text + "`", mdEditor.getCursor())
+        mdEditor.replaceSelection("`" + selected_text + "`")
         mdEditor.focus()
       })
       $("#img").on("click", function() {
         alertify.prompt("Enter Image URL Below", "",
         function(evt, value) {
           var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-          console.log(selected_text)  // Active Selection
 
-          mdEditor.replaceSelection("", mdEditor.getCursor())
-          mdEditor.replaceRange("!["+ selected_text +"]("+ value +")", mdEditor.getCursor())
+          mdEditor.replaceSelection("")
+          mdEditor.replaceSelection("!["+ selected_text +"]("+ value +")")
           mdEditor.focus()
         },
         function() {
@@ -2228,74 +994,56 @@ var timeout,
       })
       $("#list-ol").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-        console.log(selected_text)  // Active Selection
 
-        mdEditor.replaceSelection("", mdEditor.getCursor())
-        mdEditor.replaceRange(selected_text + "\n\n  1. \n\n", mdEditor.getCursor())
+        mdEditor.replaceSelection(selected_text + "\n\n  1. \n\n")
         mdEditor.focus()
       })
       $("#list-ul").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-        console.log(selected_text)  // Active Selection
 
-        mdEditor.replaceSelection("", mdEditor.getCursor())
-        mdEditor.replaceRange(selected_text + "\n\n  - \n\n", mdEditor.getCursor())
+        mdEditor.replaceSelection(selected_text + "\n\n  - \n\n")
         mdEditor.focus()
       })
       $("#h1").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-        console.log(selected_text)  // Active Selection
 
-        mdEditor.replaceSelection("", mdEditor.getCursor())
-        mdEditor.replaceRange("# " + selected_text, mdEditor.getCursor())
+        mdEditor.replaceSelection("# " + selected_text)
         mdEditor.focus()
       })
       $("#h2").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-        console.log(selected_text)  // Active Selection
 
-        mdEditor.replaceSelection("", mdEditor.getCursor())
-        mdEditor.replaceRange("## " + selected_text, mdEditor.getCursor())
+        mdEditor.replaceSelection("## " + selected_text)
         mdEditor.focus()
       })
       $("#h3").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-        console.log(selected_text)  // Active Selection
 
-        mdEditor.replaceSelection("", mdEditor.getCursor())
-        mdEditor.replaceRange("### " + selected_text, mdEditor.getCursor())
+        mdEditor.replaceSelection("### " + selected_text)
         mdEditor.focus()
       })
       $("#h4").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-        console.log(selected_text)  // Active Selection
 
-        mdEditor.replaceSelection("", mdEditor.getCursor())
-        mdEditor.replaceRange("#### " + selected_text, mdEditor.getCursor())
+        mdEditor.replaceSelection("#### " + selected_text)
         mdEditor.focus()
       })
       $("#h5").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-        console.log(selected_text)  // Active Selection
 
-        mdEditor.replaceSelection("", mdEditor.getCursor())
-        mdEditor.replaceRange("##### " + selected_text, mdEditor.getCursor())
+        mdEditor.replaceSelection("##### " + selected_text)
         mdEditor.focus()
       })
       $("#h6").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-        console.log(selected_text)  // Active Selection
 
-        mdEditor.replaceSelection("", mdEditor.getCursor())
-        mdEditor.replaceRange("###### " + selected_text, mdEditor.getCursor())
+        mdEditor.replaceSelection("###### " + selected_text)
         mdEditor.focus()
       })
       $("#hr").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
-        console.log(selected_text)  // Active Selection
 
-        mdEditor.replaceSelection("", mdEditor.getCursor())
-        mdEditor.replaceRange(selected_text + "\n\n----------\n\n", mdEditor.getCursor())
+        mdEditor.replaceSelection(selected_text + "\n\n----------\n\n")
         mdEditor.focus()
       })
     }

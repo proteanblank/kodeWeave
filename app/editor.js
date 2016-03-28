@@ -15,6 +15,50 @@ var loader = $("[data-action=load]"),
     ctx64 = c64[0].getContext("2d"),
     ctx = canvas[0].getContext("2d"),
     holder = document.getElementById("holder"),
+    myarray = [],
+    current = 1,
+    activeEditor = $("[data-action=activeEditor]"),
+    storeValues = function() {
+      // Save Site Title Value for LocalStorage
+      if ( localStorage.getItem("siteTitle")) {
+        $("[data-action=sitetitle]").val(localStorage.getItem("siteTitle"))
+      }
+      $("[data-action=sitetitle]").on("keyup change", function() {
+        localStorage.setItem("siteTitle", this.value)
+      })
+
+      // Save App Version for LocalStorage
+      if ( localStorage.getItem("appVersion")) {
+        $("[data-value=version]").val(localStorage.getItem("appVersion"))
+      }
+      $("[data-value=version]").on("keyup change", function() {
+        localStorage.setItem("appVersion", this.value)
+      })
+      // Save FontSize for LocalStorage
+      if ( localStorage.getItem("fontSize")) {
+        $("[data-editor=fontSize]").val(localStorage.getItem("fontSize"))
+        $(".CodeMirror").css("font-size", localStorage.getItem("fontSize") + "px")
+      }
+      $("[data-editor=fontSize]").on("keyup change", function() {
+        $(".CodeMirror").css("font-size", this.value + "px")
+        localStorage.setItem("fontSize", this.value)
+      })
+
+      // Save Description for LocalStorage
+      if ( localStorage.getItem("saveDesc")) {
+        $("[data-action=sitedesc]").val(localStorage.getItem("saveDesc"))
+      }
+      $("[data-action=sitedesc]").on("keyup change", function() {
+        localStorage.setItem("saveDesc", this.value)
+      })
+      // Save Author for LocalStorage
+      if ( localStorage.getItem("saveAuthor")) {
+        $("[data-action=siteauthor]").val(localStorage.getItem("saveAuthor"))
+      }
+      $("[data-action=siteauthor]").on("keyup change", function() {
+        localStorage.setItem("saveAuthor", this.value)
+      })
+    },
     checkedLibs = function() {
       if ( $("#alertify").is(":checked") ) {
         $('.alertifyjs').clear()
@@ -481,7 +525,17 @@ var loader = $("[data-action=load]"),
           return el.value
         }).join("")
       })
-    };
+    },
+    download_to_textbox = function (url, el) {
+      return $.get(url, null, function (data) {
+        el.val(data)
+      }, "text")
+    },
+    download_to_editor = function (url, el) {
+      return $.get(url, null, function (data) {
+        el.setValue(data)
+      }, "text")
+    }
 
 function displayPreview(file) {
   var reader = new FileReader()
@@ -520,112 +574,8 @@ function displayPreview(file) {
   return false
 }
 
-var myarray = [],
-    current = 1,
-    activeEditor = $("[data-action=activeEditor]"),
-    download_to_textbox = function (url, el) {
-      return $.get(url, null, function (data) {
-        el.val(data)
-      }, "text")
-    },
-    download_to_editor = function (url, el) {
-      return $.get(url, null, function (data) {
-        el.setValue(data)
-      }, "text")
-    };
-
-// Load Files, Grid Alignment
+// Load Files
 $(window).load(function() {
-  // Select active editor when clicked/touched
-  $("#htmlEditor, #cssEditor, #jsEditor, #mdEditor").on("mousedown touchend", function() {
-    if ( $(this).attr("id") === "htmlEditor" ) {
-      activeEditor.val("htmlEditor")
-      clearTimeout(htmlWaiting)
-      htmlWaiting = setTimeout(updateHTMLHints, 300)
-      if ($("#function").is(":hidden")) {
-        $("#function").show()
-      }
-      $(".main-editor-chars").removeClass("hide")
-      if ( $(".md-chars").is(":visible") ) {
-        $(".md-chars").addClass("hide")
-      }
-    } else if ( $(this).attr("id") === "cssEditor" ) {
-      activeEditor.val("cssEditor")
-      clearTimeout(cssWaiting)
-      cssWaiting = setTimeout(updateCSSHints, 300)
-      if ($("#function").is(":visible")) {
-        $("#function").hide()
-      }
-      $(".main-editor-chars").removeClass("hide")
-      if ( $(".md-chars").is(":visible") ) {
-        $(".md-chars").addClass("hide")
-      }
-    } else if ( $(this).attr("id") === "jsEditor" ) {
-      activeEditor.val("jsEditor")
-      $(".main-editor-chars").removeClass("hide")
-      if ( $(".md-chars").is(":visible") ) {
-        $(".md-chars").addClass("hide")
-      }
-      if ( $("#myjsvalidationswitch").is(":checked") ) {
-        jsWaiting = setTimeout(updateJSHints, 300)
-        clearTimeout(jsWaiting)
-        setTimeout(updateJSHints, 300)
-        return false
-      } else {
-        clearTimeout(jsWaiting)
-        for (var i = 0; i < widgets.length; ++i) {
-          jsEditor.removeLineWidget(widgets[i])
-        }
-        return false
-      }
-      if ($("#function").is(":hidden")) {
-        $("#function").show()
-      }
-    } else if ( $(this).attr("id") === "mdEditor" ) {
-      activeEditor.val("mdEditor")
-      if ($("#function").is(":hidden")) {
-        $("#function").show()
-      }
-      $(".md-chars").removeClass("hide")
-      if ( $(".main-editor-chars").is(":visible") ) {
-        $(".md-chars").removeClass("hide")
-        $(".main-editor-chars").addClass("hide")
-      }
-    }
-
-    if ( $(".active").is(":visible") ) {
-      $(".active").trigger("click")
-    }
-  })
-  $("#htmlEditor, #cssEditor, #jsEditor").on("mouseup touchend", function() {
-    if ( $("body").hasClass("live-markdown-preview") ) {
-      $("body").removeClass("live-markdown-preview")
-      if ( !$("body").hasClass("app") ) {
-        $("body").addClass("app")
-        clearTimeout(delay)
-        delay = setTimeout(updatePreview, 300)
-      }
-    } else if ( !$("body").hasClass("app") ) {
-      $("body").addClass("app")
-      clearTimeout(delay)
-      delay = setTimeout(updatePreview, 300)
-    }
-  })
-  $("#mdEditor").on("mouseup touchend", function() {
-    if ( $("body").hasClass("app") ) {
-      $("body").removeClass("app")
-      if ( !$("body").hasClass("live-markdown-preview") ) {
-        $("body").addClass("live-markdown-preview")
-        clearTimeout(delay)
-        delay = setTimeout(markdownPreview, 300)
-      }
-    } else if ( !$("body").hasClass("live-markdown-preview") ) {
-      $("body").addClass("live-markdown-preview")
-      clearTimeout(delay)
-      delay = setTimeout(markdownPreview, 300)
-    }
-  })
-
   /**
    * Chooser (Drop Box)
    * https://www.dropbox.com/developers/dropins/chooser/js
@@ -699,6 +649,7 @@ $(window).load(function() {
   }
 
   singleFileDownload()
+  storeValues()
 })
 
 // Team up / Collaborate
@@ -707,38 +658,7 @@ $("#collaborate").click(function() {
   return false
 })
 
-// Save Site Title Value for LocalStorage
-if ( localStorage.getItem("siteTitle")) {
-  $("[data-action=sitetitle]").val(localStorage.getItem("siteTitle"))
-}
-$("[data-action=sitetitle]").on("keyup change", function() {
-  localStorage.setItem("siteTitle", this.value)
-})
-
-// Save App Version for LocalStorage
-if ( localStorage.getItem("appVersion")) {
-  $("[data-value=version]").val(localStorage.getItem("appVersion"))
-}
-$("[data-value=version]").on("keyup change", function() {
-  localStorage.setItem("appVersion", this.value)
-})
-
-// Save Description for LocalStorage
-if ( localStorage.getItem("saveDesc")) {
-  $("[data-action=sitedesc]").val(localStorage.getItem("saveDesc"))
-}
-$("[data-action=sitedesc]").on("keyup change", function() {
-  localStorage.setItem("saveDesc", this.value)
-})
-// Save Author for LocalStorage
-if ( localStorage.getItem("saveAuthor")) {
-  $("[data-action=siteauthor]").val(localStorage.getItem("saveAuthor"))
-}
-$("[data-action=siteauthor]").on("keyup change", function() {
-  localStorage.setItem("saveAuthor", this.value)
-})
-
-
+// Load Image
 $(".call").click(function() {
   $("[data-action=load]").trigger("click")
 })

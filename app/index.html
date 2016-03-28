@@ -14,7 +14,7 @@
     <!-- iOS Safari -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="stylesheet" href="css/light.css" />
+    <link rel="stylesheet" href="css/theme.css" />
     <link rel="icon" type="image/vnd.microsoft.icon" href="favicon.ico">
     <link rel="SHORTCUT ICON" href="favicon.ico">
     <script src="https://togetherjs.com/togetherjs-min.js"></script>
@@ -65,10 +65,6 @@
     <script src="libraries/codemirror/addon/jsPalette.js"></script>
     <script src="libraries/codemirror/addon/search/searchcursor.js"></script>
     <script src="libraries/codemirror/addon/search/goto-line.js"></script>
-<!--
-    <script src="libraries/codemirror/addon/search/match-highlighter.js"></script>
--->
-    <script src="codemirror/htmlhint-custom.js"></script>
     <script src="libraries/codemirror/csslint.js"></script>
     <script src="libraries/codemirror/jshint.js"></script>
     <script src="libraries/codemirror/addon/lint/lint.js"></script>
@@ -80,6 +76,7 @@
     <script src="libraries/codemirror/inlet.min.js"></script>
     <script src="libraries/codemirror/emmet.js"></script>
 
+    <script src="lib/htmlhint-custom.js"></script>
     <script src="lib/htmlTidy.js"></script>
     <script src="lib/cssTidy.js"></script>
     <script src="lib/jsTidy.js"></script>
@@ -117,6 +114,7 @@
         <div class="txtcenter metaboxes">
           <input class="heading txtcenter block" type="text" data-action="sitetitle" placeholder="site title" value="site title">
           <input class="heading block" type="number" min="0.1" step="0.1" value="0.1" data-value="version">
+          <input class="heading block" type="number" min="8" step="1" value="14" data-editor="fontSize">
           <input class="heading block" type="text" data-action="sitedesc" placeholder="description" value="sample description">
           <input class="heading block" type="text" data-action="siteauthor" placeholder="author" value="kodeWeave">
         </div><br>
@@ -903,15 +901,6 @@
           <a id="h5">h5</a>
           <a id="h6">h6</a>
           <a id="hr"><span class="fa fa-ellipsis-h"></span></a>
-          <a id="charsym19">&amp;</a>
-          <a id="charsym21">$</a>
-          <a id="charsym22">¢</a>
-          <a id="charsym23">£</a>
-          <a id="charsym24">¥</a>
-          <a id="charsym25">€</a>
-          <a id="charsym32">©</a>
-          <a id="charsym33">®</a>
-          <a id="charsym34">™</a>
         </span>
        <span class="main-editor-chars">
           <a id="zeninit">zen</a>
@@ -919,36 +908,38 @@
           <a id="charsym2">{}</a>
           <a id="charsym3">""</a>
           <a id="charsym4">''</a>
-          <a id="charsym5">+</a>
-          <a id="charsym6">-</a>
-          <a id="charsym7">.</a>
-          <a id="charsym8">()</a>
-          <a id="charsym9">:</a>
-          <a id="charsym10">;</a>
-          <a id="charsym11">_</a>
-          <a id="charsym12">[]</a>
-          <a id="charsym13">|</a>
-          <a id="charsym14">/</a>
-          <a id="charsym15">\</a>
-          <a id="charsym16">?</a>
-          <a id="charsym17">*</a>
-          <a id="charsym18">\n</a>
-          <a id="charsym19">&amp;</a>
-          <a id="charsym20">%</a>
-          <a id="charsym21">$</a>
-          <a id="charsym22">¢</a>
-          <a id="charsym23">£</a>
-          <a id="charsym24">¥</a>
-          <a id="charsym25">€</a>
-          <a id="charsym26">@</a>
-          <a id="charsym27">=</a>
-          <a id="charsym28">#</a>
-          <a id="charsym29">,</a>
-          <a id="charsym30">!</a>
-          <a id="charsym31">^</a>
-          <a id="charsym32">©</a>
-          <a id="charsym33">®</a>
-          <a id="charsym34">™</a>
+          <a data-add="sym">+</a>
+          <a data-add="sym">-</a>
+          <a data-add="sym">.</a>
+          <a id="charsym5">()</a>
+          <a data-add="sym">:</a>
+          <a data-add="sym">;</a>
+          <a data-add="sym">_</a>
+          <a id="charsym6">[]</a>
+          <a data-add="sym">|</a>
+          <a data-add="sym">/</a>
+          <a data-add="sym">\</a>
+          <a data-add="sym">?</a>
+          <a data-add="sym">*</a>
+          <a data-add="sym">\n</a>
+          <a data-add="sym">%</a>
+          <a data-add="sym">@</a>
+          <a data-add="sym">=</a>
+          <a data-add="sym">#</a>
+          <a data-add="sym">,</a>
+          <a data-add="sym">!</a>
+          <a data-add="sym">^</a>
+        </span>
+          <a data-add="sym">&amp;</a>
+          <a data-add="sym">$</a>
+          <a data-add="sym">¢</a>
+          <a data-add="sym">£</a>
+          <a data-add="sym">¥</a>
+          <a data-add="sym">€</a>
+          <a data-add="sym">©</a>
+          <a data-add="sym">®</a>
+          <a data-add="sym">™</a>
+        <span class="main-editor-chars">
           <a id="function">function() {}</a>
         </span>
       </div>
@@ -1156,7 +1147,6 @@
     <script src="lib/shortcut.js"></script>
     <script src="vars.js"></script>
     <script src="main.js"></script>
-    <script src="ui.js"></script>
     <script src="editor.js"></script>
     <script src="lib/hscroll.js"></script>
   </body>
