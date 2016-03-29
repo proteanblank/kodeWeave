@@ -603,7 +603,9 @@ var timeout,
         htmlEditor.setValue("<!-- comment -->\nhello world!")
         cssEditor.setValue("")
         jsEditor.setValue("")
-        $(".open-demos").trigger("click")
+        if ($(".open-demos.active").is(":visible")) {
+          $(".open-demos").trigger("click")
+        }
         callCollabUpdate()
       })
       $("[data-action=packagezipfiles]").on("click", function() {
