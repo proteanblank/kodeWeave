@@ -970,7 +970,7 @@ var timeout,
       CodeMirror.commands.quoteSelection = function(cm) {
         var from = cm.getCursor("from").line, to = cm.getCursor("to").line
         for (var line = to; line >= from; line--)
-          cm.replaceSelection("> ", {line: line, ch: 0})
+          cm.replaceRange("> ", {line: line, ch: 0})
       }
       $("#quote").on("click", function() {
         mdEditor.execCommand("quoteSelection")

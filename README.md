@@ -16,11 +16,11 @@ MIT
 Availability
 -------------
 
-**Stable Releases**
+**Stable Releases**  
 [Android](https://play.google.com/store/apps/details?id=com.michael.kodeweave)  
 [Chrome Application](https://chrome.google.com/webstore/detail/kodeweave-touch/blcgppajmopfndnmegepihhkilaejipf)
 
-**No longer Supported**
+**No longer Supported**  
 [Windows 64](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-win.zip/download)  
 [Windows 32](http://sourceforge.net/projects/kodeweave/files/1.0.5/kodeWeave-win32.zip/download)  
 [Mac](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-mac.zip/download)  
