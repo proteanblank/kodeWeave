@@ -574,6 +574,8 @@ function displayPreview(file) {
   return false
 }
 
+storeValues()
+
 // Load Files
 $(window).load(function() {
   /**
@@ -654,32 +656,26 @@ $(window).load(function() {
   })
 
   singleFileDownload()
-  storeValues()
 })
-
 
 var hash = window.location.hash.substring(1)
 if (window.location.hash) {
+  localStorage.clear()
   function loadgist(gistid) {
     $.ajax({
       url: "https://api.github.com/gists/" + gistid,
       type: "GET",
-      dataType: "jsonp"
+      dataType: "jsonp",
+      jsonp: "callback"
     }).success(function(gistdata) {
       var htmlVal    = gistdata.data.files["index.html"].content
       var cssVal     = gistdata.data.files["index.css"].content
       var jsVal      = gistdata.data.files["index.js"].content
       var mdVal      = gistdata.data.files["README.md"].content
-      var libraries  = gistdata.data.files["libraries.json"].content
       var settings   = gistdata.data.files["settings.json"].content
-
-      var jsonLibs = JSON.parse(libraries)
-      var jsonSets = JSON.parse(settings)
-
-      // Return libraries from json
-      $.each(jsonLibs, function(name, value) {
-        $(".ldd-submenu #" + name).prop("checked", value)
-      })
+      var libraries  = gistdata.data.files["libraries.json"].content
+      var jsonSets   = JSON.parse(settings)
+      var jsonLibs   = JSON.parse(libraries)
 
       // Return font settings from json
       var siteTitle      = jsonSets.siteTitle
@@ -688,16 +684,25 @@ if (window.location.hash) {
       var WeaveDesc      = jsonSets.description
       var WeaveAuthor    = jsonSets.author
 
-      setTimeout(function() {
-        $("[data-action=sitetitle]").val(siteTitle).trigger("change")
-        $("[data-value=version]").val(WeaveVersion).trigger("change")
-        $("[data-editor=fontSize]").val(editorFontSize).trigger("change")
-        $("[data-action=sitedesc]").val(WeaveDesc).trigger("change")
-        $("[data-action=siteauthor]").val(WeaveAuthor).trigger("change")
-      }, 4550)
+      $("[data-action=sitetitle]").val(siteTitle)
+      $("[data-value=version]").val(WeaveVersion)
+      $("[data-editor=fontSize]").val(editorFontSize)
+      $("[data-action=sitedesc]").val(WeaveDesc)
+      $("[data-action=siteauthor]").val(WeaveAuthor)
+      storeValues()
 
-      $("[data-action=check]").trigger("keyup")
+      // Return settings from the json
+      $(".metaboxes input.heading").trigger("keyup")
 
+      // Return libraries from json
+      $.each(jsonLibs, function(name, value) {
+        $(".ldd-submenu #" + name).prop("checked", value).trigger("keyup")
+      })
+
+      // Set checked libraries into preview
+      $("#jquery").trigger("keyup")
+
+      // Return the editor's values
       mdEditor.setValue(mdVal)
       htmlEditor.setValue(htmlVal)
       cssEditor.setValue(cssVal)
