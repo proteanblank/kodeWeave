@@ -687,6 +687,17 @@ var timeout,
         callCollabUpdate()
       })
     },
+    activateMD = function() {
+      activeEditor.val("mdEditor")
+      if ($("#function").is(":hidden")) {
+        $("#function").show()
+      }
+      $(".md-chars").removeClass("hide")
+      if ( $(".main-editor-chars").is(":visible") ) {
+        $(".md-chars").removeClass("hide")
+        $(".main-editor-chars").addClass("hide")
+      }
+    },
     charGeneration = function() {
       $("#undo").on("click", function() {
         if ( activeEditor.val() === "htmlEditor" ) {
@@ -967,13 +978,11 @@ var timeout,
           // User clicked cancel
         }).set('basic', true)
       })
-      CodeMirror.commands.quoteSelection = function(cm) {
-        var from = cm.getCursor("from").line, to = cm.getCursor("to").line
-        for (var line = to; line >= from; line--)
-          cm.replaceRange("> ", {line: line, ch: 0})
-      }
       $("#quote").on("click", function() {
-        mdEditor.execCommand("quoteSelection")
+        var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
+
+        mdEditor.replaceSelection("\n  > " + selected_text.replace(/\n/g,'\n  > '))
+        mdEditor.focus()
       })
       $("#code").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
@@ -997,13 +1006,17 @@ var timeout,
       $("#list-ol").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection(selected_text + "\n\n  1. \n\n")
+        var i, len, text;
+        for (i = 0, len = selected_text.split("\n").length, text = ""; i < len; i++) {
+            text += i + 1 + ". " + selected_text.split("\n")[i] + "\n  ";
+        }
+        mdEditor.replaceSelection("\n  " + text)
         mdEditor.focus()
       })
       $("#list-ul").on("click", function() {
         var selected_text = mdEditor.getSelection()  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection(selected_text + "\n\n  - \n\n")
+        mdEditor.replaceSelection("\n  - " + selected_text.replace(/\n/g,'\n  - '))
         mdEditor.focus()
       })
       $("#h1").on("click", function() {
@@ -1048,4 +1061,10 @@ var timeout,
         mdEditor.replaceSelection(selected_text + "\n\n----------\n\n")
         mdEditor.focus()
       })
+
+      // $("#mainSplitter").jqxSplitter("expand")
+      // $("#mdEditor").trigger("mousedown")
+      // mdEditor.execCommand("selectAll")
+      // activateMD()
+      // $("#list-ol").trigger("click")
     }

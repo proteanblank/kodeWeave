@@ -140,7 +140,7 @@ header a:hover {
   background: rgb(255, 255, 255);
   background: rgba(255, 255, 255, 0.25);
 }
-.chromeappwindow {
+.chromeappwindow, .socialdialog {
   background: rgb(255, 255, 255);
 }
 .column > div {
@@ -201,6 +201,10 @@ header a:hover {
   background-image: url("../assets/md.svg");
 }
 
+/* Share to Social Networks */
+.socialbtns a:not(.btn--warning) {
+  font-size: 3em;
+}
 
 /* Custom Checkbox Styling */
 /* Base for label styling */

@@ -6,7 +6,7 @@ kodeWeave is a realtime HTML/CSS/Javascript and Markdown coding playground. Simi
 Version
 -------------
 
-1.0.8
+1.0.9
 
 License
 -------------

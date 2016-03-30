@@ -238,7 +238,7 @@ a:active {
 .dialog-bg {
   z-index: 9999!important;
 }
-.chromeappwindow {
+.chromeappwindow, .socialdialog {
   padding: 2em;
   border-radius: 0.4em;
 }
