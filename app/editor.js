@@ -62,9 +62,6 @@ var loader = $("[data-action=load]"),
       if ( localStorage.getItem("htmlPreprocessorVal")) {
         $("#html-preprocessor").val(localStorage.getItem("htmlPreprocessorVal"))
       }
-      // if ( localStorage.getItem("cssPreprocessorVal")) {
-      //   $("#css-preprocessor").val(localStorage.getItem("cssPreprocessorVal"))
-      // }
       if ( localStorage.getItem("jsPreprocessorVal")) {
         $("#js-preprocessor").val(localStorage.getItem("jsPreprocessorVal"))
       }
@@ -791,30 +788,40 @@ $("#html-preprocessor").on("change", function() {
   if ( valueSelected == "none") {
     htmlEditor.setOption("mode", "text/html")
     htmlEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"])
+    // htmlEditor.refresh()
   } else if ( valueSelected == "jade") {
     htmlEditor.setOption("mode", "text/x-jade")
     htmlEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"])
+    // htmlEditor.refresh()
   } else {
     htmlEditor.setOption("mode", "text/html")
     htmlEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"])
+    // htmlEditor.refresh()
   }
   setTimeout(updatePreview, 300)
 }).trigger("change")
-// $("#css-preprocessor").on("change", function() {
-//   var valueSelected = this.value
-//   localStorage.setItem("cssPreprocessorVal", this.value)
-//   if ( valueSelected == "none") {
-//     htmlEditor.setOption("mode", "text/css")
-//     htmlEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"])
-//   } else if ( valueSelected == "sass") {
-//     htmlEditor.setOption("mode", "text/x-sass")
-//     htmlEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"])
-//   } else {
-//     htmlEditor.setOption("mode", "text/css")
-//     htmlEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"])
-//   }
-//   setTimeout(updatePreview, 300)
-// }).trigger("change")
+$("#js-preprocessor").on("change", function() {
+  var valueSelected = this.value
+  localStorage.setItem("jsPreprocessorVal", this.value)
+  if ( valueSelected == "none") {
+    $(".jsvalidator").show()
+    jsEditor.setOption("mode", "text/javascript")
+    // jsEditor.refresh()
+    $(".jsvalidator").show()
+  } else if ( valueSelected == "coffeescript") {
+    $(".jsvalidator").hide()
+    if ($("#myjsvalidationswitch").is(":checked")) {
+      $("#myjsvalidationswitch").trigger("click")
+    }
+    jsEditor.setOption("mode", "text/x-coffeescript")
+    // jsEditor.refresh()
+  } else {
+    $(".jsvalidator").show()
+    jsEditor.setOption("mode", "text/javascript")
+    // jsEditor.refresh()
+  }
+  setTimeout(updatePreview, 300)
+}).trigger("change")
 
 // Save as a Gist Online
 $("[data-action=save-gist]").click(function() {
@@ -950,6 +957,23 @@ var desktopExport = function(file) {
         }
 
         var zip = new JSZip()
+        var htmlSelected = $("#html-preprocessor option:selected").val()
+        var jsSelected   = $("#js-preprocessor   option:selected").val()
+
+        if ( htmlSelected == "none") {
+          yourHTML = htmlEditor.getValue()
+        } else if ( htmlSelected == "jade") {
+          var options = {
+              pretty: true
+          }
+          var yourHTML = jade.render(htmlEditor.getValue(), options)
+        }
+        if ( jsSelected == "none") {
+          yourJS = jsEditor.getValue()
+        } else if ( jsSelected == "coffeescript") {
+          yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
+        }
+
         var appName = zip.folder( $("[data-action=sitetitle]").val().replace(/ /g, "-")  )
         appName.load(data)
 
@@ -966,11 +990,10 @@ var desktopExport = function(file) {
         appName.file("resources/default_app/icons/64.png", Img64.split('base64,')[1],{base64: true})
         appName.file("resources/default_app/icons/128.png", Img128.split('base64,')[1],{base64: true})
 
-
         // check if css editor has a value
         if (cssEditor.getValue() !== "") {
           closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n    " + closeFinal.getValue()
+          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue()
 
           appName.file("resources/default_app/css/index.css", cssEditor.getValue())
           appName.file("resources/default_app/index.html", htmlContent)
@@ -982,23 +1005,23 @@ var desktopExport = function(file) {
           } else {
             closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
           }
-          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
-          appName.file("resources/default_app/js/index.js", jsEditor.getValue())
+          appName.file("resources/default_app/js/index.js", yourJS)
           appName.file("resources/default_app/index.html", htmlContent)
         }
         // check if css and js editors have values
         if (cssEditor.getValue() !== "" && jsEditor.getValue() !== "") {
           closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
           appName.file("resources/default_app/css/index.css", cssEditor.getValue())
-          appName.file("resources/default_app/js/index.js", jsEditor.getValue())
+          appName.file("resources/default_app/js/index.js", yourJS)
           appName.file("resources/default_app/index.html", htmlContent)
         }
         if (cssEditor.getValue() == "" && jsEditor.getValue() == "") {
           closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n")
-          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n" + closeFinal.getValue()
+          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n" + closeFinal.getValue()
 
           appName.file("resources/default_app/index.html", htmlContent)
         }
@@ -1029,13 +1052,29 @@ var desktopExport = function(file) {
         }
 
         var zip = new JSZip(data)
+        var htmlSelected = $("#html-preprocessor option:selected").val()
+        var jsSelected   = $("#js-preprocessor   option:selected").val()
+
+        if ( htmlSelected == "none") {
+          yourHTML = htmlEditor.getValue()
+        } else if ( htmlSelected == "jade") {
+          var options = {
+              pretty: true
+          }
+          var yourHTML = jade.render(htmlEditor.getValue(), options)
+        }
+        if ( jsSelected == "none") {
+          yourJS = jsEditor.getValue()
+        } else if ( jsSelected == "coffeescript") {
+          yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
+        }
 
         // Your Web App
         var grabString = "<script src=\"libraries/jquery/jquery.js\"></script\>",
             replaceString = "<script src=\"libraries/jquery/jquery.js\"></script\>\n    <script>\n      try {\n        $ = jQuery = module.exports;\n        // If you want module.exports to be empty, uncomment:\n        // module.exports = {};\n      } catch(e) {}\n    </script\>";
 
         closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-        var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+        var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
         var Img16 = c16[0].toDataURL("image/png")
         var Img32 = c32[0].toDataURL("image/png")
         var Img64 = c64[0].toDataURL("image/png")
@@ -1048,7 +1087,7 @@ var desktopExport = function(file) {
         // check if css editor has a value
         if (cssEditor.getValue() !== "") {
           closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n    " + closeFinal.getValue()
+          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue()
 
           zip.file("app/css/index.css", cssEditor.getValue())
           zip.file("app/index.html", htmlContent)
@@ -1060,23 +1099,23 @@ var desktopExport = function(file) {
           } else {
             closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
           }
-          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
-          zip.file("app/js/index.js", jsEditor.getValue())
+          zip.file("app/js/index.js", yourJS)
           zip.file("app/index.html", htmlContent)
         }
         // check if css and js editors have values
         if (cssEditor.getValue() !== "" && jsEditor.getValue() !== "") {
           closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
           zip.file("app/css/index.css", cssEditor.getValue())
-          zip.file("app/js/index.js", jsEditor.getValue())
+          zip.file("app/js/index.js", yourJS)
           zip.file("app/index.html", htmlContent)
         }
         if (cssEditor.getValue() == "" && jsEditor.getValue() == "") {
           closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n")
-          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n" + closeFinal.getValue()
+          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n" + closeFinal.getValue()
 
           zip.file("index.html", htmlContent)
         }
@@ -1109,13 +1148,29 @@ var desktopExport = function(file) {
         }
 
         var zip = new JSZip(data)
+        var htmlSelected = $("#html-preprocessor option:selected").val()
+        var jsSelected   = $("#js-preprocessor   option:selected").val()
+
+        if ( htmlSelected == "none") {
+          yourHTML = htmlEditor.getValue()
+        } else if ( htmlSelected == "jade") {
+          var options = {
+              pretty: true
+          }
+          var yourHTML = jade.render(htmlEditor.getValue(), options)
+        }
+        if ( jsSelected == "none") {
+          yourJS = jsEditor.getValue()
+        } else if ( jsSelected == "coffeescript") {
+          yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
+        }
 
         // Your Web App
         var grabString = "<script src=\"libraries/jquery/jquery.js\"></script\>",
             replaceString = "<script src=\"libraries/jquery/jquery.js\"></script\>\n    <script>\n      try {\n        $ = jQuery = module.exports;\n        // If you want module.exports to be empty, uncomment:\n        // module.exports = {};\n      } catch(e) {}\n    </script\>";
 
         closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-        var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+        var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
         var Img16 = c16[0].toDataURL("image/png")
         var Img32 = c32[0].toDataURL("image/png")
         var Img64 = c64[0].toDataURL("image/png")
@@ -1128,7 +1183,7 @@ var desktopExport = function(file) {
         // check if css editor has a value
         if (cssEditor.getValue() !== "") {
           closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n    " + closeFinal.getValue()
+          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue()
 
           zip.file("content/app/css/index.css", cssEditor.getValue())
           zip.file("content/app/index.html", htmlContent)
@@ -1140,23 +1195,23 @@ var desktopExport = function(file) {
           } else {
             closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
           }
-          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
-          zip.file("content/app/js/index.js", jsEditor.getValue())
+          zip.file("content/app/js/index.js", yourJS)
           zip.file("content/app/index.html", htmlContent)
         }
         // check if css and js editors have values
         if (cssEditor.getValue() !== "" && jsEditor.getValue() !== "") {
           closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
           zip.file("content/app/css/index.css", cssEditor.getValue())
-          zip.file("content/app/js/index.js", jsEditor.getValue())
+          zip.file("content/app/js/index.js", yourJS)
           zip.file("content/app/index.html", htmlContent)
         }
         if (cssEditor.getValue() == "" && jsEditor.getValue() == "") {
           closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n")
-          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n" + closeFinal.getValue()
+          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n" + closeFinal.getValue()
 
           zip.file("content/index.html", htmlContent)
         }
@@ -1193,6 +1248,22 @@ var desktopExport = function(file) {
         var zip = new JSZip()
         var appName = zip.folder( $("[data-action=sitetitle]").val().replace(/ /g, "-")  )
         appName.load(data)
+        var htmlSelected = $("#html-preprocessor option:selected").val()
+        var jsSelected   = $("#js-preprocessor   option:selected").val()
+
+        if ( htmlSelected == "none") {
+          yourHTML = htmlEditor.getValue()
+        } else if ( htmlSelected == "jade") {
+          var options = {
+              pretty: true
+          }
+          var yourHTML = jade.render(htmlEditor.getValue(), options)
+        }
+        if ( jsSelected == "none") {
+          yourJS = jsEditor.getValue()
+        } else if ( jsSelected == "coffeescript") {
+          yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
+        }
 
         // Your Web App
         var grabString = "<script src=\"libraries/jquery/jquery.js\"></script\>",
@@ -1210,7 +1281,7 @@ var desktopExport = function(file) {
         // check if css editor has a value
         if (cssEditor.getValue() !== "") {
           closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n    " + closeFinal.getValue()
+          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue()
 
           appName.file("resources/default_app/css/index.css", cssEditor.getValue())
           appName.file("resources/default_app/index.html", htmlContent)
@@ -1222,23 +1293,23 @@ var desktopExport = function(file) {
           } else {
             closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
           }
-          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
-          appName.file("resources/default_app/js/index.js", jsEditor.getValue())
+          appName.file("resources/default_app/js/index.js", yourJS)
           appName.file("resources/default_app/index.html", htmlContent)
         }
         // check if css and js editors have values
         if (cssEditor.getValue() !== "" && jsEditor.getValue() !== "") {
           closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
           appName.file("resources/default_app/css/index.css", cssEditor.getValue())
-          appName.file("resources/default_app/js/index.js", jsEditor.getValue())
+          appName.file("resources/default_app/js/index.js", yourJS)
           appName.file("resources/default_app/index.html", htmlContent)
         }
         if (cssEditor.getValue() == "" && jsEditor.getValue() == "") {
           closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n")
-          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n" + closeFinal.getValue()
+          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n" + closeFinal.getValue()
 
           appName.file("resources/default_app/index.html", htmlContent)
         }
@@ -1271,13 +1342,29 @@ var desktopExport = function(file) {
         }
 
         var zip = new JSZip(data)
+        var htmlSelected = $("#html-preprocessor option:selected").val()
+        var jsSelected   = $("#js-preprocessor   option:selected").val()
+
+        if ( htmlSelected == "none") {
+          yourHTML = htmlEditor.getValue()
+        } else if ( htmlSelected == "jade") {
+          var options = {
+              pretty: true
+          }
+          var yourHTML = jade.render(htmlEditor.getValue(), options)
+        }
+        if ( jsSelected == "none") {
+          yourJS = jsEditor.getValue()
+        } else if ( jsSelected == "coffeescript") {
+          yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
+        }
 
         // Your Web App
         var grabString = "<script src=\"libraries/jquery/jquery.js\"></script\>",
             replaceString = "<script src=\"libraries/jquery/jquery.js\"></script\>\n    <script>\n      try {\n        $ = jQuery = module.exports;\n        // If you want module.exports to be empty, uncomment:\n        // module.exports = {};\n      } catch(e) {}\n    </script\>";
 
         closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-        var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+        var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
         var Img16 = c16[0].toDataURL("image/png")
         var Img32 = c32[0].toDataURL("image/png")
         var Img64 = c64[0].toDataURL("image/png")
@@ -1290,7 +1377,7 @@ var desktopExport = function(file) {
         // check if css editor has a value
         if (cssEditor.getValue() !== "") {
           closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n    " + closeFinal.getValue()
+          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue()
 
           zip.file("app/css/index.css", cssEditor.getValue())
           zip.file("app/index.html", htmlContent)
@@ -1302,23 +1389,23 @@ var desktopExport = function(file) {
           } else {
             closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
           }
-          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+          var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
-          zip.file("app/js/index.js", jsEditor.getValue())
+          zip.file("app/js/index.js", yourJS)
           zip.file("app/index.html", htmlContent)
         }
         // check if css and js editors have values
         if (cssEditor.getValue() !== "" && jsEditor.getValue() !== "") {
           closeRefs.setValue($("[data-action=library-code]").val().split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
           zip.file("app/css/index.css", cssEditor.getValue())
-          zip.file("app/js/index.js", jsEditor.getValue())
+          zip.file("app/js/index.js", yourJS)
           zip.file("app/index.html", htmlContent)
         }
         if (cssEditor.getValue() == "" && jsEditor.getValue() == "") {
           closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n")
-          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n" + closeFinal.getValue()
+          htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n" + closeFinal.getValue()
 
           zip.file("index.html", htmlContent)
         }
@@ -1363,12 +1450,28 @@ var desktopExport = function(file) {
           var zip = new JSZip(data)
           var appName = zip.folder("app")
           appName.load(data)
+          var htmlSelected = $("#html-preprocessor option:selected").val()
+          var jsSelected   = $("#js-preprocessor   option:selected").val()
+
+          if ( htmlSelected == "none") {
+            yourHTML = htmlEditor.getValue()
+          } else if ( htmlSelected == "jade") {
+            var options = {
+                pretty: true
+            }
+            var yourHTML = jade.render(htmlEditor.getValue(), options)
+          }
+          if ( jsSelected == "none") {
+            yourJS = jsEditor.getValue()
+          } else if ( jsSelected == "coffeescript") {
+            yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
+          }
 
           // Your Web App
           // check if css editor has a value
           if (cssEditor.getValue() !== "") {
             closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-            var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n    " + closeFinal.getValue()
+            var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue()
 
             zip.file("app/css/index.css", cssEditor.getValue())
             zip.file("app/index.html", htmlContent)
@@ -1380,23 +1483,23 @@ var desktopExport = function(file) {
             } else {
               closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
             }
-            var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+            var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
-            zip.file("app/js/index.js", jsEditor.getValue())
+            zip.file("app/js/index.js", yourJS)
             zip.file("app/index.html", htmlContent)
           }
           // check if css and js editors have values
           if (cssEditor.getValue() !== "" && jsEditor.getValue() !== "") {
             closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-            htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+            htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
             zip.file("app/css/index.css", cssEditor.getValue())
-            zip.file("app/js/index.js", jsEditor.getValue())
+            zip.file("app/js/index.js", yourJS)
             zip.file("app/index.html", htmlContent)
           }
           if (cssEditor.getValue() == "" && jsEditor.getValue() == "") {
             closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n")
-            htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n" + closeFinal.getValue()
+            htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n" + closeFinal.getValue()
 
             zip.file("app/index.html", htmlContent)
           }
@@ -1466,12 +1569,28 @@ var desktopExport = function(file) {
           }
 
           var zip = new JSZip(data)
+          var htmlSelected = $("#html-preprocessor option:selected").val()
+          var jsSelected   = $("#js-preprocessor   option:selected").val()
+
+          if ( htmlSelected == "none") {
+            yourHTML = htmlEditor.getValue()
+          } else if ( htmlSelected == "jade") {
+            var options = {
+                pretty: true
+            }
+            var yourHTML = jade.render(htmlEditor.getValue(), options)
+          }
+          if ( jsSelected == "none") {
+            yourJS = jsEditor.getValue()
+          } else if ( jsSelected == "coffeescript") {
+            yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
+          }
 
           // Your Web App
           // check if css editor has a value
           if (cssEditor.getValue() !== "") {
             closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-            var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n    " + closeFinal.getValue()
+            var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue()
 
             zip.file("css/index.css", cssEditor.getValue())
             zip.file("index.html", htmlContent)
@@ -1483,23 +1602,23 @@ var desktopExport = function(file) {
             } else {
               closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
             }
-            var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+            var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
-            zip.file("js/index.js", jsEditor.getValue())
+            zip.file("js/index.js", yourJS)
             zip.file("index.html", htmlContent)
           }
           // check if css and js editors have values
           if (cssEditor.getValue() !== "" && jsEditor.getValue() !== "") {
             closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-            htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+            htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
             zip.file("css/index.css", cssEditor.getValue())
-            zip.file("js/index.js", jsEditor.getValue())
+            zip.file("js/index.js", yourJS)
             zip.file("index.html", htmlContent)
           }
           if (cssEditor.getValue() == "" && jsEditor.getValue() == "") {
             closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n")
-            htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n" + closeFinal.getValue()
+            htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n" + closeFinal.getValue()
 
             zip.file("index.html", htmlContent)
           }
@@ -1570,39 +1689,56 @@ $("[data-action=download-zip]").on("click", function() {
     }
 
     var zip = new JSZip(data)
+    var htmlSelected = $("#html-preprocessor option:selected").val()
+    var jsSelected   = $("#js-preprocessor   option:selected").val()
+
+    if ( htmlSelected == "none") {
+      yourHTML = htmlEditor.getValue()
+    } else if ( htmlSelected == "jade") {
+      var options = {
+          pretty: true
+      }
+      var yourHTML = jade.render(htmlEditor.getValue(), options)
+    }
+    if ( jsSelected == "none") {
+      yourJS = jsEditor.getValue()
+    } else if ( jsSelected == "coffeescript") {
+      yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
+    }
 
     // check if css editor has a value
     if (cssEditor.getValue() !== "") {
       closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-      var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n    " + closeFinal.getValue()
+      var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue()
 
       zip.file("css/index.css", cssEditor.getValue())
       zip.file("index.html", htmlContent)
     }
     // check if js editor has a value
+
     if ( jsEditor.getValue() !== "") {
       if (cssEditor.getValue() === "") {
         closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n")
       } else {
         closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
       }
-      var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+      var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
-      zip.file("js/index.js", jsEditor.getValue())
+      zip.file("js/index.js", yourJS)
       zip.file("index.html", htmlContent)
     }
     // check if css and js editors have values
     if (cssEditor.getValue() !== "" && jsEditor.getValue() !== "") {
       closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
-      htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
+      htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
       zip.file("css/index.css", cssEditor.getValue())
-      zip.file("js/index.js", jsEditor.getValue())
+      zip.file("js/index.js", yourJS)
       zip.file("index.html", htmlContent)
     }
     if (cssEditor.getValue() == "" && jsEditor.getValue() == "") {
       closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n")
-      htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + htmlEditor.getValue() + "\n" + closeFinal.getValue()
+      htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n" + closeFinal.getValue()
 
       zip.file("index.html", htmlContent)
     }

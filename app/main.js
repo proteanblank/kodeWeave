@@ -196,26 +196,26 @@ mdEditor.on("drop", function() {
 function updatePreview() {
   var previewFrame = document.getElementById("preview")
   var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document
-  var heading = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + $("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\">\n" + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\">\n" + "    <link rel=\"stylesheet\" href=\"css/index.css\">\n" + "<style>"
+  var heading = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + $("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\">\n" + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\">\n" + "    <link rel=\"stylesheet\" href=\"css/index.css\">\n"
   preview.open()
   var htmlSelected = $("#html-preprocessor option:selected").val()
-  // var cssSelected  = $("#css-preprocessor  option:selected").val()
   var jsSelected   = $("#js-preprocessor   option:selected").val()
-  var options = {
-      pretty: true
+
+  if ( jsSelected == "none") {
+    jsContent = "<script>" + jsEditor.getValue() + "</script>"
+  } else if ( jsSelected == "coffeescript") {
+    jsContent = "<script>" + CoffeeScript.compile(jsEditor.getValue(), { bare: true }) + "</script>"
   }
-  var jade2HTML = jade.render(htmlEditor.getValue(), options)
-  // if ( cssSelected == "none") {
-  //   var htmlContent = heading + cssEditor.getValue() + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + "<script>" + jsEditor.getValue() + "</script>" + closeFinal.getValue()
-  // } else if ( cssSelected == "css") {
-  //   var htmlContent = heading + cssEditor.getValue() + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + "\n\n    <script src=\"js/index.js\"></script>" + "<script>" + jsEditor.getValue() + "</script>" + closeFinal.getValue()
-  // }
 
   if ( htmlSelected == "none") {
-    var htmlContent = heading + cssEditor.getValue() + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + "<script>" + jsEditor.getValue() + "</script>" + closeFinal.getValue()
+    var htmlContent = heading + "<style>" + cssEditor.getValue() + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + jsContent + closeFinal.getValue()
     preview.write(htmlContent)
   } else if ( htmlSelected == "jade") {
-    var htmlContent = heading + cssEditor.getValue() + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + "\n\n    <script src=\"js/index.js\"></script>" + "<script>" + jsEditor.getValue() + "</script>" + closeFinal.getValue()
+    var options = {
+        pretty: true
+    }
+    var jade2HTML = jade.render(htmlEditor.getValue(), options)
+    var htmlContent = heading + "<style>" + cssEditor.getValue() + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + "\n\n    <script src=\"js/index.js\"></script>" + jsContent + closeFinal.getValue()
     preview.write(htmlContent)
   }
   preview.close()

@@ -10,15 +10,21 @@ var timeout,
     },
     singleFileDownload = function() {
       $(".savehtml").click(function() {
-        if ( valueSelected == "none") {
-          var blob = new Blob([ htmlEditor.getValue() ], {type: "text/html"})
+        var htmlSelected = $("#html-preprocessor option:selected").val()
+
+        if ( htmlSelected == "none") {
+          yourHTML = htmlEditor.getValue()
+          var blob = new Blob([ yourHTML ], {type: "text/html"})
           saveAs(blob, "source.html")
-        } else if ( valueSelected == "jade") {
+        } else if ( htmlSelected == "jade") {
           var options = {
               pretty: true
           }
-          var blob = new Blob([ jade.render(htmlEditor.getValue(), options) ], {type: "text/x-jade"})
-          saveAs(blob, "source.jade")
+          var yourHTML = jade.render(htmlEditor.getValue(), options)
+          var blob = new Blob([ yourHTML ], {type: "text/x-jade"})
+          // var blob = new Blob([ htmlEditor.getValue() ], {type: "text/x-jade"})
+          // saveAs(blob, "source.jade")
+          saveAs(blob, "source.html")
         }
       })
       $(".savecss").click(function() {
@@ -26,7 +32,15 @@ var timeout,
         saveAs(blob, "source.css")
       })
       $(".savejs").click(function() {
-        var blob = new Blob([ jsEditor.getValue() ], {type: "text/javascript"})
+        var jsSelected = $("#js-preprocessor option:selected").val()
+
+        if ( jsSelected == "none") {
+          yourJS = jsEditor.getValue()
+        } else if ( jsSelected == "coffeescript") {
+          yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
+        }
+
+        var blob = new Blob([ yourJS ], {type: "text/javascript"})
         saveAs(blob, "source.js")
       })
       $(".savemd").click(function() {
