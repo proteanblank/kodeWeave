@@ -238,7 +238,7 @@ a:active {
 .dialog-bg {
   z-index: 9999!important;
 }
-.chromeappwindow, .socialdialog {
+.chromeappwindow, .socialdialog, .preprocessors {
   padding: 2em;
   border-radius: 0.4em;
 }
@@ -333,7 +333,13 @@ textarea {
   margin-right: 7px;
 }
 
-.fullscreen-html-toggle, .fullscreen-css-toggle, .fullscreen-js-toggle, .fullscreen-md-toggle, .preview-mode-toggle, .savefile {
+.fullscreen-html-toggle,
+.fullscreen-css-toggle,
+.fullscreen-js-toggle,
+.fullscreen-md-toggle,
+.preview-mode-toggle,
+.savefile,
+.settings {
   display: block;
   position: absolute;
   right: 20px;
@@ -341,16 +347,27 @@ textarea {
   font-size: 1.75em;
   z-index: 0;
 }
-.fullscreen-html-toggle:hover, .fullscreen-css-toggle:hover, .fullscreen-js-toggle:hover, .fullscreen-md-toggle:hover, .preview-mode-toggle:hover {
+.fullscreen-html-toggle:hover,
+.fullscreen-css-toggle:hover,
+.fullscreen-js-toggle:hover,
+.fullscreen-md-toggle:hover,
+.preview-mode-toggle:hover {
   opacity: 1;
 }
-.fullscreen-html-toggle, .fullscreen-css-toggle, .fullscreen-js-toggle, .fullscreen-md-toggle {
+.fullscreen-html-toggle,
+.fullscreen-css-toggle,
+.fullscreen-js-toggle,
+.fullscreen-md-toggle {
   top: 15px;
 }
 .savefile {
   top: 50px;
 }
-.savefile:hover {
+.settings {
+  top: 87px;
+}
+.savefile:hover,
+.settings:hover {
   opacity: 1;
 }
 .preview-mode-toggle {
@@ -421,7 +438,6 @@ textarea {
 .frame-mode:checked + .frameswitch-label .frameswitch-switch {
   right: 0;
 }
-
 
 /* JS Validator Toggle Switch */
 .jsvalidationswitch {

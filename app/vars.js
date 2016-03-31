@@ -1,26 +1,25 @@
 var timeout,
     delay,
-    htmlWaiting,
-    cssWaiting,
-    jsWaiting,
     JSValEnabled = function() {
-      jsEditor.setOption("lint", true)
+      // jsEditor.setOption("lint", true)
       jsEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"])
-      jsWaiting = setTimeout(updateJSHints, 300)
-      clearTimeout(jsWaiting)
-      setTimeout(updateJSHints, 300)
     },
     JSValDisabled = function() {
-      jsEditor.setOption("lint", false)
+      // jsEditor.setOption("lint", false)
       jsEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"])
-      for (var i = 0; i < widgets.length; ++i) {
-        jsEditor.removeLineWidget(widgets[i])
-      }
     },
     singleFileDownload = function() {
       $(".savehtml").click(function() {
-        var blob = new Blob([ htmlEditor.getValue() ], {type: "text/html"})
-        saveAs(blob, "source.html")
+        if ( valueSelected == "none") {
+          var blob = new Blob([ htmlEditor.getValue() ], {type: "text/html"})
+          saveAs(blob, "source.html")
+        } else if ( valueSelected == "jade") {
+          var options = {
+              pretty: true
+          }
+          var blob = new Blob([ jade.render(htmlEditor.getValue(), options) ], {type: "text/x-jade"})
+          saveAs(blob, "source.jade")
+        }
       })
       $(".savecss").click(function() {
         var blob = new Blob([ cssEditor.getValue() ], {type: "text/css"})

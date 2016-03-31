@@ -21,6 +21,10 @@
     <script src="libraries/jquery/jquery.js"></script>
     <script src="lib/jquery.clearsearch.js"></script>
 
+    <script src="lib/jade.js"></script>
+    <script src="lib/he.js"></script>
+    <script src="lib/html2jade.js"></script>
+
     <script src="lib/jsbeautify/beautify.js"></script>
     <script src="lib/jsbeautify/beautify-css.js"></script>
     <script src="lib/jsbeautify/beautify-html.js"></script>
@@ -44,6 +48,9 @@
     <script src="libraries/codemirror/mode/xml/xml.js"></script>
     <script src="libraries/codemirror/mode/css/css.js"></script>
     <script src="libraries/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="libraries/codemirror/mode/ruby/ruby.js"></script>
+    <script src="libraries/codemirror/mode/jade/jade.js"></script>
+    <script src="libraries/codemirror/mode/haml/haml.js"></script>
     <script src="libraries/codemirror/addon/edit/closetag.js"></script>
     <script src="libraries/codemirror/addon/edit/matchbrackets.js"></script>
     <script src="libraries/codemirror/addon/selection/active-line.js"></script>
@@ -71,6 +78,10 @@
     <script src="libraries/codemirror/addon/lint/html-lint.js"></script>
     <script src="libraries/codemirror/addon/lint/css-lint.js"></script>
     <script src="libraries/codemirror/addon/lint/javascript-lint.js"></script>
+    <script src="libraries/codemirror/coffee-script.js"></script>
+    <script src="libraries/codemirror/coffeelint.js"></script>
+    <script src="libraries/codemirror/addon/lint/coffeescript-lint.js"></script>
+    <script src="libraries/codemirror/mode/sass/sass.js"></script>
     <script src="libraries/codemirror/markdown.js"></script>
     <script src="libraries/codemirror/continuelist.js"></script>
     <script src="libraries/codemirror/inlet.min.js"></script>
@@ -135,21 +146,6 @@
           <a class="fr" data-action="tidy">
             <i class="fa fa-code"></i> Beautify
           </a>
-        </div><br><br>
-
-        <div>
-          <h4 class="headtxt nomar nopadding iblock fl">
-            JS Validator
-          </h4>
-          <h4 class="nomar nopadding iblock fr">
-            <div class="jsvalidationswitch iblock tr">
-              <input type="checkbox" name="jsvalidationswitch" class="jsvalidationswitch-checkbox" id="myjsvalidationswitch" checked>
-              <label class="jsvalidationswitch-label" for="myjsvalidationswitch">
-                <span class="jsvalidationswitch-inner"></span>
-                <span class="jsvalidationswitch-switch"></span>
-              </label>
-            </div>
-          </h4>
         </div><br><br>
 
         <div>
@@ -267,13 +263,13 @@
                       <label for="codemirror">Codemirror (4.0.4)</label>
                     </a>
                     <div class="hide">
-                      <textarea class="libsources hide">    &lt;link rel="stylesheet" href="libraries/codemirror/codemirror.css"&gt;
+                      <textarea class="libsources hide">    &lt;link rel="stylesheet" href="libraries/codemirror/lib/codemirror.css"&gt;
     &lt;link rel="stylesheet" href="libraries/codemirror/addon/fold/foldgutter.css"&gt;
     &lt;link rel="stylesheet" href="libraries/codemirror/inlet.css"&gt;
     &lt;link rel="stylesheet" href="libraries/codemirror/addon/lint/lint.css"&gt;
     &lt;link rel="stylesheet" href="libraries/codemirror/addon/dialog/dialog.css"&gt;
     &lt;link rel="stylesheet" href="libraries/codemirror/addon/hint/show-hint.css"&gt;
-    &lt;script src="libraries/codemirror/codemirror.js"&gt;&lt;/script&gt;
+    &lt;script src="libraries/codemirror/lib/codemirror.js"&gt;&lt;/script&gt;
     &lt;script src="libraries/codemirror/javascripts/code-completion.js"&gt;&lt;/script&gt;
     &lt;script src="libraries/codemirror/javascripts/css-completion.js"&gt;&lt;/script&gt;
     &lt;script src="libraries/codemirror/javascripts/html-completion.js"&gt;&lt;/script&gt;
@@ -309,7 +305,16 @@
     &lt;script src="libraries/codemirror/emmet.js"&gt;&lt;/script&gt;
     &lt;script src="libraries/codemirror/addon/search/goto-line.js"&gt;&lt;/script&gt;
     &lt;script src="libraries/codemirror/markdown.js"&gt;&lt;/script&gt;
-    &lt;script src="libraries/codemirror/continuelist.js"&gt;&lt;/script&gt;</textarea>
+    &lt;script src="libraries/codemirror/continuelist.js"&gt;&lt;/script&gt;
+    &lt;script src="libraries/codemirror/mode/ruby/ruby.js"&gt;&lt;/script&gt;
+    &lt;script src="libraries/codemirror/mode/haml/haml.js"&gt;&lt;/script&gt;
+    &lt;script src="libraries/codemirror/mode/jade/jade.js"&gt;&lt;/script&gt;
+    &lt;script src="libraries/codemirror/mode/sass/sass.js"&gt;&lt;/script&gt;
+    &lt;script src="libraries/codemirror/mode/livescript/livescript.js"&gt;&lt;/script&gt;
+    &lt;script src="libraries/codemirror/mode/coffeescript/coffeescript.js"&gt;&lt;/script&gt;
+    &lt;script src="libraries/codemirror/coffee-script.js"&gt;&lt;/script&gt;
+    &lt;script src="libraries/codemirror/coffeelint.js"&gt;&lt;/script&gt;
+    &lt;script src="libraries/codemirror/addon/lint/coffeescript-lint.js"&gt;&lt;/script&gt;</textarea>
                       <textarea class="codemirror1 hide"></textarea>
                       <textarea class="codemirror2 hide"></textarea>
                       <textarea class="codemirror3 hide"></textarea>
@@ -353,6 +358,15 @@
                       <textarea class="codemirror41 hide"></textarea>
                       <textarea class="codemirror42 hide"></textarea>
                       <textarea class="codemirror43 hide"></textarea>
+                      <textarea class="codemirror44 hide"></textarea>
+                      <textarea class="codemirror45 hide"></textarea>
+                      <textarea class="codemirror46 hide"></textarea>
+                      <textarea class="codemirror47 hide"></textarea>
+                      <textarea class="codemirror48 hide"></textarea>
+                      <textarea class="codemirror49 hide"></textarea>
+                      <textarea class="codemirror50 hide"></textarea>
+                      <textarea class="codemirror51 hide"></textarea>
+                      <textarea class="codemirror52 hide"></textarea>
                       <textarea class="codemirrorzip jszipcode hide"></textarea>
                     </div>
                   </li>
@@ -1033,6 +1047,9 @@
                     <a class="savefile savehtml">
                       <span class="fa fa-download"></span>
                     </a>
+                    <a class="settings htmlSetting">
+                      <span class="fa fa-gear"></span>
+                    </a>
                   </div>
                   <div>
                     <div class="editor-container css-editor">
@@ -1044,6 +1061,9 @@
                     <a class="savefile savecss">
                       <span class="fa fa-download"></span>
                     </a>
+                    <!-- <a class="settings cssSetting">
+                      <span class="fa fa-gear"></span>
+                    </a> -->
                   </div>
                 </div>
               </div>
@@ -1058,6 +1078,9 @@
                     </a>
                     <a class="savefile savejs">
                       <span class="fa fa-download"></span>
+                    </a>
+                    <a class="settings jsSetting">
+                      <span class="fa fa-gear"></span>
                     </a>
                   </div>
                   <div>
@@ -1117,7 +1140,6 @@
         </nav>
       </div>
     </div>
-
     <!-- Chrome Extension Dialog -->
     <div class="dialog-bg column hide" data-action="chromeextdialog">
       <div>
@@ -1133,7 +1155,6 @@
         </nav>
       </div>
     </div>
-
     <!-- Show Preloader Upon Active Download -->
     <div class="fixedfill preloader hide">
       <div class="table">
@@ -1143,6 +1164,70 @@
             <div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Preprocessors Dialog -->
+    <div class="dialog-bg column preprocessordialog hide" data-action="preprocessors">
+      <div>
+        <nav>
+          <div class="grid preprocessors">
+            <div class="txtcenter">
+              <h1>Choose your preprocessor!</h1>
+
+              <h4 class="preprocessor html-preprocessor">HTML Preprocessor</h4>
+              <div class="preprocessor html-preprocessor">
+                <select id="html-preprocessor">
+                  <option value="none">None</option>
+                  <option value="jade">Jade</option>
+                </select>
+              </div>
+              <p>
+                <a class="btn--default preprocessor html-preprocessor confirm-preprocessor" data-action="html-preprocessor">Close</a>
+              </p>
+
+              <!-- <h4 class="preprocessor css-preprocessor">CSS Preprocessor</h4>
+              <div class="preprocessor css-preprocessor">
+                <select id="css-preprocessor">
+                  <option value="none">None</option>
+                  <option value="less">LESS</option>
+                  <option value="scss">SCSS</option>
+                  <option value="sass">Sass</option>
+                </select>
+              </div>
+              <p>
+                <a class="btn--default preprocessor css-preprocessor confirm-preprocessor" data-action="css-preprocessor">Close</a>
+              </p> -->
+
+              <h4 class="preprocessor js-preprocessor">JavaScript Preprocessor</h4>
+              <div class="preprocessor js-preprocessor">
+                <select id="js-preprocessor">
+                  <option value="none">None</option>
+                  <option value="coffeescript">CoffeeScript</option>
+                  <option value="livescript">LiveScript</option>
+                </select>
+
+                <div style="padding: 0 0 5em 0;">
+                  <h4 class="headtxt iblock fl">
+                    JS Validator
+                  </h4>
+                  <h4 class="iblock fr">
+                    <div class="jsvalidationswitch iblock tr">
+                      <input type="checkbox" name="jsvalidationswitch" class="jsvalidationswitch-checkbox" id="myjsvalidationswitch" checked>
+                      <label class="jsvalidationswitch-label" for="myjsvalidationswitch">
+                        <span class="jsvalidationswitch-inner"></span>
+                        <span class="jsvalidationswitch-switch"></span>
+                      </label>
+                    </div>
+                  </h4>
+                </div>
+              </div>
+              <p>
+                <a class="btn--default preprocessor js-preprocessor confirm-preprocessor" data-action="js-preprocessor" style="margin: 0;">Close</a>
+              </p>
+            </div>
+          </div>
+        </nav>
       </div>
     </div>
 
