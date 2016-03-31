@@ -692,9 +692,11 @@ if (window.location.hash) {
       dataType: "jsonp",
       jsonp: "callback"
     }).success(function(gistdata) {
-      var htmlVal    = gistdata.data.files["index.html"]
-      var cssVal     = gistdata.data.files["index.css"]
-      var jsVal      = gistdata.data.files["index.js"]
+      var htmlVal        = gistdata.data.files["index.html"]
+      var jadeVal        = gistdata.data.files["index.jade"]
+      var cssVal         = gistdata.data.files["index.css"]
+      var jsVal          = gistdata.data.files["index.js"]
+      var coffeeVal      = gistdata.data.files["index.coffee"]
       var mdVal      = gistdata.data.files["README.md"]
       var settings   = gistdata.data.files["settings.json"].content
       var libraries  = gistdata.data.files["libraries.json"].content
@@ -702,11 +704,11 @@ if (window.location.hash) {
       var jsonLibs   = JSON.parse(libraries)
 
       // Return font settings from json
-      var siteTitle      = jsonSets.siteTitle
-      var WeaveVersion   = jsonSets.version
-      var editorFontSize = jsonSets.editorFontSize
-      var WeaveDesc      = jsonSets.description
-      var WeaveAuthor    = jsonSets.author
+      var siteTitle        = jsonSets.siteTitle
+      var WeaveVersion     = jsonSets.version
+      var editorFontSize   = jsonSets.editorFontSize
+      var WeaveDesc        = jsonSets.description
+      var WeaveAuthor      = jsonSets.author
 
       $("[data-action=sitetitle]").val(siteTitle)
       $("[data-value=version]").val(WeaveVersion)
@@ -733,9 +735,26 @@ if (window.location.hash) {
         mdEditor.setValue(mdVal.content)
       }
       if (!htmlVal) {
-        htmlEditor.setValue("")
+        if (!jadeVal) {
+          htmlEditor.setValue("")
+        } else {
+          htmlEditor.setValue(jadeVal.content)
+          $("#html-preprocessor").val("jade").change()
+        }
       } else {
         htmlEditor.setValue(htmlVal.content)
+        $("#html-preprocessor").val("none").change()
+      }
+      if (!jadeVal) {
+        if (!htmlVal) {
+          htmlEditor.setValue("")
+        } else {
+          htmlEditor.setValue(htmlVal.content)
+          $("#html-preprocessor").val("none").change()
+        }
+      } else {
+        htmlEditor.setValue(jadeVal.content)
+        $("#html-preprocessor").val("jade").change()
       }
       if (!cssVal) {
         cssEditor.setValue("")
@@ -743,9 +762,26 @@ if (window.location.hash) {
         cssEditor.setValue(cssVal.content)
       }
       if (!jsVal) {
-        jsEditor.setValue("")
+        if (!coffeeVal) {
+          jsEditor.setValue("")
+        } else {
+          jsEditor.setValue(coffeeVal.content)
+          $("#js-preprocessor").val("coffeescript").change()
+        }
       } else {
         jsEditor.setValue(jsVal.content)
+        $("#js-preprocessor").val("none").change()
+      }
+      if (!coffeeVal) {
+        if (!jsVal) {
+          jsEditor.setValue("")
+        } else {
+          jsEditor.setValue(jsVal.content)
+          $("#js-preprocessor").val("none").change()
+        }
+      } else {
+        jsEditor.setValue(coffeeVal.content)
+        $("#js-preprocessor").val("coffeescript").change()
       }
     }).error(function(e) {
       // ajax error
@@ -852,13 +888,33 @@ $("[data-action=save-gist]").click(function() {
 
   var files = {}
 	if (htmlEditor.getValue()) {
-		files["index.html"] = htmlEditor.getValue() ? { content: htmlEditor.getValue() } : null
+    var htmlSelected = $("#html-preprocessor option:selected").val()
+
+    if ( htmlSelected == "none") {
+      yourHTML = htmlEditor.getValue()
+      files["index.html"] = htmlEditor.getValue() ? { content: yourHTML } : null
+    } else if ( htmlSelected == "jade") {
+      yourHTML = htmlEditor.getValue()
+      // var options = {
+      //     pretty: true
+      // }
+      // var yourHTML = jade.render(htmlEditor.getValue(), options)
+      files["index.jade"] = htmlEditor.getValue() ? { content: yourHTML } : null
+    }
 	}
 	if (cssEditor.getValue()) {
 		files["index.css"] = cssEditor.getValue() ? { content: cssEditor.getValue() } : null
 	}
 	if (jsEditor.getValue()) {
-		files["index.js"] = jsEditor.getValue() ? { content: jsEditor.getValue() } : null
+    var jsSelected = $("#js-preprocessor option:selected").val()
+
+    if ( jsSelected == "none") {
+      yourJS = jsEditor.getValue()
+      files["index.js"] = jsEditor.getValue() ? { content: yourJS } : null
+    } else if ( jsSelected == "coffeescript") {
+      yourJS = jsEditor.getValue()
+      files["index.coffee"] = jsEditor.getValue() ? { content: yourJS } : null
+    }
 	}
 	if (mdEditor.getValue()) {
 		files["README.md"] = mdEditor.getValue() ? { content: mdEditor.getValue() } : null
