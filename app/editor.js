@@ -840,20 +840,21 @@ $("#js-preprocessor").on("change", function() {
   var valueSelected = this.value
   localStorage.setItem("jsPreprocessorVal", this.value)
   if ( valueSelected == "none") {
-    $(".jsvalidator").show()
     jsEditor.setOption("mode", "text/javascript")
+    jsEditor.setOption("lint", false)
+    jsEditor.setOption("lint", true)
     // jsEditor.refresh()
     $(".jsvalidator").show()
   } else if ( valueSelected == "coffeescript") {
-    $(".jsvalidator").hide()
-    if ($("#myjsvalidationswitch").is(":checked")) {
-      $("#myjsvalidationswitch").trigger("click")
-    }
     jsEditor.setOption("mode", "text/x-coffeescript")
+    jsEditor.setOption("lint", false)
+    jsEditor.setOption("lint", true)
     // jsEditor.refresh()
   } else {
     $(".jsvalidator").show()
     jsEditor.setOption("mode", "text/javascript")
+    jsEditor.setOption("lint", false)
+    jsEditor.setOption("lint", true)
     // jsEditor.refresh()
   }
   setTimeout(updatePreview, 300)

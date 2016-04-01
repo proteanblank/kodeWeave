@@ -1,11 +1,11 @@
 var timeout,
     delay,
     JSValEnabled = function() {
-      jsEditor.setOption("lint", true)
+      // jsEditor.setOption("lint", true)
       jsEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"])
     },
     JSValDisabled = function() {
-      jsEditor.setOption("lint", false)
+      // jsEditor.setOption("lint", false)
       jsEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"])
     },
     singleFileDownload = function() {
