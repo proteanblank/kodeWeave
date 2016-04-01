@@ -805,6 +805,24 @@ $(".settings").on("click", function() {
   } else if ($(this).hasClass("jsSetting")) {
     $(".js-preprocessor").removeClass("hide")
   }
+  if ($("#html-preprocessor").val() == "none") {
+    if (!htmlEditor.getValue) {
+      $(".html-preprocessor-convert").addClass("hide")
+    }
+  } else if ($("#html-preprocessor").val() == "jade") {
+    if (!htmlEditor.getValue) {
+      $(".html-preprocessor-convert").addClass("hide")
+    }
+  }
+  if ($("#js-preprocessor").val() == "none") {
+    if (!jsEditor.getValue) {
+      $(".js-preprocessor-convert").addClass("hide")
+    }
+  } else if ($("#js-preprocessor").val() == "coffeescript") {
+    if (!jsEditor.getValue) {
+      $(".js-preprocessor-convert").addClass("hide")
+    }
+  }
   $("[data-action=preprocessors]").fadeIn()
 })
 $(".confirm-preprocessor").click(function() {
@@ -859,6 +877,46 @@ $("#js-preprocessor").on("change", function() {
   }
   setTimeout(updatePreview, 300)
 }).trigger("change")
+
+// Compile preprocessors to preview
+$(".html-preprocessor-convert").click(function() {
+  var options = {
+      pretty: true
+  }
+  if ($("#html-preprocessor").val() == "none") {
+    Html2Jade.convertHtml(htmlEditor.getValue(), {selectById: true}, function (err, jadeString) {
+      if(err) {
+        console.error(err)
+      } else {
+        htmlEditor.setValue(jadeString)
+        htmlEditor.execCommand("selectAll")
+        htmlEditor.execCommand("indentLess")
+        htmlEditor.execCommand("indentLess")
+        htmlEditor.setCursor({line: 0 , ch : 0 })
+        htmlEditor.execCommand("deleteLine")
+        htmlEditor.execCommand("deleteLine")
+        htmlEditor.execCommand("deleteLine")
+      }
+    })
+    $("#html-preprocessor").val("jade").change()
+  } else if ($("#html-preprocessor").val() == "jade") {
+    var htmlContent = jade.render(htmlEditor.getValue(), options)
+    htmlEditor.setValue(htmlContent)
+    $("#html-preprocessor").val("none").change()
+  }
+  applyBeautify()
+})
+$(".js-preprocessor-convert").click(function() {
+  if ($("#js-preprocessor").val() == "none") {
+    var jsContent = js2coffee.build(jsEditor.getValue()).code;
+    jsEditor.setValue(jsContent)
+    $("#js-preprocessor").val("coffeescript").change()
+  } else if ($("#js-preprocessor").val() == "coffeescript") {
+    var jsContent = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
+    jsEditor.setValue(jsContent)
+    $("#js-preprocessor").val("none").change()
+  }
+})
 
 // Save as a Gist Online
 $("[data-action=save-gist]").click(function() {
