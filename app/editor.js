@@ -896,6 +896,7 @@ $(".html-preprocessor-convert").click(function() {
         htmlEditor.execCommand("deleteLine")
         htmlEditor.execCommand("deleteLine")
         htmlEditor.execCommand("deleteLine")
+        htmlEditor.execCommand("deleteLine")
       }
     })
     $("#html-preprocessor").val("jade").change()
