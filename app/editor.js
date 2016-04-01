@@ -903,8 +903,8 @@ $(".html-preprocessor-convert").click(function() {
     var htmlContent = jade.render(htmlEditor.getValue(), options)
     htmlEditor.setValue(htmlContent)
     $("#html-preprocessor").val("none").change()
+    beautifyHTML()
   }
-  applyBeautify()
 })
 $(".js-preprocessor-convert").click(function() {
   if ($("#js-preprocessor").val() == "none") {
@@ -915,6 +915,7 @@ $(".js-preprocessor-convert").click(function() {
     var jsContent = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
     jsEditor.setValue(jsContent)
     $("#js-preprocessor").val("none").change()
+    beautifyJS()
   }
 })
 
