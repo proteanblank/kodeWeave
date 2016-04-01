@@ -1,11 +1,11 @@
 var timeout,
     delay,
     JSValEnabled = function() {
-      // jsEditor.setOption("lint", true)
+      jsEditor.setOption("lint", true)
       jsEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"])
     },
     JSValDisabled = function() {
-      // jsEditor.setOption("lint", false)
+      jsEditor.setOption("lint", false)
       jsEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"])
     },
     singleFileDownload = function() {
@@ -17,14 +17,8 @@ var timeout,
           var blob = new Blob([ yourHTML ], {type: "text/html"})
           saveAs(blob, "source.html")
         } else if ( htmlSelected == "jade") {
-          var options = {
-              pretty: true
-          }
-          var yourHTML = jade.render(htmlEditor.getValue(), options)
-          var blob = new Blob([ yourHTML ], {type: "text/x-jade"})
-          // var blob = new Blob([ htmlEditor.getValue() ], {type: "text/x-jade"})
-          // saveAs(blob, "source.jade")
-          saveAs(blob, "source.html")
+          var blob = new Blob([ htmlEditor.getValue() ], {type: "text/x-jade"})
+          saveAs(blob, "source.jade")
         }
       })
       $(".savecss").click(function() {
@@ -35,13 +29,12 @@ var timeout,
         var jsSelected = $("#js-preprocessor option:selected").val()
 
         if ( jsSelected == "none") {
-          yourJS = jsEditor.getValue()
+          var blob = new Blob([ jsEditor.getValue() ], {type: "text/javascript"})
+          saveAs(blob, "source.js")
         } else if ( jsSelected == "coffeescript") {
-          yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
+          var blob = new Blob([ jsEditor.getValue() ], {type: "text/x-coffeescript"})
+          saveAs(blob, "source.coffee")
         }
-
-        var blob = new Blob([ yourJS ], {type: "text/javascript"})
-        saveAs(blob, "source.js")
       })
       $(".savemd").click(function() {
         var blob = new Blob([ mdEditor.getValue() ], {type: "text/x-markdown"})
@@ -485,6 +478,9 @@ var timeout,
         preview.write("")
         preview.close()
       };
+      $(".adddemos-tablets a").click(function() {
+        $("#jquery").trigger("keyup")
+      })
       $("[data-action=alphabetizer]").on("click", function() {
         clearPreview()
         $(".check").attr("checked", false).trigger("change")
@@ -502,12 +498,12 @@ var timeout,
           $(".check").attr("checked", false).trigger("change")
           $("[data-action=library-code]").val("").change()
           $("[data-action=sitetitle]").val("Angular JS Demo").change()
-          htmlEditor.setValue(".page-wrap(ng-app='')\n  h1.headline Simple content toggle with AngularJS\n  p\n    | Choose what to display:\n    select.content-select(ng-model='selection')\n      option(value='content1') Content #1\n      option(value='content2') Content #2\n  .container\n    article(ng-show=\"selection == 'content1'\")\n      h2.h2 Content #1\n      p\n        | Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.\n    article(ng-show=\"selection == 'content2'\")\n      h2.h2 Content #2\n      p\n        | Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.")
+          htmlEditor.setValue("<div class=\"page-wrap\" ng-app>\n  <h1 class=\"headline\">Simple content toggle with AngularJS</h1>\n  <p>\n    Choose what to display:\n    <select class=\"content-select\" ng-model=\"selection\">\n      <option value=\"content1\">Content #1</option>\n      <option value=\"content2\">Content #2</option>\n    </select>\n  </p>\n\n  <div class=\"container\">\n    <article ng-show=\"selection == 'content1'\">\n      <h2 class=\"h2\">Content #1</h2>\n      <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</p>\n    </article>\n    <article ng-show=\"selection == 'content2'\">\n      <h2 class=\"h2\">Content #2</h2>\n      <p>Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>\n    </article>\n  </div>\n</div>")
           cssEditor.setValue("body {\n  padding: 3em 2em;\n  font-size: 1em;\n  line-height: 1;\n}\n\n/* Pen specific CSS */\n.page-wrap {\n  margin: 0 auto;\n  max-width: 700px;\n}\n\n.headline {\n  margin: 0 0 .7em 0;\n  font-size: 1.7em;\n  font-weight: bold;\n}\n\n.content-select {\n  margin: 0 0 0 1em;\n}\n\narticle {\n  margin: 3em 0 0 0;\n}\narticle p {\n  margin: 0 0 .5em 0;\n  line-height: 1.3;\n}\narticle .h2 {\n  margin: 0 0 .5em 0;\n  font-size: 1.2em;\n}")
           jsEditor.setValue("")
           $(".open-demos, #normalize, #angular").trigger("click")
           callCollabUpdate()
-          $("#html-preprocessor").val("jade").change()
+          $("#html-preprocessor").val("none").change()
           $("#js-preprocessor").val("none").change()
         })
       $("[data-action=applicator]").on("click", function() {

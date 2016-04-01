@@ -1088,7 +1088,7 @@ var desktopExport = function(file) {
 
 
         appName.file("resources/default_app/package.json", "{\n  \"name\": \""+ $("[data-action=sitetitle]").val() +"\",\n  \"productName\": \""+ $("[data-action=sitetitle]").val() +"\",\n  \"version\": \"1.0.0\",\n  \"main\": \"default_app.js\",\n  \"license\": \"MIT\"\n}\n")
-        setTimeout( $("[data-action=ziplibs]").val().replace(/libraries/g,"resources/default_app/libraries").replace(/zip.file/g,"appName.file") )
+        eval( $("[data-action=ziplibs]").val().replace(/libraries/g,"resources/default_app/libraries").replace(/zip.file/g,"appName.file") )
 
         var content = zip.generate({type:"blob"})
         saveAs(content, $("[data-action=sitetitle]").val().split(" ").join("-") + "-win.zip")
@@ -1180,7 +1180,7 @@ var desktopExport = function(file) {
           zip.file("data/README.md", mdEditor.getValue())
         }
 
-        setTimeout( $("[data-action=ziplibs]").val().replace(/libraries/g,"app/libraries") )
+        eval( $("[data-action=ziplibs]").val().replace(/libraries/g,"app/libraries") )
 
         zip.file("package.json", '{\n  "main"  : "app/index.html",\n  "name"  : "'+ $("[data-action=sitetitle]").val() +'",\n  "window": {\n      "toolbar" : false,\n      "icon"    : "app/icons/128.png",\n      "width"   : 1000,\n      "height"  : 600,\n      "position": "center"\n  }\n}')
 
@@ -1276,7 +1276,7 @@ var desktopExport = function(file) {
           zip.file("README.md", mdEditor.getValue())
         }
 
-        setTimeout( $("[data-action=ziplibs]").val().replace(/libraries/g,"content/app/libraries") )
+        eval( $("[data-action=ziplibs]").val().replace(/libraries/g,"content/app/libraries") )
 
         zip.file("package.json", '{\n  "main"  : "content/index.html",\n  "name"  : "'+ $("[data-action=sitetitle]").val() +'",\n  "window": {\n    "toolbar"    : false\n  }\n}')
         zip.file("content/index.html", '<!doctype html>\n<html>\n <head>\n    <title>'+ $("[data-action=sitetitle]").val() +'</title>\n    <style>\n      iframe {\n        position: absolute;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n        overflow: visible;\n        border: 0;\n      }\n    </style>\n  </head>\n <body>\n    <iframe src="app/index.html"></iframe>\n\n    <script src="js/main.js"></script>\n  </body>\n</html>')
@@ -1375,7 +1375,7 @@ var desktopExport = function(file) {
         }
 
         appName.file("resources/default_app/package.json", "{\n  \"name\": \""+ $("[data-action=sitetitle]").val() +"\",\n  \"productName\": \""+ $("[data-action=sitetitle]").val() +"\",\n  \"version\": \"1.0.0\",\n  \"main\": \"default_app.js\",\n  \"license\": \"MIT\"\n}\n")
-        setTimeout( $("[data-action=ziplibs]").val().replace(/libraries/g,"resources/default_app/libraries").replace(/zip.file/g,"appName.file") )
+        eval( $("[data-action=ziplibs]").val().replace(/libraries/g,"resources/default_app/libraries").replace(/zip.file/g,"appName.file") )
 
         zip.file("make.sh", "if [ -d ${HOME}/"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +" ]; then\n  typeset LP_FILE=${HOME}/"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +"/"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +".desktop\n\n  # Remove the target file if any\n  rm -f ${LP_FILE}\n  printf \"%s[Desktop Entry]\\nName="+ $("[data-action=sitetitle]").val() +"\\nPath=${HOME}/"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +"\\nActions=sudo\\nExec=./"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +"/electron\\nIcon=${HOME}/"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +"/resources/default_app/icons/128.png\\nTerminal=true\\nType=Application\\nStartupNotify=true > ${HOME}/"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +".desktop\" >> ${LP_FILE}\n\n  echo 'Your application and launcher are now located at ${HOME}/"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +"'\n  rm README.md\n  rm make.sh\n  cd ../\n  rmdir "+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +"-lin\n  cd ${HOME}/"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +"/\n  chmod 775 electron\nfi\n\nif [ ! -d ${HOME}/"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +" ]; then\n  mv "+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +" ${HOME}\n\n  typeset LP_FILE=${HOME}/"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +"/"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +".desktop\n\n  # Remove the target file if any\n  rm -f ${LP_FILE}\n  printf \"%s[Desktop Entry]\\nName="+ $("[data-action=sitetitle]").val() +"\\nPath=${HOME}/"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +"\\nActions=sudo\\nExec=./"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +"/electron\\nIcon=${HOME}/"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +"/resources/default_app/icons/128.png\\nTerminal=true\\nType=Application\\nStartupNotify=true > ${HOME}/"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +".desktop\" >> ${LP_FILE}\n\n  echo 'Your application and launcher are now located at ${HOME}/"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +"'\n  rm README.md\n  rm make.sh\n  cd ../\n  rmdir "+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +"-lin\n  cd ${HOME}/"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +"/\n  chmod 775 electron\nfi\n\n# For Windows OS\n#if EXIST ${HOME}/"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +" (\n  #echo Yes\n#) ELSE (\n  #echo No\n#)\n")
         zip.file("README.md", "### Instructions\n 1. Extract the `"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +"-lin.zip` folder anywhere on your computer except the home folder. \n 2. Open a terminal and then navigate to "+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +"'s directory and `run the make.sh file`.\n\n  **example**:\n  cd Downloads/"+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +"-lin\n\n 3. This will move the "+ $("[data-action=sitetitle]").val().replace(/ /g, "-") +" sibling folder and it's decendants to your home directory and create an application launcher.\n")
@@ -1470,7 +1470,7 @@ var desktopExport = function(file) {
           zip.file("data/README.md", mdEditor.getValue())
         }
 
-        setTimeout( $("[data-action=ziplibs]").val().replace(/libraries/g,"app/libraries") )
+        eval( $("[data-action=ziplibs]").val().replace(/libraries/g,"app/libraries") )
 
         zip.file("package.json", '{\n  "main"  : "app/index.html",\n  "name"  : "'+ $("[data-action=sitetitle]").val() +'",\n  "window": {\n      "toolbar" : false,\n      "icon"    : "app/icons/128.png",\n      "width"   : 1000,\n      "height"  : 600,\n      "position": "center"\n  }\n}')
 
@@ -1572,7 +1572,7 @@ var desktopExport = function(file) {
           zip.file("assets/32.png", Img32.split('base64,')[1],{base64: true})
           zip.file("assets/64.png", Img64.split('base64,')[1],{base64: true})
           zip.file("assets/128.png", Img128.split('base64,')[1],{base64: true})
-          setTimeout( $("[data-action=ziplibs]").val().replace(/libraries/g,"app/libraries") )
+          eval( $("[data-action=ziplibs]").val().replace(/libraries/g,"app/libraries") )
           zip.file("css/index.css", "html, body {\n  margin: 0;\n  padding: 0;\n  width: 100%;\n  height: 100%;\n}\n\nwebview, iframe {\n  width: 100%;\n  height: 100%;\n  border: 0;\n}")
           zip.file("index.html", "<!DOCTYPE html>\n<html>\n  <head>\n    <title>"+ $("[data-action=sitetitle]").val() +"</title>\n    <link rel=\"stylesheet\" href=\"css/index.css\" />\n  </head>\n  <body>\n    <iframe src=\"app/index.html\">\n      Your Chromebook does not support the iFrame html element.\n    </iframe>\n  </body>\n</html>")
 
@@ -1691,7 +1691,7 @@ var desktopExport = function(file) {
           zip.file("assets/32.png", Img32.split('base64,')[1],{base64: true})
           zip.file("assets/64.png", Img64.split('base64,')[1],{base64: true})
           zip.file("assets/128.png", Img128.split('base64,')[1],{base64: true})
-          setTimeout( $("[data-action=ziplibs]").val() )
+          eval( $("[data-action=ziplibs]").val() )
 
           zip.file("manifest.json", "{\n  \"manifest_version\": 2,\n  \"name\": \""+ $("[data-action=sitetitle]").val() +"\",\n  \"short_name\": \""+ $("[data-action=sitetitle]").val() +"\",\n  \"description\": \""+ $("[data-action=ext-descr]").val() +"\",\n  \"version\": \""+ $("[data-value=version]").val() +"\",\n  \"minimum_chrome_version\": \"38\",\n  \"permissions\": [ \"storage\", \"unlimitedStorage\", \"http://*/\", \"https://*/\" ],\n  \"icons\": {\n    \"16\": \"assets/16.png\",\n    \"32\": \"assets/32.png\",\n    \"64\": \"assets/64.png\",\n    \"128\": \"assets/128.png\"\n  },\n\n  \"browser_action\": {\n    \"default_icon\": \"assets/128.png\",\n    \"default_title\": \""+ $("[data-action=sitetitle]").val() +"\",\n    \"default_popup\": \"index.html\"\n  },\n  \n  \"content_security_policy\": \"script-src 'self' 'unsafe-eval'; object-src 'self'\"\n}")
 
@@ -1802,7 +1802,7 @@ $("[data-action=download-zip]").on("click", function() {
     if ( mdEditor.getValue() !== "") {
       zip.file("README.md", mdEditor.getValue())
     }
-    setTimeout( $("[data-action=ziplibs]").val() )
+    eval( $("[data-action=ziplibs]").val() )
     var content = zip.generate({type:"blob"})
     saveAs(content, $("[data-action=sitetitle]").val().split(" ").join("-") + ".zip")
     $(".preloader").addClass("hide")
@@ -1824,7 +1824,6 @@ if (localStorage.getItem("checkedLibraries")) {
 // Add/Remove Libraries
 $("[data-action=check]").on("change keyup", function() {
   var value = $(this).parent().nextAll("div").children(".libsources:first").val() + "\n"
-
   checkedLibs()
 
   var libsTextarea = $("[data-action=libstextarea]")
