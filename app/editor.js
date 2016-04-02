@@ -610,9 +610,13 @@ $(window).load(function() {
       success: function(file) {
         if (file[0].link.toLowerCase().substring(file[0].link.length - 5) === ".html") {
           download_to_editor(file[0].link, htmlEditor)
+        } else if (file[0].link.toLowerCase().substring(file[0].link.length - 5) === ".jade") {
+          download_to_editor(file[0].link, htmlEditor)
         } else if (file[0].link.toLowerCase().substring(file[0].link.length - 4) === ".css") {
           download_to_editor(file[0].link, cssEditor)
         } else if (file[0].link.toLowerCase().substring(file[0].link.length - 3) === ".js") {
+          download_to_editor(file[0].link, jsEditor)
+        } else if (file[0].link.toLowerCase().substring(file[0].link.length - 7) === ".coffee") {
           download_to_editor(file[0].link, jsEditor)
         } else if (file[0].link.toLowerCase().substring(file[0].link.length - 3) === ".md") {
           download_to_editor(file[0].link, mdEditor)
@@ -628,7 +632,7 @@ $(window).load(function() {
       },
       linkType: "direct", // "preview" or "direct"
       multiselect: false, // true or false
-      extensions: [".html", ".css", ".js", ".md", ".svg"]
+      extensions: [".html", ".jade", ".css", ".js", ".coffee", ".md", ".svg"]
   };
 
   $("[data-action=open-dropbox]").click(function() {
@@ -651,22 +655,26 @@ $(window).load(function() {
     function loadfile(input) {
       var reader = new FileReader()
       reader.onload = function(e) {
-        // var path = input.value.replace(/.*(\/|\\)/, '')
-        var path = input.value
-        if (path.toLowerCase().substring(path.length - 5) === ".html") {
-          htmlEditor.setValue( e.target.result )
-        } else if (path.toLowerCase().substring(path.length - 4) === ".css") {
-          cssEditor.setValue( e.target.result )
-        } else if (path.toLowerCase().substring(path.length - 3) === ".js") {
-          jsEditor.setValue( e.target.result )
-        } else if (path.toLowerCase().substring(path.length - 3) === ".md") {
-          mdEditor.setValue( e.target.result )
-        } else if (path.toLowerCase().substring(path.length - 3) === ".svg") {
-          htmlEditor.setValue( e.target.result )
-        } else {
-          alertify.error("Sorry kodeWeave does not support that file type!")
+          // var path = input.value.replace(/.*(\/|\\)/, '')
+          var path = input.value
+          if (path.toLowerCase().substring(path.length - 5) === ".html") {
+            htmlEditor.setValue( e.target.result )
+          } else if (path.toLowerCase().substring(path.length - 5) === ".jade") {
+            htmlEditor.setValue( e.target.result )
+          } else if (path.toLowerCase().substring(path.length - 4) === ".css") {
+            cssEditor.setValue( e.target.result )
+          } else if (path.toLowerCase().substring(path.length - 3) === ".js") {
+            jsEditor.setValue( e.target.result )
+          } else if (path.toLowerCase().substring(path.length - 7) === ".coffee") {
+            jsEditor.setValue( e.target.result )
+          } else if (path.toLowerCase().substring(path.length - 3) === ".md") {
+            mdEditor.setValue( e.target.result )
+          } else if (path.toLowerCase().substring(path.length - 3) === ".svg") {
+            htmlEditor.setValue( e.target.result )
+          } else {
+            alertify.error("Sorry kodeWeave does not support that file type!")
+          }
         }
-      }
       $("[data-action=tools].active").trigger("click")
       reader.readAsText(input.files[0])
     }
