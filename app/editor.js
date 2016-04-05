@@ -860,7 +860,7 @@ $("#html-preprocessor").on("change", function() {
     htmlEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"])
     // htmlEditor.refresh()
   }
-  setTimeout(updatePreview, 300)
+  updatePreview()
 }).trigger("change")
 $("#js-preprocessor").on("change", function() {
   var valueSelected = this.value
@@ -883,7 +883,7 @@ $("#js-preprocessor").on("change", function() {
     jsEditor.setOption("lint", true)
     // jsEditor.refresh()
   }
-  setTimeout(updatePreview, 300)
+  updatePreview()
 }).trigger("change")
 
 // Compile preprocessors to preview
@@ -1902,7 +1902,7 @@ $("[data-action=check]").on("change keyup", function() {
     textarea.val( textarea.val().replace( value, "") )
   }
 
-  setTimeout(updatePreview, 300)
+  updatePreview()
 
   var checked = $("[type=checkbox].check:checked")
   var lsChecked = [];

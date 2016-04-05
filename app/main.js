@@ -65,7 +65,6 @@ var cssEditor = CodeMirror(document.getElementById("cssEditor"), {
 Inlet(cssEditor)
 emmetCodeMirror(cssEditor)
 var jsEditor = CodeMirror(document.getElementById("jsEditor"), {
-  mode: {name: "javascript", globalVars: false},
   tabMode: "indent",
   styleActiveLine: true,
   lineNumbers: true,
@@ -84,8 +83,10 @@ var jsEditor = CodeMirror(document.getElementById("jsEditor"), {
     "Shift-Ctrl-'": function(){ applyMinify() },
     "Shift-Ctrl-\\": function(){ applyBeautify() },
     "Shift-Cmd-'": function(){ applyMinify() },
-    "Shift-Cmd-\\": function(){ applyBeautify() }
+    "Shift-Cmd-\\": function(){ applyBeautify() },
+    "Ctrl-Space": "autocomplete"
   },
+  mode: {name: "javascript", globalVars: false},
   paletteHints: true
 })
 Inlet(jsEditor)
@@ -158,24 +159,60 @@ $(".clear_input").click(function() {
 })
 
 // Live preview
+function updatePreview() {
+  var previewFrame = document.getElementById("preview")
+  var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document
+  var heading = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + $("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\">\n" + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\">\n" + "    <link rel=\"stylesheet\" href=\"css/index.css\">\n"
+  preview.open()
+  var htmlSelected = $("#html-preprocessor option:selected").val()
+  var jsSelected   = $("#js-preprocessor   option:selected").val()
+
+  if ( jsSelected == "none") {
+    jsContent = "<script>" + jsEditor.getValue() + "</script>"
+  } else if ( jsSelected == "coffeescript") {
+    jsContent = "<script>" + CoffeeScript.compile(jsEditor.getValue(), { bare: true }) + "</script>"
+  }
+
+  if ( htmlSelected == "none") {
+    var htmlContent = heading + "<style id='b8c770cc'>" + cssEditor.getValue() + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + jsContent + closeFinal.getValue()
+    preview.write(htmlContent)
+  } else if ( htmlSelected == "jade") {
+    var options = {
+        pretty: true
+    }
+    var jade2HTML = jade.render(htmlEditor.getValue(), options)
+    var htmlContent = heading + "<style id='b8c770cc'>" + cssEditor.getValue() + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + "\n\n    <scr"+"ipt src=\"js/index.js\"></scr"+"ipt>" + jsContent + closeFinal.getValue()
+    preview.write(htmlContent)
+  }
+  preview.close()
+}
+
+function markdownPreview() {
+  var mdconverter = new Showdown.converter(),
+      previewFrame = document.getElementById("preview"),
+      preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document
+
+  preview.open()
+  preview.write( mdconverter.makeHtml( mdEditor.getValue() ) )
+  preview.close()
+}
+markdownPreview()
+updatePreview()
+
 htmlEditor.on("change", function() {
-  clearTimeout(delay)
-  delay = setTimeout(updatePreview, 300)
+  updatePreview()
   localStorage.setItem("htmlData", htmlEditor.getValue())
 })
 cssEditor.on("change", function() {
-  clearTimeout(delay)
-  delay = setTimeout(updatePreview, 300)
+  $("#preview").contents().find("#b8c770cc").html(cssEditor.getValue())
   localStorage.setItem("cssData", cssEditor.getValue())
 })
 jsEditor.on("change", function() {
-  clearTimeout(delay)
-  delay = setTimeout(updatePreview, 300)
+  updatePreview()
   localStorage.setItem("jsData", jsEditor.getValue())
 })
 mdEditor.on("change", function() {
-  clearTimeout(delay)
-  delay = setTimeout(markdownPreview, 300)
+  markdownPreview()
   localStorage.setItem("mdData", mdEditor.getValue())
 })
 
@@ -192,46 +229,6 @@ jsEditor.on("drop", function() {
 mdEditor.on("drop", function() {
   mdEditor.setValue("")
 })
-
-function updatePreview() {
-  var previewFrame = document.getElementById("preview")
-  var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document
-  var heading = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + $("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\">\n" + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\">\n" + "    <link rel=\"stylesheet\" href=\"css/index.css\">\n"
-  preview.open()
-  var htmlSelected = $("#html-preprocessor option:selected").val()
-  var jsSelected   = $("#js-preprocessor   option:selected").val()
-
-  if ( jsSelected == "none") {
-    jsContent = "<script>" + jsEditor.getValue() + "</script>"
-  } else if ( jsSelected == "coffeescript") {
-    jsContent = "<script>" + CoffeeScript.compile(jsEditor.getValue(), { bare: true }) + "</script>"
-  }
-
-  if ( htmlSelected == "none") {
-    var htmlContent = heading + "<style>" + cssEditor.getValue() + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + jsContent + closeFinal.getValue()
-    preview.write(htmlContent)
-  } else if ( htmlSelected == "jade") {
-    var options = {
-        pretty: true
-    }
-    var jade2HTML = jade.render(htmlEditor.getValue(), options)
-    var htmlContent = heading + "<style>" + cssEditor.getValue() + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + "\n\n    <script src=\"js/index.js\"></script>" + jsContent + closeFinal.getValue()
-    preview.write(htmlContent)
-  }
-  preview.close()
-}
-
-function markdownPreview() {
-  var mdconverter = new Showdown.converter(),
-      previewFrame = document.getElementById("preview"),
-      preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document
-
-  preview.open()
-  preview.write( mdconverter.makeHtml( mdEditor.getValue() ) )
-  preview.close()
-}
-setTimeout(markdownPreview, 300)
-setTimeout(updatePreview, 300)
 
 // Save Site Title Value for LocalStorage
 var JSValStatus = localStorage.getItem("JSValStatus")
@@ -368,13 +365,11 @@ $(window).load(function() {
       $("body").removeClass("live-markdown-preview")
       if ( !$("body").hasClass("app") ) {
         $("body").addClass("app")
-        clearTimeout(delay)
-        delay = setTimeout(updatePreview, 300)
+        updatePreview()
       }
     } else if ( !$("body").hasClass("app") ) {
       $("body").addClass("app")
-      clearTimeout(delay)
-      delay = setTimeout(updatePreview, 300)
+      updatePreview()
     }
   })
   $("#mdEditor").on("mouseup touchend", function() {
@@ -382,13 +377,11 @@ $(window).load(function() {
       $("body").removeClass("app")
       if ( !$("body").hasClass("live-markdown-preview") ) {
         $("body").addClass("live-markdown-preview")
-        clearTimeout(delay)
-        delay = setTimeout(markdownPreview, 300)
+        markdownPreview()
       }
     } else if ( !$("body").hasClass("live-markdown-preview") ) {
       $("body").addClass("live-markdown-preview")
-      clearTimeout(delay)
-      delay = setTimeout(markdownPreview, 300)
+      markdownPreview()
     }
   })
 }).on("resize", function() {
