@@ -1912,6 +1912,7 @@ $("[data-action=check]").on("change keyup", function() {
   localStorage.setItem("checkedLibraries", textarea.val())
   localStorage.setItem("checkedInputs", JSON.stringify(lsChecked))
 })
+$("#jquery").trigger("keyup")
 
 // If textbox has a value...
 // a clear icon will display to clear the input
