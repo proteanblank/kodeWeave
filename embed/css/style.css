@@ -1,0 +1,155 @@
+@import url("../../editor/css/normalize.css");
+@import url("../../editor/css/fonts/font-awesome.css");
+@import url("../../editor/libraries/jqueryui/jqueryui.css");
+@import url("../../editor/libraries/codemirror/codemirror.css");
+@import url("../../editor/libraries/codemirror/addon/fold/foldgutter.css");
+@import url("../../editor/libraries/codemirror/addon/lint/lint.css");
+@import url("../../editor/libraries/codemirror/addon/dialog/dialog.css");
+@import url("../../editor/libraries/codemirror/addon/hint/show-hint.css");
+@import url("../../editor/libraries/alertifyjs/css/alertify.min.css");
+@import url("../../editor/libraries/alertifyjs/css/themes/default.min.css");
+@import url("../../editor/libraries/jqwidgets/styles/jqx.base.css");
+@import url("../../editor/libraries/jqwidgets/styles/jqx.metro.css");
+@import url("../../editor/libraries/jqwidgets/styles/jqx.metrodark.css");
+@import url("../../editor/libraries/codemirror/inlet.css");
+@import url("../../editor/css/polyui.css");
+/* @import url("http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900"); */
+
+@font-face {
+  font-family: Lato;
+  src: url("../../editor/css/fonts/Lato-Light.ttf");
+}
+
+html, body {
+  height: 100%;
+}
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #F3F5F6;
+}
+a {
+  cursor: pointer;
+}
+a:active, a:focus {
+  outline: 0;
+}
+
+
+
+/* Menubar */
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  box-shadow: 0 0 14px #e3e3e3;
+}
+header a {
+  text-decoration: none;
+  margin: 0;
+  padding: 15px 10px;
+  color: #39464E;
+  font-size: 14px;
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  float: left;
+}
+.selected {
+  border-bottom: 3px solid #1c90f3;
+}
+.logo {
+  padding-right: 4em;
+  margin-right: 0;
+  background-image: url("http://kodeweave.sourceforge.net/logo.svg");
+  background-size: auto 80%;
+  background-repeat: no-repeat;
+  background-position: 95% 50%;
+}
+.hu:hover {
+  text-decoration: underline;
+}
+
+
+
+/* Position Editors and Preview */
+.editor,
+.result {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border: 0;
+}
+.editor,
+.CodeMirror {
+  height: 100%;
+/*  height: auto;*/
+}
+.result {
+  height: 100%;
+}
+#editors {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.CodeMirror .cm-palette-hint {
+  display: inline-block;
+  box-sizing: border-box;
+  margin: -2px 2px 0 6px;
+  border-radius: 50%;
+  vertical-align: middle;
+  width: 10px;
+  height: 10px;
+  box-shadow: 0 0 1px 2px #fff,
+              0 0 1px 3px #a0a09c;
+}
+
+
+/* Variable Classes */
+.fr {
+  float: right;
+}
+.fl {
+  float: left;
+}
+.fn {
+  float: none;
+}
+.block {
+  display: block;
+}
+.iblock {
+  display: inline-block;
+}
+.hide {
+  display: none;
+}
+.pointer {
+  cursor: pointer;
+}
+.nopadding {
+  padding: 0;
+}
+.nomar {
+  margin: 0;
+}
+.tl {
+  text-align: left;
+}
+.tr {
+  text-align: right;
+}
+
+@media all and (max-width:560px) {
+  .logo {
+    padding-right: 0;
+    margin-right: 4px;
+  }
+  .name {
+    display: none;
+  }
+}
