@@ -402,7 +402,6 @@ $(window).load(function() {
   })
 })
 
-
 // Handle Menu Dropdowns
 $("input[name=menubar]").on("change", function() {
   $(this).toggleClass("active")

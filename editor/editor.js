@@ -934,10 +934,8 @@ $(".js-preprocessor-convert").click(function() {
 
 // Save as a Gist Online
 $("[data-action=save-gist]").click(function() {
-  if ( $("[data-action=download]").hasClass("active") ) {
-    $("[data-action=download]").trigger("click")
-  }
-
+  $("input[name=menubar].active").trigger("click")
+  
   // Return checked libraries
   var arr = {}
   $(".ldd-submenu input[type=checkbox]").each(function() {
@@ -1076,9 +1074,7 @@ var desktopExport = function(file) {
   reader.onload = function(e) {
     // Download as Windows App
     $("[data-action=download-as-win-app]").on("click", function() {
-      if ( $("[data-action=download]").hasClass("active") ) {
-        $("[data-action=download]").trigger("click")
-      }
+      $("input[name=menubar].active").trigger("click")
 
       JSZipUtils.getBinaryContent('zips/YourWinApp.zip', function(err, data) {
         if(err) {
@@ -1171,9 +1167,7 @@ var desktopExport = function(file) {
       return false
     })
     $("[data-action=download-as-win32-app]").on("click", function() {
-      if ( $("[data-action=download]").hasClass("active") ) {
-        $("[data-action=download]").trigger("click")
-      }
+      $("input[name=menubar].active").trigger("click")
 
       JSZipUtils.getBinaryContent('zips/YourWin32App.zip', function(err, data) {
         if(err) {
@@ -1267,9 +1261,7 @@ var desktopExport = function(file) {
 
     // Download as Mac App
     $("[data-action=download-as-mac-app]").on("click", function() {
-      if ( $("[data-action=download]").hasClass("active") ) {
-        $("[data-action=download]").trigger("click")
-      }
+      $("input[name=menubar].active").trigger("click")
 
       JSZipUtils.getBinaryContent('zips/YourMacApp.zip', function(err, data) {
         if(err) {
@@ -1365,9 +1357,7 @@ var desktopExport = function(file) {
 
     // Download as Linux App
     $("[data-action=download-as-lin-app]").on("click", function() {
-      if ( $("[data-action=download]").hasClass("active") ) {
-        $("[data-action=download]").trigger("click")
-      }
+      $("input[name=menubar].active").trigger("click")
 
       JSZipUtils.getBinaryContent('zips/YourLinApp.zip', function(err, data) {
         if(err) {
@@ -1461,9 +1451,7 @@ var desktopExport = function(file) {
       return false
     })
     $("[data-action=download-as-lin32-app]").on("click", function() {
-      if ( $("[data-action=download]").hasClass("active") ) {
-        $("[data-action=download]").trigger("click")
-      }
+      $("input[name=menubar].active").trigger("click")
 
       JSZipUtils.getBinaryContent('zips/YourLin32App.zip', function(err, data) {
         if(err) {
@@ -1557,9 +1545,7 @@ var desktopExport = function(file) {
 
     // Download as Chrome App
     $("[data-action=download-as-chrome-app]").on("click", function() {
-      if ( $("[data-action=download]").hasClass("active") ) {
-        $("[data-action=download]").trigger("click")
-      }
+      $("input[name=menubar].active").trigger("click")
       $("[data-action=chromeappdialog]").fadeIn()
     })
     $("[data-action=app-cancel]").on("click", function() {
@@ -1678,9 +1664,7 @@ var desktopExport = function(file) {
 
     // Download as Chrome Extension
     $("[data-action=download-as-chrome-ext]").on("click", function() {
-      if ( $("[data-action=download]").hasClass("active") ) {
-        $("[data-action=download]").trigger("click")
-      }
+      $("input[name=menubar].active").trigger("click")
       $("[data-action=chromeextdialog]").fadeIn()
     })
     $("[data-action=ext-cancel]").on("click", function() {
@@ -1792,7 +1776,7 @@ $("#load").on("change", function(evt) {
     $(".watch").removeClass("hide")
     var file = evt.target.files[0]
     desktopExport(file)
-    $(".download-dialog").addClass("imagehasloaded");
+    $(".download-dialog").addClass("imagehasloaded")
     $("#imagehasloaded").prop("checked", true)
     return false
   }
@@ -1800,9 +1784,7 @@ $("#load").on("change", function(evt) {
 
 // Download as zip
 $("[data-action=download-zip]").on("click", function() {
-  if ( $("[data-action=download]").hasClass("active") ) {
-    $("[data-action=download]").trigger("click")
-  }
+  $("input[name=menubar].active").trigger("click")
 
   JSZipUtils.getBinaryContent("zips/font-awesome.zip", function(err, data) {
     if(err) {
@@ -1921,18 +1903,6 @@ fullscreenEditor()
 checkedLibs()
 appDemos()
 charGeneration()
-
-// Test functions for debugging
-function TestDownload() {
-  $("[data-action=download]").trigger("click")
-  $("[data-action=download]").next(".dialog").addClass("testclass")
-  $(".testclass .hide").removeClass("hide")
-}
-// TestDownload()
-function openTools() {
-  $("[data-action=tools]").trigger("click")
-}
-// openTools()
 
 // $(window).on("beforeunload", function() {
 //   return "Are you sure you wish to leave? All your changes maybe lost."
