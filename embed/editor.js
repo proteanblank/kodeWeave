@@ -516,6 +516,7 @@ if (window.location.hash) {
       var htmlVal        = gistdata.data.files["index.html"]
       var jadeVal        = gistdata.data.files["index.jade"]
       var cssVal         = gistdata.data.files["index.css"]
+      var stylusVal      = gistdata.data.files["index.styl"]
       var jsVal          = gistdata.data.files["index.js"]
       var coffeeVal      = gistdata.data.files["index.coffee"]
       var mdVal      = gistdata.data.files["README.md"]
@@ -559,9 +560,26 @@ if (window.location.hash) {
         $("#html-preprocessor").val("jade").change()
       }
       if (!cssVal) {
-        cssEditor.setValue("")
+        if (!stylusVal) {
+          cssEditor.setValue("")
+        } else {
+          cssEditor.setValue(stylusVal.content)
+          $("#css-preprocessor").val("stylus").change()
+        }
       } else {
         cssEditor.setValue(cssVal.content)
+        $("#css-preprocessor").val("none").change()
+      }
+      if (!stylusVal) {
+        if (!cssVal) {
+          cssEditor.setValue("")
+        } else {
+          cssEditor.setValue(cssVal.content)
+          $("#css-preprocessor").val("none").change()
+        }
+      } else {
+        cssEditor.setValue(stylusVal.content)
+        $("#css-preprocessor").val("stylus").change()
       }
       if (!jsVal) {
         if (!coffeeVal) {
@@ -640,6 +658,23 @@ $("#html-preprocessor").on("change", function() {
     htmlEditor.setOption("mode", "text/html")
     htmlEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"])
     // htmlEditor.refresh()
+  }
+  updatePreview()
+}).trigger("change")
+$("#css-preprocessor").on("change", function() {
+  var valueSelected = this.value
+  if ( valueSelected == "none") {
+    cssEditor.setOption("mode", "text/css")
+    cssEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"])
+    // cssEditor.refresh()
+  } else if ( valueSelected == "stylus") {
+    cssEditor.setOption("mode", "text/x-styl")
+    cssEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"])
+    // cssEditor.refresh()
+  } else {
+    cssEditor.setOption("mode", "text/css")
+    cssEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"])
+    // cssEditor.refresh()
   }
   updatePreview()
 }).trigger("change")

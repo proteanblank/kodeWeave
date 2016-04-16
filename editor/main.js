@@ -158,6 +158,24 @@ $(".clear_input").click(function() {
   $("[data-action=sitedesc], [data-action=siteauthor]").trigger("change")
 })
 
+// Render Chosen CSS Preprocessor
+function cssPreProcessor(cssSelected) {
+  var cssSelected = $("#css-preprocessor  option:selected").val()
+
+  if (cssSelected == "none") {
+    cssContent = cssEditor.getValue()
+  } else if (cssSelected == "stylus") {
+    var cssVal = cssEditor.getValue()
+    stylus(cssVal).render(function(err, out) {
+      if(err != null) {
+        console.error("something went wrong")
+      } else {
+        cssContent = out
+      }
+    })
+  }
+}
+
 // Live preview
 function updatePreview() {
   var previewFrame = document.getElementById("preview")
@@ -166,7 +184,9 @@ function updatePreview() {
   preview.open()
   var htmlSelected = $("#html-preprocessor option:selected").val()
   var jsSelected   = $("#js-preprocessor   option:selected").val()
-
+  
+  cssPreProcessor()
+  
   if ( jsSelected == "none") {
     jsContent = "<script>" + jsEditor.getValue() + "</script>"
   } else if ( jsSelected == "coffeescript") {
@@ -174,14 +194,14 @@ function updatePreview() {
   }
 
   if ( htmlSelected == "none") {
-    var htmlContent = heading + "<style id='b8c770cc'>" + cssEditor.getValue() + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + jsContent + closeFinal.getValue()
+    var htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + jsContent + closeFinal.getValue()
     preview.write(htmlContent)
   } else if ( htmlSelected == "jade") {
     var options = {
         pretty: true
     }
     var jade2HTML = jade.render(htmlEditor.getValue(), options)
-    var htmlContent = heading + "<style id='b8c770cc'>" + cssEditor.getValue() + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + "\n\n    <scr"+"ipt src=\"js/index.js\"></scr"+"ipt>" + jsContent + closeFinal.getValue()
+    var htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + "\n\n    <scr"+"ipt src=\"js/index.js\"></scr"+"ipt>" + jsContent + closeFinal.getValue()
     preview.write(htmlContent)
   }
   preview.close()
@@ -208,7 +228,8 @@ htmlEditor.on("change", function() {
   }, 300)
 })
 cssEditor.on("change", function() {
-  $("#preview").contents().find("#b8c770cc").html(cssEditor.getValue())
+  cssPreProcessor()
+  $("#preview").contents().find("#b8c770cc").html(cssContent)
   localStorage.setItem("cssData", cssEditor.getValue())
   
   setTimeout(function() {

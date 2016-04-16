@@ -62,6 +62,9 @@ var loader = $("#load"),
       if ( localStorage.getItem("htmlPreprocessorVal")) {
         $("#html-preprocessor").val(localStorage.getItem("htmlPreprocessorVal"))
       }
+      if ( localStorage.getItem("cssPreprocessorVal")) {
+        $("#css-preprocessor").val(localStorage.getItem("cssPreprocessorVal"))
+      }
       if ( localStorage.getItem("jsPreprocessorVal")) {
         $("#js-preprocessor").val(localStorage.getItem("jsPreprocessorVal"))
       }
@@ -165,6 +168,7 @@ var loader = $("#load"),
         download_to_textbox('libraries/codemirror/coffee-script.js', $('.codemirror50'))
         download_to_textbox('libraries/codemirror/coffeelint.js', $('.codemirror51'))
         download_to_textbox('libraries/codemirror/addon/lint/coffeescript-lint.js', $('.codemirror52'))
+        download_to_textbox('libraries/codemirror/mode/stylus/stylus.js', $('.codemirror53'))
 
         // var grabCodemirror = [
         //   "zip.file('libraries/codemirror/lib/codemirror.css', $('.codemirror1').val());\n",
@@ -218,10 +222,11 @@ var loader = $("#load"),
         //   "zip.file('libraries/codemirror/mode/ruby/ruby.js', $('.codemirror49').val());\n",
         //   "zip.file('libraries/codemirror/coffee-script.js', $('.codemirror50').val());\n",
         //   "zip.file('libraries/codemirror/coffeelint.js', $('.codemirror51').val());\n",
-        //   "zip.file('libraries/codemirror/addon/lint/coffeescript-lint.js', $('.codemirror52').val());\n"
+        //   "zip.file('libraries/codemirror/addon/lint/coffeescript-lint.js', $('.codemirror52').val());\n",
+        //   "zip.file('libraries/codemirror/mode/stylus/stylus.js', $('.codemirror53').val());\n"
         // ];
 
-        var grabCodemirror = "zip.file('libraries/codemirror/lib/codemirror.css', $('.codemirror1').val());\n\n      zip.file('libraries/codemirror/addon/fold/foldgutter.css', $('.codemirror2').val());\n\n      zip.file('libraries/codemirror/lib/codemirror.js', $('.codemirror3').val());\n\n      zip.file('libraries/codemirror/javascripts/code-completion.js', $('.codemirror4').val());\n\n      zip.file('libraries/codemirror/javascripts/css-completion.js', $('.codemirror5').val());\n\n      zip.file('libraries/codemirror/javascripts/html-completion.js', $('.codemirror6').val());\n\n      zip.file('libraries/codemirror/mode/javascript/javascript.js', $('.codemirror7').val());\n\n      zip.file('libraries/codemirror/mode/xml/xml.js', $('.codemirror8').val());\n\n      zip.file('libraries/codemirror/mode/css/css.js', $('.codemirror9').val());\n\n      zip.file('libraries/codemirror/mode/htmlmixed/htmlmixed.js', $('.codemirror10').val());\n\n      zip.file('libraries/codemirror/addon/edit/closetag.js', $('.codemirror11').val());\n\n      zip.file('libraries/codemirror/addon/edit/matchbrackets.js', $('.codemirror12').val());\n\n      zip.file('libraries/codemirror/addon/selection/active-line.js', $('.codemirror13').val());\n\n      zip.file('libraries/codemirror/addon/fold/foldcode.js', $('.codemirror14').val());\n\n      zip.file('libraries/codemirror/addon/fold/foldgutter.js', $('.codemirror15').val());\n\n      zip.file('libraries/codemirror/addon/fold/brace-fold.js', $('.codemirror16').val());\n\n      zip.file('libraries/codemirror/addon/fold/xml-fold.js', $('.codemirror17').val());\n\n      zip.file('libraries/codemirror/addon/fold/comment-fold.js', $('.codemirror18').val());\n\n      zip.file('libraries/codemirror/addon/search/search.js', $('.codemirror19').val());\n\n      zip.file('libraries/codemirror/addon/search/searchcursor.js', $('.codemirror20').val());\n\n      zip.file('libraries/codemirror/addon/dialog/dialog.js', $('.codemirror21').val());\n\n      zip.file('libraries/codemirror/addon/hint/show-hint.js', $('.codemirror22').val());\n\n      zip.file('libraries/codemirror/addon/hint/xml-hint.js', $('.codemirror23').val());\n\n      zip.file('libraries/codemirror/addon/hint/html-hint.js', $('.codemirror24').val());\n\n      zip.file('libraries/codemirror/addon/hint/css-hint.js', $('.codemirror25').val());\n\n      zip.file('libraries/codemirror/addon/hint/javascript-hint.js', $('.codemirror26').val());\n\n      zip.file('libraries/codemirror/addon/search/match-highlighter.js', $('.codemirror27').val());\n\n      zip.file('libraries/codemirror/htmlhint.js', $('.codemirror28').val());\n\n      zip.file('libraries/codemirror/csslint.js', $('.codemirror29').val());\n\n      zip.file('libraries/codemirror/jshint.js', $('.codemirror30').val());\n\n      zip.file('libraries/codemirror/addon/lint/lint.js', $('.codemirror31').val());\n\n      zip.file('libraries/codemirror/addon/lint/html-lint.js', $('.codemirror32').val());\n\n      zip.file('libraries/codemirror/addon/lint/css-lint.js', $('.codemirror33').val());\n\n      zip.file('libraries/codemirror/addon/lint/javascript-lint.js', $('.codemirror34').val());\n\n      zip.file('libraries/codemirror/inlet.min.js', $('.codemirror35').val());\n\n      zip.file('libraries/codemirror/inlet.css', $('.codemirror36').val());\n\n      zip.file('libraries/codemirror/emmet.js', $('.codemirror37').val());\n\n      zip.file('libraries/codemirror/addon/lint/lint.css', $('.codemirror38').val());\n\n      zip.file('libraries/codemirror/addon/dialog/dialog.css', $('.codemirror39').val());\n\n      zip.file('libraries/codemirror/addon/hint/show-hint.css', $('.codemirror40').val());\n\n      zip.file('libraries/codemirror/addon/search/goto-line.js', $('.codemirror41').val());\n\n      zip.file('libraries/codemirror/markdown.js', $('.codemirror42').val());\n\n      zip.file('libraries/codemirror/continuelist.js', $('.codemirror43').val());\n\n      zip.file('libraries/codemirror/mode/haml/haml.js', $('.codemirror44').val());\n\n      zip.file('libraries/codemirror/mode/jade/jade.js', $('.codemirror45').val());\n\n      zip.file('libraries/codemirror/mode/sass/sass.js', $('.codemirror46').val());\n\n      zip.file('libraries/codemirror/mode/livescript/livescript.js', $('.codemirror47').val());\n\n      zip.file('libraries/codemirror/mode/coffeescript/coffeescript.js', $('.codemirror48').val());\n\n      zip.file('libraries/codemirror/mode/ruby/ruby.js', $('.codemirror49').val());\n\n      zip.file('libraries/codemirror/coffee-script.js', $('.codemirror50').val());\n\n      zip.file('libraries/codemirror/coffeelint.js', $('.codemirror51').val());\n\n      zip.file('libraries/codemirror/addon/lint/coffeescript-lint.js', $('.codemirror52').val());\n"
+        var grabCodemirror = "zip.file('libraries/codemirror/lib/codemirror.css', $('.codemirror1').val());\n\n      zip.file('libraries/codemirror/addon/fold/foldgutter.css', $('.codemirror2').val());\n\n      zip.file('libraries/codemirror/lib/codemirror.js', $('.codemirror3').val());\n\n      zip.file('libraries/codemirror/javascripts/code-completion.js', $('.codemirror4').val());\n\n      zip.file('libraries/codemirror/javascripts/css-completion.js', $('.codemirror5').val());\n\n      zip.file('libraries/codemirror/javascripts/html-completion.js', $('.codemirror6').val());\n\n      zip.file('libraries/codemirror/mode/javascript/javascript.js', $('.codemirror7').val());\n\n      zip.file('libraries/codemirror/mode/xml/xml.js', $('.codemirror8').val());\n\n      zip.file('libraries/codemirror/mode/css/css.js', $('.codemirror9').val());\n\n      zip.file('libraries/codemirror/mode/htmlmixed/htmlmixed.js', $('.codemirror10').val());\n\n      zip.file('libraries/codemirror/addon/edit/closetag.js', $('.codemirror11').val());\n\n      zip.file('libraries/codemirror/addon/edit/matchbrackets.js', $('.codemirror12').val());\n\n      zip.file('libraries/codemirror/addon/selection/active-line.js', $('.codemirror13').val());\n\n      zip.file('libraries/codemirror/addon/fold/foldcode.js', $('.codemirror14').val());\n\n      zip.file('libraries/codemirror/addon/fold/foldgutter.js', $('.codemirror15').val());\n\n      zip.file('libraries/codemirror/addon/fold/brace-fold.js', $('.codemirror16').val());\n\n      zip.file('libraries/codemirror/addon/fold/xml-fold.js', $('.codemirror17').val());\n\n      zip.file('libraries/codemirror/addon/fold/comment-fold.js', $('.codemirror18').val());\n\n      zip.file('libraries/codemirror/addon/search/search.js', $('.codemirror19').val());\n\n      zip.file('libraries/codemirror/addon/search/searchcursor.js', $('.codemirror20').val());\n\n      zip.file('libraries/codemirror/addon/dialog/dialog.js', $('.codemirror21').val());\n\n      zip.file('libraries/codemirror/addon/hint/show-hint.js', $('.codemirror22').val());\n\n      zip.file('libraries/codemirror/addon/hint/xml-hint.js', $('.codemirror23').val());\n\n      zip.file('libraries/codemirror/addon/hint/html-hint.js', $('.codemirror24').val());\n\n      zip.file('libraries/codemirror/addon/hint/css-hint.js', $('.codemirror25').val());\n\n      zip.file('libraries/codemirror/addon/hint/javascript-hint.js', $('.codemirror26').val());\n\n      zip.file('libraries/codemirror/addon/search/match-highlighter.js', $('.codemirror27').val());\n\n      zip.file('libraries/codemirror/htmlhint.js', $('.codemirror28').val());\n\n      zip.file('libraries/codemirror/csslint.js', $('.codemirror29').val());\n\n      zip.file('libraries/codemirror/jshint.js', $('.codemirror30').val());\n\n      zip.file('libraries/codemirror/addon/lint/lint.js', $('.codemirror31').val());\n\n      zip.file('libraries/codemirror/addon/lint/html-lint.js', $('.codemirror32').val());\n\n      zip.file('libraries/codemirror/addon/lint/css-lint.js', $('.codemirror33').val());\n\n      zip.file('libraries/codemirror/addon/lint/javascript-lint.js', $('.codemirror34').val());\n\n      zip.file('libraries/codemirror/inlet.min.js', $('.codemirror35').val());\n\n      zip.file('libraries/codemirror/inlet.css', $('.codemirror36').val());\n\n      zip.file('libraries/codemirror/emmet.js', $('.codemirror37').val());\n\n      zip.file('libraries/codemirror/addon/lint/lint.css', $('.codemirror38').val());\n\n      zip.file('libraries/codemirror/addon/dialog/dialog.css', $('.codemirror39').val());\n\n      zip.file('libraries/codemirror/addon/hint/show-hint.css', $('.codemirror40').val());\n\n      zip.file('libraries/codemirror/addon/search/goto-line.js', $('.codemirror41').val());\n\n      zip.file('libraries/codemirror/markdown.js', $('.codemirror42').val());\n\n      zip.file('libraries/codemirror/continuelist.js', $('.codemirror43').val());\n\n      zip.file('libraries/codemirror/mode/haml/haml.js', $('.codemirror44').val());\n\n      zip.file('libraries/codemirror/mode/jade/jade.js', $('.codemirror45').val());\n\n      zip.file('libraries/codemirror/mode/sass/sass.js', $('.codemirror46').val());\n\n      zip.file('libraries/codemirror/mode/livescript/livescript.js', $('.codemirror47').val());\n\n      zip.file('libraries/codemirror/mode/coffeescript/coffeescript.js', $('.codemirror48').val());\n\n      zip.file('libraries/codemirror/mode/ruby/ruby.js', $('.codemirror49').val());\n\n      zip.file('libraries/codemirror/coffee-script.js', $('.codemirror50').val());\n\n      zip.file('libraries/codemirror/coffeelint.js', $('.codemirror51').val());\n\n      zip.file('libraries/codemirror/addon/lint/coffeescript-lint.js', $('.codemirror52').val());\n      zip.file('libraries/codemirror/mode/stylus/stylus.js', $('.codemirror53').val());\n"
 
         $('.codemirror').trigger("change")
         $(".codemirrorzip").val(grabCodemirror)
@@ -695,6 +700,7 @@ if (window.location.hash) {
       var htmlVal        = gistdata.data.files["index.html"]
       var jadeVal        = gistdata.data.files["index.jade"]
       var cssVal         = gistdata.data.files["index.css"]
+      var stylusVal      = gistdata.data.files["index.styl"]
       var jsVal          = gistdata.data.files["index.js"]
       var coffeeVal      = gistdata.data.files["index.coffee"]
       var mdVal      = gistdata.data.files["README.md"]
@@ -757,9 +763,26 @@ if (window.location.hash) {
         $("#html-preprocessor").val("jade").change()
       }
       if (!cssVal) {
-        cssEditor.setValue("")
+        if (!stylusVal) {
+          cssEditor.setValue("")
+        } else {
+          cssEditor.setValue(stylusVal.content)
+          $("#css-preprocessor").val("stylus").change()
+        }
       } else {
         cssEditor.setValue(cssVal.content)
+        $("#css-preprocessor").val("none").change()
+      }
+      if (!stylusVal) {
+        if (!cssVal) {
+          cssEditor.setValue("")
+        } else {
+          cssEditor.setValue(cssVal.content)
+          $("#css-preprocessor").val("none").change()
+        }
+      } else {
+        cssEditor.setValue(stylusVal.content)
+        $("#css-preprocessor").val("stylus").change()
       }
       if (!jsVal) {
         if (!coffeeVal) {
@@ -867,6 +890,24 @@ $("#html-preprocessor").on("change", function() {
   }
   updatePreview()
 }).trigger("change")
+$("#css-preprocessor").on("change", function() {
+  var valueSelected = this.value
+  localStorage.setItem("cssPreprocessorVal", this.value)
+  if ( valueSelected == "none") {
+    cssEditor.setOption("mode", "text/css")
+    cssEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"])
+    // cssEditor.refresh()
+  } else if ( valueSelected == "stylus") {
+    cssEditor.setOption("mode", "text/x-styl")
+    cssEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"])
+    // cssEditor.refresh()
+  } else {
+    cssEditor.setOption("mode", "text/css")
+    cssEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"])
+    // cssEditor.refresh()
+  }
+  updatePreview()
+}).trigger("change")
 $("#js-preprocessor").on("change", function() {
   var valueSelected = this.value
   localStorage.setItem("jsPreprocessorVal", this.value)
@@ -919,6 +960,26 @@ $(".html-preprocessor-convert").click(function() {
     beautifyHTML()
   }
 })
+$(".css-preprocessor-convert").click(function() {
+  if ($("#css-preprocessor").val() == "none") {
+    var css = cssEditor.getValue()
+    var converter = new Css2Stylus.Converter(css)
+     converter.processCss()
+     cssEditor.setValue(converter.getStylus())
+    $("#css-preprocessor").val("stylus").change()
+  } else if ($("#css-preprocessor").val() == "stylus") {
+    var cssContent = cssEditor.getValue()
+    stylus(cssContent).render(function(err, out) {
+      if(err != null) {
+        console.error("something went wrong")
+      } else {
+        cssEditor.setValue(out)
+      }
+    })
+    $("#css-preprocessor").val("none").change()
+    beautifyCSS()
+  }
+})
 $(".js-preprocessor-convert").click(function() {
   if ($("#js-preprocessor").val() == "none") {
     var jsContent = js2coffee.build(jsEditor.getValue()).code;
@@ -959,22 +1020,30 @@ $("[data-action=save-gist]").click(function() {
 
   var files = {}
 	if (htmlEditor.getValue()) {
-    var htmlSelected = $("#html-preprocessor option:selected").val()
+      var htmlSelected = $("#html-preprocessor option:selected").val()
 
-    if ( htmlSelected == "none") {
-      yourHTML = htmlEditor.getValue()
-      files["index.html"] = htmlEditor.getValue() ? { content: yourHTML } : null
-    } else if ( htmlSelected == "jade") {
-      yourHTML = htmlEditor.getValue()
-      // var options = {
-      //     pretty: true
-      // }
-      // var yourHTML = jade.render(htmlEditor.getValue(), options)
-      files["index.jade"] = htmlEditor.getValue() ? { content: yourHTML } : null
-    }
+      if ( htmlSelected == "none") {
+        yourHTML = htmlEditor.getValue()
+        files["index.html"] = htmlEditor.getValue() ? { content: yourHTML } : null
+      } else if ( htmlSelected == "jade") {
+        yourHTML = htmlEditor.getValue()
+        // var options = {
+        //     pretty: true
+        // }
+        // var yourHTML = jade.render(htmlEditor.getValue(), options)
+        files["index.jade"] = htmlEditor.getValue() ? { content: yourHTML } : null
+      }
 	}
 	if (cssEditor.getValue()) {
-		files["index.css"] = cssEditor.getValue() ? { content: cssEditor.getValue() } : null
+      var cssSelected = $("#css-preprocessor option:selected").val()
+
+      if ( cssSelected == "none") {
+        yourCSS = cssEditor.getValue()
+        files["index.css"] = cssEditor.getValue() ? { content: yourCSS } : null
+      } else if ( cssSelected == "stylus") {
+        yourCSS = cssEditor.getValue()
+        files["index.styl"] = cssEditor.getValue() ? { content: yourCSS } : null
+      }
 	}
 	if (jsEditor.getValue()) {
     var jsSelected = $("#js-preprocessor option:selected").val()
@@ -1082,22 +1151,9 @@ var desktopExport = function(file) {
         }
 
         var zip = new JSZip()
-        var htmlSelected = $("#html-preprocessor option:selected").val()
-        var jsSelected   = $("#js-preprocessor   option:selected").val()
-
-        if ( htmlSelected == "none") {
-          yourHTML = htmlEditor.getValue()
-        } else if ( htmlSelected == "jade") {
-          var options = {
-              pretty: true
-          }
-          var yourHTML = jade.render(htmlEditor.getValue(), options)
-        }
-        if ( jsSelected == "none") {
-          yourJS = jsEditor.getValue()
-        } else if ( jsSelected == "coffeescript") {
-          yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
-        }
+        renderYourHTML()
+        renderYourCSS()
+        renderYourJS()
 
         var appName = zip.folder( $("[data-action=sitetitle]").val().replace(/ /g, "-")  )
         appName.load(data)
@@ -1175,22 +1231,9 @@ var desktopExport = function(file) {
         }
 
         var zip = new JSZip(data)
-        var htmlSelected = $("#html-preprocessor option:selected").val()
-        var jsSelected   = $("#js-preprocessor   option:selected").val()
-
-        if ( htmlSelected == "none") {
-          yourHTML = htmlEditor.getValue()
-        } else if ( htmlSelected == "jade") {
-          var options = {
-              pretty: true
-          }
-          var yourHTML = jade.render(htmlEditor.getValue(), options)
-        }
-        if ( jsSelected == "none") {
-          yourJS = jsEditor.getValue()
-        } else if ( jsSelected == "coffeescript") {
-          yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
-        }
+        renderYourHTML()
+        renderYourCSS()
+        renderYourJS()
 
         // Your Web App
         var grabString = "<script src=\"libraries/jquery/jquery.js\"></script\>",
@@ -1269,22 +1312,9 @@ var desktopExport = function(file) {
         }
 
         var zip = new JSZip(data)
-        var htmlSelected = $("#html-preprocessor option:selected").val()
-        var jsSelected   = $("#js-preprocessor   option:selected").val()
-
-        if ( htmlSelected == "none") {
-          yourHTML = htmlEditor.getValue()
-        } else if ( htmlSelected == "jade") {
-          var options = {
-              pretty: true
-          }
-          var yourHTML = jade.render(htmlEditor.getValue(), options)
-        }
-        if ( jsSelected == "none") {
-          yourJS = jsEditor.getValue()
-        } else if ( jsSelected == "coffeescript") {
-          yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
-        }
+        renderYourHTML()
+        renderYourCSS()
+        renderYourJS()
 
         // Your Web App
         var grabString = "<script src=\"libraries/jquery/jquery.js\"></script\>",
@@ -1367,22 +1397,9 @@ var desktopExport = function(file) {
         var zip = new JSZip()
         var appName = zip.folder( $("[data-action=sitetitle]").val().replace(/ /g, "-")  )
         appName.load(data)
-        var htmlSelected = $("#html-preprocessor option:selected").val()
-        var jsSelected   = $("#js-preprocessor   option:selected").val()
-
-        if ( htmlSelected == "none") {
-          yourHTML = htmlEditor.getValue()
-        } else if ( htmlSelected == "jade") {
-          var options = {
-              pretty: true
-          }
-          var yourHTML = jade.render(htmlEditor.getValue(), options)
-        }
-        if ( jsSelected == "none") {
-          yourJS = jsEditor.getValue()
-        } else if ( jsSelected == "coffeescript") {
-          yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
-        }
+        renderYourHTML()
+        renderYourCSS()
+        renderYourJS()
 
         // Your Web App
         var grabString = "<script src=\"libraries/jquery/jquery.js\"></script\>",
@@ -1459,22 +1476,9 @@ var desktopExport = function(file) {
         }
 
         var zip = new JSZip(data)
-        var htmlSelected = $("#html-preprocessor option:selected").val()
-        var jsSelected   = $("#js-preprocessor   option:selected").val()
-
-        if ( htmlSelected == "none") {
-          yourHTML = htmlEditor.getValue()
-        } else if ( htmlSelected == "jade") {
-          var options = {
-              pretty: true
-          }
-          var yourHTML = jade.render(htmlEditor.getValue(), options)
-        }
-        if ( jsSelected == "none") {
-          yourJS = jsEditor.getValue()
-        } else if ( jsSelected == "coffeescript") {
-          yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
-        }
+        renderYourHTML()
+        renderYourCSS()
+        renderYourJS()
 
         // Your Web App
         var grabString = "<script src=\"libraries/jquery/jquery.js\"></script\>",
@@ -1565,22 +1569,9 @@ var desktopExport = function(file) {
           var zip = new JSZip(data)
           var appName = zip.folder("app")
           appName.load(data)
-          var htmlSelected = $("#html-preprocessor option:selected").val()
-          var jsSelected   = $("#js-preprocessor   option:selected").val()
-
-          if ( htmlSelected == "none") {
-            yourHTML = htmlEditor.getValue()
-          } else if ( htmlSelected == "jade") {
-            var options = {
-                pretty: true
-            }
-            var yourHTML = jade.render(htmlEditor.getValue(), options)
-          }
-          if ( jsSelected == "none") {
-            yourJS = jsEditor.getValue()
-          } else if ( jsSelected == "coffeescript") {
-            yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
-          }
+          renderYourHTML()
+          renderYourCSS()
+          renderYourJS()
 
           // Your Web App
           // check if css editor has a value
@@ -1682,22 +1673,9 @@ var desktopExport = function(file) {
           }
 
           var zip = new JSZip(data)
-          var htmlSelected = $("#html-preprocessor option:selected").val()
-          var jsSelected   = $("#js-preprocessor   option:selected").val()
-
-          if ( htmlSelected == "none") {
-            yourHTML = htmlEditor.getValue()
-          } else if ( htmlSelected == "jade") {
-            var options = {
-                pretty: true
-            }
-            var yourHTML = jade.render(htmlEditor.getValue(), options)
-          }
-          if ( jsSelected == "none") {
-            yourJS = jsEditor.getValue()
-          } else if ( jsSelected == "coffeescript") {
-            yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
-          }
+          renderYourHTML()
+          renderYourCSS()
+          renderYourJS()
 
           // Your Web App
           // check if css editor has a value
@@ -1705,7 +1683,7 @@ var desktopExport = function(file) {
             closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
             var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue()
 
-            zip.file("css/index.css", cssEditor.getValue())
+            zip.file("css/index.css", yourCSS)
             zip.file("index.html", htmlContent)
           }
           // check if js editor has a value
@@ -1725,7 +1703,7 @@ var desktopExport = function(file) {
             closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
             htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
-            zip.file("css/index.css", cssEditor.getValue())
+            zip.file("css/index.css", yourCSS)
             zip.file("js/index.js", yourJS)
             zip.file("index.html", htmlContent)
           }
@@ -1792,29 +1770,16 @@ $("[data-action=download-zip]").on("click", function() {
     }
 
     var zip = new JSZip(data)
-    var htmlSelected = $("#html-preprocessor option:selected").val()
-    var jsSelected   = $("#js-preprocessor   option:selected").val()
-
-    if ( htmlSelected == "none") {
-      yourHTML = htmlEditor.getValue()
-    } else if ( htmlSelected == "jade") {
-      var options = {
-          pretty: true
-      }
-      var yourHTML = jade.render(htmlEditor.getValue(), options)
-    }
-    if ( jsSelected == "none") {
-      yourJS = jsEditor.getValue()
-    } else if ( jsSelected == "coffeescript") {
-      yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
-    }
+    renderYourHTML()
+    renderYourCSS()
+    renderYourJS()
 
     // check if css editor has a value
     if (cssEditor.getValue() !== "") {
       closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
       var htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue()
 
-      zip.file("css/index.css", cssEditor.getValue())
+      zip.file("css/index.css", yourCSS)
       zip.file("index.html", htmlContent)
     }
     // check if js editor has a value
@@ -1835,7 +1800,7 @@ $("[data-action=download-zip]").on("click", function() {
       closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n")
       htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue()
 
-      zip.file("css/index.css", cssEditor.getValue())
+      zip.file("css/index.css", yourCSS)
       zip.file("js/index.js", yourJS)
       zip.file("index.html", htmlContent)
     }

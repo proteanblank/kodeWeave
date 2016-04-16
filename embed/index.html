@@ -23,7 +23,8 @@
     <script src="../editor/lib/he.js"></script>
     <script src="../editor/lib/html2jade.js"></script>
     <script src="../editor/lib/js2coffee.js"></script>
-    <!-- <script src="../editor/lib/sass.js"></script> -->
+    <script src="../editor/lib/stylus.min.js"></script>
+    <script src="../editor/lib/css2stylus.js"></script>
 
     <script src="../editor/libraries/alertifyjs/alertify.min.js"></script>
     <script src="../editor/libraries/showdown/Showdown.min.js"></script>
@@ -52,6 +53,7 @@
     <script src="../editor/libraries/codemirror/coffee-script.js"></script>
     <script src="../editor/libraries/codemirror/mode/coffeescript/coffeescript.js"></script>
     <script src="../editor/libraries/codemirror/mode/sass/sass.js"></script>
+    <script src="../editor/libraries/codemirror/mode/stylus/stylus.js"></script>
     <script src="../editor/libraries/codemirror/mode/jade/jade.js"></script>
     <script src="../editor/libraries/codemirror/markdown.js"></script>
     <script src="../editor/libraries/codemirror/continuelist.js"></script>
@@ -211,6 +213,7 @@
     &lt;script src="../editor/libraries/codemirror/mode/haml/haml.js"&gt;&lt;/script&gt;
     &lt;script src="../editor/libraries/codemirror/mode/jade/jade.js"&gt;&lt;/script&gt;
     &lt;script src="../editor/libraries/codemirror/mode/sass/sass.js"&gt;&lt;/script&gt;
+    &lt;script src="../editor/libraries/codemirror/mode/stylus/stylus.js"&gt;&lt;/script&gt;
     &lt;script src="../editor/libraries/codemirror/mode/livescript/livescript.js"&gt;&lt;/script&gt;
     &lt;script src="../editor/libraries/codemirror/mode/coffeescript/coffeescript.js"&gt;&lt;/script&gt;
     &lt;script src="../editor/libraries/codemirror/coffee-script.js"&gt;&lt;/script&gt;
@@ -268,6 +271,7 @@
                       <textarea class="codemirror50 hide"></textarea>
                       <textarea class="codemirror51 hide"></textarea>
                       <textarea class="codemirror52 hide"></textarea>
+                      <textarea class="codemirror53 hide"></textarea>
                       <textarea class="codemirrorzip jszipcode hide"></textarea>
                     </div>
                   </li>
@@ -749,18 +753,22 @@
                 <a class="btn--info preprocessor html-preprocessor confirm-preprocessor" data-action="html-preprocessor">Close</a>
               </p>
 
-              <!-- <h4 class="preprocessor css-preprocessor">CSS Preprocessor</h4>
+              <h4 class="preprocessor css-preprocessor">CSS Preprocessor</h4>
               <div class="preprocessor css-preprocessor">
                 <select id="css-preprocessor">
                   <option value="none">None</option>
+<!--
                   <option value="less">LESS</option>
                   <option value="scss">SCSS</option>
                   <option value="sass">Sass</option>
+-->
+                  <option value="stylus">Stylus</option>
                 </select>
               </div>
               <p>
-                <a class="btn--default preprocessor css-preprocessor confirm-preprocessor" data-action="css-preprocessor">Close</a>
-              </p> -->
+                <a class="btn--default preprocessor css-preprocessor confirm-preprocessor css-preprocessor-convert" data-action="css-preprocessor">Convert</a>
+                <a class="btn--info preprocessor css-preprocessor confirm-preprocessor" data-action="css-preprocessor">Close</a>
+              </p> 
 
               <h4 class="preprocessor js-preprocessor">JavaScript Preprocessor</h4>
               <div class="preprocessor js-preprocessor">

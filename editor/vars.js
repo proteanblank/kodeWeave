@@ -1,5 +1,41 @@
 var timeout,
     delay,
+    renderYourHTML = function() {
+      var htmlSelected  = $("#html-preprocessor option:selected").val()
+
+      if ( htmlSelected == "none") {
+        yourHTML = htmlEditor.getValue()
+      } else if ( htmlSelected == "jade") {
+        var options = {
+            pretty: true
+        }
+        var yourHTML = jade.render(htmlEditor.getValue(), options)
+      }
+    },
+    renderYourCSS = function() {
+      var cssSelected = $("#css-preprocessor option:selected").val()
+
+      if ( cssSelected == "none") {
+        yourCSS = cssEditor.getValue()
+      } else if ( cssSelected == "stylus") {
+        stylus(cssEditor.getValue()).render(function(err, out) {
+          if(err != null) {
+            console.error("something went wrong")
+          } else {
+            yourCSS = out
+          }
+        })
+      }
+    },
+    renderYourJS = function() {
+      var jsSelected = $("#js-preprocessor option:selected").val()
+      
+      if ( jsSelected == "none") {
+        yourJS = jsEditor.getValue()
+      } else if ( jsSelected == "coffeescript") {
+        yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
+      }
+    },
     JSValEnabled = function() {
       // jsEditor.setOption("lint", true)
       jsEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"])
@@ -490,6 +526,10 @@ var timeout,
           htmlEditor.setValue("")
           $("#html-preprocessor").val("none").change()
         }
+        if ($("#css-preprocessor").val() == "stylus") {
+          cssEditor.setValue("")
+          $("#css-preprocessor").val("none").change()
+        }
         if ($("#js-preprocessor").val() == "coffeescript") {
           jsEditor.setValue("")
           $("#js-preprocessor").val("none").change()
@@ -512,6 +552,7 @@ var timeout,
           jsEditor.setValue("")
           $("#js-preprocessor").val("none").change()
         }
+        $("#css-preprocessor").val("none").change()
         htmlEditor.setValue("<div class=\"page-wrap\" ng-app>\n  <h1 class=\"headline\">Simple content toggle with AngularJS</h1>\n  <p>\n    Choose what to display:\n    <select class=\"content-select\" ng-model=\"selection\">\n      <option value=\"content1\">Content #1</option>\n      <option value=\"content2\">Content #2</option>\n    </select>\n  </p>\n\n  <div class=\"container\">\n    <article ng-show=\"selection == 'content1'\">\n      <h2 class=\"h2\">Content #1</h2>\n      <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</p>\n    </article>\n    <article ng-show=\"selection == 'content2'\">\n      <h2 class=\"h2\">Content #2</h2>\n      <p>Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>\n    </article>\n  </div>\n</div>")
         cssEditor.setValue("body {\n  padding: 3em 2em;\n  font-size: 1em;\n  line-height: 1;\n}\n\n/* Pen specific CSS */\n.page-wrap {\n  margin: 0 auto;\n  max-width: 700px;\n}\n\n.headline {\n  margin: 0 0 .7em 0;\n  font-size: 1.7em;\n  font-weight: bold;\n}\n\n.content-select {\n  margin: 0 0 0 1em;\n}\n\narticle {\n  margin: 3em 0 0 0;\n}\narticle p {\n  margin: 0 0 .5em 0;\n  line-height: 1.3;\n}\narticle .h2 {\n  margin: 0 0 .5em 0;\n  font-size: 1.2em;\n}")
         jsEditor.setValue("")
@@ -527,12 +568,16 @@ var timeout,
           htmlEditor.setValue("")
           $("#html-preprocessor").val("jade").change()
         }
+        if ($("#css-preprocessor").val() == "none") {
+          cssEditor.setValue("")
+          $("#css-preprocessor").val("stylus").change()
+        }
         if ($("#js-preprocessor").val() == "none") {
           jsEditor.setValue("")
           $("#js-preprocessor").val("coffeescript").change()
         }
         htmlEditor.setValue("textarea#addcode(placeholder='Encode here...')\ntextarea#encode(readonly='', placeholder='Encoded code goes here...')\n  | #decode Preview code here.")
-        cssEditor.setValue("body {\n  margin: 0;\n}\n\n::-webkit-input-placeholder { /* WebKit browsers */\n  color: #555;\n}\n:-moz-placeholder { /* Mozilla Firefox 4 to 18 */\n  color: #555;\n}\n::-moz-placeholder { /* Mozilla Firefox 19+ */\n  color: #555;\n}\n:-ms-input-placeholder { /* Internet Explorer 10+ */\n  color: #555;\n}\n\n#addcode, #encode, #decode {\n  position: absolute;\n  font-family: monospace;\n  line-height: 1.4em;\n  font-size: 1em;\n  overflow: auto;\n  resize: none;\n  margin: 0;\n  padding: 0;\n  border: 0;\n}\n\n#encode, #decode {\n  left: 0;\n  width: 50%;\n  height: 50%;\n  background-color: #fff;\n}\n\n#addcode {\n  top: 0;\n  right: 0;\n  bottom: 0;\n  margin: 0;\n  width: 50%;\n  height: 100%;\n  min-height: 1.4em;\n  border: 0;\n  border-radius: 0;\n  resize: none;\n  color: #ccc;\n  background-color: #111;\n}\n\n#encode {\n  top: 0;\n}\n\n#decode {\n  bottom: 0;\n}\n")
+        cssEditor.setValue("body\n  margin 0\n\n::-webkit-input-placeholder\n  color #555\n\n:-moz-placeholder\n  color #555\n\n::-moz-placeholder\n  color #555\n\n:-ms-input-placeholder\n  color #555\n\n#addcode, #encode, #decode\n  position absolute\n  font-family monospace\n  line-height 1.4em\n  font-size 1em\n  overflow auto\n  resize none\n  margin 0\n  padding 0\n  border 0\n\n#encode, #decode\n  left 0\n  width 50%\n  height 50%\n  background-color #fff\n\n#addcode\n  top 0\n  right 0\n  bottom 0\n  margin 0\n  width 50%\n  height 100%\n  min-height 1.4em\n  border 0\n  border-radius 0\n  resize none\n  color #ccc\n  background-color #111\n\n#encode\n  top 0\n\n#decode\n  bottom 0")
         jsEditor.setValue("document.querySelector('#addcode').onkeyup = ->\n  document.querySelector('#encode').textContent = @value\n  document.querySelector('#encode').textContent = document.querySelector('#encode').innerHTML\n  if @value == ''\n    document.querySelector('#decode').innerHTML = 'Preview code here.'\n  else\n    document.querySelector('#decode').innerHTML = @value\n  false\n\ndocument.querySelector('#encode').onclick = ->\n  @select()\n  false")
         $(".hide-demos").trigger("click")
         callCollabUpdate()
@@ -546,6 +591,10 @@ var timeout,
           htmlEditor.setValue("")
           $("#html-preprocessor").val("jade").change()
         }
+        if ($("#css-preprocessor").val() == "none") {
+          cssEditor.setValue("")
+          $("#css-preprocessor").val("stylus").change()
+        }
         if ($("#js-preprocessor").val() == "coffeescript") {
           jsEditor.setValue("")
           $("#js-preprocessor").val("none").change()
@@ -553,7 +602,7 @@ var timeout,
         $("#html-preprocessor").val("jade").change()
         $("#js-preprocessor").val("none").change()
         htmlEditor.setValue("iframe(src='http://dev.w3.org/html5/html-author/charref')")
-        cssEditor.setValue("html, body {\n  height: 100%;\n}\n\niframe {\n  width: 100%;\n  height: 100%;\n  border: 0;\n}")
+        cssEditor.setValue("html, body\n  height 100%\n\niframe\n  width 100%\n  height 100%\n  border 0")
         jsEditor.setValue("")
         $(".hide-demos").trigger("click")
         callCollabUpdate()
@@ -566,6 +615,10 @@ var timeout,
         if ($("#html-preprocessor").val() == "jade") {
           htmlEditor.setValue("")
           $("#html-preprocessor").val("none").change()
+        }
+        if ($("#css-preprocessor").val() == "stylus") {
+          cssEditor.setValue("")
+          $("#css-preprocessor").val("none").change()
         }
         if ($("#js-preprocessor").val() == "coffeescript") {
           jsEditor.setValue("")
@@ -586,6 +639,10 @@ var timeout,
           htmlEditor.setValue("")
           $("#html-preprocessor").val("none").change()
         }
+        if ($("#css-preprocessor").val() == "stylus") {
+          cssEditor.setValue("")
+          $("#css-preprocessor").val("none").change()
+        }
         if ($("#js-preprocessor").val() == "coffeescript") {
           jsEditor.setValue("")
           $("#js-preprocessor").val("none").change()
@@ -605,12 +662,16 @@ var timeout,
           htmlEditor.setValue("")
           $("#html-preprocessor").val("jade").change()
         }
+        if ($("#css-preprocessor").val() == "none") {
+          cssEditor.setValue("")
+          $("#css-preprocessor").val("stylus").change()
+        }
         if ($("#js-preprocessor").val() == "coffeescript") {
           jsEditor.setValue("")
           $("#js-preprocessor").val("none").change()
         }
         htmlEditor.setValue("span.date(data-action='leftdate')\nspan.date.fr(data-action='rightdate')\n.clock(data-action='clock')")
-        cssEditor.setValue(".date {\n  font-family: arial;\n}\n\n.fr {\n  float: right;\n}\n\n.clock {\n  font: bold 1.5em sans;\n  text-align: center;\n}")
+        cssEditor.setValue(".date\n  font-family arial\n\n.fr\n  float right\n\n.clock\n  font bold 1.5em sans\n  text-align center")
         jsEditor.setValue("// Define a function to display the current time\nfunction displayTime() {\n  var now = new Date();\n  document.querySelector('[data-action=clock]').innerHTML =  now.toLocaleTimeString();\n  setTimeout(displayTime, 1000);\n}\ndisplayTime();\n\n// Date\nvar currentTime = new Date();\nvar month = currentTime.getMonth() + 1;\nvar date = currentTime.getDate();\nvar year = currentTime.getFullYear();\ndocument.querySelector('[data-action=leftdate]').innerHTML = month + '/' + date + '/' + year;\n\nvar today = new Date();\nif (year < 1000)\n  year += 1900;\nvar day = today.getDay();\nvar monthname = today.getMonth();\nif (date < 10)\n  date = '0' + date;\nvar dayarray = new Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');\nvar montharray = new Array('January','February','March','April','May','June','July','August','September','October','November','December');\ndocument.querySelector('[data-action=rightdate]').innerHTML = dayarray[day] + ', ' + montharray[monthname] + ' ' + date + ', ' + year;\n")
         $(".hide-demos").trigger("click")
         callCollabUpdate()
@@ -620,16 +681,20 @@ var timeout,
         $(".check").attr("checked", false).trigger("change")
         $("[data-action=library-code]").val("").change()
         $("[data-action=sitetitle]").val("Detect Orientation").change()
-        if ($("#html-preprocessor").val() == "jade") {
+        if ($("#html-preprocessor").val() == "none") {
           htmlEditor.setValue("")
-          $("#html-preprocessor").val("none").change()
+          $("#html-preprocessor").val("jade").change()
+        }
+        if ($("#css-preprocessor").val() == "none") {
+          cssEditor.setValue("")
+          $("#css-preprocessor").val("stylus").change()
         }
         if ($("#js-preprocessor").val() == "coffeescript") {
           jsEditor.setValue("")
           $("#js-preprocessor").val("none").change()
         }
         htmlEditor.setValue("h1.portrait Portrait\nh1.landscape Landscape\nfooter.foot")
-        cssEditor.setValue("body {\n  font: 26px arial;\n}\n.portrait, .landscape, .foot {\n  text-align: center;\n}\n.foot {\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  padding: 26px;\n}\n")
+        cssEditor.setValue("body {\n  font: 26px arial;\n}\n.portrait, .landscape, .foot {\n  text-align: center;\n}\n.foot {\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  padding: 26px;\n}")
         jsEditor.setValue("var detectOrientation = function() {\n  if ( window.innerWidth > window.innerHeight ) {\n    document.querySelector(\".landscape\").style.display = \"block\"\n    document.querySelector(\".portrait\").style.display = \"none\"\n  } else if ( window.innerWidth < window.innerHeight ) {\n    document.querySelector(\".landscape\").style.display = \"none\"\n    document.querySelector(\".portrait\").style.display = \"block\"\n  }\n  document.querySelector(\".foot\").innerHTML =  window.innerWidth + \"px, \" + window.innerHeight + \"px\"\n}\n\nwindow.addEventListener(\"resize\", function() {\n  detectOrientation()\n})\n\ndetectOrientation()\n")
         $(".hide-demos").trigger("click")
         callCollabUpdate()
@@ -642,6 +707,10 @@ var timeout,
         if ($("#html-preprocessor").val() == "none") {
           htmlEditor.setValue("")
           $("#html-preprocessor").val("jade").change()
+        }
+        if ($("#css-preprocessor").val() == "stylus") {
+          cssEditor.setValue("")
+          $("#css-preprocessor").val("none").change()
         }
         if ($("#js-preprocessor").val() == "none") {
           jsEditor.setValue("")
@@ -662,6 +731,10 @@ var timeout,
           htmlEditor.setValue("")
           $("#html-preprocessor").val("none").change()
         }
+        if ($("#css-preprocessor").val() == "stylus") {
+          cssEditor.setValue("")
+          $("#css-preprocessor").val("none").change()
+        }
         if ($("#js-preprocessor").val() == "none") {
           jsEditor.setValue("")
           $("#js-preprocessor").val("coffeescript").change()
@@ -681,12 +754,16 @@ var timeout,
           htmlEditor.setValue("")
           $("#html-preprocessor").val("jade").change()
         }
+        if ($("#css-preprocessor").val() == "none") {
+          cssEditor.setValue("")
+          $("#css-preprocessor").val("stylus").change()
+        }
         if ($("#js-preprocessor").val() == "none") {
           jsEditor.setValue("")
           $("#js-preprocessor").val("coffeescript").change()
         }
         htmlEditor.setValue(".container-fluid\n  .row\n    .col-lg-12\n      input.form-control(type='text', data-action='input', placeholder='Type here for keyCode')")
-        cssEditor.setValue("html, body {\n  height: 100%;\n}\n\nbody {\n  padding: 1em 0;\n  background: #0072ff;\n}\n\n.form-control {\n  border-radius: 5px;\n  box-shadow: 0 0 25px #00162d;\n}")
+        cssEditor.setValue("html, body\n  height 100%\n\nbody\n  padding 1em 0\n  background #0072ff\n\n.form-control\n  border-radius 5px\n  box-shadow 0 0 25px #00162d")
         jsEditor.setValue("$('[data-action=input]').keydown (e) ->\n  @value = e.which\n  e.preventDefault()\n")
         $(".hide-demos, #jquery, #bootstrap").trigger("click")
         callCollabUpdate()
@@ -701,6 +778,10 @@ var timeout,
         if ($("#html-preprocessor").val() == "jade") {
           htmlEditor.setValue("")
           $("#html-preprocessor").val("none").change()
+        }
+        if ($("#css-preprocessor").val() == "stylus") {
+          cssEditor.setValue("")
+          $("#css-preprocessor").val("none").change()
         }
         if ($("#js-preprocessor").val() == "coffeescript") {
           jsEditor.setValue("")
@@ -723,6 +804,10 @@ var timeout,
           htmlEditor.setValue("")
           $("#html-preprocessor").val("none").change()
         }
+        if ($("#css-preprocessor").val() == "stylus") {
+          cssEditor.setValue("")
+          $("#css-preprocessor").val("none").change()
+        }
         if ($("#js-preprocessor").val() == "none") {
           jsEditor.setValue("")
           $("#js-preprocessor").val("coffeescript").change()
@@ -741,6 +826,10 @@ var timeout,
         if ($("#html-preprocessor").val() == "jade") {
           htmlEditor.setValue("")
           $("#html-preprocessor").val("none").change()
+        }
+        if ($("#css-preprocessor").val() == "stylus") {
+          cssEditor.setValue("")
+          $("#css-preprocessor").val("none").change()
         }
         if ($("#js-preprocessor").val() == "coffeescript") {
           jsEditor.setValue("")
@@ -761,6 +850,10 @@ var timeout,
           htmlEditor.setValue("")
           $("#html-preprocessor").val("none").change()
         }
+        if ($("#css-preprocessor").val() == "stylus") {
+          cssEditor.setValue("")
+          $("#css-preprocessor").val("none").change()
+        }
         if ($("#js-preprocessor").val() == "coffeescript") {
           jsEditor.setValue("")
           $("#js-preprocessor").val("none").change()
@@ -780,6 +873,10 @@ var timeout,
           htmlEditor.setValue("")
           $("#html-preprocessor").val("none").change()
         }
+        if ($("#css-preprocessor").val() == "stylus") {
+          cssEditor.setValue("")
+          $("#css-preprocessor").val("none").change()
+        }
         if ($("#js-preprocessor").val() == "coffeescript") {
           jsEditor.setValue("")
           $("#js-preprocessor").val("none").change()
@@ -798,6 +895,10 @@ var timeout,
         if ($("#html-preprocessor").val() == "jade") {
           htmlEditor.setValue("")
           $("#html-preprocessor").val("none").change()
+        }
+        if ($("#css-preprocessor").val() == "stylus") {
+          cssEditor.setValue("")
+          $("#css-preprocessor").val("none").change()
         }
         if ($("#js-preprocessor").val() == "coffeescript") {
           jsEditor.setValue("")
@@ -819,6 +920,10 @@ var timeout,
           htmlEditor.setValue("")
           $("#html-preprocessor").val("none").change()
         }
+        if ($("#css-preprocessor").val() == "stylus") {
+          cssEditor.setValue("")
+          $("#css-preprocessor").val("none").change()
+        }
         if ($("#js-preprocessor").val() == "coffeescript") {
           jsEditor.setValue("")
           $("#js-preprocessor").val("none").change()
@@ -837,6 +942,10 @@ var timeout,
         if ($("#html-preprocessor").val() == "jade") {
           htmlEditor.setValue("")
           $("#html-preprocessor").val("none").change()
+        }
+        if ($("#css-preprocessor").val() == "stylus") {
+          cssEditor.setValue("")
+          $("#css-preprocessor").val("none").change()
         }
         if ($("#js-preprocessor").val() == "coffeescript") {
           jsEditor.setValue("")

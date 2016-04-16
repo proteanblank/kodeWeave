@@ -72,7 +72,21 @@ function updatePreview() {
   preview.open()
   var htmlSelected = $("#html-preprocessor option:selected").val()
   var jsSelected   = $("#js-preprocessor   option:selected").val()
+  var cssSelected  = $("#css-preprocessor  option:selected").val()
 
+  if (cssSelected == "none") {
+    cssContent = cssEditor.getValue()
+  } else if (cssSelected == "stylus") {
+    var cssVal = cssEditor.getValue()
+    stylus(cssVal).render(function(err, out) {
+      if(err != null) {
+        console.error("something went wrong")
+      } else {
+        cssContent = out
+      }
+    })
+  }
+  
   if ( jsSelected == "none") {
     jsContent = "<script>" + jsEditor.getValue() + "</script>"
   } else if ( jsSelected == "coffeescript") {
@@ -80,14 +94,14 @@ function updatePreview() {
   }
 
   if ( htmlSelected == "none") {
-    var htmlContent = heading + "<style id='b8c770cc'>" + cssEditor.getValue() + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue()+ jsContent + closeFinal.getValue()
+    var htmlContent = heading + "<style>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue()+ jsContent + closeFinal.getValue()
     preview.write(htmlContent)
   } else if ( htmlSelected == "jade") {
     var options = {
         pretty: true
     }
     var jade2HTML = jade.render(htmlEditor.getValue(), options)
-    var htmlContent = heading + "<style>" + cssEditor.getValue() + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + jsContent + closeFinal.getValue()
+    var htmlContent = heading + "<style>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + jsContent + closeFinal.getValue()
     preview.write(htmlContent)
   }
   preview.close()
