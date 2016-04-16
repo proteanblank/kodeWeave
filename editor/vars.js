@@ -58,8 +58,16 @@ var timeout,
         }
       })
       $(".savecss").click(function() {
-        var blob = new Blob([ cssEditor.getValue() ], {type: "text/css"})
-        saveAs(blob, "source.css")
+        var cssSelected = $("#css-preprocessor option:selected").val()
+
+        if ( cssSelected == "none") {
+          yourCSS = cssEditor.getValue()
+          var blob = new Blob([ yourCSS ], {type: "text/css"})
+          saveAs(blob, "source.css")
+        } else if ( cssSelected == "stylus") {
+          var blob = new Blob([ cssEditor.getValue() ], {type: "text/x-styl"})
+          saveAs(blob, "source.styl")
+        }
       })
       $(".savejs").click(function() {
         var jsSelected = $("#js-preprocessor option:selected").val()
@@ -694,7 +702,7 @@ var timeout,
           $("#js-preprocessor").val("none").change()
         }
         htmlEditor.setValue("h1.portrait Portrait\nh1.landscape Landscape\nfooter.foot")
-        cssEditor.setValue("body {\n  font: 26px arial;\n}\n.portrait, .landscape, .foot {\n  text-align: center;\n}\n.foot {\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  padding: 26px;\n}")
+        cssEditor.setValue("body\n  font 26px arial\n\n.portrait,\n.landscape,\n.foot\n  text-align center\n\n.foot\n  position absolute\n  bottom 0\n  left 0\n  right 0\n  padding 26px")
         jsEditor.setValue("var detectOrientation = function() {\n  if ( window.innerWidth > window.innerHeight ) {\n    document.querySelector(\".landscape\").style.display = \"block\"\n    document.querySelector(\".portrait\").style.display = \"none\"\n  } else if ( window.innerWidth < window.innerHeight ) {\n    document.querySelector(\".landscape\").style.display = \"none\"\n    document.querySelector(\".portrait\").style.display = \"block\"\n  }\n  document.querySelector(\".foot\").innerHTML =  window.innerWidth + \"px, \" + window.innerHeight + \"px\"\n}\n\nwindow.addEventListener(\"resize\", function() {\n  detectOrientation()\n})\n\ndetectOrientation()\n")
         $(".hide-demos").trigger("click")
         callCollabUpdate()
