@@ -6,7 +6,6 @@
     <meta name="viewport" content="initial-scale=1.0">
     <meta name="description" content="HTML/CSS/JS and Markdown Code Playground For Web Designers and Developers">
     <meta name="author" content="Michael Schwartz">
-    <meta http-equiv="X-UA-Compatible" content="IE=9" />
     <!-- Chrome, Firefox OS and Opera -->
     <meta name="theme-color" content="#2882CA">
     <!-- Windows Phone -->
@@ -14,9 +13,9 @@
     <!-- iOS Safari -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="stylesheet" href="css/theme.css" />
     <link rel="icon" type="image/vnd.microsoft.icon" href="favicon.ico">
     <link rel="SHORTCUT ICON" href="favicon.ico">
+    <link rel="stylesheet" href="css/theme.css" />
     <script src="https://togetherjs.com/togetherjs-min.js"></script>
     <script src="libraries/jquery/jquery.js"></script>
     <script src="lib/jquery.clearsearch.js"></script>
@@ -117,14 +116,20 @@
 
     <!-- Navigation -->
     <header>
+      <!-- Checkbox's for Menu Dropdowns -->
+      <input id="tools" type="checkbox" name="menubar" class="invisible">
+      <input id="open-libraries" type="checkbox" name="menubar" class="invisible">
+      <input id="download" type="checkbox" name="menubar" class="invisible">
+      <input id="open-demos" type="checkbox" name="menubar" class="invisible">
+      
       <!-- Hidden Textbox (Detects Active Editor) -->
       <input type="text" class="fl hide" data-action="activeEditor" value="htmlEditor">
-
+     
       <!-- Float Left -->
-      <a data-action="tools">
+      <label for="tools" class="pointer">
         <i class="fa fa-wrench"></i>
-      </a>
-      <div class="dialog toolbox hide">
+      </label>
+      <div class="dialog toolbox">
         <!-- Website Title -->
         <div class="txtcenter metaboxes">
           <input class="heading txtcenter block" type="text" data-action="sitetitle" placeholder="site title" value="site title">
@@ -135,8 +140,8 @@
         </div><br>
 
         <div>
-          <a class="fl" data-action="open-file">
-            Load Local
+          <a class="fl">
+            <label for="loadfile" class="pointer">Load Local</label>
           </a>
           <a class="fr" data-action="open-dropbox">
             Load Dropbox
@@ -183,10 +188,10 @@
         </div>
       </div>
 
-      <a data-action="open-libraries">
+      <label for="open-libraries" class="pointer">
         <i class="fa fa-book"></i>
-      </a>
-      <div class="libraries-dialog dialog fl hide">
+      </label>
+      <div class="dialog libraries-dialog fl">
         <div class="hide">
           <div id="closeRefs"></div>
           <textarea class="hide" data-action="library-code" placeholder="full library code"></textarea>
@@ -821,19 +826,24 @@
           </ul>
         </div>
       </div>
-      <a id="collaborate" class="skip">
+      <label id="collaborate" class="skip">
         <i class="fa fa-group"></i>
-      </a>
-      <a data-action="download">
+      </label>
+      <label for="download" class="pointer">
         <i class="fa fa-save"></i>
-      </a>
-      <div class="dialog download-dialog fl hide">
+      </label>
+      <!-- If image has loaded adjust dialog size -->
+      <input type="radio" id="imagehasloaded" class="invisible">
+      <div class="dialog download-dialog fl">
         <div id="holder" class="txtcenter">
-          Drag and drop image <a href="javascript:void()" class="fn nomargin call">here</a>...
+          Drag and drop image 
+          <a href="javascript:void(0)" class="fn nomar call">
+            <label for="load" class="pointer">here</label>
+          </a>...
         </div>
 
         <div class="txtcenter hide">
-          <input type="file" data-action="load" accept="image/jpeg, image/png" />
+          <input type="file" id="load" accept="image/jpeg, image/png" />
           <br><br>
         </div>
 
@@ -968,10 +978,10 @@
       </div>
 
       <!-- Float Right -->
-      <a class="open-demos">
+      <label for="open-demos" class="hide-demos fr pointer">
         <i class="fa fa-gift"></i>
-      </a>
-      <div class="demos-dialog dialog fr hide">
+      </label>
+      <div class="dialog demos-dialog fr">
         <div class="adddemos-tablets">
           <ul class="ldd-menu">
             <li>
@@ -1215,14 +1225,14 @@
                   <h4 class="headtxt iblock fl">
                     Validator
                   </h4>
-                  <h4 class="iblock fr">
-                    <div class="jsvalidationswitch iblock tr">
+                  <h4 class="iblock fr">&nbsp;
+                    <span class="jsvalidationswitch iblock tr">
                       <input type="checkbox" name="jsvalidationswitch" class="jsvalidationswitch-checkbox" id="myjsvalidationswitch" checked>
                       <label class="jsvalidationswitch-label" for="myjsvalidationswitch">
                         <span class="jsvalidationswitch-inner"></span>
                         <span class="jsvalidationswitch-switch"></span>
                       </label>
-                    </div>
+                    </span>
                   </h4>
                 </div>
               </div>

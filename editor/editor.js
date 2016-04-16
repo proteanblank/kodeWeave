@@ -5,7 +5,7 @@
   }
 }) (jQuery);
 
-var loader = $("[data-action=load]"),
+var loader = $("#load"),
     c16 = $("[data-action=n16]"),
     c32 = $("[data-action=n32]"),
     c64 = $("[data-action=n64]"),
@@ -644,9 +644,6 @@ $(window).load(function() {
   })
 
   // Load Files Into Editor
-  $("[data-action=open-file]").click(function() {
-    $("#loadfile").trigger("click")
-  })
   $("#loadfile").on("change", function() {
     loadfile(this)
   })
@@ -675,17 +672,12 @@ $(window).load(function() {
             alertify.error("Sorry kodeWeave does not support that file type!")
           }
         }
-      $("[data-action=tools].active").trigger("click")
+      $("input[name=menubar].active").trigger("click")
       reader.readAsText(input.files[0])
     }
   } else {
     alertify.error("The File APIs are not fully supported in this browser.")
   }
-
-  // Load Image
-  $(".call").click(function() {
-    $("[data-action=load]").trigger("click")
-  })
 
   singleFileDownload()
 })
@@ -817,6 +809,7 @@ if (window.location.hash) {
 
 // Setup Preprocessors
 $(".settings").on("click", function() {
+  $("input[name=menubar].active").trigger("click")
   $(".preprocessor").addClass("hide")
   if ($(this).hasClass("htmlSetting")) {
     $(".html-preprocessor").removeClass("hide")
@@ -1065,16 +1058,8 @@ holder.ondrop = function(e) {
   var file = e.dataTransfer.files[0]
   desktopExport(file)
   $(".watch").removeClass("hide")
-  $(".download-dialog").addClass("imagehasloaded");
-  if ( $(window).height() <= 480 ) {
-    $(".download-dialog").css({
-      "height": $(window).height() - 100 + "px"
-    })
-  } else {
-    $(".download-dialog").css({
-      "height": "auto"
-    })
-  }
+  $(".download-dialog").addClass("imagehasloaded")
+  $("#imagehasloaded").prop("checked", true)
   return false
 }
 
@@ -1800,7 +1785,7 @@ var desktopExport = function(file) {
 }
 
 // Check Application Fields (For Download)
-$("[data-action=load]").on("change", function(evt) {
+$("#load").on("change", function(evt) {
   if ( $(this).val() === "" ) {
     $(".watch").addClass("hide")
   } else {
@@ -1808,15 +1793,7 @@ $("[data-action=load]").on("change", function(evt) {
     var file = evt.target.files[0]
     desktopExport(file)
     $(".download-dialog").addClass("imagehasloaded");
-    if ( $(window).height() <= 480 ) {
-      $(".download-dialog").css({
-        "height": $(window).height() - 100 + "px"
-      })
-    } else {
-      $(".download-dialog").css({
-        "height": "auto"
-      })
-    }
+    $("#imagehasloaded").prop("checked", true)
     return false
   }
 })

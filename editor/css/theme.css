@@ -12,7 +12,6 @@
 ::-webkit-scrollbar-thumb {
   background: #70bcff;
   border: 0;
-  /*border-radius: 5em;*/
   border-radius: 0;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -24,7 +23,6 @@
 ::-webkit-scrollbar-track {
   background: transparent;
   border: 0;
-  /*border-radius: 5em;*/
   border-radius: 0;
 }
 ::-webkit-scrollbar-corner {
@@ -34,25 +32,25 @@
 /* Menubar */
 header {
   background: #2882CA;
-/*
-  background: #2196F3;
-  background: #013BA6;
-*/
 }
-header a {
+header a,
+header > label {
   color: #fff;
 }
-header a:hover {
+header a:hover,
+header > label:hover {
   color: #fff;
   opacity: 1;
 }
-.active {
+.active,
+#tools:checked ~ label[for=tools],
+#open-libraries:checked ~ label[for=open-libraries],
+#download:checked ~ label[for=download],
+#open-demos:checked ~ label[for=open-demos] {
   color: #fff;
   border-bottom: 2px solid #fff;
-/*
-  border-bottom: 2px solid #6AB5EC;
-*/
 }
+
 #charmenu {
   color: #797e83;
 }
@@ -109,10 +107,6 @@ header a:hover {
 .ldd-menu ul li a:hover{
   background: #2882CA;
   color: #fff;
-/*
-  background: #0080FF;
-  color: #fff;
-*/
 }
 .ldd-menu ul {
   border-left: 1px solid #DDD;
@@ -286,4 +280,19 @@ header a:hover {
 /* hover style just for information */
 label:hover:before {
   border: 1px solid #4778d9!important;
+}
+
+/* Textbox for Save Weave Online */
+.txtbox {
+  font-weight: 300;
+  padding: 15px;
+  width: 100%;
+  outline: 0;
+  font-size: 1.125em;
+  margin-bottom: 1.11111em;
+  border: 0;
+  border-bottom: 6px solid #d6d7d9;
+  border-radius: 0.4em;
+  background: #ebecec;
+  color: #000;
 }
