@@ -795,7 +795,8 @@ var timeout,
           jsEditor.setValue("")
           $("#js-preprocessor").val("none").change()
         }
-        htmlEditor.setValue("<!-- comment -->\nhello world!")
+        mdEditor.setValue("")
+        htmlEditor.setValue("")
         cssEditor.setValue("")
         jsEditor.setValue("")
         if ($("input[name=menubar].active").is(":visible")) {

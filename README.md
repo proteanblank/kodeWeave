@@ -1,12 +1,16 @@
 kodeWeave
 ===================
 
-kodeWeave is a realtime HTML/CSS/Javascript and Markdown coding playground. Similar to [JSFiddle](http://jsfiddle.net/) and [JSBin](http://jsbin.com/), but kodeWeave was made specifically for mobile devices. kodeWeave is great for prototyping and to build applications for desktop operating systems while on mobile devices. ([PhoneGap Build](http://build.phonegap.com/) is recommended for mobile devices)
+kodeWeave is a realtime coding playground for HTML, CSS and Javascript. Similar to JSFiddle and JSBin, but kodeWeave was made specifically to work not just for mobile devices, but also to work offline as well.
+
+kodeWeave is great for prototyping and to build applications for desktop operating systems while on mobile devices. ([PhoneGap Build](http://build.phonegap.com/) is recommended for mobile devices)
+
+If you've ever used jsfiddle, jsbin, dabblet, liveweave, codepen, cssdeck, cssdesk, tinkerbin, d3 playground, plunker and/or pastebin kodeWeave is the tool for you when you're away from a computer!
 
 Version
 -------------
 
-1.0.9
+1.1.7
 
 License
 -------------
@@ -22,10 +26,10 @@ Availability
 
 **No longer Supported**  
 [Windows 64](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-win.zip/download)  
-[Windows 32](http://sourceforge.net/projects/kodeweave/files/1.0.5/kodeWeave-win32.zip/download)  
-[Mac](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-mac.zip/download)  
+[Windows 32](http://sourceforge.net/projects/kodeweave/files/v1.1.7/kodeWeave-win32.zip/download)  
+[Mac](http://sourceforge.net/projects/kodeweave/files/v1.1.7/kodeWeave-mac.zip/download)  
 [Linux 64](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-lin.zip/download)  
-[Linux 32](http://sourceforge.net/projects/kodeweave/files/1.0.5/kodeWeave-lin32.zip/download)
+[Linux 32](http://sourceforge.net/projects/kodeweave/files/v1.1.7/kodeWeave-lin32.zip/download)
 
 Tech
 -------------
@@ -46,8 +50,15 @@ kodeWeave uses a number of open source projects to work properly:
 * [HTMLHint](http://htmlhint.com/) - for html syntax validation
 * [CSSLint](http://csslint.net/) - for css syntax validation
 * [JSHint](http://jslint.com/) - for javascript syntax validation
+* [Jade](http://jade-lang.com/) - an html preprocessor
+* [Stylus](http://stylus-lang.com/) - a css preprocessor
+* [CoffeeScript](http://coffeescript.org/) - a javascript preprocessor
+* [HTML2Jade](http://html2jade.org/) - Convert HTML to Jade and back
+* [CSS2Stylus](http://css2stylus.com/) - Convert CSS to Stylus and back
+* [JS2Coffee](http://js2.coffee/) - Convert Javascript to CoffeeScript and back
 * [Cordova](https://cordova.apache.org/) - mobile application development framework
 * [WebDGap](https://webdgap.sourceforge.net/) - exports your application as a desktop application
+* [DataURL Grabber](https://github.com/mikethedj4/DataURL-Grabber-PhoneGap-Build) - Embed an image directly into the document with data URIs
 
 Development
 -------------
