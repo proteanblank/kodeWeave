@@ -217,6 +217,36 @@ header > label {
   display: block;
 }
 
+.dataurlbg, .dataurl {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  margin: 0;
+}
+.dataurlbg {
+  background: #515151;
+  background: rgba(0, 0, 0, 0.58);
+}
+.dataurl {
+  margin: 2.6352em;
+  background: #fff;
+}
+.dataurl > iframe {
+  width: 100%;
+  height: 100%;
+}
+
+#dataurl:checked ~ .dataurlbg,
+#dataurl:checked ~ .dataurl {
+  visibility: visible;
+  opacity: 1;
+}
+
 /* Toolbox Queries */
 @media all and (min-height:486px) {
   .toolbox {

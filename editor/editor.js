@@ -697,138 +697,141 @@ $(window).load(function() {
 
 var hash = window.location.hash.substring(1)
 if (window.location.hash) {
-  localStorage.clear()
-  function loadgist(gistid) {
-    $.ajax({
-      url: "https://api.github.com/gists/" + gistid,
-      type: "GET",
-      dataType: "jsonp",
-      jsonp: "callback"
-    }).success(function(gistdata) {
-      var htmlVal        = gistdata.data.files["index.html"]
-      var jadeVal        = gistdata.data.files["index.jade"]
-      var cssVal         = gistdata.data.files["index.css"]
-      var stylusVal      = gistdata.data.files["index.styl"]
-      var jsVal          = gistdata.data.files["index.js"]
-      var coffeeVal      = gistdata.data.files["index.coffee"]
-      var mdVal      = gistdata.data.files["README.md"]
-      var settings   = gistdata.data.files["settings.json"].content
-      var libraries  = gistdata.data.files["libraries.json"].content
-      var jsonSets   = JSON.parse(settings)
-      var jsonLibs   = JSON.parse(libraries)
+  if (location.hash.substring(1) === "dataurl") {
+    $("#dataurl").attr("checked", true).trigger("change")
+  } else {
+    function loadgist(gistid) {
+      $.ajax({
+        url: "https://api.github.com/gists/" + gistid,
+        type: "GET",
+        dataType: "jsonp",
+        jsonp: "callback"
+      }).success(function(gistdata) {
+        var htmlVal        = gistdata.data.files["index.html"]
+        var jadeVal        = gistdata.data.files["index.jade"]
+        var cssVal         = gistdata.data.files["index.css"]
+        var stylusVal      = gistdata.data.files["index.styl"]
+        var jsVal          = gistdata.data.files["index.js"]
+        var coffeeVal      = gistdata.data.files["index.coffee"]
+        var mdVal      = gistdata.data.files["README.md"]
+        var settings   = gistdata.data.files["settings.json"].content
+        var libraries  = gistdata.data.files["libraries.json"].content
+        var jsonSets   = JSON.parse(settings)
+        var jsonLibs   = JSON.parse(libraries)
 
-      // Return font settings from json
-      var siteTitle        = jsonSets.siteTitle
-      var WeaveVersion     = jsonSets.version
-      var editorFontSize   = jsonSets.editorFontSize
-      var WeaveDesc        = jsonSets.description
-      var WeaveAuthor      = jsonSets.author
+        // Return font settings from json
+        var siteTitle        = jsonSets.siteTitle
+        var WeaveVersion     = jsonSets.version
+        var editorFontSize   = jsonSets.editorFontSize
+        var WeaveDesc        = jsonSets.description
+        var WeaveAuthor      = jsonSets.author
 
-      $("[data-action=sitetitle]").val(siteTitle)
-      $("[data-value=version]").val(WeaveVersion)
-      $("[data-editor=fontSize]").val(editorFontSize)
-      $("[data-action=sitedesc]").val(WeaveDesc)
-      $("[data-action=siteauthor]").val(WeaveAuthor)
-      storeValues()
+        $("[data-action=sitetitle]").val(siteTitle)
+        $("[data-value=version]").val(WeaveVersion)
+        $("[data-editor=fontSize]").val(editorFontSize)
+        $("[data-action=sitedesc]").val(WeaveDesc)
+        $("[data-action=siteauthor]").val(WeaveAuthor)
+        storeValues()
 
-      // Return settings from the json
-      $(".metaboxes input.heading").trigger("keyup")
+        // Return settings from the json
+        $(".metaboxes input.heading").trigger("keyup")
 
-      // Return libraries from json
-      $.each(jsonLibs, function(name, value) {
-        $(".ldd-submenu #" + name).prop("checked", value).trigger("keyup")
-      })
+        // Return libraries from json
+        $.each(jsonLibs, function(name, value) {
+          $(".ldd-submenu #" + name).prop("checked", value).trigger("keyup")
+        })
 
-      // Set checked libraries into preview
-      $("#jquery").trigger("keyup")
+        // Set checked libraries into preview
+        $("#jquery").trigger("keyup")
 
-      // Return the editor's values
-      if (!mdVal) {
-        mdEditor.setValue("")
-      } else {
-        mdEditor.setValue(mdVal.content)
-      }
-      if (!htmlVal) {
-        if (!jadeVal) {
-          htmlEditor.setValue("")
+        // Return the editor's values
+        if (!mdVal) {
+          mdEditor.setValue("")
         } else {
-          htmlEditor.setValue(jadeVal.content)
-          $("#html-preprocessor").val("jade").change()
+          mdEditor.setValue(mdVal.content)
         }
-      } else {
-        htmlEditor.setValue(htmlVal.content)
-        $("#html-preprocessor").val("none").change()
-      }
-      if (!jadeVal) {
         if (!htmlVal) {
-          htmlEditor.setValue("")
+          if (!jadeVal) {
+            htmlEditor.setValue("")
+          } else {
+            htmlEditor.setValue(jadeVal.content)
+            $("#html-preprocessor").val("jade").change()
+          }
         } else {
           htmlEditor.setValue(htmlVal.content)
           $("#html-preprocessor").val("none").change()
         }
-      } else {
-        htmlEditor.setValue(jadeVal.content)
-        $("#html-preprocessor").val("jade").change()
-      }
-      if (!cssVal) {
-        if (!stylusVal) {
-          cssEditor.setValue("")
+        if (!jadeVal) {
+          if (!htmlVal) {
+            htmlEditor.setValue("")
+          } else {
+            htmlEditor.setValue(htmlVal.content)
+            $("#html-preprocessor").val("none").change()
+          }
         } else {
-          cssEditor.setValue(stylusVal.content)
-          $("#css-preprocessor").val("stylus").change()
+          htmlEditor.setValue(jadeVal.content)
+          $("#html-preprocessor").val("jade").change()
         }
-      } else {
-        cssEditor.setValue(cssVal.content)
-        $("#css-preprocessor").val("none").change()
-      }
-      if (!stylusVal) {
         if (!cssVal) {
-          cssEditor.setValue("")
+          if (!stylusVal) {
+            cssEditor.setValue("")
+          } else {
+            cssEditor.setValue(stylusVal.content)
+            $("#css-preprocessor").val("stylus").change()
+          }
         } else {
           cssEditor.setValue(cssVal.content)
           $("#css-preprocessor").val("none").change()
         }
-      } else {
-        cssEditor.setValue(stylusVal.content)
-        $("#css-preprocessor").val("stylus").change()
-      }
-      if (!jsVal) {
-        if (!coffeeVal) {
-          jsEditor.setValue("")
+        if (!stylusVal) {
+          if (!cssVal) {
+            cssEditor.setValue("")
+          } else {
+            cssEditor.setValue(cssVal.content)
+            $("#css-preprocessor").val("none").change()
+          }
         } else {
-          jsEditor.setValue(coffeeVal.content)
-          $("#js-preprocessor").val("coffeescript").change()
+          cssEditor.setValue(stylusVal.content)
+          $("#css-preprocessor").val("stylus").change()
         }
-      } else {
-        jsEditor.setValue(jsVal.content)
-        $("#js-preprocessor").val("none").change()
-      }
-      if (!coffeeVal) {
         if (!jsVal) {
-          jsEditor.setValue("")
+          if (!coffeeVal) {
+            jsEditor.setValue("")
+          } else {
+            jsEditor.setValue(coffeeVal.content)
+            $("#js-preprocessor").val("coffeescript").change()
+          }
         } else {
           jsEditor.setValue(jsVal.content)
           $("#js-preprocessor").val("none").change()
         }
-      } else {
-        jsEditor.setValue(coffeeVal.content)
-        $("#js-preprocessor").val("coffeescript").change()
-      }
-      
-      setTimeout(function() {
-        mdEditor.setOption("paletteHints", "true")
-        htmlEditor.setOption("paletteHints", "true")
-        cssEditor.setOption("paletteHints", "true")
-        jsEditor.setOption("paletteHints", "true")
-      }, 300)
-    }).error(function(e) {
-      // ajax error
-      console.warn("Error: Could not load weave!", e)
-      alertify.error("Error: Could not load weave!")
-    })
-  }
+        if (!coffeeVal) {
+          if (!jsVal) {
+            jsEditor.setValue("")
+          } else {
+            jsEditor.setValue(jsVal.content)
+            $("#js-preprocessor").val("none").change()
+          }
+        } else {
+          jsEditor.setValue(coffeeVal.content)
+          $("#js-preprocessor").val("coffeescript").change()
+        }
 
-  loadgist(hash)
+        setTimeout(function() {
+          mdEditor.setOption("paletteHints", "true")
+          htmlEditor.setOption("paletteHints", "true")
+          cssEditor.setOption("paletteHints", "true")
+          jsEditor.setOption("paletteHints", "true")
+        }, 300)
+      }).error(function(e) {
+        // ajax error
+        console.warn("Error: Could not load weave!", e)
+        alertify.error("Error: Could not load weave!")
+      })
+    }
+
+    loadgist(hash)
+  }
 } {
   setTimeout(function() {
     mdEditor.setOption("paletteHints", "true")
@@ -1875,6 +1878,11 @@ $("#jquery").trigger("keyup")
 // If textbox has a value...
 // a clear icon will display to clear the input
 $(".metaboxes .heading").not("input[type=number]").clearSearch()
+
+// Hide menu when DataURL is Checked
+$("#dataurl").on("change", function() {
+  (this.checked) ? $("input[name=menubar].active").trigger("click") : ""
+})
 
 shortcutKeys()
 initGenerators()
