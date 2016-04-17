@@ -9,7 +9,7 @@ var timeout,
         var options = {
             pretty: true
         }
-        var yourHTML = jade.render(htmlEditor.getValue(), options)
+        yourHTML = jade.render(htmlEditor.getValue(), options)
       }
     },
     renderYourCSS = function() {

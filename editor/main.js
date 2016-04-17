@@ -232,6 +232,15 @@ cssEditor.on("change", function() {
   $("#preview").contents().find("#b8c770cc").html(cssContent)
   localStorage.setItem("cssData", cssEditor.getValue())
   
+  var valueSelected = $("#css-preprocessor").val()
+  if ( valueSelected == "stylus") {
+      cssEditor.setOption("lint", false)
+      cssEditor.refresh()
+  } else {
+    cssEditor.setOption("lint", true)
+    cssEditor.refresh()
+  }
+
   setTimeout(function() {
     cssEditor.setOption("paletteHints", "true")
   }, 300)
@@ -354,9 +363,7 @@ $(window).load(function() {
 
   // Select active editor when clicked/touched
   $("#htmlEditor, #cssEditor, #jsEditor, #mdEditor").on("mousedown touchend", function() {
-    if ( $(".active").is(":visible") ) {
-      $(".active").trigger("click")
-    }
+    $("input[name=menubar].active").trigger("click")
 
     if ( $(this).attr("id") === "htmlEditor" ) {
       activeEditor.val("htmlEditor")

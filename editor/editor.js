@@ -436,6 +436,14 @@ var loader = $("#load"),
       } else {
         $('.polyui, .polyuizip').clear()
       }
+      if ( $("#prefixfree").is(":checked") ) {
+        $('.prefixfree').clear()
+        download_to_textbox('libraries/prefixfree/prefixfree.min.js', $('.prefixfree'))
+        $('.prefixfree').trigger("change")
+        $(".prefixfreezip").val("zip.file('libraries/prefixfree/prefixfree.min.js', $(\".prefixfree\").val());")
+      } else {
+        $('.prefixfree, .prefixfreezip').clear()
+      }
       if ( $("#processingjs").is(":checked") ) {
         $('.processingjs').clear()
         download_to_textbox('libraries/processingjs/processingjs.js', $('.processingjs'))
@@ -446,7 +454,7 @@ var loader = $("#load"),
       }
       if ( $("#prototypejs").is(":checked") ) {
         $('.prototypejs').clear()
-        download_to_textbox('libraries/processingjs/prototypejs.js', $('.prototypejs'))
+        download_to_textbox('libraries/prototypejs/prototypejs.js', $('.prototypejs'))
         $('.prototypejs').trigger("change")
         $(".prototypejszip").val("zip.file('libraries/prototypejs/prototypejs.js', $(\".prototypejs\").val());")
       } else {
@@ -900,6 +908,10 @@ $("#css-preprocessor").on("change", function() {
   } else if ( valueSelected == "stylus") {
     cssEditor.setOption("mode", "text/x-styl")
     cssEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"])
+    setTimeout(function() {
+      $(".CodeMirror-lint-mark-error, .CodeMirror-lint-mark-error-metro").removeClass("CodeMirror-lint-mark-error CodeMirror-lint-mark-error-metro")
+      $(".CodeMirror-lint-mark-warning, .CodeMirror-lint-mark-warning-metro").removeClass("CodeMirror-lint-mark-warning CodeMirror-lint-mark-warning-metro")
+    }, 300)
     // cssEditor.refresh()
   } else {
     cssEditor.setOption("mode", "text/css")
@@ -954,9 +966,9 @@ $(".html-preprocessor-convert").click(function() {
     })
     $("#html-preprocessor").val("jade").change()
   } else if ($("#html-preprocessor").val() == "jade") {
+    $("#html-preprocessor").val("none").change()
     var htmlContent = jade.render(htmlEditor.getValue(), options)
     htmlEditor.setValue(htmlContent)
-    $("#html-preprocessor").val("none").change()
     beautifyHTML()
   }
 })
@@ -964,9 +976,11 @@ $(".css-preprocessor-convert").click(function() {
   if ($("#css-preprocessor").val() == "none") {
     var css = cssEditor.getValue()
     var converter = new Css2Stylus.Converter(css)
-     converter.processCss()
-     cssEditor.setValue(converter.getStylus())
+    converter.processCss()
+    cssEditor.setValue(converter.getStylus())
     $("#css-preprocessor").val("stylus").change()
+    cssEditor.setOption("lint", false)
+    cssEditor.refresh()
   } else if ($("#css-preprocessor").val() == "stylus") {
     var cssContent = cssEditor.getValue()
     stylus(cssContent).render(function(err, out) {
@@ -986,9 +1000,9 @@ $(".js-preprocessor-convert").click(function() {
     jsEditor.setValue(jsContent)
     $("#js-preprocessor").val("coffeescript").change()
   } else if ($("#js-preprocessor").val() == "coffeescript") {
+    $("#js-preprocessor").val("none").change()
     var jsContent = CoffeeScript.compile(jsEditor.getValue(), { bare: true })
     jsEditor.setValue(jsContent)
-    $("#js-preprocessor").val("none").change()
     beautifyJS()
   }
 })
