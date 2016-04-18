@@ -263,12 +263,12 @@ header > label {
 }
 
 /* Toolbox Queries */
-@media all and (min-height:486px) {
+@media all and (min-height:548px) {
   .toolbox {
     bottom: auto;
   }
 }
-@media all and (max-height:486px) {
+@media all and (max-height:548px) {
   .toolbox {
     bottom: 40px;
   }

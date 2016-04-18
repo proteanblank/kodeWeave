@@ -1784,44 +1784,88 @@ $("input[name=menubar]").on("change", function() {
 
 // Grids
 function GridScheme() {
-  $("#mainSplitter").jqxSplitter({
-    height: "auto",
-    width: "100%",
-    orientation: "vertical",
-    showSplitBar: true,
-    panels: [{ size: '25%' },
-             { size: '75%',collapsible:false }]
-  }).jqxSplitter("collapse");
-  $("#splitContainer").jqxSplitter({
-    height: "auto",
-    width: "100%",
-    orientation: "horizontal",
-    showSplitBar: true,
-    panels: [{ size: "50%",collapsible:false },
-             { size: "50%" }]
-  });
-  $("#leftSplitter").jqxSplitter({
-    width: "100%",
-    height: "100%",
-    orientation: "vertical",
-    showSplitBar: true,
-    panels: [{
-      size: "50%",
-      collapsible: false
-    }]
-  });
-  $("#rightSplitter").jqxSplitter({
-    width: "100%",
-    height: "100%",
-    orientation: "vertical",
-    showSplitBar: true,
-    panels: [{
-      size: "50%",
-      collapsible: false
-    }]
-  });
+  if ($("#changeGrid").is(":checked")) {
+    $("#mainSplitter").jqxSplitter({
+      height: "auto",
+      width: "100%",
+      orientation: "vertical",
+      showSplitBar: true,
+      panels: [{ size: '25%' },
+               { size: '75%',collapsible:false }]
+    }).jqxSplitter("collapse");
+    $("#splitContainer").jqxSplitter({
+      height: "auto",
+      width: "100%",
+      orientation: "vertical",
+      showSplitBar: true,
+      panels: [{ size: "50%",collapsible:false },
+               { size: "50%" }]
+    });
+    $("#leftSplitter").jqxSplitter({
+      width: "100%",
+      height: "100%",
+      orientation: "horizontal",
+      showSplitBar: true,
+      panels: [{
+        size: "50%",
+        collapsible: false
+      }]
+    });
+    $("#rightSplitter").jqxSplitter({
+      width: "100%",
+      height: "100%",
+      orientation: "horizontal",
+      showSplitBar: true,
+      panels: [{
+        size: "50%",
+        collapsible: false
+      }]
+    });
+  } else {
+    $("#mainSplitter").jqxSplitter({
+      height: "auto",
+      width: "100%",
+      orientation: "vertical",
+      showSplitBar: true,
+      panels: [{ size: '25%' },
+               { size: '75%',collapsible:false }]
+    }).jqxSplitter("collapse");
+    $("#splitContainer").jqxSplitter({
+      height: "auto",
+      width: "100%",
+      orientation: "horizontal",
+      showSplitBar: true,
+      panels: [{ size: "50%",collapsible:false },
+               { size: "50%" }]
+    });
+    $("#leftSplitter").jqxSplitter({
+      width: "100%",
+      height: "100%",
+      orientation: "vertical",
+      showSplitBar: true,
+      panels: [{
+        size: "50%",
+        collapsible: false
+      }]
+    });
+    $("#rightSplitter").jqxSplitter({
+      width: "100%",
+      height: "100%",
+      orientation: "vertical",
+      showSplitBar: true,
+      panels: [{
+        size: "50%",
+        collapsible: false
+      }]
+    });
+  }
 }
 GridScheme();
+$("#changeGrid").change(function() {
+  GridScheme();
+  $("input[name=menubar].active").trigger("click");
+});
+
 $("#mainSplitter").jqxSplitter({
   height: "auto",
   width: "100%",
@@ -3799,3 +3843,22 @@ $("[data-action=dataURLtoEditor]").click(function() {
   }
   $("#dataurl").trigger("click");
 });
+
+// Scroll Character Menu
+(function() {
+  function scrollMenu(e) {
+    e = window.event || e;
+    var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+    document.getElementById('charmenu').scrollLeft -= (delta*40); // Multiplied by 40
+    return false;
+  }
+  if (document.getElementById('charmenu').addEventListener) {
+    // IE9, Chrome, Safari, Opera
+    document.getElementById('charmenu').addEventListener('mousewheel', scrollMenu, false);
+    // Firefox
+    document.getElementById('charmenu').addEventListener('DOMMouseScroll', scrollMenu, false);
+  } else {
+    // IE 6/7/8
+    document.getElementById('charmenu').attachEvent('onmousewheel', scrollMenu);
+  }
+})();
