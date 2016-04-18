@@ -9,7 +9,7 @@ var htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
   foldGutter: true,
   readOnly: true,
   gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-  value: "<!-- comment -->\nhello world!"
+  value: ""
 })
 var cssEditor = CodeMirror(document.getElementById("cssEditor"), {
   mode: "text/css",

@@ -234,7 +234,22 @@ header > label {
 }
 .dataurl {
   margin: 2.6352em;
-  background: #fff;
+  background: #3BAC69;
+  overflow: auto;
+}
+#dataurlholder, .checkdataurl a {
+  font-size: 16px;
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+}
+.checkdataurl a {
+  background: #56C59A;
+}
+.call {
+  color: #d8d8d8;
+}
+.call:hover {
+  color: #fff;
 }
 .dataurl > iframe {
   width: 100%;
@@ -355,7 +370,8 @@ nav {
   vertical-align: middle;
   z-index: 1;
 }
-#holder {
+#holder, 
+#dataurlholder {
   border: 7px dashed #ccc;
   margin: 0 auto 20px auto;
   padding: 8px;
@@ -363,6 +379,9 @@ nav {
 }
 #holder.hover {
   border: 7px dashed #333;
+}
+#dataurlholder.hover {
+  border: 7px dashed #fff;
 }
 .txtcenter {
   text-align: center;

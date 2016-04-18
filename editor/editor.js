@@ -1884,6 +1884,11 @@ $("#dataurl").on("change", function() {
   (this.checked) ? $("input[name=menubar].active").trigger("click") : ""
 })
 
+// Clear localStorage when clicked
+$("[data-action=clearStorage]").click(function() {
+  localStorage.clear()
+})
+
 shortcutKeys()
 initGenerators()
 fullscreenEditor()

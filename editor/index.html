@@ -144,7 +144,10 @@
         </div>
         
         <div class="txtcenter fill">
-          <a class="pointer fn">
+          <a class="pointer block fn" data-action="clearStorage">
+            Clear localStorage
+          </a><br>
+          <a class="pointer block fn">
             <label for="dataurl" class="pointer">
               DataURL Grabber
             </label>
@@ -1059,7 +1062,29 @@
       <!-- DataURL Frame -->
       <label for="dataurl" class="dataurlbg"></label>
       <div class="dataurl">
-        <iframe src="dataurl/index.html" frameborder="0"></iframe>
+        <div class="invisible">
+          <input type="file" id="inputdataurl">
+        </div>
+
+        <div class="grid">
+          <div class="grid__col--12">
+            <a id="dataurlholder" class="block fn txtcenter pointer" style="margin-top: 1em;">
+              <label for="inputdataurl" class="call pointer">
+                Click here or Drag and Drop an image here...
+              </label>
+            </a>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="grid__col--12 checkdataurl txtcenter hide">
+            <p align="center" style="margin-right: 31px;">
+              <input type="text" class="form__input txtbox" data-url="dataurlimgurl">
+            </p>
+            <img class="nomarb" data-action="dataurloutput" style="width: 70%;">
+            <a class="btn--default block fn" data-action="dataURLtoEditor">Insert To Editor</a>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -1324,6 +1349,7 @@
     <script src="vars.js"></script>
     <script src="main.js"></script>
     <script src="editor.js"></script>
+    <script src="lib/dataurl.min.js"></script>
     <script src="lib/hscroll.js"></script>
     
     <script>
