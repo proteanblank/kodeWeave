@@ -1461,16 +1461,16 @@ var mdEditor = CodeMirror(document.getElementById("mdEditor"), {
 });
 
 if ( localStorage.getItem("htmlData")) {
-  htmlEditor.setValue(localStorage.getItem("htmlData"))
+  htmlEditor.setValue(localStorage.getItem("htmlData"));
 }
 if ( localStorage.getItem("cssData")) {
-  cssEditor.setValue(localStorage.getItem("cssData"))
+  cssEditor.setValue(localStorage.getItem("cssData"));
 }
 if ( localStorage.getItem("jsData")) {
-  jsEditor.setValue(localStorage.getItem("jsData"))
+  jsEditor.setValue(localStorage.getItem("jsData"));
 }
 if ( localStorage.getItem("mdData")) {
-  mdEditor.setValue(localStorage.getItem("mdData"))
+  mdEditor.setValue(localStorage.getItem("mdData"));
 }
 
 // Initialize Open and Close for HTML editor
@@ -1783,88 +1783,93 @@ $("input[name=menubar]").on("change", function() {
 });
 
 // Grids
+var checked = JSON.parse(localStorage.getItem("gridSetting"));
+document.getElementById("changeGrid").checked = checked;
+var gridChecked = function() {
+  $("#mainSplitter").jqxSplitter({
+    height: "auto",
+    width: "100%",
+    orientation: "vertical",
+    showSplitBar: true,
+    panels: [{ size: '25%' },
+             { size: '75%',collapsible:false }]
+  }).jqxSplitter("collapse");
+  $("#splitContainer").jqxSplitter({
+    height: "auto",
+    width: "100%",
+    orientation: "vertical",
+    showSplitBar: true,
+    panels: [{ size: "50%",collapsible:false },
+             { size: "50%" }]
+  });
+  $("#leftSplitter").jqxSplitter({
+    width: "100%",
+    height: "100%",
+    orientation: "horizontal",
+    showSplitBar: true,
+    panels: [{
+      size: "50%",
+      collapsible: false
+    }]
+  });
+  $("#rightSplitter").jqxSplitter({
+    width: "100%",
+    height: "100%",
+    orientation: "horizontal",
+    showSplitBar: true,
+    panels: [{
+      size: "50%",
+      collapsible: false
+    }]
+  });
+};
+var gridNotChecked = function() {
+  $("#mainSplitter").jqxSplitter({
+    height: "auto",
+    width: "100%",
+    orientation: "vertical",
+    showSplitBar: true,
+    panels: [{ size: '25%' },
+             { size: '75%',collapsible:false }]
+  }).jqxSplitter("collapse");
+  $("#splitContainer").jqxSplitter({
+    height: "auto",
+    width: "100%",
+    orientation: "horizontal",
+    showSplitBar: true,
+    panels: [{ size: "50%",collapsible:false },
+             { size: "50%" }]
+  });
+  $("#leftSplitter").jqxSplitter({
+    width: "100%",
+    height: "100%",
+    orientation: "vertical",
+    showSplitBar: true,
+    panels: [{
+      size: "50%",
+      collapsible: false
+    }]
+  });
+  $("#rightSplitter").jqxSplitter({
+    width: "100%",
+    height: "100%",
+    orientation: "vertical",
+    showSplitBar: true,
+    panels: [{
+      size: "50%",
+      collapsible: false
+    }]
+  });
+};
 function GridScheme() {
-  if ($("#changeGrid").is(":checked")) {
-    $("#mainSplitter").jqxSplitter({
-      height: "auto",
-      width: "100%",
-      orientation: "vertical",
-      showSplitBar: true,
-      panels: [{ size: '25%' },
-               { size: '75%',collapsible:false }]
-    }).jqxSplitter("collapse");
-    $("#splitContainer").jqxSplitter({
-      height: "auto",
-      width: "100%",
-      orientation: "vertical",
-      showSplitBar: true,
-      panels: [{ size: "50%",collapsible:false },
-               { size: "50%" }]
-    });
-    $("#leftSplitter").jqxSplitter({
-      width: "100%",
-      height: "100%",
-      orientation: "horizontal",
-      showSplitBar: true,
-      panels: [{
-        size: "50%",
-        collapsible: false
-      }]
-    });
-    $("#rightSplitter").jqxSplitter({
-      width: "100%",
-      height: "100%",
-      orientation: "horizontal",
-      showSplitBar: true,
-      panels: [{
-        size: "50%",
-        collapsible: false
-      }]
-    });
-  } else {
-    $("#mainSplitter").jqxSplitter({
-      height: "auto",
-      width: "100%",
-      orientation: "vertical",
-      showSplitBar: true,
-      panels: [{ size: '25%' },
-               { size: '75%',collapsible:false }]
-    }).jqxSplitter("collapse");
-    $("#splitContainer").jqxSplitter({
-      height: "auto",
-      width: "100%",
-      orientation: "horizontal",
-      showSplitBar: true,
-      panels: [{ size: "50%",collapsible:false },
-               { size: "50%" }]
-    });
-    $("#leftSplitter").jqxSplitter({
-      width: "100%",
-      height: "100%",
-      orientation: "vertical",
-      showSplitBar: true,
-      panels: [{
-        size: "50%",
-        collapsible: false
-      }]
-    });
-    $("#rightSplitter").jqxSplitter({
-      width: "100%",
-      height: "100%",
-      orientation: "vertical",
-      showSplitBar: true,
-      panels: [{
-        size: "50%",
-        collapsible: false
-      }]
-    });
-  }
+  var checkbox = document.getElementById("changeGrid");
+  (checkbox.checked) ? gridChecked() : gridNotChecked();
+  (checkbox.checked) ? localStorage.setItem("gridSetting", "true") : localStorage.setItem("gridSetting", "false");
 }
-GridScheme();
-$("#changeGrid").change(function() {
+$("#changeGrid").on("change", function() {
   GridScheme();
   $("input[name=menubar].active").trigger("click");
-});
+}).trigger("change");
 
 $("#mainSplitter").jqxSplitter({
   height: "auto",
