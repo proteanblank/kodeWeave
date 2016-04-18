@@ -726,7 +726,7 @@ var timeout,
         }
         htmlEditor.setValue("div(data-output='os')")
         cssEditor.setValue("")
-        jsEditor.setValue("document.addEventListener 'DOMContentLoaded', ->\n  document.querySelector('[data-output=os]').innerHTML = '<strong>Operating System</strong>: ' + navigator.platform")
+        jsEditor.setValue("yourOS = document.querySelector('[data-output=os]')\n\ndocument.addEventListener 'DOMContentLoaded', ->\n  yourOS.innerHTML = '<strong>Operating System</strong>: ' + navigator.platform")
         $(".hide-demos").trigger("click")
         callCollabUpdate()
       })
