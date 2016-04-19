@@ -1356,7 +1356,7 @@ var ruleSets = {
   "attr-no-duplication": true
 }
 
-// Initialize HTML editor
+// Initialize Editors
 var htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
   mode: "text/html",
   tabMode: "indent",
@@ -1418,7 +1418,11 @@ var jsEditor = CodeMirror(document.getElementById("jsEditor"), {
   autoCloseTags: true,
   foldGutter: true,
   dragDrop: true,
-  lint: true,
+  lint: {
+    options: {
+      "asi": true
+    }
+  },
   gutters: ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"],
   extraKeys: {
     "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()) },
@@ -1524,9 +1528,14 @@ function cssPreProcessor(cssSelected) {
 
 // Live preview
 function updatePreview() {
+  $(".preview-editor").empty();
+  var frame = document.createElement("iframe");
+  frame.setAttribute("id", "preview");
+  frame.setAttribute("sandbox", "allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts");
+  document.querySelector(".preview-editor").appendChild(frame);
   var previewFrame = document.getElementById("preview");
   var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
-  var heading = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + $("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\">\n" + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\">\n" + "    <link rel=\"stylesheet\" href=\"css/index.css\">\n";
+  var heading = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + $("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\">\n" + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\">\n";
   preview.open();
   var htmlSelected = $("#html-preprocessor option:selected").val();
   var jsSelected   = $("#js-preprocessor   option:selected").val();
@@ -1540,20 +1549,25 @@ function updatePreview() {
   }
 
   if ( htmlSelected == "none") {
-    var htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    <script src=\"js/index.js\"></script>" + jsContent + closeFinal.getValue();
+    var htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    " + jsContent + closeFinal.getValue();
     preview.write(htmlContent);
   } else if ( htmlSelected == "jade") {
     var options = {
         pretty: true
     }
     var jade2HTML = jade.render(htmlEditor.getValue(), options);
-    var htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + "\n\n    <scr"+"ipt src=\"js/index.js\"></scr"+"ipt>" + jsContent + closeFinal.getValue();
+    var htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + jsContent + closeFinal.getValue();
     preview.write(htmlContent);
   }
   preview.close();
 }
 
 function markdownPreview() {
+  $(".preview-editor").empty();
+  var frame = document.createElement("iframe");
+  frame.setAttribute("id", "preview");
+  frame.setAttribute("sandbox", "allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts");
+  document.querySelector(".preview-editor").appendChild(frame);
   var mdconverter = new Showdown.converter(),
       previewFrame = document.getElementById("preview"),
       preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
@@ -1565,8 +1579,15 @@ function markdownPreview() {
 markdownPreview();
 updatePreview();
 
-htmlEditor.on("change", function() {
+var cancel = setTimeout(function() {
   updatePreview();
+}, 300);
+
+htmlEditor.on("change", function() {
+  clearTimeout(cancel);
+  setTimeout(function() {
+    updatePreview();
+  }, 300);
   localStorage.setItem("htmlData", htmlEditor.getValue());
   
   setTimeout(function() {
@@ -1592,7 +1613,10 @@ cssEditor.on("change", function() {
   }, 300);
 });
 jsEditor.on("change", function() {
-  updatePreview();
+  clearTimeout(cancel);
+  setTimeout(function() {
+    updatePreview();
+  }, 300);
   localStorage.setItem("jsData", jsEditor.getValue());
   
   setTimeout(function() {
@@ -2809,22 +2833,12 @@ $("#js-preprocessor").on("change", function() {
   var valueSelected = this.value;
   localStorage.setItem("jsPreprocessorVal", this.value);
   if ( valueSelected == "none") {
-    jsEditor.setOption("mode", "text/javascript");
-    jsEditor.setOption("lint", false);
-    jsEditor.setOption("lint", true);
-    // jsEditor.refresh();
-    $(".jsvalidator").show();
+    jsEditor.setOption("mode", "javascript");
+    jsEditor.refresh();
   } else if ( valueSelected == "coffeescript") {
     jsEditor.setOption("mode", "text/x-coffeescript");
     jsEditor.setOption("lint", false);
     jsEditor.setOption("lint", true);
-    // jsEditor.refresh();
-  } else {
-    $(".jsvalidator").show();
-    jsEditor.setOption("mode", "text/javascript");
-    jsEditor.setOption("lint", false);
-    jsEditor.setOption("lint", true);
-    // jsEditor.refresh();
   }
   updatePreview();
 }).trigger("change");
@@ -3780,12 +3794,6 @@ var logo     = $("[data-action=dataurloutput]"),
     JSimgUrl = document.querySelector("[data-url=dataurlimgurl]");
 
 // Save Site Title Value for LocalStorage
-if ( localStorage.getItem("dataURL")) {
-  imgUrl.val(localStorage.getItem("dataURL"));
-  logo.attr("src", localStorage.getItem("dataURL"));
-  $(".checkdataurl").removeClass("hide");
-}
-
 function displayDURL(file) {
   var reader = new FileReader();
 
@@ -3796,7 +3804,6 @@ function displayDURL(file) {
       var dataUrl = e.target.result;
       logo.attr("src", dataUrl);
       imgUrl.val( logo.attr("src") );
-      localStorage.setItem("dataURL", imgUrl.val());
     };
   };
   reader.readAsDataURL(file);
