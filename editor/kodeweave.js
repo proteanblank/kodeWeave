@@ -1584,10 +1584,7 @@ var cancel = setTimeout(function() {
 }, 300);
 
 htmlEditor.on("change", function() {
-  clearTimeout(cancel);
-  setTimeout(function() {
-    updatePreview();
-  }, 300);
+  updatePreview();
   localStorage.setItem("htmlData", htmlEditor.getValue());
   
   setTimeout(function() {
@@ -1613,10 +1610,7 @@ cssEditor.on("change", function() {
   }, 300);
 });
 jsEditor.on("change", function() {
-  clearTimeout(cancel);
-  setTimeout(function() {
-    updatePreview();
-  }, 300);
+  updatePreview();
   localStorage.setItem("jsData", jsEditor.getValue());
   
   setTimeout(function() {
@@ -2203,7 +2197,7 @@ var loader = $("#load"),
       }
       if ( $("#jszip").is(":checked") ) {
         $('.jszip').clear();
-        download_to_textbox('libraries/jszip/jszip.min.css', $('.jszip1'));
+        download_to_textbox('libraries/jszip/jszip.min.js', $('.jszip1'));
         download_to_textbox('libraries/jszip/jszip-utils.js', $('.jszip2'));
         download_to_textbox('libraries/jszip/FileSaver.js', $('.jszip3'));
         download_to_textbox('libraries/jszip/Blob.js', $('.jszip4'));
@@ -3788,10 +3782,10 @@ checkedLibs();
 appDemos();
 charGeneration();
 
-var logo     = $("[data-action=dataurloutput]"),
-    imgUrl   = $("[data-url=dataurlimgurl]"),
-    holder   = document.getElementById("dataurlholder"),
-    JSimgUrl = document.querySelector("[data-url=dataurlimgurl]");
+var logo            = $("[data-action=dataurloutput]"),
+    imgUrl          = $("[data-url=dataurlimgurl]"),
+    dataurlholder   = document.getElementById("dataurlholder"),
+    JSimgUrl        = document.querySelector("[data-url=dataurlimgurl]");
 
 // Save Site Title Value for LocalStorage
 function displayDURL(file) {
@@ -3822,15 +3816,15 @@ $("#inputdataurl").change(function(e) {
 });
 
 // Drag and drop image load
-holder.ondragover = function () {
+dataurlholder.ondragover = function () {
   this.className = "block fn txtcenter pointer hover";
   return false;
 };
-holder.ondragend = function () {
+dataurlholder.ondragend = function () {
   this.className = "block fn txtcenter pointer";
   return false;
 };
-holder.ondrop = function(e) {
+dataurlholder.ondrop = function(e) {
   this.className = "block fn txtcenter pointer";
   e.preventDefault();
   var file = e.dataTransfer.files[0];
