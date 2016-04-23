@@ -391,7 +391,7 @@ textarea {
 }
 
 /* Editor */
-#splitWrapper, .CodeMirror {
+#splitContainer, .CodeMirror {
   z-index: 0;
 }
 .CodeMirror {
@@ -404,19 +404,17 @@ textarea {
 .CodeMirror, .CodeMirror-gutters {
   height: 100%!important;
 }
-#splitWrapper {
+#splitContainer, #mainSplitter {
   position: absolute;
-  top: 60px;
   left: 0;
   right: 0;
   bottom: 0;
 }
-#mainSplitter, #splitContainer {
-  position: absolute;
+#splitContainer {
+  top: 60px;
+}
+#mainSplitter {
   top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 .editor-container {
   width: 100%;
@@ -446,7 +444,6 @@ textarea {
 .fullscreen-html-toggle,
 .fullscreen-css-toggle,
 .fullscreen-js-toggle,
-.fullscreen-md-toggle,
 .preview-mode-toggle,
 .savefile,
 .settings {
@@ -460,14 +457,12 @@ textarea {
 .fullscreen-html-toggle:hover,
 .fullscreen-css-toggle:hover,
 .fullscreen-js-toggle:hover,
-.fullscreen-md-toggle:hover,
 .preview-mode-toggle:hover {
   opacity: 1;
 }
 .fullscreen-html-toggle,
 .fullscreen-css-toggle,
-.fullscreen-js-toggle,
-.fullscreen-md-toggle {
+.fullscreen-js-toggle {
   top: 15px;
 }
 .savefile {
@@ -478,6 +473,21 @@ textarea {
 }
 .savefile:hover,
 .settings:hover {
+  opacity: 1;
+}
+.selectEditor {
+  display: block;
+  position: absolute;
+  top: 125px;
+  right: 15px;
+  z-index: 0;
+}
+.selectEditor img {
+  width: 30px;
+  opacity: 0.4;
+  margin: 0;
+}
+.selectEditor img:hover {
   opacity: 1;
 }
 .preview-mode-toggle {

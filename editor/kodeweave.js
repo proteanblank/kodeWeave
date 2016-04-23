@@ -331,14 +331,6 @@ var timeout,
           GridScheme();
         } else if ( $(".fullscreen-html-toggle.fill").is(":visible") ) {
           $(this).html('<span class="fa fa-compress" id="fullscreen-html"></span>');
-          $("#mainSplitter").jqxSplitter({
-            height: "auto",
-            width: "100%",
-            orientation: "vertical",
-            showSplitBar: false,
-            panels: [{ size: '0%' },
-                     { size: '100%',collapsible:false }]
-          });
           $("#splitContainer").jqxSplitter({
             height: "auto",
             width: "100%",
@@ -372,14 +364,6 @@ var timeout,
           GridScheme();
         } else if ( $(".fullscreen-css-toggle.fill").is(":visible") ) {
           $(this).html('<span class="fa fa-compress" id="fullscreen-css"></span>');
-          $("#mainSplitter").jqxSplitter({
-            height: "auto",
-            width: "100%",
-            orientation: "vertical",
-            showSplitBar: false,
-            panels: [{ size: '0%' },
-                     { size: '100%',collapsible:false }]
-          });
           $("#splitContainer").jqxSplitter({
             height: "auto",
             width: "100%",
@@ -413,14 +397,6 @@ var timeout,
           GridScheme();
         } else if ( $(".fullscreen-js-toggle.fill").is(":visible") ) {
           $(this).html('<span class="fa fa-compress" id="fullscreen-js"></span>');
-          $("#mainSplitter").jqxSplitter({
-            height: "auto",
-            width: "100%",
-            orientation: "vertical",
-            showSplitBar: false,
-            panels: [{ size: '0%' },
-                     { size: '100%',collapsible:false }]
-          });
           $("#splitContainer").jqxSplitter({
             height: "auto",
             width: "100%",
@@ -447,31 +423,6 @@ var timeout,
           });
         }
       });
-      $(".fullscreen-md-toggle").click(function() {
-        $(this).toggleClass("fill unfill");
-        if ( $(".fullscreen-md-toggle.unfill").is(":visible") ) {
-          $(this).html('<span class="fa fa-expand" id="fullscreen-md"></span>');
-          GridScheme();
-        } else if ( $(".fullscreen-md-toggle.fill").is(":visible") ) {
-          $(this).html('<span class="fa fa-compress" id="fullscreen-md"></span>');
-          $("#mainSplitter").jqxSplitter({
-            height: "auto",
-            width: "100%",
-            orientation: "vertical",
-            showSplitBar: false,
-            panels: [{ size: '100%' },
-                     { size: '0%',collapsible:false }]
-          });
-          $("#splitContainer").jqxSplitter({
-            height: "auto",
-            width: "100%",
-            orientation: "vertical",
-            showSplitBar: false,
-            panels: [{ size: "0%" },
-                     { size: "0%" }]
-          });
-        }
-      });
       $(".preview-mode-toggle").click(function() {
         $(this).toggleClass("fill unfill");
         if ( $(".preview-mode-toggle.unfill").is(":visible") ) {
@@ -479,14 +430,6 @@ var timeout,
           GridScheme();
         } else if ( $(".preview-mode-toggle.fill").is(":visible") ) {
           $(this).html('<span class="fa fa-compress" id="preview-mode"></span>');
-          $("#mainSplitter").jqxSplitter({
-            height: "auto",
-            width: "100%",
-            orientation: "vertical",
-            showSplitBar: false,
-            panels: [{ size: '0%' },
-                     { size: '100%',collapsible:false }]
-          });
           $("#splitContainer").jqxSplitter({
             height: "auto",
             width: "100%",
@@ -1804,14 +1747,6 @@ $("input[name=menubar]").on("change", function() {
 var checked = JSON.parse(localStorage.getItem("gridSetting"));
 document.getElementById("changeGrid").checked = checked;
 var gridChecked = function() {
-  $("#mainSplitter").jqxSplitter({
-    height: "auto",
-    width: "100%",
-    orientation: "vertical",
-    showSplitBar: true,
-    panels: [{ size: '25%' },
-             { size: '75%',collapsible:false }]
-  }).jqxSplitter("collapse");
   $("#splitContainer").jqxSplitter({
     height: "auto",
     width: "100%",
@@ -1842,14 +1777,6 @@ var gridChecked = function() {
   });
 };
 var gridNotChecked = function() {
-  $("#mainSplitter").jqxSplitter({
-    height: "auto",
-    width: "100%",
-    orientation: "vertical",
-    showSplitBar: true,
-    panels: [{ size: '25%' },
-             { size: '75%',collapsible:false }]
-  }).jqxSplitter("collapse");
   $("#splitContainer").jqxSplitter({
     height: "auto",
     width: "100%",
@@ -1888,15 +1815,37 @@ $("#changeGrid").on("change", function() {
   GridScheme();
   $("input[name=menubar].active").trigger("click");
 }).trigger("change");
-
-$("#mainSplitter").jqxSplitter({
-  height: "auto",
-  width: "100%",
-  orientation: "vertical",
-  showSplitBar: true,
-  panels: [{ size: '25%' },
-           { size: '75%',collapsible:false }]
-}).jqxSplitter("collapse");
+$("#selectEditor").on("change", function() {
+  $("#mdEditor, .savemd, #htmlEditor, .savehtml, .htmlSetting").toggleClass("invisible");
+  $(".show-editor").toggleClass("html-editor md-editor");
+  
+  if (this.checked) {
+    $(".pickEditor").attr("src", "assets/html5-small.svg");
+    $(".selectEditor").css("top", "87px");
+    mdEditor.focus();
+    activeEditor.val("mdEditor");
+    if ($("#function").is(":hidden")) {
+      $("#function").show();
+    }
+    $(".md-chars").removeClass("hide");
+    if ( $(".main-editor-chars").is(":visible") ) {
+      $(".md-chars").removeClass("hide");
+      $(".main-editor-chars").addClass("hide");
+    }
+  } else {
+    $(".pickEditor").attr("src", "assets/md-small.svg");
+    $(".selectEditor").css("top", "");
+    htmlEditor.focus();
+    activeEditor.val("htmlEditor");
+    if ($("#function").is(":hidden")) {
+      $("#function").show();
+    }
+    $(".main-editor-chars").removeClass("hide");
+    if ( $(".md-chars").is(":visible") ) {
+      $(".md-chars").addClass("hide");
+    }
+  }
+});
 
 // Clear Input Values - JQuery Plugin
 (function($) {

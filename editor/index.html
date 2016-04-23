@@ -1093,78 +1093,69 @@
     </header>
 
     <!-- Editor/Preview -->
+    <input type="checkbox" id="selectEditor" class="invisible">
     <form method="post" id="editors">
-      <div id="splitWrapper">
-        <div id="mainSplitter">
-          <div>
-            <div class="editor-container md-editor">
-              <div id="mdEditor"></div>
+      <div id="splitContainer">
+        <div>
+          <div id="leftSplitter">
+            <div>
+              <div class="editor-container show-editor html-editor">
+                <div id="htmlEditor"></div>
+                <div id="mdEditor" class="invisible"></div>
+              </div>
+              <a class="fullscreen-html-toggle unfill">
+                <span class="fa fa-expand" id="fullscreen-html"></span>
+              </a>
+              <a class="savefile savehtml">
+                <span class="fa fa-download"></span>
+              </a>
+              <a class="savefile savemd invisible">
+                <span class="fa fa-download"></span>
+              </a>
+              <a class="settings htmlSetting">
+                <span class="fa fa-gear"></span>
+              </a>
+              <label for="selectEditor" class="selectEditor pointer">
+                <img class="pickEditor pointer" src="assets/md-small.svg">
+              </label>
             </div>
-            <a class="fullscreen-md-toggle unfill">
-              <span class="fa fa-expand" id="fullscreen-md"></span>
-            </a>
-            <a class="savefile savemd">
-              <span class="fa fa-download"></span>
-            </a>
+            <div>
+              <div class="editor-container css-editor">
+                <div id="cssEditor"></div>
+              </div>
+              <a class="fullscreen-css-toggle unfill">
+                <span class="fa fa-expand" id="fullscreen-css"></span>
+              </a>
+              <a class="savefile savecss">
+                <span class="fa fa-download"></span>
+              </a>
+               <a class="settings cssSetting">
+                <span class="fa fa-gear"></span>
+              </a> 
+            </div>
           </div>
-          <div>
-            <div id="splitContainer">
-              <div>
-                <div id="leftSplitter">
-                  <div>
-                    <div class="editor-container html-editor">
-                      <div id="htmlEditor"></div>
-                    </div>
-                    <a class="fullscreen-html-toggle unfill">
-                      <span class="fa fa-expand" id="fullscreen-html"></span>
-                    </a>
-                    <a class="savefile savehtml">
-                      <span class="fa fa-download"></span>
-                    </a>
-                    <a class="settings htmlSetting">
-                      <span class="fa fa-gear"></span>
-                    </a>
-                  </div>
-                  <div>
-                    <div class="editor-container css-editor">
-                      <div id="cssEditor"></div>
-                    </div>
-                    <a class="fullscreen-css-toggle unfill">
-                      <span class="fa fa-expand" id="fullscreen-css"></span>
-                    </a>
-                    <a class="savefile savecss">
-                      <span class="fa fa-download"></span>
-                    </a>
-                     <a class="settings cssSetting">
-                      <span class="fa fa-gear"></span>
-                    </a> 
-                  </div>
-                </div>
+        </div>
+        <div>
+          <div id="rightSplitter">
+            <div>
+              <div class="editor-container js-editor">
+                <div id="jsEditor"></div>
               </div>
-              <div>
-                <div id="rightSplitter">
-                  <div>
-                    <div class="editor-container js-editor">
-                      <div id="jsEditor"></div>
-                    </div>
-                    <a class="fullscreen-js-toggle unfill">
-                      <span class="fa fa-expand" id="fullscreen-js"></span>
-                    </a>
-                    <a class="savefile savejs">
-                      <span class="fa fa-download"></span>
-                    </a>
-                    <a class="settings jsSetting">
-                      <span class="fa fa-gear"></span>
-                    </a>
-                  </div>
-                  <div>
-                    <div class="editor-container preview-editor"></div>
-                    <a class="preview-mode-toggle unfill">
-                      <span class="fa fa-expand" id="preview-mode"></span>
-                    </a>
-                  </div>
-                </div>
-              </div>
+              <a class="fullscreen-js-toggle unfill">
+                <span class="fa fa-expand" id="fullscreen-js"></span>
+              </a>
+              <a class="savefile savejs">
+                <span class="fa fa-download"></span>
+              </a>
+              <a class="settings jsSetting">
+                <span class="fa fa-gear"></span>
+              </a>
+            </div>
+            <div>
+              <div class="editor-container preview-editor"></div>
+              <a class="preview-mode-toggle unfill">
+                <span class="fa fa-expand" id="preview-mode"></span>
+              </a>
             </div>
           </div>
         </div>
