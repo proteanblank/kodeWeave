@@ -13,6 +13,7 @@
 @import url("../libraries/jqwidgets/styles/jqx.metrodark.css");
 @import url("../libraries/codemirror/inlet.css");
 @import url("polyui.css");
+@import url("jqueryminicolors.css");
 
 @font-face {
   font-family: Lato;
