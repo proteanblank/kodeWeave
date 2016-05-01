@@ -43,7 +43,7 @@ kodeWeave uses a number of open source projects to work properly:
 * [Codemirror](http://codemirror.net/) - awesome web-based text editor
 * [Electron](http://electron.atom.io/) - makes web apps run on desktops (comes built with [node.js](http://nodejs.org/))
 * [node-webkit](http://nwjs.io/) - makes web apps run on desktops (comes built with [node.js](http://nodejs.org/))
-* [Inlet](https://github.com/enjalot/Inlet) - awesome inline color picker and numeric slider for Codemirror
+* [Inlet](https://github.com/mikethedj4/Inlet) - awesome inline color picker and numeric slider for Codemirror
 * [Emmet](http://emmet.io/) - Codemirror Plugin for Zen Coding
 * [Showdown](http://showdownjs.github.io/demo/) - Markdown to HTML converter
 * [js-beautifier](http://jsbeautifier.org/) - HTML/CSS/JS Beautifier
