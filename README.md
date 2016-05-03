@@ -10,7 +10,7 @@ If you've ever used jsfiddle, jsbin, dabblet, liveweave, codepen, cssdeck, cssde
 Version
 -------------
 
-1.1.7
+1.1.15
 
 License
 -------------
@@ -26,10 +26,10 @@ Availability
 
 **No longer Supported**  
 [Windows 64](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-win.zip/download)  
-[Windows 32](http://sourceforge.net/projects/kodeweave/files/v1.1.7/kodeWeave-win32.zip/download)  
-[Mac](http://sourceforge.net/projects/kodeweave/files/v1.1.7/kodeWeave-mac.zip/download)  
+[Windows 32](http://sourceforge.net/projects/kodeweave/files/v1.1.15/kodeWeave-win32.zip/download)  
+[Mac](http://sourceforge.net/projects/kodeweave/files/v1.1.15/kodeWeave-mac.zip/download)  
 [Linux 64](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-lin.zip/download)  
-[Linux 32](http://sourceforge.net/projects/kodeweave/files/v1.1.7/kodeWeave-lin32.zip/download)
+[Linux 32](http://sourceforge.net/projects/kodeweave/files/v1.1.15/kodeWeave-lin32.zip/download)
 
 Tech
 -------------
@@ -57,7 +57,6 @@ kodeWeave uses a number of open source projects to work properly:
 * [CSS2Stylus](http://css2stylus.com/) - Convert CSS to Stylus and back
 * [JS2Coffee](http://js2.coffee/) - Convert Javascript to CoffeeScript and back
 * [Cordova](https://cordova.apache.org/) - mobile application development framework
-* [WebDGap](https://webdgap.sourceforge.net/) - exports your application as a desktop application
 * [DataURL Grabber](https://github.com/mikethedj4/DataURL-Grabber-PhoneGap-Build) - Embed an image directly into the document with data URIs
 
 Development
