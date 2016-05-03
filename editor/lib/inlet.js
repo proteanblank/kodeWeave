@@ -2477,8 +2477,6 @@ Inlet = (function() {
     // node.setAttribute('style', "position: absolute; top: 0; left: 0; width: 0; height: 0; visibility: hidden; overflow: hidden; z-index: 99999999;")
     document.body.appendChild(node);
     
-    $('#pickerHolder')
-    
     //Handle clicks
     function onClick(ev) {
       // bail out if we were doing a selection and not a click
@@ -2534,10 +2532,11 @@ Inlet = (function() {
         });
       } else if (hslMatch) {
         var color = hslMatch.string;
-        $('#pickerHolder').empty().append('<input type="text" id="picker" data-opacty="1">');
+        var hasAlpha = parseFloat(color.split(',')[3]);
+        var alphaVal = ( hasAlpha ) ? hasAlpha : "1";
+        $('#pickerHolder').empty().append('<input type="text" id="picker" value="'+ tinycolor(color).toRgbString() +'" data-opacty="'+ alphaVal +'">');
         $('#picker').minicolors({
           format: 'rgb',
-          defaultValue: tinycolor(color).toHexString(),
           opacity: true,
           inline: true,
           change: function(value, opacity) {
@@ -2552,10 +2551,11 @@ Inlet = (function() {
         });
       } else if(rgbMatch) {
         var color = rgbMatch.string;
-        $('#pickerHolder').empty().append('<input type="text" id="picker" data-opacty="1">');
+        var hasAlpha = parseFloat(color.split(',')[3]);
+        var alphaVal = ( hasAlpha ) ? hasAlpha : "1";
+        $('#pickerHolder').empty().append('<input type="text" id="picker" value="'+ color +'" data-opacty="'+ alphaVal +'">');
         $('#picker').minicolors({
           format: 'rgb',
-          defaultValue: tinycolor(color).toHexString(),
           opacity: true,
           inline: true,
           change: function(value, opacity) {
