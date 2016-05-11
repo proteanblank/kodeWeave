@@ -3309,11 +3309,11 @@ var desktopExport = function(file) {
           closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n");
           htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n" + closeFinal.getValue();
 
-          appName.file("index.html", htmlContent);
+          appName.file("app/index.html", htmlContent);
         }
         // check if markdown editor has a value
         if ( mdEditor.getValue() !== "") {
-          appName.file("data/README.md", mdEditor.getValue());
+          appName.file("README.md", mdEditor.getValue());
         }
 
         eval( $("[data-action=ziplibs]").val().replace(/libraries/g,"app/libraries").replace(/zip.file/g,"appName.file") );
@@ -3396,11 +3396,11 @@ var desktopExport = function(file) {
           closeRefs.setValue($("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n");
           htmlContent = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n" + closeFinal.getValue();
 
-          appName.file("index.html", htmlContent);
+          appName.file("app/index.html", htmlContent);
         }
         // check if markdown editor has a value
         if ( mdEditor.getValue() !== "") {
-          appName.file("data/README.md", mdEditor.getValue());
+          appName.file("README.md", mdEditor.getValue());
         }
 
         eval( $("[data-action=ziplibs]").val().replace(/libraries/g,"app/libraries").replace(/zip.file/g,"appName.file") );
