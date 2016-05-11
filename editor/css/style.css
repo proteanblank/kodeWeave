@@ -1,7 +1,7 @@
 @import url("normalize.css");
 @import url("fonts/font-awesome.css");
 @import url("../libraries/jqueryui/jqueryui.css");
-@import url("../libraries/codemirror/lib/codemirror.css");
+@import url("../libraries/codemirror/codemirror.css");
 @import url("../libraries/codemirror/addon/fold/foldgutter.css");
 @import url("../libraries/codemirror/addon/lint/lint.css");
 @import url("../libraries/codemirror/addon/dialog/dialog.css");
