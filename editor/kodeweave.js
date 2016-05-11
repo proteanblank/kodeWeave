@@ -1132,7 +1132,7 @@ var timeout,
           htmlEditor.replaceSelection("function() {}");
           htmlEditor.focus();
         } else if ( activeEditor.val() === "cssEditor" ) {
-          alertify.alert("Can't add <strong>\"function() {}\"</strong> into CSS");
+          alertify.alert("Can't add <strong>\"function() {}\"</strong> into CSS").set("basic", true);
         } else if ( activeEditor.val() === "jsEditor" ) {
           var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
