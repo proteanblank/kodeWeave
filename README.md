@@ -10,7 +10,7 @@ If you've ever used jsfiddle, jsbin, dabblet, liveweave, codepen, cssdeck, cssde
 Version
 -------------
 
-1.1.15
+1.1.17
 
 License
 -------------
@@ -24,12 +24,19 @@ Availability
 [Android](https://play.google.com/store/apps/details?id=com.michael.kodeweave)  
 [Chrome Application](https://chrome.google.com/webstore/detail/kodeweave-touch/blcgppajmopfndnmegepihhkilaejipf)
 
-**No longer Supported**  
+**No longer Supported**  *(main kodeweave)*  
+[Windows 64](http://sourceforge.net/projects/kodeweave/files/v1.1.17/kodeWeave-win.zip/download)  
+[Windows 32](http://sourceforge.net/projects/kodeweave/files/v1.1.17/kodeWeave-win32.zip/download)  
+[Mac](http://sourceforge.net/projects/kodeweave/files/v1.1.17/kodeWeave-mac.zip/download)  
+[Linux 64](http://sourceforge.net/projects/kodeweave/files/v1.1.17/kodeWeave-lin.zip/download)  
+[Linux 32](http://sourceforge.net/projects/kodeweave/files/v1.1.17/kodeWeave-lin32.zip/download)
+
+**No longer Supported**  *(beta desktop)*  
 [Windows 64](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-win.zip/download)  
-[Windows 32](http://sourceforge.net/projects/kodeweave/files/v1.1.15/kodeWeave-win32.zip/download)  
-[Mac](http://sourceforge.net/projects/kodeweave/files/v1.1.15/kodeWeave-mac.zip/download)  
+[Windows 32](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-win32.zip/download)  
+[Mac](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-mac.zip/download)  
 [Linux 64](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-lin.zip/download)  
-[Linux 32](http://sourceforge.net/projects/kodeweave/files/v1.1.15/kodeWeave-lin32.zip/download)
+[Linux 32](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-lin32.zip/download)
 
 Tech
 -------------
@@ -59,6 +66,12 @@ kodeWeave uses a number of open source projects to work properly:
 * [Cordova](https://cordova.apache.org/) - mobile application development framework
 * [DataURL Grabber](https://github.com/mikethedj4/DataURL-Grabber-PhoneGap-Build) - Embed an image directly into the document with data URIs
 
+To-Do
+-------------
+
+ - Make code editor more responsive for mobile devices
+ - Incorporate desktop exports for Android (along with export as zip)
+
 Development
 -------------
 
@@ -67,3 +80,5 @@ Want to contribute? Great!
 You can submit a pull request or simply share the project :)
 
 Of course kodeWeave is free and open source, so you can always fork the project and have fun :)
+
+If kodeWeave was at all helpful for you. [Would you consider donating to the project?](https://www.paypal.com/us/cgi-bin/webscr?cmd=_flow&SESSION=JryIEtO_GiYnqlvRfV6BGnO6bAxR3JtIQif2j1z1eFYuoLkYf_XZOY6QbWe&dispatch=5885d80a13c0db1f8e263663d3faee8dcce3e160f5b9538489e17951d2c62172)
