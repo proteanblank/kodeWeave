@@ -48,7 +48,6 @@ kodeWeave uses a number of open source projects to work properly:
 * [Github Gists](https://developer.github.com/v3/gists/) - A reliable host used to save your weave to the cloud
 * [JQWidgets](http://www.jqwidgets.com/jquery-widgets-demo/demos/jqxsplitter/index.htm#demos/jqxsplitter/nested-splitters.htm) - awesome plugin for resizable columns
 * [Codemirror](http://codemirror.net/) - awesome web-based text editor
-* [Electron](http://electron.atom.io/) - makes web apps run on desktops (comes built with [node.js](http://nodejs.org/))
 * [node-webkit](http://nwjs.io/) - makes web apps run on desktops (comes built with [node.js](http://nodejs.org/))
 * [Inlet](https://github.com/mikethedj4/Inlet) - awesome inline color picker and numeric slider for Codemirror
 * [Emmet](http://emmet.io/) - Codemirror Plugin for Zen Coding
