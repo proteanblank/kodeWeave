@@ -1880,7 +1880,14 @@ var loader = $("#load"),
       }
       $("[data-action=sitetitle]").on("keyup change", function() {
         localStorage.setItem("siteTitle", this.value);
+        if (this.value.split(" ").join("") === "") {
+          document.title = "kodeWeave"
+        } else {
+          document.title = "kodeWeave: " + this.value
+        }
       });
+      
+      document.title = "kodeWeave: " + $("[data-action=sitetitle]").val();
 
       // Save App Version for LocalStorage
       if ( localStorage.getItem("appVersion")) {

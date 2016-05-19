@@ -701,12 +701,14 @@ if (window.location.hash) {
       // Return the editor's values
       if (!mdVal) {
         mdEditor.setValue("");
+        $("[data-target=mdEditor]").addClass("hide");
       } else {
         mdEditor.setValue(mdVal.content);
       }
       if (!htmlVal) {
         if (!jadeVal) {
           htmlEditor.setValue("");
+          $("[data-target=htmlEditor]").addClass("hide");
         } else {
           htmlEditor.setValue(jadeVal.content);
           $("#html-preprocessor").val("jade").change();
@@ -718,6 +720,7 @@ if (window.location.hash) {
       if (!jadeVal) {
         if (!htmlVal) {
           htmlEditor.setValue("");
+          $("[data-target=htmlEditor]").addClass("hide");
         } else {
           htmlEditor.setValue(htmlVal.content);
           $("#html-preprocessor").val("none").change();
@@ -729,6 +732,7 @@ if (window.location.hash) {
       if (!cssVal) {
         if (!stylusVal) {
           cssEditor.setValue("");
+          $("[data-target=cssEditor]").addClass("hide");
         } else {
           cssEditor.setValue(stylusVal.content);
           $("#css-preprocessor").val("stylus").change();
@@ -740,6 +744,7 @@ if (window.location.hash) {
       if (!stylusVal) {
         if (!cssVal) {
           cssEditor.setValue("");
+          $("[data-target=cssEditor]").addClass("hide");
         } else {
           cssEditor.setValue(cssVal.content);
           $("#css-preprocessor").val("none").change();
@@ -751,6 +756,7 @@ if (window.location.hash) {
       if (!jsVal) {
         if (!coffeeVal) {
           jsEditor.setValue("");
+          $("[data-target=jsEditor]").addClass("hide");
         } else {
           jsEditor.setValue(coffeeVal.content);
           $("#js-preprocessor").val("coffeescript").change();
@@ -762,6 +768,7 @@ if (window.location.hash) {
       if (!coffeeVal) {
         if (!jsVal) {
           jsEditor.setValue("");
+          $("[data-target=jsEditor]").addClass("hide");
         } else {
           jsEditor.setValue(jsVal.content);
           $("#js-preprocessor").val("none").change();
@@ -894,3 +901,57 @@ $("[data-action=check]").on("change keyup", function() {
 });
 $("#jquery").trigger("keyup");
 checkedLibs();
+
+// Show Editors If URL Contains Them
+var url = window.location.hash;
+if (url.indexOf("?") > -1) {
+  $("[data-target=mdEditor]").addClass("hide");
+  $("[data-target=htmlEditor]").addClass("hide");
+  $("[data-target=cssEditor]").addClass("hide");
+  $("[data-target=jsEditor]").addClass("hide");
+  $("[data-target=preview]").addClass("hide");
+  
+  if (url.indexOf("md") > -1) {
+    $("[data-target=mdEditor]").removeClass("hide");
+  }
+  if (url.indexOf("html") > -1) {
+    $("[data-target=htmlEditor]").removeClass("hide");
+  }
+  if (url.indexOf("css") > -1) {
+    $("[data-target=cssEditor]").removeClass("hide");
+  }
+  if (url.indexOf("js") > -1) {
+    $("[data-target=jsEditor]").removeClass("hide");
+  }
+  if (url.indexOf("result") > -1) {
+    $("[data-target=preview]").removeClass("hide");
+  }
+  
+  setTimeout(function() {
+    $(".mainmenu a:not(.hide):last").trigger("click");
+    
+    /*
+      If URL does not contain "result"
+      remove iframe#preview for faster render
+    */
+    if ($("[data-target=mdEditor]").hasClass("hide")) {
+      $("#mdEditor").remove();
+    }
+    if ($("[data-target=htmlEditor]").hasClass("hide")) {
+      $("#htmlEditor").remove();
+    }
+    if ($("[data-target=cssEditor]").hasClass("hide")) {
+      $("#cssEditor").remove();
+    }
+    if ($("[data-target=jsEditor]").hasClass("hide")) {
+      $("#jsEditor").remove();
+    }
+    if ($("[data-target=preview]").hasClass("hide")) {
+      $("#preview").remove();
+    }
+  }, 300);
+
+  setTimeout(function() {
+    $(".mainmenu .hide").remove();
+  }, 500);
+}
