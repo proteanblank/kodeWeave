@@ -3456,7 +3456,7 @@ $("[data-action=save-gist]").click(function() {
     });
 
     $(".share-facebook").attr("href", "https://www.facebook.com/sharer/sharer.php?u=http%3A//kodeweave.sourceforge.net/editor/%23" + hash);
-    $(".share-twitter").attr("href", "https://twitter.com/home?status=Checkout%20my%20%23weave%20on%20%23kodeWeave%3A%20http%3A//kodeweave.sourceforge.net/editor/%23" + hash);
+    $(".share-twitter").attr("href", "https://twitter.com/home?status=Checkout%20my%20%23weave%20on%20%23kodeWeave%3A%20http%3A//kwe.sf.net/e/%23" + hash);
     $(".share-gplus").attr("href", "https://plus.google.com/share?url=http%3A//kodeweave.sourceforge.net/editor/%23" + hash);
     $(".share-instagram").attr("href", "https://www.linkedin.com/shareArticle?mini=true&url=http%3A//kodeweave.sourceforge.net/editor/%23"+ hash +"&title=Checkout%20my%20%23weave%20on%20%23kodeWeave%3A%20&summary=&source=");
     $("[data-action=socialdialog]").fadeIn();
