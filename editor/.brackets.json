@@ -1,5 +1,6 @@
 {
     "jscodehints.detectedExclusions": [
-        "/Users/user/Desktop/editor/lib/dataurl.js"
+        "/Users/user/Desktop/editor/lib/dataurl.js",
+        "/Users/user/Github/kodeWeave/editor/libraries/codemirror/addon/jsPalette.js"
     ]
 }

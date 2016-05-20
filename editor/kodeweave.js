@@ -989,140 +989,572 @@ var timeout,
       });
       $("#charsym1").on("click", function() {
         if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+          if (!htmlEditor.getSelection().split(" ").join("")) {
+            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-          htmlEditor.replaceSelection("<" + selected_text + ">");
-          htmlEditor.focus();
+            htmlEditor.replaceSelection("", htmlEditor.getCursor());
+            htmlEditor.replaceRange("<>", htmlEditor.getCursor());
+            htmlEditor.focus();
+            var str = ">";
+            var mynum = str.length;
+            var start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
+            htmlEditor.focus();
+          } else {
+            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+
+            htmlEditor.replaceSelection("<" + selected_text + ">");
+            htmlEditor.focus();
+          }
         } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+          if (!cssEditor.getSelection().split(" ").join("")) {
+            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-          cssEditor.replaceSelection("<" + selected_text + ">");
-          cssEditor.focus();
+            cssEditor.replaceSelection("", cssEditor.getCursor());
+            cssEditor.replaceRange("<>", cssEditor.getCursor());
+            cssEditor.focus();
+            var str = ">";
+            var mynum = str.length;
+            var start_cursor = cssEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            cssEditor.replaceRange(selected_text, cssEditor.getCursor());
+            cssEditor.focus();
+          } else {
+            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+
+            cssEditor.replaceSelection("<" + selected_text + ">");
+            cssEditor.focus();
+          }
         } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+          if (!jsEditor.getSelection().split(" ").join("")) {
+            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-          jsEditor.replaceSelection("<" + selected_text + ">");
-          jsEditor.focus();
+            jsEditor.replaceSelection("", jsEditor.getCursor());
+            jsEditor.replaceRange("<>", jsEditor.getCursor());
+            jsEditor.focus();
+            var str = ">";
+            var mynum = str.length;
+            var start_cursor = jsEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            jsEditor.replaceRange(selected_text, jsEditor.getCursor());
+            jsEditor.focus();
+          } else {
+            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+
+            jsEditor.replaceSelection("<" + selected_text + ">");
+            jsEditor.focus();
+          }
         } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+          if (!mdEditor.getSelection().split(" ").join("")) {
+            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-          mdEditor.replaceSelection("<" + selected_text + ">");
-          mdEditor.focus();
+            mdEditor.replaceSelection("", mdEditor.getCursor());
+            mdEditor.replaceRange("<>", mdEditor.getCursor());
+            mdEditor.focus();
+            var str = ">";
+            var mynum = str.length;
+            var start_cursor = mdEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            mdEditor.replaceRange(selected_text, mdEditor.getCursor());
+            mdEditor.focus();
+          } else {
+            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+
+            mdEditor.replaceSelection("<" + selected_text + ">");
+            mdEditor.focus();
+          }
         }
       });
       $("#charsym2").on("click", function() {
         if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+          if (!htmlEditor.getSelection().split(" ").join("")) {
+            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-          htmlEditor.replaceSelection("{" + selected_text + "}");
-          htmlEditor.focus();
+            htmlEditor.replaceSelection("", htmlEditor.getCursor());
+            htmlEditor.replaceRange("{}", htmlEditor.getCursor());
+            htmlEditor.focus();
+            var str = "}";
+            var mynum = str.length;
+            var start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
+            htmlEditor.focus();
+          } else {
+            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+
+            htmlEditor.replaceSelection("{" + selected_text + "}");
+            htmlEditor.focus();
+          }
         } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+          if (!cssEditor.getSelection().split(" ").join("")) {
+            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-          cssEditor.replaceSelection("{" + selected_text + "}");
-          cssEditor.focus();
+            cssEditor.replaceSelection("", cssEditor.getCursor());
+            cssEditor.replaceRange("{}", cssEditor.getCursor());
+            cssEditor.focus();
+            var str = "}";
+            var mynum = str.length;
+            var start_cursor = cssEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            cssEditor.replaceRange(selected_text, cssEditor.getCursor());
+            cssEditor.focus();
+          } else {
+            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+
+            cssEditor.replaceSelection("{" + selected_text + "}");
+            cssEditor.focus();
+          }
         } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+          if (!jsEditor.getSelection().split(" ").join("")) {
+            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-          jsEditor.replaceSelection("{" + selected_text + "}");
-          jsEditor.focus();
+            jsEditor.replaceSelection("", jsEditor.getCursor());
+            jsEditor.replaceRange("{}", jsEditor.getCursor());
+            jsEditor.focus();
+            var str = "}";
+            var mynum = str.length;
+            var start_cursor = jsEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            jsEditor.replaceRange(selected_text, jsEditor.getCursor());
+            jsEditor.focus();
+          } else {
+            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+
+            jsEditor.replaceSelection("{" + selected_text + "}");
+            jsEditor.focus();
+          }
         } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+          if (!mdEditor.getSelection().split(" ").join("")) {
+            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-          mdEditor.replaceSelection("{" + selected_text + "}");
-          mdEditor.focus();
+            mdEditor.replaceSelection("", mdEditor.getCursor());
+            mdEditor.replaceRange("{}", mdEditor.getCursor());
+            mdEditor.focus();
+            var str = "}";
+            var mynum = str.length;
+            var start_cursor = mdEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            mdEditor.replaceRange(selected_text, mdEditor.getCursor());
+            mdEditor.focus();
+          } else {
+            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+
+            mdEditor.replaceSelection("{" + selected_text + "}");
+            mdEditor.focus();
+          }
         }
       });
       $("#charsym3").on("click", function() {
         if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+          if (!htmlEditor.getSelection().split(" ").join("")) {
+            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-          htmlEditor.replaceSelection('"' + selected_text + '"');
-          htmlEditor.focus();
+            htmlEditor.replaceSelection("", htmlEditor.getCursor());
+            htmlEditor.replaceRange('""', htmlEditor.getCursor());
+            htmlEditor.focus();
+            var str = '"';
+            var mynum = str.length;
+            var start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
+            htmlEditor.focus();
+          } else {
+            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+
+            htmlEditor.replaceSelection('"' + selected_text + '"');
+            htmlEditor.focus();
+          }
         } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+          if (!cssEditor.getSelection().split(" ").join("")) {
+            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-          cssEditor.replaceSelection('"' + selected_text + '"');
-          cssEditor.focus();
+            cssEditor.replaceSelection("", cssEditor.getCursor());
+            cssEditor.replaceRange('""', cssEditor.getCursor());
+            cssEditor.focus();
+            var str = '"';
+            var mynum = str.length;
+            var start_cursor = cssEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            cssEditor.replaceRange(selected_text, cssEditor.getCursor());
+            cssEditor.focus();
+          } else {
+            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+
+            cssEditor.replaceSelection('"' + selected_text + '"');
+            cssEditor.focus();
+          }
         } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+          if (!jsEditor.getSelection().split(" ").join("")) {
+            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-          jsEditor.replaceSelection('"' + selected_text + '"');
-          jsEditor.focus();
+            jsEditor.replaceSelection("", jsEditor.getCursor());
+            jsEditor.replaceRange('""', jsEditor.getCursor());
+            jsEditor.focus();
+            var str = '"';
+            var mynum = str.length;
+            var start_cursor = jsEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            jsEditor.replaceRange(selected_text, jsEditor.getCursor());
+            jsEditor.focus();
+          } else {
+            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+
+            jsEditor.replaceSelection('"' + selected_text + '"');
+            jsEditor.focus();
+          }
         } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+          if (!mdEditor.getSelection().split(" ").join("")) {
+            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-          mdEditor.replaceSelection('"' + selected_text + '"');
-          mdEditor.focus();
+            mdEditor.replaceSelection("", mdEditor.getCursor());
+            mdEditor.replaceRange('""', mdEditor.getCursor());
+            mdEditor.focus();
+            var str = '"';
+            var mynum = str.length;
+            var start_cursor = mdEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            mdEditor.replaceRange(selected_text, mdEditor.getCursor());
+            mdEditor.focus();
+          } else {
+            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+
+            mdEditor.replaceSelection('"' + selected_text + '"');
+            mdEditor.focus();
+          }
         }
       });
       $("#charsym4").on("click", function() {
         if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+          if (!htmlEditor.getSelection().split(" ").join("")) {
+            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-          htmlEditor.replaceSelection("'" + selected_text + "'");
-          htmlEditor.focus();
+            htmlEditor.replaceSelection("", htmlEditor.getCursor());
+            htmlEditor.replaceRange("''", htmlEditor.getCursor());
+            htmlEditor.focus();
+            var str = "'";
+            var mynum = str.length;
+            var start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
+            htmlEditor.focus();
+          } else {
+            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+
+            htmlEditor.replaceSelection("'" + selected_text + "'");
+            htmlEditor.focus();
+          }
         } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+          if (!cssEditor.getSelection().split(" ").join("")) {
+            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-          cssEditor.replaceSelection("'" + selected_text + "'");
-          cssEditor.focus();
+            cssEditor.replaceSelection("", cssEditor.getCursor());
+            cssEditor.replaceRange("''", cssEditor.getCursor());
+            cssEditor.focus();
+            var str = "'";
+            var mynum = str.length;
+            var start_cursor = cssEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            cssEditor.replaceRange(selected_text, cssEditor.getCursor());
+            cssEditor.focus();
+          } else {
+            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+
+            cssEditor.replaceSelection("'" + selected_text + "'");
+            cssEditor.focus();
+          }
         } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+          if (!jsEditor.getSelection().split(" ").join("")) {
+            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-          jsEditor.replaceSelection("'" + selected_text + "'");
-          jsEditor.focus();
+            jsEditor.replaceSelection("", jsEditor.getCursor());
+            jsEditor.replaceRange("''", jsEditor.getCursor());
+            jsEditor.focus();
+            var str = "'";
+            var mynum = str.length;
+            var start_cursor = jsEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            jsEditor.replaceRange(selected_text, jsEditor.getCursor());
+            jsEditor.focus();
+          } else {
+            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+
+            jsEditor.replaceSelection("'" + selected_text + "'");
+            jsEditor.focus();
+          }
         } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+          if (!mdEditor.getSelection().split(" ").join("")) {
+            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-          mdEditor.replaceSelection("'" + selected_text + "'");
-          mdEditor.focus();
+            mdEditor.replaceSelection("", mdEditor.getCursor());
+            mdEditor.replaceRange("''", mdEditor.getCursor());
+            mdEditor.focus();
+            var str = "'";
+            var mynum = str.length;
+            var start_cursor = mdEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            mdEditor.replaceRange(selected_text, mdEditor.getCursor());
+            mdEditor.focus();
+          } else {
+            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+
+            mdEditor.replaceSelection("'" + selected_text + "'");
+            mdEditor.focus();
+          }
         }
       });
       $("#charsym5").on("click", function() {
         if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+          if (!htmlEditor.getSelection().split(" ").join("")) {
+            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-          htmlEditor.replaceSelection("(" + selected_text + ")");
-          htmlEditor.focus();
+            htmlEditor.replaceSelection("", htmlEditor.getCursor());
+            htmlEditor.replaceRange("()", htmlEditor.getCursor());
+            htmlEditor.focus();
+            var str = ")";
+            var mynum = str.length;
+            var start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
+            htmlEditor.focus();
+          } else {
+            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+
+            htmlEditor.replaceSelection("(" + selected_text + ")");
+            htmlEditor.focus();
+          }
         } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+          if (!cssEditor.getSelection().split(" ").join("")) {
+            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-          cssEditor.replaceSelection("(" + selected_text + ")");
-          cssEditor.focus();
+            cssEditor.replaceSelection("", cssEditor.getCursor());
+            cssEditor.replaceRange("()", cssEditor.getCursor());
+            cssEditor.focus();
+            var str = ")";
+            var mynum = str.length;
+            var start_cursor = cssEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            cssEditor.replaceRange(selected_text, cssEditor.getCursor());
+            cssEditor.focus();
+          } else {
+            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+
+            cssEditor.replaceSelection("(" + selected_text + ")");
+            cssEditor.focus();
+          }
         } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+          if (!jsEditor.getSelection().split(" ").join("")) {
+            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-          jsEditor.replaceSelection("(" + selected_text + ")");
-          jsEditor.focus();
+            jsEditor.replaceSelection("", jsEditor.getCursor());
+            jsEditor.replaceRange("()", jsEditor.getCursor());
+            jsEditor.focus();
+            var str = ")";
+            var mynum = str.length;
+            var start_cursor = jsEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            jsEditor.replaceRange(selected_text, jsEditor.getCursor());
+            jsEditor.focus();
+          } else {
+            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+
+            jsEditor.replaceSelection("(" + selected_text + ")");
+            jsEditor.focus();
+          }
         } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+          if (!mdEditor.getSelection().split(" ").join("")) {
+            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-          mdEditor.replaceSelection("(" + selected_text + ")");
-          mdEditor.focus();
+            mdEditor.replaceSelection("", mdEditor.getCursor());
+            mdEditor.replaceRange("()", mdEditor.getCursor());
+            mdEditor.focus();
+            var str = ")";
+            var mynum = str.length;
+            var start_cursor = mdEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            mdEditor.replaceRange(selected_text, mdEditor.getCursor());
+            mdEditor.focus();
+          } else {
+            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+
+            mdEditor.replaceSelection("(" + selected_text + ")");
+            mdEditor.focus();
+          }
         }
       });
       $("#charsym6").on("click", function() {
         if ( activeEditor.val() === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+          if (!htmlEditor.getSelection().split(" ").join("")) {
+            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-          htmlEditor.replaceSelection("[" + selected_text + "]");
-          htmlEditor.focus();
+            htmlEditor.replaceSelection("", htmlEditor.getCursor());
+            htmlEditor.replaceRange("[]", htmlEditor.getCursor());
+            htmlEditor.focus();
+            var str = "]";
+            var mynum = str.length;
+            var start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
+            htmlEditor.focus();
+          } else {
+            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+
+            htmlEditor.replaceSelection("[" + selected_text + "]");
+            htmlEditor.focus();
+          }
         } else if ( activeEditor.val() === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+          if (!cssEditor.getSelection().split(" ").join("")) {
+            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-          cssEditor.replaceSelection("[" + selected_text + "]");
-          cssEditor.focus();
+            cssEditor.replaceSelection("", cssEditor.getCursor());
+            cssEditor.replaceRange("[]", cssEditor.getCursor());
+            cssEditor.focus();
+            var str = "]";
+            var mynum = str.length;
+            var start_cursor = cssEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            cssEditor.replaceRange(selected_text, cssEditor.getCursor());
+            cssEditor.focus();
+          } else {
+            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+
+            cssEditor.replaceSelection("[" + selected_text + "]");
+            cssEditor.focus();
+          }
         } else if ( activeEditor.val() === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+          if (!jsEditor.getSelection().split(" ").join("")) {
+            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-          jsEditor.replaceSelection("[" + selected_text + "]");
-          jsEditor.focus();
+            jsEditor.replaceSelection("", jsEditor.getCursor());
+            jsEditor.replaceRange("[]", jsEditor.getCursor());
+            jsEditor.focus();
+            var str = "]";
+            var mynum = str.length;
+            var start_cursor = jsEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            jsEditor.replaceRange(selected_text, jsEditor.getCursor());
+            jsEditor.focus();
+          } else {
+            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+
+            jsEditor.replaceSelection("[" + selected_text + "]");
+            jsEditor.focus();
+          }
         } else if ( activeEditor.val() === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+          if (!mdEditor.getSelection().split(" ").join("")) {
+            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-          mdEditor.replaceSelection("[" + selected_text + "]");
-          mdEditor.focus();
+            mdEditor.replaceSelection("", mdEditor.getCursor());
+            mdEditor.replaceRange("[]", mdEditor.getCursor());
+            mdEditor.focus();
+            var str = "]";
+            var mynum = str.length;
+            var start_cursor = mdEditor.getCursor();  // Need to get the cursor position
+            var cursorLine = start_cursor.line;
+            var cursorCh = start_cursor.ch;
+
+            // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
+            mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
+            mdEditor.replaceRange(selected_text, mdEditor.getCursor());
+            mdEditor.focus();
+          } else {
+            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+
+            mdEditor.replaceSelection("[" + selected_text + "]");
+            mdEditor.focus();
+          }
         }
       });
       $("#function").on("click", function() {
