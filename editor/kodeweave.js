@@ -2932,6 +2932,33 @@ $("[data-action=save-gist]").click(function() {
     "public": true,
     "files": files
   };
+  
+  if (!mdEditor.getValue().trim()) {
+    $("#mdurl").prop("checked", false);
+    var hasMD = "";
+  } else {
+    var hasMD = "md,";
+  }
+  if (!htmlEditor.getValue().trim()) {
+    $("#htmlurl").prop("checked", false);
+    var hasHTML = "";
+  } else {
+    var hasHTML = "html,";
+  }
+  if (!cssEditor.getValue().trim()) {
+    $("#cssurl").prop("checked", false);
+    var hasCSS = "";
+  } else {
+    var hasCSS = "css,";
+  }
+  if (!jsEditor.getValue().trim()) {
+    $("#jsurl").prop("checked", false);
+    var hasJS = "";
+  } else {
+    var hasJS = "js,";
+  }
+  var hasResult = "result";
+  var showEditors = hasMD + hasHTML + hasCSS + hasJS + hasResult;
 
   // Post on Github via JQuery Ajax
   $.ajax({
@@ -2947,7 +2974,52 @@ $("[data-action=save-gist]").click(function() {
     $("[data-output=projectURL]").val("http://kodeweave.sourceforge.net/editor/#" + embedProject).click(function() {
       this.select(true);
     });
-    $("[data-output=embedProject]").val("<iframe width=\"100%\" height=\"300\" src=\"http://kodeweave.sourceforge.net/embed/#" + embedProject + "\" allowfullscreen=\"allowfullscreen\" frameborder=\"0\"></iframe>").click(function() {
+    
+    // Toggle Editor's Visibility for Embed
+    $("[data-target=editorURL]").on("change", function() {
+      if (document.querySelector("#mdurl").checked) {
+        var hasMD = "md,";
+      } else {
+        var hasMD = "";
+      }
+      if (document.querySelector("#htmlurl").checked) {
+        var hasHTML = "html,";
+      } else {
+        var hasHTML = "";
+      }
+      if (document.querySelector("#cssurl").checked) {
+        var hasCSS = "css,";
+      } else {
+        var hasCSS = "";
+      }
+      if (document.querySelector("#jsurl").checked) {
+        var hasJS = "js,";
+      } else {
+        var hasJS = "";
+      }
+      if (document.querySelector("#resulturl").checked) {
+        var hasResult = "result";
+      } else {
+        var hasResult = "";
+      }
+      if (document.querySelector("#jsurl").checked && !document.querySelector("#resulturl").checked) {
+        var hasJS = "js";
+      }
+      if (document.querySelector("#cssurl").checked && !document.querySelector("#jsurl").checked && !document.querySelector("#resulturl").checked) {
+        var hasCSS = "css";
+      }
+      if (document.querySelector("#htmlurl").checked && !document.querySelector("#cssurl").checked && !document.querySelector("#jsurl").checked && !document.querySelector("#resulturl").checked) {
+        var hasHTML = "html";
+      }
+      if (document.querySelector("#mdurl").checked && !document.querySelector("#htmlurl").checked && !document.querySelector("#cssurl").checked && !document.querySelector("#jsurl").checked && !document.querySelector("#resulturl").checked) {
+        var hasMD = "md";
+      }
+      var showEditors = hasMD + hasHTML + hasCSS + hasJS + hasResult;
+
+      $("[data-output=embedProject]").val("<iframe width=\"100%\" height=\"300\" src=\"http://kodeweave.sourceforge.net/embed/#" + embedProject + "?" + showEditors + "\" allowfullscreen=\"allowfullscreen\" frameborder=\"0\"></iframe>");
+    });
+    
+    $("[data-output=embedProject]").val("<iframe width=\"100%\" height=\"300\" src=\"http://kodeweave.sourceforge.net/embed/#" + embedProject + "?" + showEditors + "\" allowfullscreen=\"allowfullscreen\" frameborder=\"0\"></iframe>").click(function() {
       this.select(true);
     });
 
@@ -2964,6 +3036,7 @@ $("[data-action=save-gist]").click(function() {
     alertify.error("Error: Could not save weave!");
   });
 });
+
 // Close share dialog
 $("[data-action=social-cancel]").on("click", function() {
   $("[data-action=socialdialog]").fadeOut();
