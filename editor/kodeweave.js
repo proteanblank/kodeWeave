@@ -62,7 +62,7 @@ var timeout,
 
         if ( cssSelected == "none") {
           yourCSS = cssEditor.getValue();
-          var blob = new Blob([ yourCSS ], {type: "text/css"});
+          var blob = new Blob([ yourCSS ], {type: "css"});
           saveAs(blob, "source.css");
         } else if ( cssSelected == "stylus") {
           var blob = new Blob([ cssEditor.getValue() ], {type: "text/x-styl"});
@@ -1760,7 +1760,7 @@ var htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
 Inlet(htmlEditor);
 emmetCodeMirror(htmlEditor);
 var cssEditor = CodeMirror(document.getElementById("cssEditor"), {
-  mode: "text/css",
+  mode: "css",
   tabMode: "indent",
   styleActiveLine: true,
   lineNumbers: true,
@@ -1974,15 +1974,6 @@ cssEditor.on("change", function() {
   $("#preview").contents().find("#b8c770cc").html(cssContent);
   localStorage.setItem("cssData", cssEditor.getValue());
   
-  var valueSelected = $("#css-preprocessor").val();
-  if ( valueSelected == "stylus") {
-      cssEditor.setOption("lint", false);
-      cssEditor.refresh();
-  } else {
-    cssEditor.setOption("lint", true);
-    cssEditor.refresh();
-  }
-
   setTimeout(function() {
     cssEditor.setOption("paletteHints", "true");
   }, 300);
@@ -3198,9 +3189,11 @@ $("#html-preprocessor").on("change", function() {
 $("#css-preprocessor").on("change", function() {
   var valueSelected = this.value;
   localStorage.setItem("cssPreprocessorVal", this.value);
+  
   if ( valueSelected == "none") {
-    cssEditor.setOption("mode", "text/css");
+    cssEditor.setOption("mode", "css");
     cssEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
+    // cssEditor.setOption("lint", true);
     // cssEditor.refresh();
   } else if ( valueSelected == "stylus") {
     cssEditor.setOption("mode", "text/x-styl");
@@ -3209,10 +3202,12 @@ $("#css-preprocessor").on("change", function() {
       $(".CodeMirror-lint-mark-error, .CodeMirror-lint-mark-error-metro").removeClass("CodeMirror-lint-mark-error CodeMirror-lint-mark-error-metro");
       $(".CodeMirror-lint-mark-warning, .CodeMirror-lint-mark-warning-metro").removeClass("CodeMirror-lint-mark-warning CodeMirror-lint-mark-warning-metro");
     }, 300);
+    // cssEditor.setOption("lint", false);
     // cssEditor.refresh();
   } else {
-    cssEditor.setOption("mode", "text/css");
+    cssEditor.setOption("mode", "css");
     cssEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
+    // cssEditor.setOption("lint", true);
     // cssEditor.refresh();
   }
   updatePreview();
