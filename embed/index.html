@@ -741,7 +741,9 @@
       <div id="htmlEditor" class="editor"></div>
       <div id="cssEditor" class="editor"></div>
       <div id="jsEditor" class="editor"></div>
-      <iframe id="preview" class="editor" sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts"></iframe>
+      <div class="preview-editor">
+        <iframe id="preview" class="editor" sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts"></iframe>
+      </div>
     </form>
 
     <!-- Preprocessors Dialog -->
@@ -813,6 +815,7 @@
       </div>
     </div>
 
+    <script src="../editor/lib/inlet.min.js"></script>
     <script src="kodeweave.min.js"></script>
     
     <script>

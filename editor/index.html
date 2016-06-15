@@ -43,9 +43,6 @@
     <script src="libraries/showdown/Showdown.min.js"></script>
 
     <script src="libraries/codemirror/lib/codemirror.js"></script>
-    <script src="libraries/codemirror/javascripts/code-completion.js"></script>
-    <script src="libraries/codemirror/javascripts/css-completion.js"></script>
-    <script src="libraries/codemirror/javascripts/html-completion.js"></script>
     <script src="libraries/codemirror/mode/javascript/javascript.js"></script>
     <script src="libraries/codemirror/mode/xml/xml.js"></script>
     <script src="libraries/codemirror/mode/css/css.js"></script>
@@ -296,9 +293,6 @@
     &lt;link rel="stylesheet" href="libraries/codemirror/addon/dialog/dialog.css"&gt;
     &lt;link rel="stylesheet" href="libraries/codemirror/addon/hint/show-hint.css"&gt;
     &lt;script src="libraries/codemirror/lib/codemirror.js"&gt;&lt;/script&gt;
-    &lt;script src="libraries/codemirror/javascripts/code-completion.js"&gt;&lt;/script&gt;
-    &lt;script src="libraries/codemirror/javascripts/css-completion.js"&gt;&lt;/script&gt;
-    &lt;script src="libraries/codemirror/javascripts/html-completion.js"&gt;&lt;/script&gt;
     &lt;script src="libraries/codemirror/mode/javascript/javascript.js"&gt;&lt;/script&gt;
     &lt;script src="libraries/codemirror/mode/xml/xml.js"&gt;&lt;/script&gt;
     &lt;script src="libraries/codemirror/mode/css/css.js"&gt;&lt;/script&gt;
@@ -1325,8 +1319,17 @@
                 <input type="checkbox" id="jsurl" checked="true" data-target="editorURL">
                 <label for="jsurl">JS</label>
                 <input type="checkbox" id="resulturl" checked="true" data-target="editorURL">
-                <label for="resulturl">Result</label>
+                <label for="resulturl">Result</label><br>
+                
+                <input type="checkbox" id="transparentembed" data-target="editorURL">
+                <label for="transparentembed">Transparent</label>
+                <input type="checkbox" id="darkembed" data-target="editorURL">
+                <label for="darkembed">Dark</label>
+                <input type="checkbox" id="editembed" data-target="editorURL">
+                <label for="editembed">Edit</label>
               </p>
+              
+              <p id="clearSharePreview"></p>
 
               <a class="share-facebook" target="_blank">
                 <i class="fa fa-facebook-square"></i>

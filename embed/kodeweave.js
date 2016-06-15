@@ -1,50 +1,190 @@
-// Initialize HTML editor
-var htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
-  mode: "text/html",
-  tabMode: "indent",
-  styleActiveLine: true,
-  lineNumbers: true,
-  lineWrapping: true,
-  autoCloseTags: true,
-  foldGutter: true,
-  readOnly: true,
-  gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-  value: ""
-});
-var cssEditor = CodeMirror(document.getElementById("cssEditor"), {
-  mode: "text/css",
-  tabMode: "indent",
-  styleActiveLine: true,
-  lineNumbers: true,
-  lineWrapping: true,
-  autoCloseTags: true,
-  foldGutter: true,
-  readOnly: true,
-  gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
-});
-var jsEditor = CodeMirror(document.getElementById("jsEditor"), {
-  tabMode: "indent",
-  styleActiveLine: true,
-  lineNumbers: true,
-  lineWrapping: true,
-  autoCloseTags: true,
-  foldGutter: true,
-  dragDrop: true,
-  readOnly: true,
-  gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-  mode: {name: "javascript", globalVars: false}
-});
-var mdEditor = CodeMirror(document.getElementById("mdEditor"), {
-  mode: "text/x-markdown",
-  theme: "default",
-  tabMode: "indent",
-  styleActiveLine: true,
-  lineNumbers: true,
-  lineWrapping: true,
-  autoCloseTags: true,
-  readOnly: true,
-  gutters: ["CodeMirror-linenumbers"]
-});
+// Show Editors If URL Contains Them
+var url = window.location.hash;
+if (url.indexOf("?") > -1) {
+  $("[data-target=mdEditor]").addClass("hide");
+  $("[data-target=htmlEditor]").addClass("hide");
+  $("[data-target=cssEditor]").addClass("hide");
+  $("[data-target=jsEditor]").addClass("hide");
+  $("[data-target=preview]").addClass("hide");
+  
+  if (url.indexOf("md") > -1) {
+    $("[data-target=mdEditor]").removeClass("hide");
+  }
+  if (url.indexOf("html") > -1) {
+    $("[data-target=htmlEditor]").removeClass("hide");
+  }
+  if (url.indexOf("css") > -1) {
+    $("[data-target=cssEditor]").removeClass("hide");
+  }
+  if (url.indexOf("js") > -1) {
+    $("[data-target=jsEditor]").removeClass("hide");
+  }
+  if (url.indexOf("result") > -1) {
+    $("[data-target=preview]").removeClass("hide");
+  }
+  if (url.indexOf("edit") > -1) {
+    // Initialize HTML editor
+    var htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
+      mode: "text/html",
+      tabMode: "indent",
+      styleActiveLine: true,
+      lineNumbers: true,
+      lineWrapping: true,
+      autoCloseTags: true,
+      foldGutter: true,
+      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+      value: ""
+    });
+    Inlet(htmlEditor);
+    var cssEditor = CodeMirror(document.getElementById("cssEditor"), {
+      mode: "text/css",
+      tabMode: "indent",
+      styleActiveLine: true,
+      lineNumbers: true,
+      lineWrapping: true,
+      autoCloseTags: true,
+      foldGutter: true,
+      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+    });
+    Inlet(cssEditor);
+    var jsEditor = CodeMirror(document.getElementById("jsEditor"), {
+      tabMode: "indent",
+      styleActiveLine: true,
+      lineNumbers: true,
+      lineWrapping: true,
+      autoCloseTags: true,
+      foldGutter: true,
+      dragDrop: true,
+      lint: {
+        options: {
+          "asi": true
+        }
+      },
+      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+      mode: {name: "javascript", globalVars: false}
+    });
+    Inlet(jsEditor);
+    var mdEditor = CodeMirror(document.getElementById("mdEditor"), {
+      mode: "text/x-markdown",
+      theme: "default",
+      tabMode: "indent",
+      styleActiveLine: true,
+      lineNumbers: true,
+      lineWrapping: true,
+      autoCloseTags: true,
+      gutters: ["CodeMirror-linenumbers"]
+    });
+    Inlet(mdEditor);
+    
+    htmlEditor.on("change", function() {
+      updatePreview();
+    });
+    cssEditor.on("change", function() {
+      cssPreProcessor();
+      $("#preview").contents().find("#b8c770cc").html(cssContent);
+
+      setTimeout(function() {
+        cssEditor.setOption("paletteHints", "true");
+      }, 300);
+    });
+    jsEditor.on("change", function() {
+      updatePreview();
+    });
+  }
+  if (url.indexOf("edit") === -1) {
+    // Initialize HTML editor
+    var htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
+      mode: "text/html",
+      tabMode: "indent",
+      styleActiveLine: true,
+      lineNumbers: true,
+      lineWrapping: true,
+      autoCloseTags: true,
+      foldGutter: true,
+      readOnly: true,
+      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+      value: ""
+    });
+    var cssEditor = CodeMirror(document.getElementById("cssEditor"), {
+      mode: "text/css",
+      tabMode: "indent",
+      styleActiveLine: true,
+      lineNumbers: true,
+      lineWrapping: true,
+      autoCloseTags: true,
+      foldGutter: true,
+      readOnly: true,
+      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+    });
+    var jsEditor = CodeMirror(document.getElementById("jsEditor"), {
+      tabMode: "indent",
+      styleActiveLine: true,
+      lineNumbers: true,
+      lineWrapping: true,
+      autoCloseTags: true,
+      foldGutter: true,
+      dragDrop: true,
+      readOnly: true,
+      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+      mode: {name: "javascript", globalVars: false}
+    });
+    var mdEditor = CodeMirror(document.getElementById("mdEditor"), {
+      mode: "text/x-markdown",
+      theme: "default",
+      tabMode: "indent",
+      styleActiveLine: true,
+      lineNumbers: true,
+      lineWrapping: true,
+      autoCloseTags: true,
+      readOnly: true,
+      gutters: ["CodeMirror-linenumbers"]
+    });
+  }
+  if (url.indexOf("dark") > -1) {
+    mdEditor.setOption("theme", "kwdark");
+    htmlEditor.setOption("theme", "kwdark");
+    cssEditor.setOption("theme", "kwdark");
+    jsEditor.setOption("theme", "kwdark");
+    $("header").css("background", "#2c323b");
+    $("header a").css("color", "#a3b7c7");
+  }
+  if (url.indexOf("transparent") > -1) {
+    $(".CodeMirror, .CodeMirror *").css("background", "transparent!important");
+  }
+  if (url.indexOf("transparent") === -1) {
+    $(".editor, .result").css("z-index", "1");
+  }
+  
+  setTimeout(function() {
+    $(".mainmenu a:not(.hide):first").trigger("click");
+    
+    /*
+      If URL does not contain "result"
+      remove iframe#preview for faster render
+    */
+    if ($("[data-target=mdEditor]").hasClass("hide")) {
+      $("#mdEditor").remove();
+    }
+    if ($("[data-target=htmlEditor]").hasClass("hide")) {
+      $("#htmlEditor").remove();
+    }
+    if ($("[data-target=cssEditor]").hasClass("hide")) {
+      $("#cssEditor").remove();
+    }
+    if ($("[data-target=jsEditor]").hasClass("hide")) {
+      $("#jsEditor").remove();
+    }
+    if ($("[data-target=preview]").hasClass("hide")) {
+      $("#preview").remove();
+    }
+  }, 300);
+  setTimeout(function() {
+    $(".mainmenu .hide").remove();
+  }, 500);
+
+} else {
+  window.location.href = "http://kodeweave.sourceforge.net/embed/" + url + "?md,html,css,js,result";
+}
 
 // Initialize Open and Close for HTML editor
 var openHTML = CodeMirror(document.querySelector("#openHTML"), {
@@ -64,15 +204,10 @@ var closeFinal = CodeMirror(document.querySelector("#closeFinal"), {
   value: "\n  </body>\n</html>"
 });
 
-// Live preview
-function updatePreview() {
-  var previewFrame = document.getElementById("preview");
-  var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
-  var heading = openHTML.getValue() + closeHTML.getValue() + $("[data-action=library-code]").val() + "<link rel=\"stylesheet\" href=\"../editor/libraries/font-awesome/font-awesome.css\"><link rel=\"stylesheet\" href=\"../editor/libraries/font-awesome/macset.css\">\n";
-  preview.open();
-  var htmlSelected = $("#html-preprocessor option:selected").val();
-  var jsSelected   = $("#js-preprocessor   option:selected").val();
-  var cssSelected  = $("#css-preprocessor  option:selected").val();
+// Render Chosen CSS Preprocessor
+var cssContent;
+function cssPreProcessor(cssSelected) {
+  var cssSelected = $("#css-preprocessor  option:selected").val();
 
   if (cssSelected == "none") {
     cssContent = cssEditor.getValue();
@@ -80,12 +215,30 @@ function updatePreview() {
     var cssVal = cssEditor.getValue();
     stylus(cssVal).render(function(err, out) {
       if(err != null) {
-        console.error("something went wrong")
+        console.error("something went wrong");
       } else {
-        cssContent = out
+        cssContent = out;
       }
     });
   }
+}
+
+// Live preview
+function updatePreview() {
+  $(".preview-editor").empty();
+  var frame = document.createElement("iframe");
+  frame.setAttribute("id", "preview");
+  frame.setAttribute("sandbox", "allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts");
+  document.querySelector(".preview-editor").appendChild(frame);
+  var previewFrame = document.getElementById("preview");
+  var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
+  var heading = openHTML.getValue() + closeHTML.getValue() + $("[data-action=library-code]").val() + "<link rel=\"stylesheet\" href=\"../editor/libraries/font-awesome/font-awesome.css\"><link rel=\"stylesheet\" href=\"../editor/libraries/font-awesome/macset.css\">\n";
+  // var heading = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + $("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\">\n" + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\">\n";
+  preview.open();
+  var htmlSelected = $("#html-preprocessor option:selected").val();
+  var jsSelected   = $("#js-preprocessor   option:selected").val();
+  
+  cssPreProcessor();
   
   if ( jsSelected == "none") {
     jsContent = "<script>" + jsEditor.getValue() + "</script>";
@@ -94,66 +247,93 @@ function updatePreview() {
   }
 
   if ( htmlSelected == "none") {
-    var htmlContent = heading + "<style>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue()+ jsContent + closeFinal.getValue();
-    preview.write(htmlContent)
+    var htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    " + jsContent + closeFinal.getValue();
+    preview.write(htmlContent);
   } else if ( htmlSelected == "jade") {
     var options = {
         pretty: true
     }
     var jade2HTML = jade.render(htmlEditor.getValue(), options);
-    var htmlContent = heading + "<style>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + jsContent + closeFinal.getValue();
+    var htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + jsContent + closeFinal.getValue();
     preview.write(htmlContent);
   }
   preview.close();
 }
-updatePreview();
 
-htmlEditor.on("change", function() {
-  updatePreview();
-});
-cssEditor.on("change", function() {
-  updatePreview();
-});
-jsEditor.on("change", function() {
-  updatePreview();
-});
-
-// Handle Tabbed Menu
-$(".mainmenu a").on("click", function(element) {
+// Handles Menubar
+// 617 for width
+$(".mainmenu a").on("click", function(e) {
   if ( $(".selected").is(":visible") ) {
-    $(".mainmenu a").removeClass("selected")
+    $(".mainmenu a").removeClass("selected");
   }
-  $(this).addClass("selected");
+  if ( $(window).width() <= 617 ) {
+    // Small Phones
+    $(this).addClass("selected");
+
+    $("#mdEditor").addClass("hide");
+    $("#htmlEditor").addClass("hide");
+    $("#cssEditor").addClass("hide");
+    $("#jsEditor").addClass("hide");
+    if (url.indexOf("?") > -1) {
+      if (url.indexOf("transparent") > -1) { 
+        // Don't do anything with preview
+      } else {
+        $("#preview").addClass("hide");
+      }
+    }
+    $("#" + $(this).attr("data-target")).removeClass("hide");
+  } else {
+    // Large Tablets
+    if ( $(this).attr("data-target").toLowerCase() === "preview" ) {
+      return false;
+    }
+    $(this).addClass("selected");
+
+    $("#mdEditor").addClass("hide");
+    $("#htmlEditor").addClass("hide");
+    $("#cssEditor").addClass("hide");
+    $("#jsEditor").addClass("hide");
+    $("#" + $(this).attr("data-target")).removeClass("hide");
+  }
   
-  $("#mdEditor").addClass("hide");
-  $("#htmlEditor").addClass("hide");
-  $("#cssEditor").addClass("hide");
-  $("#jsEditor").addClass("hide");
-  $("#preview").addClass("hide");
-  $("#" + $(this).attr("data-target")).removeClass("hide");
   mdEditor.refresh();
   htmlEditor.refresh();
   cssEditor.refresh();
   jsEditor.refresh();
-  
+
   setTimeout(function() {
     mdEditor.setOption("paletteHints", "true");
     htmlEditor.setOption("paletteHints", "true");
     cssEditor.setOption("paletteHints", "true");
     jsEditor.setOption("paletteHints", "true");
+    return false;
   }, 300);
+  return false;
 });
 
-// $("[data-target=preview]").click()
-$("[data-target=preview]").trigger("click");
-
 $(window).on("load resize", function() {
+  if ( $(this).width() <= 617 ) {
+    $(".editor").css("width", "100%");
+    $(".preview-editor").css("left", "0");
+    $("[data-target=preview]").show();
+  } else {
+    $(".editor").css("width", "50%");
+    $(".preview-editor").css("left", "50%");
+    if ($("[data-target=preview]").hasClass("selected")) {
+      $("[data-target=preview]").hide().removeClass("selected");
+      setTimeout(function() {
+        $(".mainmenu a:not(.hide):first").trigger("click");
+      });
+    } else {
+      $("[data-target=preview]").hide();
+      $("#preview").show();
+    }
+  }
+
   if ( $(this).width() <= 420 ) {
     $("[data-target=mdEditor]").text("MD");
-    $("[data-target=jsEditor]").text("JS");
   } else {
     $("[data-target=mdEditor]").text("Markdown");
-    $("[data-target=jsEditor]").text("JavaScript");
   }
 });
 
@@ -699,83 +879,66 @@ if (window.location.hash) {
       $("#jquery").trigger("keyup");
 
       // Return the editor's values
-      if (!mdVal) {
-        mdEditor.setValue("");
-        $("[data-target=mdEditor]").addClass("hide");
-      } else {
+      if (mdVal) {
         mdEditor.setValue(mdVal.content);
       }
-      if (!htmlVal) {
-        if (!jadeVal) {
-          htmlEditor.setValue("");
-          $("[data-target=htmlEditor]").addClass("hide");
-        } else {
-          htmlEditor.setValue(jadeVal.content);
-          $("#html-preprocessor").val("jade").change();
-        }
-      } else {
+      if (!mdVal) {
+        $("[data-target=mdEditor]").addClass("hide");
+      }
+      if (htmlVal) {
         htmlEditor.setValue(htmlVal.content);
         $("#html-preprocessor").val("none").change();
       }
-      if (!jadeVal) {
-        if (!htmlVal) {
-          htmlEditor.setValue("");
-          $("[data-target=htmlEditor]").addClass("hide");
-        } else {
-          htmlEditor.setValue(htmlVal.content);
-          $("#html-preprocessor").val("none").change();
-        }
-      } else {
+      if (jadeVal) {
         htmlEditor.setValue(jadeVal.content);
         $("#html-preprocessor").val("jade").change();
+        $("[data-target=htmlEditor]").text("Jade");
       }
-      if (!cssVal) {
-        if (!stylusVal) {
-          cssEditor.setValue("");
-          $("[data-target=cssEditor]").addClass("hide");
-        } else {
-          cssEditor.setValue(stylusVal.content);
-          $("#css-preprocessor").val("stylus").change();
-        }
-      } else {
+      if (!htmlVal && !jadeVal) {
+        $("[data-target=htmlEditor]").addClass("hide");
+      }
+      if (cssVal) {
         cssEditor.setValue(cssVal.content);
         $("#css-preprocessor").val("none").change();
       }
-      if (!stylusVal) {
-        if (!cssVal) {
-          cssEditor.setValue("");
-          $("[data-target=cssEditor]").addClass("hide");
-        } else {
-          cssEditor.setValue(cssVal.content);
-          $("#css-preprocessor").val("none").change();
-        }
-      } else {
+      if (stylusVal) {
         cssEditor.setValue(stylusVal.content);
         $("#css-preprocessor").val("stylus").change();
+        $(window).on("load resize", function() {
+          if ( $(this).width() <= 420 ) {
+            $("[data-target=cssEditor]").text("Styl");
+          } else {
+            $("[data-target=cssEditor]").text("Stylus");
+          }
+        });
       }
-      if (!jsVal) {
-        if (!coffeeVal) {
-          jsEditor.setValue("");
-          $("[data-target=jsEditor]").addClass("hide");
-        } else {
-          jsEditor.setValue(coffeeVal.content);
-          $("#js-preprocessor").val("coffeescript").change();
-        }
-      } else {
+      if (!cssVal && !stylusVal) {
+        $("[data-target=cssEditor]").addClass("hide");
+      }
+      if (jsVal) {
         jsEditor.setValue(jsVal.content);
         $("#js-preprocessor").val("none").change();
+        $(window).on("load resize", function() {
+          if ( $(this).width() <= 420 ) {
+            $("[data-target=jsEditor]").text("JS");
+          } else {
+            $("[data-target=jsEditor]").text("JavaScript");
+          }
+        });
       }
-      if (!coffeeVal) {
-        if (!jsVal) {
-          jsEditor.setValue("");
-          $("[data-target=jsEditor]").addClass("hide");
-        } else {
-          jsEditor.setValue(jsVal.content);
-          $("#js-preprocessor").val("none").change();
-        }
-      } else {
+      if (coffeeVal) {
         jsEditor.setValue(coffeeVal.content);
         $("#js-preprocessor").val("coffeescript").change();
+        $(window).on("load resize", function() {
+          if ( $(this).width() <= 420 ) {
+            $("[data-target=jsEditor]").text("CS");
+          } else {
+            $("[data-target=jsEditor]").text("CoffeeScript");
+          }
+        });
+      }
+      if (!jsVal && !coffeeVal) {
+        $("[data-target=jsEditor]").addClass("hide");
       }
     }).error(function(e) {
       // ajax error
@@ -785,7 +948,11 @@ if (window.location.hash) {
   }
 
   loadgist(hash);
+  updatePreview();
 }
+
+// Edit on kodeWeave Link
+$(".logo").attr("href", "http://kodeweave.sourceforge.net/editor/#" + hash.substring(0, hash.indexOf('?'))).attr("target", "_blank");
 
 // Setup Preprocessors
 $(".settings").on("click", function() {
@@ -901,57 +1068,3 @@ $("[data-action=check]").on("change keyup", function() {
 });
 $("#jquery").trigger("keyup");
 checkedLibs();
-
-// Show Editors If URL Contains Them
-var url = window.location.hash;
-if (url.indexOf("?") > -1) {
-  $("[data-target=mdEditor]").addClass("hide");
-  $("[data-target=htmlEditor]").addClass("hide");
-  $("[data-target=cssEditor]").addClass("hide");
-  $("[data-target=jsEditor]").addClass("hide");
-  $("[data-target=preview]").addClass("hide");
-  
-  if (url.indexOf("md") > -1) {
-    $("[data-target=mdEditor]").removeClass("hide");
-  }
-  if (url.indexOf("html") > -1) {
-    $("[data-target=htmlEditor]").removeClass("hide");
-  }
-  if (url.indexOf("css") > -1) {
-    $("[data-target=cssEditor]").removeClass("hide");
-  }
-  if (url.indexOf("js") > -1) {
-    $("[data-target=jsEditor]").removeClass("hide");
-  }
-  if (url.indexOf("result") > -1) {
-    $("[data-target=preview]").removeClass("hide");
-  }
-  
-  setTimeout(function() {
-    $(".mainmenu a:not(.hide):last").trigger("click");
-    
-    /*
-      If URL does not contain "result"
-      remove iframe#preview for faster render
-    */
-    if ($("[data-target=mdEditor]").hasClass("hide")) {
-      $("#mdEditor").remove();
-    }
-    if ($("[data-target=htmlEditor]").hasClass("hide")) {
-      $("#htmlEditor").remove();
-    }
-    if ($("[data-target=cssEditor]").hasClass("hide")) {
-      $("#cssEditor").remove();
-    }
-    if ($("[data-target=jsEditor]").hasClass("hide")) {
-      $("#jsEditor").remove();
-    }
-    if ($("[data-target=preview]").hasClass("hide")) {
-      $("#preview").remove();
-    }
-  }, 300);
-
-  setTimeout(function() {
-    $(".mainmenu .hide").remove();
-  }, 500);
-}
