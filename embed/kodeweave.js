@@ -931,7 +931,7 @@ if (window.location.hash) {
         $("#js-preprocessor").val("coffeescript").change();
         $(window).on("load resize", function() {
           if ( $(this).width() <= 420 ) {
-            $("[data-target=jsEditor]").text("CS");
+            $("[data-target=jsEditor]").text("Coffee");
           } else {
             $("[data-target=jsEditor]").text("CoffeeScript");
           }

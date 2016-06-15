@@ -720,6 +720,9 @@ var timeout,
         callCollabUpdate();
       });
       $("[data-action=newdocument]").on("click", function() {
+        localStorage.clear();
+        location.reload(true);
+        /*
         clearPreview();
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").change();
@@ -746,6 +749,7 @@ var timeout,
           $(".hide-demos").trigger("click");
         }
         callCollabUpdate();
+        */
       });
       $("[data-action=packagezipfiles]").on("click", function() {
         clearPreview();
@@ -1878,7 +1882,6 @@ $("[data-action=sitedesc], [data-action=siteauthor]").bind("keyup change", funct
   closeHTML.setValue("</title>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"initial-scale=1.0\">\n" + sitedesc + siteauthor + "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=9\" />\n");
   updatePreview();
 });
-
 $(".clear_input").click(function() {
   $("[data-action=sitedesc], [data-action=siteauthor]").trigger("change");
 });
@@ -1936,7 +1939,6 @@ function updatePreview() {
   }
   preview.close();
 }
-
 function markdownPreview() {
   $(".preview-editor").empty();
   var frame = document.createElement("iframe");
@@ -3024,74 +3026,30 @@ if (window.location.hash) {
         $("#jquery").trigger("keyup");
 
         // Return the editor's values
-        if (!mdVal) {
-          mdEditor.setValue("");
-        } else {
+        if (mdVal) {
           mdEditor.setValue(mdVal.content);
         }
-        if (!htmlVal) {
-          if (!jadeVal) {
-            htmlEditor.setValue("");
-          } else {
-            htmlEditor.setValue(jadeVal.content);
-            $("#html-preprocessor").val("jade").change();
-          }
-        } else {
+        if (htmlVal) {
           htmlEditor.setValue(htmlVal.content);
           $("#html-preprocessor").val("none").change();
         }
-        if (!jadeVal) {
-          if (!htmlVal) {
-            htmlEditor.setValue("");
-          } else {
-            htmlEditor.setValue(htmlVal.content);
-            $("#html-preprocessor").val("none").change();
-          }
-        } else {
+        if (jadeVal) {
           htmlEditor.setValue(jadeVal.content);
           $("#html-preprocessor").val("jade").change();
         }
-        if (!cssVal) {
-          if (!stylusVal) {
-            cssEditor.setValue("");
-          } else {
-            cssEditor.setValue(stylusVal.content);
-            $("#css-preprocessor").val("stylus").change();
-          }
-        } else {
+        if (cssVal) {
           cssEditor.setValue(cssVal.content);
           $("#css-preprocessor").val("none").change();
         }
-        if (!stylusVal) {
-          if (!cssVal) {
-            cssEditor.setValue("");
-          } else {
-            cssEditor.setValue(cssVal.content);
-            $("#css-preprocessor").val("none").change();
-          }
-        } else {
+        if (stylusVal) {
           cssEditor.setValue(stylusVal.content);
           $("#css-preprocessor").val("stylus").change();
         }
-        if (!jsVal) {
-          if (!coffeeVal) {
-            jsEditor.setValue("");
-          } else {
-            jsEditor.setValue(coffeeVal.content);
-            $("#js-preprocessor").val("coffeescript").change();
-          }
-        } else {
+        if (jsVal) {
           jsEditor.setValue(jsVal.content);
           $("#js-preprocessor").val("none").change();
         }
-        if (!coffeeVal) {
-          if (!jsVal) {
-            jsEditor.setValue("");
-          } else {
-            jsEditor.setValue(jsVal.content);
-            $("#js-preprocessor").val("none").change();
-          }
-        } else {
+        if (coffeeVal) {
           jsEditor.setValue(coffeeVal.content);
           $("#js-preprocessor").val("coffeescript").change();
         }
@@ -4280,11 +4238,6 @@ $(".metaboxes .heading").not("input[type=number]").clearSearch();
 // Hide menu when DataURL is Checked
 $("#dataurl").on("change", function() {
   (this.checked) ? $("input[name=menubar].active").trigger("click") : ""
-});
-
-// Clear localStorage when clicked
-$("[data-action=clearStorage]").click(function() {
-  localStorage.clear();
 });
 
 shortcutKeys();
