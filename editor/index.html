@@ -1212,18 +1212,7 @@
         </nav>
       </div>
     </div>
-    <!-- Show Preloader Upon Active Download -->
-    <div class="fixedfill preloader hide">
-      <div class="table">
-        <div class="cell">
-          <h1>Exporting application!</h1>
-          <div class="spinner">
-            <div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    
     <!-- Preprocessors Dialog -->
     <div class="dialog-bg column preprocessordialog hide" data-action="preprocessors">
       <div>
@@ -1353,7 +1342,43 @@
         </nav>
       </div>
     </div>
+    
+    <!-- Walkthrough Navigation Dialog -->
+    <input type="radio" id="close-walkthrough" class="hide" name="walkthrough-group">
 
+    <label for="close-walkthrough" class="walkthrough-dialogbg pointer"></label>
+    <div class="walkthrough-dialog">
+      <input type="radio" id="tab1" class="hide" name="walkthrough-group" checked>
+      <!-- <input type="radio" id="tab2" class="hide" name="walkthrough-group"> -->
+      <input type="radio" id="tab3" class="hide" name="walkthrough-group">
+
+      <div class="walkthrough-menu">
+        <!-- <label for="tab1">Using kodeWeave</label> -->
+        <label for="tab1">How To Use kodeWeave</label>
+        <!-- <label for="tab2">Exportation</label> -->
+        <label for="tab3">Feed</label>
+
+        <label for="close-walkthrough" class="walkthrough-close">
+          <span class="fa fa-times-circle-o"></span>
+        </label>
+      </div>
+
+      <!-- Tab Content -->
+      <div id="walkthrough" class="walkthrough-content">
+        <iframe width="100%" height="360" src="https://www.youtube.com/embed/cZLlx2KfPD8" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <!--
+      <div id="exportation" class="walkthrough-content">
+        <iframe width="100%" height="360" src="https://www.youtube.com/embed/cZLlx2KfPD8" frameborder="0" allowfullscreen></iframe>
+      </div>
+      -->
+      <div id="feed" class="walkthrough-content">
+        <a class="twitter-timeline" href="https://twitter.com/kodeweave_app">Tweets by kodeweave_app</a>
+        <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <style>.walkthrough-content iframe[id*="twitter-widget"] {float: none; width: 100%!important;}</style>
+      </div>
+    </div>
+   
     <script src="libraries/jqwidgets/jqxcore.js"></script>
     <script src="libraries/jqwidgets/jqxsplitter.js"></script>
     <script src="lib/shortcut.js"></script>
