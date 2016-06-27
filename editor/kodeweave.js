@@ -4041,17 +4041,11 @@ if (window.location.hash) {
         var jsonLibs   = JSON.parse(libraries);
 
         // Return font settings from json
-        var siteTitle        = jsonSets.siteTitle;
-        var WeaveVersion     = jsonSets.version;
-        var editorFontSize   = jsonSets.editorFontSize;
-        var WeaveDesc        = jsonSets.description;
-        var WeaveAuthor      = jsonSets.author;
-
-        document.querySelector("[data-action=sitetitle]").value = siteTitle;
-        document.querySelector("[data-value=version]").value = WeaveVersion;
-        document.querySelector("[data-editor=fontSize]").value = editorFontSize;
-        document.querySelector("[data-action=sitedesc]").value = WeaveDesc;
-        document.querySelector("[data-action=siteauthor]").value = WeaveAuthor;
+        document.querySelector("[data-action=sitetitle]").value = jsonSets.siteTitle;
+        document.querySelector("[data-value=version]").value = jsonSets.version;
+        document.querySelector("[data-editor=fontSize]").value = jsonSets.editorFontSize;
+        document.querySelector("[data-action=sitedesc]").value = jsonSets.description;
+        document.querySelector("[data-action=siteauthor]").value = jsonSets.author;
         storeValues();
 
         // Return settings from the json
