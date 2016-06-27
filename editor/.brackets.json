@@ -1,6 +1,5 @@
 {
     "jscodehints.detectedExclusions": [
-        "/Applications/kodeWeave.app/Contents/data/content/kodeweave.min.js",
-        "/Users/user/Desktop/kodeWeave-pgb/www/kodeweave.min.js"
+        "Users/user/Downloads/kodeWeave/content/libraries/meta"
     ]
 }

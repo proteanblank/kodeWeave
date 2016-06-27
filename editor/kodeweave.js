@@ -1721,7 +1721,8 @@ var timeout,
         mdEditor.replaceSelection(selected_text + "\n\n----------\n\n");
         mdEditor.focus();
       });
-    };
+    },
+    addDemos = '<ul class="ldd-menu">\n<li>\n<div class="ldd-submenu">\n<ul style="border-left:none;">\n<li class="ldd-heading">A</li>\n<li><a data-action="alphabetizer">alphabetizer</a></li>\n<li><a data-action="angular">angular JS demo</a></li>\n<li><a data-action="applicator">applicator</a></li>\n<li>&nbsp;</li>\n<li class="ldd-heading">C</li>\n<li><a data-action="charactermap">character map</a></li>\n<li><a data-action="codeeditor">code editor</a></li>\n<li><a data-action="convertforvalues">convert for values</a></li>\n<li>&nbsp;</li>\n<li class="ldd-heading">D</li>\n<li><a data-action="dateclock">date and time</a></li>\n<li><a data-action="detectorientation">detect orientation</a></li>\n<li><a data-action="osdisplay">display operating system</a></li>\n<li>&nbsp;</li>\n<li class="ldd-heading">K</li>\n<li><a data-action="keylogger">keylogger</a></li>\n<li>&nbsp;</li>\n</ul>\n<ul>\n<li class="ldd-heading">M</li>\n<li><a data-action="markdowneditor">markdown editor</a></li>\n<li>&nbsp;</li>\n<li class="ldd-heading">N</li>\n<li><a data-action="newdocument">new document</a></li>\n<li>&nbsp;</li>\n<li class="ldd-heading">P</li>\n<li><a data-action="packagezipfiles">package zip files</a></li>\n<li><a data-action="passwordgen">password generator</a></li>\n<li><a data-action="pdfembed">pdf embed</a></li>\n<li><a data-action="pictureviewer">picture viewer</a></li>\n<li><a data-action="polyui">poly ui kit</a></li>\n<li>&nbsp;</li>\n<li class="ldd-heading">S</li>\n<li><a data-action="simpleslideshow">simple slideshow</a></li>\n<li><a data-action="splitter">splitter</a></li>\n<li>&nbsp;</li>\n</ul>\n</div>\n</li>\n</ul>';
 
 // Rules Specified for HTML Validation
 var ruleSets = {
@@ -3445,7 +3446,8 @@ $("[data-action=save-gist]").click(function() {
     });
 
     $(".share-facebook").attr("href", "https://www.facebook.com/sharer/sharer.php?u=http%3A//kodeweave.sourceforge.net/editor/%23" + hash);
-    $(".share-twitter").attr("href", "https://twitter.com/home?status=Checkout%20my%20%23weave%20on%20%23kodeWeave%3A%20http%3A//kwe.sf.net/e/%23" + hash);
+    // $(".share-twitter").attr("href", "https://twitter.com/home?status=Checkout%20my%20%23weave%20on%20%23kodeWeave%3A%20http%3A//kwe.sf.net/e/%23" + hash);
+    $(".share-twitter").attr("href", "https://twitter.com/home?status=Checkout%20my%20"+ $("[data-action=sitetitle]").val().split(" ").join("%20") +"%20%23weave%20on%20%23kodeWeave%20%23kodeWeaveShare%20-%20http%3A//kwe.sf.net/e/%23" + hash);
     $(".share-gplus").attr("href", "https://plus.google.com/share?url=http%3A//kodeweave.sourceforge.net/editor/%23" + hash);
     $(".share-instagram").attr("href", "https://www.linkedin.com/shareArticle?mini=true&url=http%3A//kodeweave.sourceforge.net/editor/%23"+ hash +"&title=Checkout%20my%20%23weave%20on%20%23kodeWeave%3A%20&summary=&source=");
     $("[data-action=socialdialog]").fadeIn();
@@ -4239,6 +4241,11 @@ $(".metaboxes .heading").not("input[type=number]").clearSearch();
 $("#dataurl").on("change", function() {
   (this.checked) ? $("input[name=menubar].active").trigger("click") : ""
 });
+
+// Allow Users To Share Weaves via Twitter
+// Test with Something2Do Feed
+// $(".adddemos-tablets").empty().html('<a class="twitter-timeline" data-dnt="true" href="https://twitter.com/hashtag/Something2Do" data-widget-id="734863226400280576" data-chrome="noheader nofooter noborders transparent" height="100%">#Something2Do Tweets</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");<'+'/scr'+'ipt><style>iframe[id*="twitter-widget"] {float: none; width: 100% !important; height: 250px !important; }</style>');
+$(".adddemos-tablets").empty().html('<a data-action="newdocument" style="background: #faa8ff; width: 100%; padding: 11px 0;">new document</a><br><a class="twitter-timeline"  href="https://twitter.com/hashtag/kodeWeaveShare" data-widget-id="747302832529825797">#kodeWeaveShare Tweets</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");<'+'/scr'+'ipt><style>iframe[id*="twitter-widget"] {float: none; width: 100% !important; height: 250px !important; }</style>');
 
 shortcutKeys();
 initGenerators();
