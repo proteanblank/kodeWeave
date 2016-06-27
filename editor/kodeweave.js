@@ -3038,6 +3038,37 @@ if (window.location.hash) {
           htmlEditor.setValue(jadeVal.content);
           $("#html-preprocessor").val("jade").change();
         }
+        if (!htmlVal && !jadeVal && mdVal) {
+          var selectEditor = document.querySelector("#selectEditor");
+          if (!selectEditor.checked) {
+            $("#selectEditor").trigger("click");
+            // Change grid to only show markdown
+            $("#splitContainer").jqxSplitter({
+              height: "auto",
+              width: "100%",
+              orientation: "vertical",
+              showSplitBar: true,
+              panels: [{ size: "50%",collapsible:false },
+                       { size: "50%" }]
+            });
+            $("#leftSplitter").jqxSplitter({
+              width: "100%",
+              height: "100%",
+              orientation: "horizontal",
+              showSplitBar: true,
+              panels: [{ size: "50%",collapsible:false },
+                       { size: "0%" }]
+            }).jqxSplitter("collapse");
+            $("#rightSplitter").jqxSplitter({
+              width: "100%",
+              height: "100%",
+              orientation: "horizontal",
+              showSplitBar: true,
+              panels: [{ size: "0%",collapsible:false },
+                       { size: "50%" }]
+            });
+          };
+        }
         if (cssVal) {
           cssEditor.setValue(cssVal.content);
           $("#css-preprocessor").val("none").change();
