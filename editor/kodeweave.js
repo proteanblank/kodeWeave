@@ -2044,6 +2044,7 @@ var timeout,
         }
       };
       
+      // Change Welcome Dialog Margin when Orientation Changes
       $(window).on("load resize", function() {
         if ( window.innerWidth > window.innerHeight ) {
           // Landscape
