@@ -2141,7 +2141,7 @@ var timeout,
       });
     },
     preprocessors = function() {
-      document.querySelector(".settings").onclick = function() {
+      $(".settings").click(function() {
         $("input[name=menubar].active").trigger("click");
         $(".preprocessor").addClass("hide");
         if ($(this).hasClass("htmlSetting")) {
@@ -2170,8 +2170,8 @@ var timeout,
           }
         }
         $("[data-action=preprocessors]").fadeIn();
-      };
-      document.querySelector(".confirm-preprocessor").onclick = function() {
+      });
+      $(".confirm-preprocessor").click(function() {
         // Default fadeout speed is 400ms
         $("[data-action=preprocessors]").fadeOut();
         // Hiding all other preprocessors at 400ms
@@ -2180,7 +2180,7 @@ var timeout,
         setTimeout(function() {
           $(".preprocessor").addClass("hide");
         }, 400);
-      };
+      });
       // Preprocessors (Doesn't compile to preview)
       $("#html-preprocessor").on("change", function() {
         var valueSelected = this.value;
@@ -2241,7 +2241,7 @@ var timeout,
       }).trigger("change");
 
       // Compile preprocessors to preview
-      document.querySelector(".html-preprocessor-convert").onclick = function() {
+      $(".html-preprocessor-convert").click(function() {
         var options = {
             pretty: true
         }
@@ -2267,8 +2267,8 @@ var timeout,
           htmlEditor.setValue(htmlContent);
           beautifyHTML();
         }
-      };
-      document.querySelector(".css-preprocessor-convert").onclick = function() {
+      });
+      $(".css-preprocessor-convert").click(function() {
         if (document.getElementById("css-preprocessor").value == "none") {
           var css = cssEditor.getValue();
           var converter = new Css2Stylus.Converter(css);
@@ -2289,8 +2289,8 @@ var timeout,
           $("#css-preprocessor").val("none").trigger("change");
           beautifyCSS();
         }
-      };
-      document.querySelector(".js-preprocessor-convert").onclick = function() {
+      });
+      $(".js-preprocessor-convert").click(function() {
         if (document.getElementById("js-preprocessor").value == "none") {
           var jsContent = js2coffee.build(jsEditor.getValue()).code;
           jsEditor.setValue(jsContent);
@@ -2301,7 +2301,7 @@ var timeout,
           jsEditor.setValue(jsContent);
           beautifyJS();
         }
-      };
+      });
     },
     desktopExport = function(file) {
       displayPreview(file);
