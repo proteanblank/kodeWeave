@@ -716,11 +716,12 @@ textarea {
 }
 .walkthrough-close {
   position: absolute;
-  top: 0;
-  right: 1.12em;
+  top: -10px;
+  right: 0;
   padding: 0;
   margin: 0;
-  transform: scale(2);
+  /* transform: scale(2); */
+  font-size: 2em!important;
 }
 
 /* Walkthrough Content */

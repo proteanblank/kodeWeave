@@ -2043,6 +2043,16 @@ var timeout,
           });
         }
       };
+      
+      $(window).on("load resize", function() {
+        if ( window.innerWidth > window.innerHeight ) {
+          // Landscape
+          document.querySelector(".walkthrough-dialog").style = "";
+        } else if ( window.innerWidth < window.innerHeight ) {
+          // Portrait
+          document.querySelector(".walkthrough-dialog").style.margin = "2em";
+        }
+      });
     },
     loadFiles = function() {
       /**
