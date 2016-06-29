@@ -10,7 +10,7 @@ If you've ever used jsfiddle, jsbin, dabblet, liveweave, codepen, cssdeck, cssde
 Version
 -------------
 
-1.1.17
+1.1.22
 
 License
 -------------
@@ -25,18 +25,11 @@ Availability
 [Chrome Application](https://chrome.google.com/webstore/detail/kodeweave-touch/blcgppajmopfndnmegepihhkilaejipf)
 
 **No longer Supported** *(main kodeweave)*  
-[Windows 64](http://sourceforge.net/projects/kodeweave/files/v1.1.17/kodeWeave-win.zip/download)  
-[Windows 32](http://sourceforge.net/projects/kodeweave/files/v1.1.17/kodeWeave-win32.zip/download)  
-[Mac](http://sourceforge.net/projects/kodeweave/files/v1.1.17/kodeWeave-mac.zip/download)  
-[Linux 64](http://sourceforge.net/projects/kodeweave/files/v1.1.17/kodeWeave-lin.zip/download)  
-[Linux 32](http://sourceforge.net/projects/kodeweave/files/v1.1.17/kodeWeave-lin32.zip/download)  
-
-*(beta desktop)*  
-[Windows 64](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-win.zip/download)  
-[Windows 32](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-win32.zip/download)  
-[Mac](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-mac.zip/download)  
-[Linux 64](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-lin.zip/download)  
-[Linux 32](http://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-lin32.zip/download)
+[Windows 64](http://sourceforge.net/projects/kodeweave/files/v1.1.18/kodeWeave-win.zip/download)  
+[Windows 32](http://sourceforge.net/projects/kodeweave/files/v1.1.18/kodeWeave-win32.zip/download)  
+[Mac](http://sourceforge.net/projects/kodeweave/files/v1.1.18/kodeWeave-mac.zip/download)  
+[Linux 64](http://sourceforge.net/projects/kodeweave/files/v1.1.18/kodeWeave-lin.zip/download)  
+[Linux 32](http://sourceforge.net/projects/kodeweave/files/v1.1.18/kodeWeave-lin32.zip/download) 
 
 Tech
 -------------
@@ -46,6 +39,7 @@ kodeWeave uses a number of open source projects to work properly:
 * [jQuery](http://jquery.com/) - duh
 * [TogetherJS](https://togetherjs.com/) - awesome collaboration tool
 * [Github Gists](https://developer.github.com/v3/gists/) - A reliable host used to save your weave to the cloud
+* [Twitter Web API](https://dev.twitter.com/web/embedded-timelines) - Allows users to interact with kodeWeave developers easier and share their weaves to the kodeWeave community.
 * [JQWidgets](http://www.jqwidgets.com/jquery-widgets-demo/demos/jqxsplitter/index.htm#demos/jqxsplitter/nested-splitters.htm) - awesome plugin for resizable columns
 * [Codemirror](http://codemirror.net/) - awesome web-based text editor
 * [node-webkit](http://nwjs.io/) - makes web apps run on desktops (comes built with [node.js](http://nodejs.org/))
