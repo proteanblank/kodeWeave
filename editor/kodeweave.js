@@ -2,7 +2,7 @@
 var site = window.location;
 site = site.toString().toLowerCase();
 if (site.substring(0, 7) === "http://") {
-  document.body.innerHTML = "https://" + site.substring(7, site.length);
+  window.location.href = "https://" + site.substring(7, site.length);
 }
 
 var timeout,
