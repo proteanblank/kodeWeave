@@ -395,11 +395,7 @@ var timeout,
         // localStorage.removeItem("gridSetting");
         localStorage.removeItem("closedWelcome");
         if (window.location.hash) {
-          if (window.location.hash) {
-            window.location.href = window.location.toString().split(/\?|#/)[0];
-          } else {
-            location.reload(true);
-          }
+          window.location.href = window.location.toString().split(/\?|#/)[0];
         } else {
           location.reload(true);
         }
