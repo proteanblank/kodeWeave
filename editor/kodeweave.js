@@ -387,7 +387,11 @@ var timeout,
         // localStorage.removeItem("saveAuthor");
         // localStorage.removeItem("gridSetting");
         localStorage.removeItem("closedWelcome");
-        location.reload(true);
+        if (window.location.hash) {
+          window.location.href = window.location.toString().split(/\?|#/)[0];
+        } else {
+          location.reload(true);
+        }
         
         /*
         clearPreview();
