@@ -396,7 +396,7 @@ var timeout,
         localStorage.removeItem("closedWelcome");
         if (window.location.hash) {
           if (window.location.hash) {
-            document.body.innerHTML = window.location.toString().split(/\?|#/)[0];
+            window.location.href = window.location.toString().split(/\?|#/)[0];
           } else {
             location.reload(true);
           }
