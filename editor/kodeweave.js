@@ -4043,15 +4043,8 @@ if (window.location.hash) {
   if (location.hash.substring(1) === "dataurl") {
     $("#dataurl").attr("checked", true).trigger("change");
   } else {
-    if ($(".walkthrough-dialog").is(":visible")) {
-      // $(document.body).append('<div class="fixedfill preloader hide" style="background: rgba(255, 255, 255, 0.8);"></div>');
-      // $(document.body).append('<div class="fixedfill preloader" style="background: radial-gradient(ellipse at center,  #7abcff 0%,#60abf8 44%,#4096ee 100%)!important; color: #fff!important;"></div>');
-      $(document.body).append('<div class="fixedfill preloader" style="background: radial-gradient(ellipse at center, rgba(122, 188, 255, 0.85) 0%, rgba(64, 150, 238, 0.87) 100%)!important; color: #fff!important;"></div>');
-      $(".preloader").html('<div class="table"><div class="cell"><h1>Loading Weave!</h1><div class="spinner"><div class="bounce1" style="background: #fff!important;"></div><div class="bounce2" style="background: #fff!important;"></div><div class="bounce3" style="background: #fff!important;"></div></div></div></div>');
-    } else {
-      $(document.body).append('<div class="fixedfill preloader"></div>');
-      $(".preloader").html('<div class="table"><div class="cell"><h1>Loading Weave!</h1><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div></div>');
-    }
+    $(document.body).append('<div class="fixedfill preloader" style="background: radial-gradient(ellipse at center, rgba(122, 188, 255, 0.85) 0%, rgba(64, 150, 238, 0.87) 100%)!important; color: #fff!important;"></div>');
+    $(".preloader").html('<div class="table"><div class="cell"><h1>Loading Weave!</h1><div class="spinner"><div class="bounce1" style="background: #fff!important;"></div><div class="bounce2" style="background: #fff!important;"></div><div class="bounce3" style="background: #fff!important;"></div></div></div></div>');
     function loadgist(gistid) {
       $.ajax({
         url: "https://api.github.com/gists/" + gistid,
