@@ -4036,6 +4036,8 @@ if (window.location.hash) {
   if (location.hash.substring(1) === "dataurl") {
     $("#dataurl").attr("checked", true).trigger("change");
   } else {
+    $(document.body).append('<div class="fixedfill preloader" style="background: radial-gradient(ellipse at center, rgba(122, 188, 255, 0.85) 0%, rgba(64, 150, 238, 0.87) 100%)!important; color: #fff!important;"></div>');
+    $(".preloader").html('<div class="table"><div class="cell"><h1>Loading Weave!</h1><div class="spinner"><div class="bounce1" style="background: #fff!important;"></div><div class="bounce2" style="background: #fff!important;"></div><div class="bounce3" style="background: #fff!important;"></div></div></div></div>');
     function loadgist(gistid) {
       $.ajax({
         url: "https://api.github.com/gists/" + gistid,
@@ -4149,13 +4151,15 @@ if (window.location.hash) {
           cssEditor.setOption("paletteHints", "true");
           jsEditor.setOption("paletteHints", "true");
         }, 300);
+        
+        $(".preloader").remove();
+
       }).error(function(e) {
         // ajax error
         console.warn("Error: Could not load weave!", e);
         alertify.error("Error: Could not load weave!");
       });
     }
-
     loadgist(hash);
   }
 } {
