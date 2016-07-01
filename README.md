@@ -25,11 +25,11 @@ Availability
 [Chrome Application](https://chrome.google.com/webstore/detail/kodeweave-touch/blcgppajmopfndnmegepihhkilaejipf)
 
 **No longer Supported** *(main kodeweave)*  
-[Windows 64](http://sourceforge.net/projects/kodeweave/files/v1.1.18/kodeWeave-win.zip/download)  
-[Windows 32](http://sourceforge.net/projects/kodeweave/files/v1.1.18/kodeWeave-win32.zip/download)  
-[Mac](http://sourceforge.net/projects/kodeweave/files/v1.1.18/kodeWeave-mac.zip/download)  
-[Linux 64](http://sourceforge.net/projects/kodeweave/files/v1.1.18/kodeWeave-lin.zip/download)  
-[Linux 32](http://sourceforge.net/projects/kodeweave/files/v1.1.18/kodeWeave-lin32.zip/download) 
+[Windows 64](http://sourceforge.net/projects/kodeweave/files/v1.1.22/kodeWeave-win.zip/download)  
+[Windows 32](http://sourceforge.net/projects/kodeweave/files/v1.1.22/kodeWeave-win32.zip/download)  
+[Mac](http://sourceforge.net/projects/kodeweave/files/v1.1.22/kodeWeave-mac.zip/download)  
+[Linux 64](http://sourceforge.net/projects/kodeweave/files/v1.1.22/kodeWeave-lin.zip/download)  
+[Linux 32](http://sourceforge.net/projects/kodeweave/files/v1.1.22/kodeWeave-lin32.zip/download) 
 
 Tech
 -------------
