@@ -3741,7 +3741,30 @@ var htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
     "Shift-Ctrl-'": function(){ applyMinify() },
     "Shift-Ctrl-\\": function(){ applyBeautify() },
     "Shift-Cmd-'": function(){ applyMinify() },
-    "Shift-Cmd-\\": function(){ applyBeautify() }
+    "Shift-Cmd-\\": function(){ applyBeautify() },
+    "Cmd-L": function(){ $("[data-action=gotoline]").trigger("click"); },
+    "Ctrl-L": function(){ $("[data-action=gotoline]").trigger("click"); },
+    "Alt-Delete": function(cm){ cm.execCommand("delWordAfter"); },
+    "Alt-Shift-Cmd-[": function(cm){ 
+      for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
+        cm.foldCode({line: l, ch: 0}, null, "fold");
+   	  }
+    },
+    "Alt-Shift-Ctrl-[": function(cm){ 
+      for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
+        cm.foldCode({line: l, ch: 0}, null, "fold");
+   	  }
+    },
+    "Alt-Shift-Cmd-]": function(cm){ 
+      for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
+        cm.foldCode({line: l, ch: 0}, null, "unfold");
+   	  }
+    },
+    "Alt-Shift-Ctrl-]": function(cm){ 
+      for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
+        cm.foldCode({line: l, ch: 0}, null, "unfold");
+   	  }
+    }
   },
   value: "<!-- comment -->\nhello world!",
   paletteHints: true
@@ -3768,7 +3791,30 @@ var cssEditor = CodeMirror(document.getElementById("cssEditor"), {
     "Shift-Ctrl-'": function(){ applyMinify() },
     "Shift-Ctrl-\\": function(){ applyBeautify() },
     "Shift-Cmd-'": function(){ applyMinify() },
-    "Shift-Cmd-\\": function(){ applyBeautify() }
+    "Shift-Cmd-\\": function(){ applyBeautify() },
+    "Cmd-L": function(){ $("[data-action=gotoline]").trigger("click"); },
+    "Ctrl-L": function(){ $("[data-action=gotoline]").trigger("click"); },
+    "Alt-Delete": function(cm){ cm.execCommand("delWordAfter"); },
+    "Alt-Shift-Cmd-[": function(cm){ 
+      for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
+        cm.foldCode({line: l, ch: 0}, null, "fold");
+   	  }
+    },
+    "Alt-Shift-Ctrl-[": function(cm){ 
+      for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
+        cm.foldCode({line: l, ch: 0}, null, "fold");
+   	  }
+    },
+    "Alt-Shift-Cmd-]": function(cm){ 
+      for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
+        cm.foldCode({line: l, ch: 0}, null, "unfold");
+   	  }
+    },
+    "Alt-Shift-Ctrl-]": function(cm){ 
+      for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
+        cm.foldCode({line: l, ch: 0}, null, "unfold");
+   	  }
+    }
   },
   paletteHints: true
 });
@@ -3798,7 +3844,40 @@ var jsEditor = CodeMirror(document.getElementById("jsEditor"), {
     "Shift-Ctrl-\\": function(){ applyBeautify() },
     "Shift-Cmd-'": function(){ applyMinify() },
     "Shift-Cmd-\\": function(){ applyBeautify() },
-    "Ctrl-Space": "autocomplete"
+    "Ctrl-Space": "autocomplete",
+    "Cmd-L": function(){ $("[data-action=gotoline]").trigger("click"); },
+    "Ctrl-L": function(){ $("[data-action=gotoline]").trigger("click"); },
+    "Alt-Delete": function(cm){ cm.execCommand("delWordAfter"); },
+    "Alt-Shift-Cmd-[": function(cm){ 
+      for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
+        cm.foldCode({line: l, ch: 0}, null, "fold");
+   	  }
+    },
+    "Alt-Shift-Ctrl-[": function(cm){ 
+      for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
+        cm.foldCode({line: l, ch: 0}, null, "fold");
+   	  }
+    },
+    "Alt-Shift-Cmd-]": function(cm){ 
+      for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
+        cm.foldCode({line: l, ch: 0}, null, "unfold");
+   	  }
+    },
+    "Alt-Shift-Ctrl-]": function(cm){ 
+      for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
+        cm.foldCode({line: l, ch: 0}, null, "unfold");
+   	  }
+    },
+    "Cmd-/": function(cm){ 
+      for (var line = cm.getCursor("to").line; line >= cm.getCursor("from").line; line--) {
+        cm.replaceRange("// ", {line: line, ch: 0});
+      }
+    },
+    "Ctrl-/": function(cm){ 
+      for (var line = cm.getCursor("to").line; line >= cm.getCursor("from").line; line--) {
+        cm.replaceRange("// ", {line: line, ch: 0});
+      }
+    }
   },
   mode: {name: "javascript", globalVars: false},
   paletteHints: true
@@ -3824,7 +3903,30 @@ var mdEditor = CodeMirror(document.getElementById("mdEditor"), {
     "Shift-Ctrl-'": function(){ applyMinify() },
     "Shift-Ctrl-\\": function(){ applyBeautify() },
     "Shift-Cmd-'": function(){ applyMinify() },
-    "Shift-Cmd-\\": function(){ applyBeautify() }
+    "Shift-Cmd-\\": function(){ applyBeautify() },
+    "Cmd-L": function(){ $("[data-action=gotoline]").trigger("click"); },
+    "Ctrl-L": function(){ $("[data-action=gotoline]").trigger("click"); },
+    "Alt-Delete": function(cm){ cm.execCommand("delWordAfter"); },
+    "Alt-Shift-Cmd-[": function(cm){ 
+      for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
+        cm.foldCode({line: l, ch: 0}, null, "fold");
+   	  }
+    },
+    "Alt-Shift-Ctrl-[": function(cm){ 
+      for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
+        cm.foldCode({line: l, ch: 0}, null, "fold");
+   	  }
+    },
+    "Alt-Shift-Cmd-]": function(cm){ 
+      for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
+        cm.foldCode({line: l, ch: 0}, null, "unfold");
+   	  }
+    },
+    "Alt-Shift-Ctrl-]": function(cm){ 
+      for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
+        cm.foldCode({line: l, ch: 0}, null, "unfold");
+   	  }
+    }
   }
 });
 
