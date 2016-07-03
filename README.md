@@ -1,7 +1,7 @@
 kodeWeave
 ===================
 
-kodeWeave is a realtime coding playground for HTML, CSS and Javascript. Similar to JSFiddle and JSBin, but kodeWeave was made specifically to work not just for mobile devices, but also to work offline as well.
+kodeWeave is a realtime coding playground for Markdown, HTML, CSS and Javascript. Similar to JSFiddle and JSBin, but kodeWeave was made specifically to work not just for mobile devices, but also to work offline as well.
 
 kodeWeave is great for prototyping and to build applications for desktop operating systems while on mobile devices. ([PhoneGap Build](http://build.phonegap.com/) is recommended for mobile devices)
 
@@ -10,7 +10,7 @@ If you've ever used jsfiddle, jsbin, dabblet, liveweave, codepen, cssdeck, cssde
 Version
 -------------
 
-1.1.23
+1.1.24
 
 License
 -------------
@@ -25,11 +25,11 @@ Availability
 [Chrome Application](https://chrome.google.com/webstore/detail/kodeweave-touch/blcgppajmopfndnmegepihhkilaejipf)
 
 **No longer Supported** *(main kodeweave)*  
-[Windows 64](http://sourceforge.net/projects/kodeweave/files/v1.1.23/kodeWeave-win.zip/download)  
-[Windows 32](http://sourceforge.net/projects/kodeweave/files/v1.1.23/kodeWeave-win32.zip/download)  
-[Mac](http://sourceforge.net/projects/kodeweave/files/v1.1.23/kodeWeave-mac.zip/download)  
-[Linux 64](http://sourceforge.net/projects/kodeweave/files/v1.1.23/kodeWeave-lin.zip/download)  
-[Linux 32](http://sourceforge.net/projects/kodeweave/files/v1.1.23/kodeWeave-lin32.zip/download) 
+[Windows 64](http://sourceforge.net/projects/kodeweave/files/v1.1.24/kodeWeave-win.zip/download)  
+[Windows 32](http://sourceforge.net/projects/kodeweave/files/v1.1.24/kodeWeave-win32.zip/download)  
+[Mac](http://sourceforge.net/projects/kodeweave/files/v1.1.24/kodeWeave-mac.zip/download)  
+[Linux 64](http://sourceforge.net/projects/kodeweave/files/v1.1.24/kodeWeave-lin.zip/download)  
+[Linux 32](http://sourceforge.net/projects/kodeweave/files/v1.1.24/kodeWeave-lin32.zip/download) 
 
 Tech
 -------------
@@ -63,7 +63,7 @@ To-Do
 -------------
 
  - Make code editor more responsive for mobile devices
- - Incorporate desktop exports for Android (along with export as zip)
+ - Incorporate export as zip
 
 Development
 -------------
