@@ -228,7 +228,7 @@ function updatePreview() {
   $(".preview-editor").empty();
   var frame = document.createElement("iframe");
   frame.setAttribute("id", "preview");
-  frame.setAttribute("sandbox", "allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts");
+  frame.setAttribute("sandbox", "allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts");
   document.querySelector(".preview-editor").appendChild(frame);
   var previewFrame = document.getElementById("preview");
   var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
