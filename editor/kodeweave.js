@@ -3713,6 +3713,26 @@ var ruleSets = {
   "attr-no-duplication": true
 }
 
+// IntelliSense with Tern
+function getURL(url, c) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("get", url, true);
+  xhr.send();
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState != 4) return;
+    if (xhr.status < 400) return c(null, xhr.responseText);
+    var e = new Error(xhr.responseText || "No response");
+    e.status = xhr.status;
+    c(e);
+  };
+}
+
+getURL("https://ternjs.net/defs/ecma5.json", function(err, code) {
+  if (err) throw new Error("Request for ecma5.json: " + err);
+  server = new CodeMirror.TernServer({defs: [JSON.parse(code)]});
+  jsEditor.on("cursorActivity", function(cm) { server.updateArgHints(cm); });
+});
+
 // Initialize Editors
 var htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
   mode: "text/html",
