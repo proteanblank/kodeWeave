@@ -7,6 +7,26 @@ if (site.substring(0, 7) === "http://") {
 
 var timeout,
     delay,
+    selected_text,
+    str,
+    mynum,
+    start_cursor,
+    cursorLine,
+    cursorCh,
+    blob,
+    jsContent,
+    htmlContent,
+    cssContent,
+    cssSelected,
+    showEditors,
+    hasMD,
+    hasHTML,
+    hasCSS,
+    hasJS,
+    editEmbed,
+    darkUI,
+    seeThrough,
+    hasResult,
     welcomeDialog = function() {
       // Stop YouTube Video from playing when other tabs are clicked
       $("#tab2, #tab3, #tab4, #close-walkthrough").click(function() {
@@ -37,23 +57,23 @@ var timeout,
       } else if ( htmlSelected == "jade") {
         var options = {
             pretty: true
-        }
+        };
         yourHTML = jade.render(htmlEditor.getValue(), options);
       }
     },
     renderYourCSS = function() {
-      var cssSelected = $("#css-preprocessor option:selected").val();
+      cssSelected = $("#css-preprocessor option:selected").val();
 
       if ( cssSelected == "none") {
         yourCSS = cssEditor.getValue();
       } else if ( cssSelected == "stylus") {
         stylus(cssEditor.getValue()).render(function(err, out) {
-          if(err != null) {
+          if(err !== null) {
             console.error("something went wrong");
           } else {
             yourCSS = out;
           }
-        })
+        });
       }
     },
     renderYourJS = function() {
@@ -100,22 +120,22 @@ var timeout,
 
         if ( htmlSelected == "none") {
           yourHTML = htmlEditor.getValue();
-          var blob = new Blob([ yourHTML ], {type: "text/html"});
+          blob = new Blob([ yourHTML ], {type: "text/html"});
           saveAs(blob, "source.html");
         } else if ( htmlSelected == "jade") {
-          var blob = new Blob([ htmlEditor.getValue() ], {type: "text/x-jade"});
+          blob = new Blob([ htmlEditor.getValue() ], {type: "text/x-jade"});
           saveAs(blob, "source.jade");
         }
       };
       document.querySelector(".savecss").onclick = function() {
-        var cssSelected = $("#css-preprocessor option:selected").val();
+        cssSelected = $("#css-preprocessor option:selected").val();
 
         if ( cssSelected == "none") {
           yourCSS = cssEditor.getValue();
-          var blob = new Blob([ yourCSS ], {type: "css"});
+          blob = new Blob([ yourCSS ], {type: "css"});
           saveAs(blob, "source.css");
         } else if ( cssSelected == "stylus") {
-          var blob = new Blob([ cssEditor.getValue() ], {type: "text/x-styl"});
+          blob = new Blob([ cssEditor.getValue() ], {type: "text/x-styl"});
           saveAs(blob, "source.styl");
         }
       };
@@ -123,10 +143,10 @@ var timeout,
         var jsSelected = $("#js-preprocessor option:selected").val();
 
         if ( jsSelected == "none") {
-          var blob = new Blob([ jsEditor.getValue() ], {type: "text/javascript"});
+          blob = new Blob([ jsEditor.getValue() ], {type: "text/javascript"});
           saveAs(blob, "source.js");
         } else if ( jsSelected == "coffeescript") {
-          var blob = new Blob([ jsEditor.getValue() ], {type: "text/x-coffeescript"});
+          blob = new Blob([ jsEditor.getValue() ], {type: "text/x-coffeescript"});
           saveAs(blob, "source.coffee");
         }
       };
@@ -137,22 +157,22 @@ var timeout,
     },
     applyLowercase = function() {
       if ( activeEditor.value === "htmlEditor" ) {
-        var selected_text = htmlEditor.getSelection().toLowerCase();  // Need to grab the Active Selection
+        selected_text = htmlEditor.getSelection().toLowerCase();  // Need to grab the Active Selection
 
         htmlEditor.replaceSelection(selected_text);
         htmlEditor.focus();
       } else if ( activeEditor.value === "cssEditor" ) {
-        var selected_text = cssEditor.getSelection().toLowerCase();  // Need to grab the Active Selection
+        selected_text = cssEditor.getSelection().toLowerCase();  // Need to grab the Active Selection
 
         cssEditor.replaceSelection(selected_text);
         cssEditor.focus();
       } else if ( activeEditor.value === "jsEditor" ) {
-        var selected_text = jsEditor.getSelection().toLowerCase();  // Need to grab the Active Selection
+        selected_text = jsEditor.getSelection().toLowerCase();  // Need to grab the Active Selection
 
         jsEditor.replaceSelection(selected_text);
         jsEditor.focus();
       } else if ( activeEditor.value === "mdEditor" ) {
-        var selected_text = mdEditor.getSelection().toLowerCase();  // Need to grab the Active Selection
+        selected_text = mdEditor.getSelection().toLowerCase();  // Need to grab the Active Selection
 
         mdEditor.replaceSelection(selected_text);
         mdEditor.focus();
@@ -160,22 +180,22 @@ var timeout,
     },
     applyUppercase = function() {
       if ( activeEditor.value === "htmlEditor" ) {
-        var selected_text = htmlEditor.getSelection().toUpperCase();  // Need to grab the Active Selection
+        selected_text = htmlEditor.getSelection().toUpperCase();  // Need to grab the Active Selection
 
         htmlEditor.replaceSelection(selected_text);
         htmlEditor.focus();
       } else if ( activeEditor.value === "cssEditor" ) {
-        var selected_text = cssEditor.getSelection().toUpperCase();  // Need to grab the Active Selection
+        selected_text = cssEditor.getSelection().toUpperCase();  // Need to grab the Active Selection
 
         cssEditor.replaceSelection(selected_text);
         cssEditor.focus();
       } else if ( activeEditor.value === "jsEditor" ) {
-        var selected_text = jsEditor.getSelection().toUpperCase();  // Need to grab the Active Selection
+        selected_text = jsEditor.getSelection().toUpperCase();  // Need to grab the Active Selection
 
         jsEditor.replaceSelection(selected_text);
         jsEditor.focus();
       } else if ( activeEditor.value === "mdEditor" ) {
-        var selected_text = mdEditor.getSelection().toUpperCase();  // Need to grab the Active Selection
+        selected_text = mdEditor.getSelection().toUpperCase();  // Need to grab the Active Selection
 
         mdEditor.replaceSelection(selected_text);
         mdEditor.focus();
@@ -271,7 +291,7 @@ var timeout,
     },
     initGenerators = function() {
       // Tidy Up/Beautify Code
-      document.querySelector("[data-action=tidy]").onclick = function() {;
+      document.querySelector("[data-action=tidy]").onclick = function() {
         // if ( activeEditor.value === "htmlEditor" ) {
         //   var htmlLines = htmlEditor.lineCount();
         //   htmlEditor.autoFormatRange({line:0, ch:0}, {line:htmlLines});
@@ -937,92 +957,92 @@ var timeout,
       document.getElementById("charsym1").onclick = function() {
         if ( activeEditor.value === "htmlEditor" ) {
           if (!htmlEditor.getSelection().split(" ").join("")) {
-            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("", htmlEditor.getCursor());
             htmlEditor.replaceRange("<>", htmlEditor.getCursor());
             htmlEditor.focus();
-            var str = ">";
-            var mynum = str.length;
-            var start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = ">";
+            mynum = str.length;
+            start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
             htmlEditor.focus();
           } else {
-            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("<" + selected_text + ">");
             htmlEditor.focus();
           }
         } else if ( activeEditor.value === "cssEditor" ) {
           if (!cssEditor.getSelection().split(" ").join("")) {
-            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("", cssEditor.getCursor());
             cssEditor.replaceRange("<>", cssEditor.getCursor());
             cssEditor.focus();
-            var str = ">";
-            var mynum = str.length;
-            var start_cursor = cssEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = ">";
+            mynum = str.length;
+            start_cursor = cssEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             cssEditor.replaceRange(selected_text, cssEditor.getCursor());
             cssEditor.focus();
           } else {
-            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("<" + selected_text + ">");
             cssEditor.focus();
           }
         } else if ( activeEditor.value === "jsEditor" ) {
           if (!jsEditor.getSelection().split(" ").join("")) {
-            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("", jsEditor.getCursor());
             jsEditor.replaceRange("<>", jsEditor.getCursor());
             jsEditor.focus();
-            var str = ">";
-            var mynum = str.length;
-            var start_cursor = jsEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = ">";
+            mynum = str.length;
+            start_cursor = jsEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             jsEditor.replaceRange(selected_text, jsEditor.getCursor());
             jsEditor.focus();
           } else {
-            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("<" + selected_text + ">");
             jsEditor.focus();
           }
         } else if ( activeEditor.value === "mdEditor" ) {
           if (!mdEditor.getSelection().split(" ").join("")) {
-            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("", mdEditor.getCursor());
             mdEditor.replaceRange("<>", mdEditor.getCursor());
             mdEditor.focus();
-            var str = ">";
-            var mynum = str.length;
-            var start_cursor = mdEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = ">";
+            mynum = str.length;
+            start_cursor = mdEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             mdEditor.replaceRange(selected_text, mdEditor.getCursor());
             mdEditor.focus();
           } else {
-            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("<" + selected_text + ">");
             mdEditor.focus();
@@ -1032,92 +1052,92 @@ var timeout,
       document.getElementById("charsym2").onclick = function() {
         if ( activeEditor.value === "htmlEditor" ) {
           if (!htmlEditor.getSelection().split(" ").join("")) {
-            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("", htmlEditor.getCursor());
             htmlEditor.replaceRange("{}", htmlEditor.getCursor());
             htmlEditor.focus();
-            var str = "}";
-            var mynum = str.length;
-            var start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = "}";
+            mynum = str.length;
+            start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
             htmlEditor.focus();
           } else {
-            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("{" + selected_text + "}");
             htmlEditor.focus();
           }
         } else if ( activeEditor.value === "cssEditor" ) {
           if (!cssEditor.getSelection().split(" ").join("")) {
-            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("", cssEditor.getCursor());
             cssEditor.replaceRange("{}", cssEditor.getCursor());
             cssEditor.focus();
-            var str = "}";
-            var mynum = str.length;
-            var start_cursor = cssEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = "}";
+            mynum = str.length;
+            start_cursor = cssEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             cssEditor.replaceRange(selected_text, cssEditor.getCursor());
             cssEditor.focus();
           } else {
-            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("{" + selected_text + "}");
             cssEditor.focus();
           }
         } else if ( activeEditor.value === "jsEditor" ) {
           if (!jsEditor.getSelection().split(" ").join("")) {
-            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("", jsEditor.getCursor());
             jsEditor.replaceRange("{}", jsEditor.getCursor());
             jsEditor.focus();
-            var str = "}";
-            var mynum = str.length;
-            var start_cursor = jsEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = "}";
+            mynum = str.length;
+            start_cursor = jsEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             jsEditor.replaceRange(selected_text, jsEditor.getCursor());
             jsEditor.focus();
           } else {
-            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("{" + selected_text + "}");
             jsEditor.focus();
           }
         } else if ( activeEditor.value === "mdEditor" ) {
           if (!mdEditor.getSelection().split(" ").join("")) {
-            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("", mdEditor.getCursor());
             mdEditor.replaceRange("{}", mdEditor.getCursor());
             mdEditor.focus();
-            var str = "}";
-            var mynum = str.length;
-            var start_cursor = mdEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = "}";
+            mynum = str.length;
+            start_cursor = mdEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             mdEditor.replaceRange(selected_text, mdEditor.getCursor());
             mdEditor.focus();
           } else {
-            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("{" + selected_text + "}");
             mdEditor.focus();
@@ -1127,92 +1147,92 @@ var timeout,
       document.getElementById("charsym3").onclick = function() {
         if ( activeEditor.value === "htmlEditor" ) {
           if (!htmlEditor.getSelection().split(" ").join("")) {
-            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("", htmlEditor.getCursor());
             htmlEditor.replaceRange('""', htmlEditor.getCursor());
             htmlEditor.focus();
-            var str = '"';
-            var mynum = str.length;
-            var start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = '"';
+            mynum = str.length;
+            start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
             htmlEditor.focus();
           } else {
-            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection('"' + selected_text + '"');
             htmlEditor.focus();
           }
         } else if ( activeEditor.value === "cssEditor" ) {
           if (!cssEditor.getSelection().split(" ").join("")) {
-            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("", cssEditor.getCursor());
             cssEditor.replaceRange('""', cssEditor.getCursor());
             cssEditor.focus();
-            var str = '"';
-            var mynum = str.length;
-            var start_cursor = cssEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = '"';
+            mynum = str.length;
+            start_cursor = cssEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             cssEditor.replaceRange(selected_text, cssEditor.getCursor());
             cssEditor.focus();
           } else {
-            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection('"' + selected_text + '"');
             cssEditor.focus();
           }
         } else if ( activeEditor.value === "jsEditor" ) {
           if (!jsEditor.getSelection().split(" ").join("")) {
-            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("", jsEditor.getCursor());
             jsEditor.replaceRange('""', jsEditor.getCursor());
             jsEditor.focus();
-            var str = '"';
-            var mynum = str.length;
-            var start_cursor = jsEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = '"';
+            mynum = str.length;
+            start_cursor = jsEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             jsEditor.replaceRange(selected_text, jsEditor.getCursor());
             jsEditor.focus();
           } else {
-            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection('"' + selected_text + '"');
             jsEditor.focus();
           }
         } else if ( activeEditor.value === "mdEditor" ) {
           if (!mdEditor.getSelection().split(" ").join("")) {
-            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("", mdEditor.getCursor());
             mdEditor.replaceRange('""', mdEditor.getCursor());
             mdEditor.focus();
-            var str = '"';
-            var mynum = str.length;
-            var start_cursor = mdEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = '"';
+            mynum = str.length;
+            start_cursor = mdEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             mdEditor.replaceRange(selected_text, mdEditor.getCursor());
             mdEditor.focus();
           } else {
-            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection('"' + selected_text + '"');
             mdEditor.focus();
@@ -1222,92 +1242,92 @@ var timeout,
       document.getElementById("charsym4").onclick = function() {
         if ( activeEditor.value === "htmlEditor" ) {
           if (!htmlEditor.getSelection().split(" ").join("")) {
-            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("", htmlEditor.getCursor());
             htmlEditor.replaceRange("''", htmlEditor.getCursor());
             htmlEditor.focus();
-            var str = "'";
-            var mynum = str.length;
-            var start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = "'";
+            mynum = str.length;
+            start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
             htmlEditor.focus();
           } else {
-            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("'" + selected_text + "'");
             htmlEditor.focus();
           }
         } else if ( activeEditor.value === "cssEditor" ) {
           if (!cssEditor.getSelection().split(" ").join("")) {
-            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("", cssEditor.getCursor());
             cssEditor.replaceRange("''", cssEditor.getCursor());
             cssEditor.focus();
-            var str = "'";
-            var mynum = str.length;
-            var start_cursor = cssEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = "'";
+            mynum = str.length;
+            start_cursor = cssEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             cssEditor.replaceRange(selected_text, cssEditor.getCursor());
             cssEditor.focus();
           } else {
-            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("'" + selected_text + "'");
             cssEditor.focus();
           }
         } else if ( activeEditor.value === "jsEditor" ) {
           if (!jsEditor.getSelection().split(" ").join("")) {
-            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("", jsEditor.getCursor());
             jsEditor.replaceRange("''", jsEditor.getCursor());
             jsEditor.focus();
-            var str = "'";
-            var mynum = str.length;
-            var start_cursor = jsEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = "'";
+            mynum = str.length;
+            start_cursor = jsEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             jsEditor.replaceRange(selected_text, jsEditor.getCursor());
             jsEditor.focus();
           } else {
-            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("'" + selected_text + "'");
             jsEditor.focus();
           }
         } else if ( activeEditor.value === "mdEditor" ) {
           if (!mdEditor.getSelection().split(" ").join("")) {
-            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("", mdEditor.getCursor());
             mdEditor.replaceRange("''", mdEditor.getCursor());
             mdEditor.focus();
-            var str = "'";
-            var mynum = str.length;
-            var start_cursor = mdEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = "'";
+            mynum = str.length;
+            start_cursor = mdEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             mdEditor.replaceRange(selected_text, mdEditor.getCursor());
             mdEditor.focus();
           } else {
-            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("'" + selected_text + "'");
             mdEditor.focus();
@@ -1317,92 +1337,92 @@ var timeout,
       document.getElementById("charsym5").onclick = function() {
         if ( activeEditor.value === "htmlEditor" ) {
           if (!htmlEditor.getSelection().split(" ").join("")) {
-            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("", htmlEditor.getCursor());
             htmlEditor.replaceRange("()", htmlEditor.getCursor());
             htmlEditor.focus();
-            var str = ")";
-            var mynum = str.length;
-            var start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = ")";
+            mynum = str.length;
+            start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
             htmlEditor.focus();
           } else {
-            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("(" + selected_text + ")");
             htmlEditor.focus();
           }
         } else if ( activeEditor.value === "cssEditor" ) {
           if (!cssEditor.getSelection().split(" ").join("")) {
-            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("", cssEditor.getCursor());
             cssEditor.replaceRange("()", cssEditor.getCursor());
             cssEditor.focus();
-            var str = ")";
-            var mynum = str.length;
-            var start_cursor = cssEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = ")";
+            mynum = str.length;
+            start_cursor = cssEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             cssEditor.replaceRange(selected_text, cssEditor.getCursor());
             cssEditor.focus();
           } else {
-            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("(" + selected_text + ")");
             cssEditor.focus();
           }
         } else if ( activeEditor.value === "jsEditor" ) {
           if (!jsEditor.getSelection().split(" ").join("")) {
-            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("", jsEditor.getCursor());
             jsEditor.replaceRange("()", jsEditor.getCursor());
             jsEditor.focus();
-            var str = ")";
-            var mynum = str.length;
-            var start_cursor = jsEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = ")";
+            mynum = str.length;
+            start_cursor = jsEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             jsEditor.replaceRange(selected_text, jsEditor.getCursor());
             jsEditor.focus();
           } else {
-            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("(" + selected_text + ")");
             jsEditor.focus();
           }
         } else if ( activeEditor.value === "mdEditor" ) {
           if (!mdEditor.getSelection().split(" ").join("")) {
-            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("", mdEditor.getCursor());
             mdEditor.replaceRange("()", mdEditor.getCursor());
             mdEditor.focus();
-            var str = ")";
-            var mynum = str.length;
-            var start_cursor = mdEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = ")";
+            mynum = str.length;
+            start_cursor = mdEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             mdEditor.replaceRange(selected_text, mdEditor.getCursor());
             mdEditor.focus();
           } else {
-            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("(" + selected_text + ")");
             mdEditor.focus();
@@ -1412,92 +1432,92 @@ var timeout,
       document.getElementById("charsym6").onclick = function() {
         if ( activeEditor.value === "htmlEditor" ) {
           if (!htmlEditor.getSelection().split(" ").join("")) {
-            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("", htmlEditor.getCursor());
             htmlEditor.replaceRange("[]", htmlEditor.getCursor());
             htmlEditor.focus();
-            var str = "]";
-            var mynum = str.length;
-            var start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = "]";
+            mynum = str.length;
+            start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
             htmlEditor.focus();
           } else {
-            var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("[" + selected_text + "]");
             htmlEditor.focus();
           }
         } else if ( activeEditor.value === "cssEditor" ) {
           if (!cssEditor.getSelection().split(" ").join("")) {
-            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("", cssEditor.getCursor());
             cssEditor.replaceRange("[]", cssEditor.getCursor());
             cssEditor.focus();
-            var str = "]";
-            var mynum = str.length;
-            var start_cursor = cssEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = "]";
+            mynum = str.length;
+            start_cursor = cssEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             cssEditor.replaceRange(selected_text, cssEditor.getCursor());
             cssEditor.focus();
           } else {
-            var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("[" + selected_text + "]");
             cssEditor.focus();
           }
         } else if ( activeEditor.value === "jsEditor" ) {
           if (!jsEditor.getSelection().split(" ").join("")) {
-            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("", jsEditor.getCursor());
             jsEditor.replaceRange("[]", jsEditor.getCursor());
             jsEditor.focus();
-            var str = "]";
-            var mynum = str.length;
-            var start_cursor = jsEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = "]";
+            mynum = str.length;
+            start_cursor = jsEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             jsEditor.replaceRange(selected_text, jsEditor.getCursor());
             jsEditor.focus();
           } else {
-            var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("[" + selected_text + "]");
             jsEditor.focus();
           }
         } else if ( activeEditor.value === "mdEditor" ) {
           if (!mdEditor.getSelection().split(" ").join("")) {
-            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("", mdEditor.getCursor());
             mdEditor.replaceRange("[]", mdEditor.getCursor());
             mdEditor.focus();
-            var str = "]";
-            var mynum = str.length;
-            var start_cursor = mdEditor.getCursor();  // Need to get the cursor position
-            var cursorLine = start_cursor.line;
-            var cursorCh = start_cursor.ch;
+            str = "]";
+            mynum = str.length;
+            start_cursor = mdEditor.getCursor();  // Need to get the cursor position
+            cursorLine = start_cursor.line;
+            cursorCh = start_cursor.ch;
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
             mdEditor.replaceRange(selected_text, mdEditor.getCursor());
             mdEditor.focus();
           } else {
-            var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+            selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("[" + selected_text + "]");
             mdEditor.focus();
@@ -1506,14 +1526,14 @@ var timeout,
       };
       document.getElementById("function").onclick = function() {
         if ( activeEditor.value === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+          selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
           htmlEditor.replaceSelection("function() {}");
           htmlEditor.focus();
         } else if ( activeEditor.value === "cssEditor" ) {
           alertify.alert("Can't add <strong>\"function() {}\"</strong> into CSS").set("basic", true);
         } else if ( activeEditor.value === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+          selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
           jsEditor.replaceSelection("function() {}");
           jsEditor.focus();
@@ -1521,22 +1541,22 @@ var timeout,
       };
       $("[data-add=sym]").on("click", function() {
         if ( activeEditor.value === "htmlEditor" ) {
-          var selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+          selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
           htmlEditor.replaceSelection(selected_text + this.textContent);
           htmlEditor.focus();
         } else if ( activeEditor.value === "cssEditor" ) {
-          var selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+          selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
           cssEditor.replaceSelection(selected_text + this.textContent);
           cssEditor.focus();
         } else if ( activeEditor.value === "jsEditor" ) {
-          var selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+          selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
           jsEditor.replaceSelection(selected_text + this.textContent);
           jsEditor.focus();
         } else if ( activeEditor.value === "mdEditor" ) {
-          var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+          selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
           mdEditor.replaceSelection(selected_text + this.textContent);
           mdEditor.focus();
@@ -1545,25 +1565,25 @@ var timeout,
 
       // WYSIWYG Editor for Markdown
       document.getElementById("lorem").onclick = function() {
-        var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+        selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
         mdEditor.replaceSelection("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam impedit dolore magnam dolor, atque quia dicta voluptatum. Nam impedit distinctio, tempore molestiae voluptatibus ducimus ullam! Molestiae consectetur, recusandae labore? Cupiditate.");
         mdEditor.focus();
       };
       document.getElementById("bold").onclick = function() {
-        var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+        selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
         mdEditor.replaceSelection("**" + selected_text + "**");
         mdEditor.focus();
       };
       document.getElementById("italic").onclick = function() {
-        var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+        selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
         mdEditor.replaceSelection("*" + selected_text + "*");
         mdEditor.focus();
       };
       document.getElementById("strike").onclick = function() {
-        var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+        selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
         mdEditor.replaceSelection("<strike>" + selected_text + "</strike>");
         mdEditor.focus();
@@ -1571,9 +1591,9 @@ var timeout,
       document.getElementById("anchor").onclick = function() {
         alertify.prompt("Enter URL Below", "",
         function(evt, value) {
-          var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+          selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-          mdEditor.replaceSelection("")
+          mdEditor.replaceSelection("");
           mdEditor.replaceSelection("["+ selected_text +"]("+ value +")");
           mdEditor.focus();
         },
@@ -1582,13 +1602,13 @@ var timeout,
         }).set('basic', true);
       };
       document.getElementById("quote").onclick = function() {
-        var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+        selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
         mdEditor.replaceSelection("\n  > " + selected_text.replace(/\n/g,'\n  > '));
         mdEditor.focus();
       };
       document.getElementById("code").onclick = function() {
-        var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+        selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
         mdEditor.replaceSelection("`" + selected_text + "`");
         mdEditor.focus();
@@ -1596,7 +1616,7 @@ var timeout,
       document.getElementById("img").onclick = function() {
         alertify.prompt("Enter Image URL Below", "",
         function(evt, value) {
-          var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+          selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
           mdEditor.replaceSelection("");
           mdEditor.replaceSelection("!["+ selected_text +"]("+ value +")");
@@ -1607,7 +1627,7 @@ var timeout,
         }).set('basic', true);
       };
       document.getElementById("list-ol").onclick = function() {
-        var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+        selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
         var i, len, text;
         for (i = 0, len = selected_text.split("\n").length, text = ""; i < len; i++) {
@@ -1617,49 +1637,49 @@ var timeout,
         mdEditor.focus();
       };
       document.getElementById("list-ul").onclick = function() {
-        var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+        selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
         mdEditor.replaceSelection("\n  - " + selected_text.replace(/\n/g,'\n  - '));
         mdEditor.focus();
       };
       document.getElementById("h1").onclick = function() {
-        var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+        selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
         mdEditor.replaceSelection("# " + selected_text);
         mdEditor.focus();
       };
       document.getElementById("h2").onclick = function() {
-        var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+        selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
         mdEditor.replaceSelection("## " + selected_text);
         mdEditor.focus();
       };
       document.getElementById("h3").onclick = function() {
-        var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+        selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
         mdEditor.replaceSelection("### " + selected_text);
         mdEditor.focus();
       };
       document.getElementById("h4").onclick = function() {
-        var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+        selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
         mdEditor.replaceSelection("#### " + selected_text);
         mdEditor.focus();
       };
       document.getElementById("h5").onclick = function() {
-        var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+        selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
         mdEditor.replaceSelection("##### " + selected_text);
         mdEditor.focus();
       };
       document.getElementById("h6").onclick = function() {
-        var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+        selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
         mdEditor.replaceSelection("###### " + selected_text);
         mdEditor.focus();
       };
       document.getElementById("hr").onclick = function() {
-        var selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+        selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
         mdEditor.replaceSelection(selected_text + "\n\n----------\n\n");
         mdEditor.focus();
@@ -1672,7 +1692,7 @@ var timeout,
         JSimgUrl        = document.querySelector("[data-url=dataurlimgurl]");
 
     $("#dataurl").on("change", function() {
-      (this.checked) ? $("input[name=menubar].active").trigger("click") : ""
+      (this.checked) ? $("input[name=menubar].active").trigger("click") : "";
     });
       
     // Save Site Title Value for LocalStorage
@@ -2074,23 +2094,23 @@ var timeout,
       options = {
           success: function(file) {
             if (file[0].link.toLowerCase().substring(file[0].link.length - 5) === ".html") {
-              download_to_editor(file[0].link, htmlEditor)
+              download_to_editor(file[0].link, htmlEditor);
             } else if (file[0].link.toLowerCase().substring(file[0].link.length - 5) === ".jade") {
-              download_to_editor(file[0].link, htmlEditor)
+              download_to_editor(file[0].link, htmlEditor);
             } else if (file[0].link.toLowerCase().substring(file[0].link.length - 4) === ".css") {
-              download_to_editor(file[0].link, cssEditor)
+              download_to_editor(file[0].link, cssEditor);
             } else if (file[0].link.toLowerCase().substring(file[0].link.length - 3) === ".js") {
-              download_to_editor(file[0].link, jsEditor)
+              download_to_editor(file[0].link, jsEditor);
             } else if (file[0].link.toLowerCase().substring(file[0].link.length - 7) === ".coffee") {
-              download_to_editor(file[0].link, jsEditor)
+              download_to_editor(file[0].link, jsEditor);
             } else if (file[0].link.toLowerCase().substring(file[0].link.length - 3) === ".md") {
-              download_to_editor(file[0].link, mdEditor)
+              download_to_editor(file[0].link, mdEditor);
             } else if (file[0].link.toLowerCase().substring(file[0].link.length - 4) === ".svg") {
-              download_to_editor(file[0].link, htmlEditor)
+              download_to_editor(file[0].link, htmlEditor);
             } else {
-              alertify.error("Sorry kodeWeave does not support that file type!")
+              alertify.error("Sorry kodeWeave does not support that file type!");
             }
-            window.close()
+            window.close();
           },
           cancel: function() {
             //optional
@@ -2113,33 +2133,35 @@ var timeout,
         loadfile(this);
       });
 
+      function loadfile(input) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          // var path = input.value.replace(/.*(\/|\\)/, '');
+          var path = input.value;
+          if (path.toLowerCase().substring(path.length - 5) === ".html") {
+            htmlEditor.setValue( e.target.result );
+          } else if (path.toLowerCase().substring(path.length - 5) === ".jade") {
+            htmlEditor.setValue( e.target.result );
+          } else if (path.toLowerCase().substring(path.length - 4) === ".css") {
+            cssEditor.setValue( e.target.result );
+          } else if (path.toLowerCase().substring(path.length - 3) === ".js") {
+            jsEditor.setValue( e.target.result );
+          } else if (path.toLowerCase().substring(path.length - 7) === ".coffee") {
+            jsEditor.setValue( e.target.result );
+          } else if (path.toLowerCase().substring(path.length - 3) === ".md") {
+            mdEditor.setValue( e.target.result );
+          } else if (path.toLowerCase().substring(path.length - 3) === ".svg") {
+            htmlEditor.setValue( e.target.result );
+          } else {
+            alertify.error("Sorry kodeWeave does not support that file type!");
+          }
+        };
+        $("input[name=menubar].active").trigger("click");
+        reader.readAsText(input.files[0]);
+      }
+
       if (window.File && window.FileReader && window.FileList && window.Blob) {
-        function loadfile(input) {
-          var reader = new FileReader();
-          reader.onload = function(e) {
-              // var path = input.value.replace(/.*(\/|\\)/, '');
-              var path = input.value
-              if (path.toLowerCase().substring(path.length - 5) === ".html") {
-                htmlEditor.setValue( e.target.result );
-              } else if (path.toLowerCase().substring(path.length - 5) === ".jade") {
-                htmlEditor.setValue( e.target.result );
-              } else if (path.toLowerCase().substring(path.length - 4) === ".css") {
-                cssEditor.setValue( e.target.result );
-              } else if (path.toLowerCase().substring(path.length - 3) === ".js") {
-                jsEditor.setValue( e.target.result );
-              } else if (path.toLowerCase().substring(path.length - 7) === ".coffee") {
-                jsEditor.setValue( e.target.result );
-              } else if (path.toLowerCase().substring(path.length - 3) === ".md") {
-                mdEditor.setValue( e.target.result );
-              } else if (path.toLowerCase().substring(path.length - 3) === ".svg") {
-                htmlEditor.setValue( e.target.result );
-              } else {
-                alertify.error("Sorry kodeWeave does not support that file type!");
-              }
-            }
-          $("input[name=menubar].active").trigger("click");
-          reader.readAsText(input.files[0]);
-        }
+
       } else {
         alertify.error("The File APIs are not fully supported in this browser.");
       }
@@ -2266,7 +2288,7 @@ var timeout,
       $(".html-preprocessor-convert").click(function() {
         var options = {
             pretty: true
-        }
+        };
         if (document.getElementById("html-preprocessor").value == "none") {
           Html2Jade.convertHtml(htmlEditor.getValue(), {selectById: true}, function (err, jadeString) {
             if(err) {
@@ -2281,11 +2303,11 @@ var timeout,
               htmlEditor.execCommand("deleteLine");
               htmlEditor.execCommand("deleteLine");
             }
-          })
+          });
           $("#html-preprocessor").val("jade").trigger("change");
         } else if (document.getElementById("html-preprocessor").value == "jade") {
           $("#html-preprocessor").val("none").trigger("change");
-          var htmlContent = jade.render(htmlEditor.getValue(), options);
+          htmlContent = jade.render(htmlEditor.getValue(), options);
           htmlEditor.setValue(htmlContent);
           beautifyHTML();
         }
@@ -2300,26 +2322,26 @@ var timeout,
           cssEditor.setOption("lint", false);
           cssEditor.refresh();
         } else if (document.getElementById("css-preprocessor").value == "stylus") {
-          var cssContent = cssEditor.getValue();
+          cssContent = cssEditor.getValue();
           stylus(cssContent).render(function(err, out) {
-            if(err != null) {
+            if(err !== null) {
               console.error("something went wrong");
             } else {
               cssEditor.setValue(out);
             }
-          })
+          });
           $("#css-preprocessor").val("none").trigger("change");
           beautifyCSS();
         }
       });
       $(".js-preprocessor-convert").click(function() {
         if (document.getElementById("js-preprocessor").value == "none") {
-          var jsContent = js2coffee.build(jsEditor.getValue()).code;
+          jsContent = js2coffee.build(jsEditor.getValue()).code;
           jsEditor.setValue(jsContent);
           $("#js-preprocessor").val("coffeescript").trigger("change");
         } else if (document.getElementById("js-preprocessor").value == "coffeescript") {
           $("#js-preprocessor").val("none").trigger("change");
-          var jsContent = CoffeeScript.compile(jsEditor.getValue(), { bare: true });
+          jsContent = CoffeeScript.compile(jsEditor.getValue(), { bare: true });
           jsEditor.setValue(jsContent);
           beautifyJS();
         }
@@ -2337,7 +2359,7 @@ var timeout,
 
           JSZipUtils.getBinaryContent('zips/YourWinApp.zip', function(err, data) {
             if(err) {
-              throw err // or handle err
+              throw err; // or handle err
             }
 
             var zip = new JSZip(data);
@@ -2350,7 +2372,7 @@ var timeout,
                 replaceString = "<script src=\"libraries/jquery/jquery.js\"></script\>\n    <script>\n      try {\n        $ = jQuery = module.exports;\n        // If you want module.exports to be empty, uncomment:\n        // module.exports = {};\n      } catch(e) {}\n    </script\>";
 
             closeRefs.setValue(document.querySelector("[data-action=library-code]").value.split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
-            var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
+            htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
             var Img16 = c16[0].toDataURL("image/png");
             var Img32 = c32[0].toDataURL("image/png");
             var Img64 = c64[0].toDataURL("image/png");
@@ -2363,7 +2385,7 @@ var timeout,
             // check if css editor has a value
             if (cssEditor.getValue() !== "") {
               closeRefs.setValue(document.querySelector("[data-action=library-code]").value.split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
-              var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue();
+              htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue();
 
               zip.file("app/css/index.css", yourCSS);
               zip.file("app/index.html", htmlContent);
@@ -2375,7 +2397,7 @@ var timeout,
               } else {
                 closeRefs.setValue(document.querySelector("[data-action=library-code]").value.split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
               }
-              var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
+              htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
 
               zip.file("app/js/index.js", yourJS);
               zip.file("app/index.html", htmlContent);
@@ -2389,7 +2411,7 @@ var timeout,
               zip.file("app/js/index.js", yourJS);
               zip.file("app/index.html", htmlContent);
             }
-            if (cssEditor.getValue() == "" && jsEditor.getValue() == "") {
+            if (cssEditor.getValue() === "" && jsEditor.getValue() === "") {
               closeRefs.setValue(document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n");
               htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n" + closeFinal.getValue();
 
@@ -2416,7 +2438,7 @@ var timeout,
 
           JSZipUtils.getBinaryContent('zips/YourWin32App.zip', function(err, data) {
             if(err) {
-              throw err // or handle err
+              throw err; // or handle err
             }
 
             var zip = new JSZip(data);
@@ -2429,7 +2451,7 @@ var timeout,
                 replaceString = "<script src=\"libraries/jquery/jquery.js\"></script\>\n    <script>\n      try {\n        $ = jQuery = module.exports;\n        // If you want module.exports to be empty, uncomment:\n        // module.exports = {};\n      } catch(e) {}\n    </script\>";
 
             closeRefs.setValue(document.querySelector("[data-action=library-code]").value.split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
-            var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
+            htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
             var Img16 = c16[0].toDataURL("image/png");
             var Img32 = c32[0].toDataURL("image/png");
             var Img64 = c64[0].toDataURL("image/png");
@@ -2442,7 +2464,7 @@ var timeout,
             // check if css editor has a value
             if (cssEditor.getValue() !== "") {
               closeRefs.setValue(document.querySelector("[data-action=library-code]").value.split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
-              var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue();
+              htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue();
 
               zip.file("app/css/index.css", yourCSS);
               zip.file("app/index.html", htmlContent);
@@ -2454,7 +2476,7 @@ var timeout,
               } else {
                 closeRefs.setValue(document.querySelector("[data-action=library-code]").value.split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
               }
-              var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
+              htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
 
               zip.file("app/js/index.js", yourJS);
               zip.file("app/index.html", htmlContent);
@@ -2468,7 +2490,7 @@ var timeout,
               zip.file("app/js/index.js", yourJS);
               zip.file("app/index.html", htmlContent);
             }
-            if (cssEditor.getValue() == "" && jsEditor.getValue() == "") {
+            if (cssEditor.getValue() === "" && jsEditor.getValue() === "") {
               closeRefs.setValue(document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n");
               htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n" + closeFinal.getValue();
 
@@ -2497,7 +2519,7 @@ var timeout,
 
           JSZipUtils.getBinaryContent('zips/YourMacApp.zip', function(err, data) {
             if(err) {
-              throw err // or handle err
+              throw err; // or handle err
             }
 
             var zip = new JSZip(data);
@@ -2510,7 +2532,7 @@ var timeout,
                 replaceString = "<script src=\"libraries/jquery/jquery.js\"></script\>\n    <script>\n      try {\n        $ = jQuery = module.exports;\n        // If you want module.exports to be empty, uncomment:\n        // module.exports = {};\n      } catch(e) {}\n    </script\>";
 
             closeRefs.setValue(document.querySelector("[data-action=library-code]").value.split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
-            var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
+            htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
             var Img16 = c16[0].toDataURL("image/png");
             var Img32 = c32[0].toDataURL("image/png");
             var Img64 = c64[0].toDataURL("image/png");
@@ -2523,7 +2545,7 @@ var timeout,
             // check if css editor has a value
             if (cssEditor.getValue() !== "") {
               closeRefs.setValue(document.querySelector("[data-action=library-code]").value.split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"../libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"../libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
-              var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue();
+              htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue();
 
               zip.file("content/app/css/index.css", yourCSS);
               zip.file("content/app/index.html", htmlContent);
@@ -2535,7 +2557,7 @@ var timeout,
               } else {
                 closeRefs.setValue(document.querySelector("[data-action=library-code]").value.split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"../libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"../libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
               }
-              var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
+              htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
 
               zip.file("content/app/js/index.js", yourJS);
               zip.file("content/app/index.html", htmlContent);
@@ -2549,7 +2571,7 @@ var timeout,
               zip.file("content/app/js/index.js", yourJS);
               zip.file("content/app/index.html", htmlContent);
             }
-            if (cssEditor.getValue() == "" && jsEditor.getValue() == "") {
+            if (cssEditor.getValue() === "" && jsEditor.getValue() === "") {
               closeRefs.setValue(document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n");
               htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n" + closeFinal.getValue();
 
@@ -2580,25 +2602,25 @@ var timeout,
 
           JSZipUtils.getBinaryContent('zips/YourLinApp.zip', function(err, data) {
             if(err) {
-              throw err // or handle err
+              throw err; // or handle err
             }
 
-            var zip = new JSZip()
+            var zip = new JSZip();
 
             renderYourHTML();
             renderYourCSS();
             renderYourJS();
 
             // Put all application files in subfolder for shell script
-            var appName = zip.folder( document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-")  )
-            appName.load(data)
+            var appName = zip.folder( document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-")  );
+            appName.load(data);
 
             // Your Web App
             var grabString = "<script src=\"libraries/jquery/jquery.js\"></script\>",
                 replaceString = "<script src=\"libraries/jquery/jquery.js\"></script\>\n    <script>\n      try {\n        $ = jQuery = module.exports;\n        // If you want module.exports to be empty, uncomment:\n        // module.exports = {};\n      } catch(e) {}\n    </script\>";
 
             closeRefs.setValue(document.querySelector("[data-action=library-code]").value.split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
-            var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
+            htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
             var Img16 = c16[0].toDataURL("image/png");
             var Img32 = c32[0].toDataURL("image/png");
             var Img64 = c64[0].toDataURL("image/png");
@@ -2611,7 +2633,7 @@ var timeout,
             // check if css editor has a value
             if (cssEditor.getValue() !== "") {
               closeRefs.setValue(document.querySelector("[data-action=library-code]").value.split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
-              var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue();
+              htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue();
 
               appName.file("app/css/index.css", yourCSS);
               appName.file("app/index.html", htmlContent);
@@ -2623,7 +2645,7 @@ var timeout,
               } else {
                 closeRefs.setValue(document.querySelector("[data-action=library-code]").value.split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
               }
-              var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
+              htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
 
               appName.file("app/js/index.js", yourJS);
               appName.file("app/index.html", htmlContent);
@@ -2637,7 +2659,7 @@ var timeout,
               appName.file("app/js/index.js", yourJS);
               appName.file("app/index.html", htmlContent);
             }
-            if (cssEditor.getValue() == "" && jsEditor.getValue() == "") {
+            if (cssEditor.getValue() === "" && jsEditor.getValue() === "") {
               closeRefs.setValue(document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n");
               htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n" + closeFinal.getValue();
 
@@ -2652,8 +2674,8 @@ var timeout,
 
             appName.file("package.json", '{\n  "main"  : "app/index.html",\n  "name"  : "'+ document.querySelector("[data-action=sitetitle]").value +'",\n  "window": {\n      "toolbar" : false,\n      "icon"    : "app/icons/128.png",\n      "width"   : 1000,\n      "height"  : 600,\n      "position": "center"\n  }\n}');
 
-            zip.file("make.sh", "if [ -d ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" ]; then\n  typeset LP_FILE=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +".desktop\n\n  # Remove the target file if any\n  rm -f ${LP_FILE}\n  printf \"%s[Desktop Entry]\\nName="+ document.querySelector("[data-action=sitetitle]").value +"\\nPath=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"\\nActions=sudo\\nExec=./"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/electron\\nIcon=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/resources/default_app/icons/128.png\\nTerminal=true\\nType=Application\\nStartupNotify=true > ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +".desktop\" >> ${LP_FILE}\n\n  echo 'Your application and launcher are now located at ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"'\n  rm README.md\n  rm make.sh\n  cd ../\n  rmdir "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"-lin\n  cd ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/\n  chmod 775 electron\nfi\n\nif [ ! -d ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" ]; then\n  mv "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" ${HOME}\n\n  typeset LP_FILE=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +".desktop\n\n  # Remove the target file if any\n  rm -f ${LP_FILE}\n  printf \"%s[Desktop Entry]\\nName="+ document.querySelector("[data-action=sitetitle]").value +"\\nPath=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"\\nActions=sudo\\nExec=./"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/electron\\nIcon=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/resources/default_app/icons/128.png\\nTerminal=true\\nType=Application\\nStartupNotify=true > ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +".desktop\" >> ${LP_FILE}\n\n  echo 'Your application and launcher are now located at ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"'\n  rm README.md\n  rm make.sh\n  cd ../\n  rmdir "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"-lin\n  cd ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/\n  chmod 775 electron\nfi\n\n# For Windows OS\n#if EXIST ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" (\n  #echo Yes\n#) ELSE (\n  #echo No\n#)\n")
-            zip.file("README.md", "### Instructions\n 1. Extract the `"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"-lin.zip` folder anywhere on your computer except the home folder. \n 2. Open a terminal and then navigate to "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"'s directory and `run the make.sh file`.\n\n  **example**:\n  cd Downloads/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"-lin\n\n 3. This will move the "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" sibling folder and it's descendants to your home directory and create an application launcher.\n")
+            zip.file("make.sh", "if [ -d ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" ]; then\n  typeset LP_FILE=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +".desktop\n\n  # Remove the target file if any\n  rm -f ${LP_FILE}\n  printf \"%s[Desktop Entry]\\nName="+ document.querySelector("[data-action=sitetitle]").value +"\\nPath=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"\\nActions=sudo\\nExec=./"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/electron\\nIcon=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/resources/default_app/icons/128.png\\nTerminal=true\\nType=Application\\nStartupNotify=true > ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +".desktop\" >> ${LP_FILE}\n\n  echo 'Your application and launcher are now located at ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"'\n  rm README.md\n  rm make.sh\n  cd ../\n  rmdir "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"-lin\n  cd ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/\n  chmod 775 electron\nfi\n\nif [ ! -d ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" ]; then\n  mv "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" ${HOME}\n\n  typeset LP_FILE=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +".desktop\n\n  # Remove the target file if any\n  rm -f ${LP_FILE}\n  printf \"%s[Desktop Entry]\\nName="+ document.querySelector("[data-action=sitetitle]").value +"\\nPath=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"\\nActions=sudo\\nExec=./"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/electron\\nIcon=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/resources/default_app/icons/128.png\\nTerminal=true\\nType=Application\\nStartupNotify=true > ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +".desktop\" >> ${LP_FILE}\n\n  echo 'Your application and launcher are now located at ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"'\n  rm README.md\n  rm make.sh\n  cd ../\n  rmdir "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"-lin\n  cd ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/\n  chmod 775 electron\nfi\n\n# For Windows OS\n#if EXIST ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" (\n  #echo Yes\n#) ELSE (\n  #echo No\n#)\n");
+            zip.file("README.md", "### Instructions\n 1. Extract the `"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"-lin.zip` folder anywhere on your computer except the home folder. \n 2. Open a terminal and then navigate to "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"'s directory and `run the make.sh file`.\n\n  **example**:\n  cd Downloads/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"-lin\n\n 3. This will move the "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" sibling folder and it's descendants to your home directory and create an application launcher.\n");
 
             var content = zip.generate({type:"blob"});
             saveAs(content, document.querySelector("[data-action=sitetitle]").value.split(" ").join("-") + "-lin.zip");
@@ -2667,25 +2689,25 @@ var timeout,
 
           JSZipUtils.getBinaryContent('zips/YourLin32App.zip', function(err, data) {
             if(err) {
-              throw err // or handle err
+              throw err; // or handle err
             }
 
-            var zip = new JSZip()
+            var zip = new JSZip();
 
             renderYourHTML();
             renderYourCSS();
             renderYourJS();
 
             // Put all application files in subfolder for shell script
-            var appName = zip.folder( document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-")  )
-            appName.load(data)
+            var appName = zip.folder( document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-")  );
+            appName.load(data);
 
             // Your Web App
             var grabString = "<script src=\"libraries/jquery/jquery.js\"></script\>",
                 replaceString = "<script src=\"libraries/jquery/jquery.js\"></script\>\n    <script>\n      try {\n        $ = jQuery = module.exports;\n        // If you want module.exports to be empty, uncomment:\n        // module.exports = {};\n      } catch(e) {}\n    </script\>";
 
             closeRefs.setValue(document.querySelector("[data-action=library-code]").value.split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
-            var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
+            htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
             var Img16 = c16[0].toDataURL("image/png");
             var Img32 = c32[0].toDataURL("image/png");
             var Img64 = c64[0].toDataURL("image/png");
@@ -2698,7 +2720,7 @@ var timeout,
             // check if css editor has a value
             if (cssEditor.getValue() !== "") {
               closeRefs.setValue(document.querySelector("[data-action=library-code]").value.split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
-              var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue();
+              htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue();
 
               appName.file("app/css/index.css", yourCSS);
               appName.file("app/index.html", htmlContent);
@@ -2710,7 +2732,7 @@ var timeout,
               } else {
                 closeRefs.setValue(document.querySelector("[data-action=library-code]").value.split(grabString).join(replaceString) + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
               }
-              var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
+              htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
 
               appName.file("app/js/index.js", yourJS);
               appName.file("app/index.html", htmlContent);
@@ -2724,7 +2746,7 @@ var timeout,
               appName.file("app/js/index.js", yourJS);
               appName.file("app/index.html", htmlContent);
             }
-            if (cssEditor.getValue() == "" && jsEditor.getValue() == "") {
+            if (cssEditor.getValue() === "" && jsEditor.getValue() === "") {
               closeRefs.setValue(document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n");
               htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n" + closeFinal.getValue();
 
@@ -2739,8 +2761,8 @@ var timeout,
 
             appName.file("package.json", '{\n  "main"  : "app/index.html",\n  "name"  : "'+ document.querySelector("[data-action=sitetitle]").value +'",\n  "window": {\n      "toolbar" : false,\n      "icon"    : "app/icons/128.png",\n      "width"   : 1000,\n      "height"  : 600,\n      "position": "center"\n  }\n}');
 
-            zip.file("make.sh", "if [ -d ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" ]; then\n  typeset LP_FILE=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +".desktop\n\n  # Remove the target file if any\n  rm -f ${LP_FILE}\n  printf \"%s[Desktop Entry]\\nName="+ document.querySelector("[data-action=sitetitle]").value +"\\nPath=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"\\nActions=sudo\\nExec=./"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/electron\\nIcon=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/resources/default_app/icons/128.png\\nTerminal=true\\nType=Application\\nStartupNotify=true > ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +".desktop\" >> ${LP_FILE}\n\n  echo 'Your application and launcher are now located at ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"'\n  rm README.md\n  rm make.sh\n  cd ../\n  rmdir "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"-lin32\n  cd ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/\n  chmod 775 electron\nfi\n\nif [ ! -d ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" ]; then\n  mv "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" ${HOME}\n\n  typeset LP_FILE=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +".desktop\n\n  # Remove the target file if any\n  rm -f ${LP_FILE}\n  printf \"%s[Desktop Entry]\\nName="+ document.querySelector("[data-action=sitetitle]").value +"\\nPath=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"\\nActions=sudo\\nExec=./"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/electron\\nIcon=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/resources/default_app/icons/128.png\\nTerminal=true\\nType=Application\\nStartupNotify=true > ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +".desktop\" >> ${LP_FILE}\n\n  echo 'Your application and launcher are now located at ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"'\n  rm README.md\n  rm make.sh\n  cd ../\n  rmdir "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"-lin32\n  cd ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/\n  chmod 775 electron\nfi\n\n# For Windows OS\n#if EXIST ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" (\n  #echo Yes\n#) ELSE (\n  #echo No\n#)\n")
-            zip.file("README.md", "### Instructions\n 1. Extract the `"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"-lin32.zip` folder anywhere on your computer except the home folder. \n 2. Open a terminal and then navigate to "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"'s directory and `run the make.sh file`.\n\n  **example**:\n  cd Downloads/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"-lin32\n\n 3. This will move the "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" sibling folder and it's descendants to your home directory and create an application launcher.\n")
+            zip.file("make.sh", "if [ -d ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" ]; then\n  typeset LP_FILE=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +".desktop\n\n  # Remove the target file if any\n  rm -f ${LP_FILE}\n  printf \"%s[Desktop Entry]\\nName="+ document.querySelector("[data-action=sitetitle]").value +"\\nPath=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"\\nActions=sudo\\nExec=./"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/electron\\nIcon=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/resources/default_app/icons/128.png\\nTerminal=true\\nType=Application\\nStartupNotify=true > ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +".desktop\" >> ${LP_FILE}\n\n  echo 'Your application and launcher are now located at ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"'\n  rm README.md\n  rm make.sh\n  cd ../\n  rmdir "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"-lin32\n  cd ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/\n  chmod 775 electron\nfi\n\nif [ ! -d ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" ]; then\n  mv "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" ${HOME}\n\n  typeset LP_FILE=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +".desktop\n\n  # Remove the target file if any\n  rm -f ${LP_FILE}\n  printf \"%s[Desktop Entry]\\nName="+ document.querySelector("[data-action=sitetitle]").value +"\\nPath=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"\\nActions=sudo\\nExec=./"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/electron\\nIcon=${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/resources/default_app/icons/128.png\\nTerminal=true\\nType=Application\\nStartupNotify=true > ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +".desktop\" >> ${LP_FILE}\n\n  echo 'Your application and launcher are now located at ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"'\n  rm README.md\n  rm make.sh\n  cd ../\n  rmdir "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"-lin32\n  cd ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"/\n  chmod 775 electron\nfi\n\n# For Windows OS\n#if EXIST ${HOME}/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" (\n  #echo Yes\n#) ELSE (\n  #echo No\n#)\n");
+            zip.file("README.md", "### Instructions\n 1. Extract the `"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"-lin32.zip` folder anywhere on your computer except the home folder. \n 2. Open a terminal and then navigate to "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"'s directory and `run the make.sh file`.\n\n  **example**:\n  cd Downloads/"+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +"-lin32\n\n 3. This will move the "+ document.querySelector("[data-action=sitetitle]").value.replace(/ /g, "-") +" sibling folder and it's descendants to your home directory and create an application launcher.\n");
 
             var content = zip.generate({type:"blob"});
             saveAs(content, document.querySelector("[data-action=sitetitle]").value.split(" ").join("-") + "-lin32.zip");
@@ -2766,7 +2788,7 @@ var timeout,
             $("[data-action=chromeappdialog]").fadeOut();
             JSZipUtils.getBinaryContent("zips/font-awesome.zip", function(err, data) {
               if(err) {
-                throw err // or handle err
+                throw err; // or handle err
               }
 
               var zip = new JSZip(data);
@@ -2780,7 +2802,7 @@ var timeout,
               // check if css editor has a value
               if (cssEditor.getValue() !== "") {
                 closeRefs.setValue(document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
-                var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue();
+                htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue();
 
                 zip.file("app/css/index.css", yourCSS);
                 zip.file("app/index.html", htmlContent);
@@ -2792,7 +2814,7 @@ var timeout,
                 } else {
                   closeRefs.setValue(document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
                 }
-                var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
+                htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
 
                 zip.file("app/js/index.js", yourJS);
                 zip.file("app/index.html", htmlContent);
@@ -2806,7 +2828,7 @@ var timeout,
                 zip.file("app/js/index.js", yourJS);
                 zip.file("app/index.html", htmlContent);
               }
-              if (cssEditor.getValue() == "" && jsEditor.getValue() == "") {
+              if (cssEditor.getValue() === "" && jsEditor.getValue() === "") {
                 closeRefs.setValue(document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n");
                 htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n" + closeFinal.getValue();
 
@@ -2872,7 +2894,7 @@ var timeout,
             $("[data-action=chromeextdialog]").fadeOut();
             JSZipUtils.getBinaryContent("zips/font-awesome.zip", function(err, data) {
               if(err) {
-                throw err // or handle err
+                throw err; // or handle err
               }
 
               var zip = new JSZip(data);
@@ -2884,7 +2906,7 @@ var timeout,
               // check if css editor has a value
               if (cssEditor.getValue() !== "") {
                 closeRefs.setValue(document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
-                var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue();
+                htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue();
 
                 zip.file("css/index.css", yourCSS);
                 zip.file("index.html", htmlContent);
@@ -2896,7 +2918,7 @@ var timeout,
                 } else {
                   closeRefs.setValue(document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
                 }
-                var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
+                htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
 
                 zip.file("js/index.js", yourJS);
                 zip.file("index.html", htmlContent);
@@ -2910,7 +2932,7 @@ var timeout,
                 zip.file("js/index.js", yourJS);
                 zip.file("index.html", htmlContent);
               }
-              if (cssEditor.getValue() == "" && jsEditor.getValue() == "") {
+              if (cssEditor.getValue() === "" && jsEditor.getValue() === "") {
                 closeRefs.setValue(document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n");
                 htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n" + closeFinal.getValue();
 
@@ -2977,7 +2999,7 @@ var timeout,
 
         JSZipUtils.getBinaryContent("zips/font-awesome.zip", function(err, data) {
           if(err) {
-            throw err // or handle err
+            throw err; // or handle err
           }
 
           var zip = new JSZip(data);
@@ -2988,7 +3010,7 @@ var timeout,
           // check if css editor has a value
           if (cssEditor.getValue() !== "") {
             closeRefs.setValue(document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
-            var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue();
+            htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n    " + closeFinal.getValue();
 
             zip.file("css/index.css", yourCSS);
             zip.file("index.html", htmlContent);
@@ -3001,7 +3023,7 @@ var timeout,
             } else {
               closeRefs.setValue(document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />\n    <link rel=\"stylesheet\" href=\"css/index.css\" />" + "\n  </head>\n  <body>\n\n");
             }
-            var htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
+            htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n\n    <script src=\"js/index.js\"></script>" + closeFinal.getValue();
 
             zip.file("js/index.js", yourJS);
             zip.file("index.html", htmlContent);
@@ -3015,7 +3037,7 @@ var timeout,
             zip.file("js/index.js", yourJS);
             zip.file("index.html", htmlContent);
           }
-          if (cssEditor.getValue() == "" && jsEditor.getValue() == "") {
+          if (cssEditor.getValue() === "" && jsEditor.getValue() === "") {
             closeRefs.setValue(document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\" />\n    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\" />" + "\n  </head>\n  <body>\n\n");
             htmlContent = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + closeRefs.getValue() + yourHTML + "\n" + closeFinal.getValue();
 
@@ -3068,25 +3090,25 @@ var timeout,
       // Update TogetherJS
       TogetherJS.hub.on("update-html", function(msg) {
         if (!msg.sameUrl) {
-            return
+            return;
         }
         htmlEditor.setValue(msg.output);
       });
       TogetherJS.hub.on("update-css", function(msg) {
         if (!msg.sameUrl) {
-            return
+            return;
         }
         cssEditor.setValue(msg.output);
       });
       TogetherJS.hub.on("update-js", function(msg) {
         if (!msg.sameUrl) {
-            return
+            return;
         }
         jsEditor.setValue(msg.output);
       });
       TogetherJS.hub.on("update-md", function(msg) {
         if (!msg.sameUrl) {
-            return
+            return;
         }
         mdEditor.setValue(msg.output);
       });
@@ -3157,9 +3179,9 @@ var timeout,
       $("[data-action=sitetitle]").on("keyup change", function() {
         localStorage.setItem("siteTitle", this.value);
         if (this.value.split(" ").join("") === "") {
-          document.title = "kodeWeave"
+          document.title = "kodeWeave";
         } else {
-          document.title = "kodeWeave: " + this.value
+          document.title = "kodeWeave: " + this.value;
         }
       });
       
@@ -3358,7 +3380,7 @@ var timeout,
         //   "zip.file('libraries/codemirror/mode/stylus/stylus.js', $('.codemirror53').val());\n"
         // ];
 
-        var grabCodemirror = "zip.file('libraries/codemirror/lib/codemirror.css', $('.codemirror1').val());\n\n      zip.file('libraries/codemirror/addon/fold/foldgutter.css', $('.codemirror2').val());\n\n      zip.file('libraries/codemirror/lib/codemirror.js', $('.codemirror3').val());\n\n      zip.file('libraries/codemirror/mode/javascript/javascript.js', $('.codemirror7').val());\n\n      zip.file('libraries/codemirror/mode/xml/xml.js', $('.codemirror8').val());\n\n      zip.file('libraries/codemirror/mode/css/css.js', $('.codemirror9').val());\n\n      zip.file('libraries/codemirror/mode/htmlmixed/htmlmixed.js', $('.codemirror10').val());\n\n      zip.file('libraries/codemirror/addon/edit/closetag.js', $('.codemirror11').val());\n\n      zip.file('libraries/codemirror/addon/edit/matchbrackets.js', $('.codemirror12').val());\n\n      zip.file('libraries/codemirror/addon/selection/active-line.js', $('.codemirror13').val());\n\n      zip.file('libraries/codemirror/addon/fold/foldcode.js', $('.codemirror14').val());\n\n      zip.file('libraries/codemirror/addon/fold/foldgutter.js', $('.codemirror15').val());\n\n      zip.file('libraries/codemirror/addon/fold/brace-fold.js', $('.codemirror16').val());\n\n      zip.file('libraries/codemirror/addon/fold/xml-fold.js', $('.codemirror17').val());\n\n      zip.file('libraries/codemirror/addon/fold/comment-fold.js', $('.codemirror18').val());\n\n      zip.file('libraries/codemirror/addon/search/search.js', $('.codemirror19').val());\n\n      zip.file('libraries/codemirror/addon/search/searchcursor.js', $('.codemirror20').val());\n\n      zip.file('libraries/codemirror/addon/dialog/dialog.js', $('.codemirror21').val());\n\n      zip.file('libraries/codemirror/addon/hint/show-hint.js', $('.codemirror22').val());\n\n      zip.file('libraries/codemirror/addon/hint/xml-hint.js', $('.codemirror23').val());\n\n      zip.file('libraries/codemirror/addon/hint/html-hint.js', $('.codemirror24').val());\n\n      zip.file('libraries/codemirror/addon/hint/css-hint.js', $('.codemirror25').val());\n\n      zip.file('libraries/codemirror/addon/hint/javascript-hint.js', $('.codemirror26').val());\n\n      zip.file('libraries/codemirror/addon/search/match-highlighter.js', $('.codemirror27').val());\n\n      zip.file('libraries/codemirror/htmlhint.js', $('.codemirror28').val());\n\n      zip.file('libraries/codemirror/csslint.js', $('.codemirror29').val());\n\n      zip.file('libraries/codemirror/jshint.js', $('.codemirror30').val());\n\n      zip.file('libraries/codemirror/addon/lint/lint.js', $('.codemirror31').val());\n\n      zip.file('libraries/codemirror/addon/lint/html-lint.js', $('.codemirror32').val());\n\n      zip.file('libraries/codemirror/addon/lint/css-lint.js', $('.codemirror33').val());\n\n      zip.file('libraries/codemirror/addon/lint/javascript-lint.js', $('.codemirror34').val());\n\n      zip.file('libraries/codemirror/inlet.min.js', $('.codemirror35').val());\n\n      zip.file('libraries/codemirror/inlet.css', $('.codemirror36').val());\n\n      zip.file('libraries/codemirror/emmet.js', $('.codemirror37').val());\n\n      zip.file('libraries/codemirror/addon/lint/lint.css', $('.codemirror38').val());\n\n      zip.file('libraries/codemirror/addon/dialog/dialog.css', $('.codemirror39').val());\n\n      zip.file('libraries/codemirror/addon/hint/show-hint.css', $('.codemirror40').val());\n\n      zip.file('libraries/codemirror/addon/search/jump-to-line.js', $('.codemirror41').val());\n\n      zip.file('libraries/codemirror/markdown.js', $('.codemirror42').val());\n\n      zip.file('libraries/codemirror/continuelist.js', $('.codemirror43').val());\n\n      zip.file('libraries/codemirror/mode/haml/haml.js', $('.codemirror44').val());\n\n      zip.file('libraries/codemirror/mode/jade/jade.js', $('.codemirror45').val());\n\n      zip.file('libraries/codemirror/mode/sass/sass.js', $('.codemirror46').val());\n\n      zip.file('libraries/codemirror/mode/livescript/livescript.js', $('.codemirror47').val());\n\n      zip.file('libraries/codemirror/mode/coffeescript/coffeescript.js', $('.codemirror48').val());\n\n      zip.file('libraries/codemirror/mode/ruby/ruby.js', $('.codemirror49').val());\n\n      zip.file('libraries/codemirror/coffee-script.js', $('.codemirror50').val());\n\n      zip.file('libraries/codemirror/coffeelint.js', $('.codemirror51').val());\n\n      zip.file('libraries/codemirror/addon/lint/coffeescript-lint.js', $('.codemirror52').val());\n      zip.file('libraries/codemirror/mode/stylus/stylus.js', $('.codemirror53').val());\n"
+        var grabCodemirror = "zip.file('libraries/codemirror/lib/codemirror.css', $('.codemirror1').val());\n\n      zip.file('libraries/codemirror/addon/fold/foldgutter.css', $('.codemirror2').val());\n\n      zip.file('libraries/codemirror/lib/codemirror.js', $('.codemirror3').val());\n\n      zip.file('libraries/codemirror/mode/javascript/javascript.js', $('.codemirror7').val());\n\n      zip.file('libraries/codemirror/mode/xml/xml.js', $('.codemirror8').val());\n\n      zip.file('libraries/codemirror/mode/css/css.js', $('.codemirror9').val());\n\n      zip.file('libraries/codemirror/mode/htmlmixed/htmlmixed.js', $('.codemirror10').val());\n\n      zip.file('libraries/codemirror/addon/edit/closetag.js', $('.codemirror11').val());\n\n      zip.file('libraries/codemirror/addon/edit/matchbrackets.js', $('.codemirror12').val());\n\n      zip.file('libraries/codemirror/addon/selection/active-line.js', $('.codemirror13').val());\n\n      zip.file('libraries/codemirror/addon/fold/foldcode.js', $('.codemirror14').val());\n\n      zip.file('libraries/codemirror/addon/fold/foldgutter.js', $('.codemirror15').val());\n\n      zip.file('libraries/codemirror/addon/fold/brace-fold.js', $('.codemirror16').val());\n\n      zip.file('libraries/codemirror/addon/fold/xml-fold.js', $('.codemirror17').val());\n\n      zip.file('libraries/codemirror/addon/fold/comment-fold.js', $('.codemirror18').val());\n\n      zip.file('libraries/codemirror/addon/search/search.js', $('.codemirror19').val());\n\n      zip.file('libraries/codemirror/addon/search/searchcursor.js', $('.codemirror20').val());\n\n      zip.file('libraries/codemirror/addon/dialog/dialog.js', $('.codemirror21').val());\n\n      zip.file('libraries/codemirror/addon/hint/show-hint.js', $('.codemirror22').val());\n\n      zip.file('libraries/codemirror/addon/hint/xml-hint.js', $('.codemirror23').val());\n\n      zip.file('libraries/codemirror/addon/hint/html-hint.js', $('.codemirror24').val());\n\n      zip.file('libraries/codemirror/addon/hint/css-hint.js', $('.codemirror25').val());\n\n      zip.file('libraries/codemirror/addon/hint/javascript-hint.js', $('.codemirror26').val());\n\n      zip.file('libraries/codemirror/addon/search/match-highlighter.js', $('.codemirror27').val());\n\n      zip.file('libraries/codemirror/htmlhint.js', $('.codemirror28').val());\n\n      zip.file('libraries/codemirror/csslint.js', $('.codemirror29').val());\n\n      zip.file('libraries/codemirror/jshint.js', $('.codemirror30').val());\n\n      zip.file('libraries/codemirror/addon/lint/lint.js', $('.codemirror31').val());\n\n      zip.file('libraries/codemirror/addon/lint/html-lint.js', $('.codemirror32').val());\n\n      zip.file('libraries/codemirror/addon/lint/css-lint.js', $('.codemirror33').val());\n\n      zip.file('libraries/codemirror/addon/lint/javascript-lint.js', $('.codemirror34').val());\n\n      zip.file('libraries/codemirror/inlet.min.js', $('.codemirror35').val());\n\n      zip.file('libraries/codemirror/inlet.css', $('.codemirror36').val());\n\n      zip.file('libraries/codemirror/emmet.js', $('.codemirror37').val());\n\n      zip.file('libraries/codemirror/addon/lint/lint.css', $('.codemirror38').val());\n\n      zip.file('libraries/codemirror/addon/dialog/dialog.css', $('.codemirror39').val());\n\n      zip.file('libraries/codemirror/addon/hint/show-hint.css', $('.codemirror40').val());\n\n      zip.file('libraries/codemirror/addon/search/jump-to-line.js', $('.codemirror41').val());\n\n      zip.file('libraries/codemirror/markdown.js', $('.codemirror42').val());\n\n      zip.file('libraries/codemirror/continuelist.js', $('.codemirror43').val());\n\n      zip.file('libraries/codemirror/mode/haml/haml.js', $('.codemirror44').val());\n\n      zip.file('libraries/codemirror/mode/jade/jade.js', $('.codemirror45').val());\n\n      zip.file('libraries/codemirror/mode/sass/sass.js', $('.codemirror46').val());\n\n      zip.file('libraries/codemirror/mode/livescript/livescript.js', $('.codemirror47').val());\n\n      zip.file('libraries/codemirror/mode/coffeescript/coffeescript.js', $('.codemirror48').val());\n\n      zip.file('libraries/codemirror/mode/ruby/ruby.js', $('.codemirror49').val());\n\n      zip.file('libraries/codemirror/coffee-script.js', $('.codemirror50').val());\n\n      zip.file('libraries/codemirror/coffeelint.js', $('.codemirror51').val());\n\n      zip.file('libraries/codemirror/addon/lint/coffeescript-lint.js', $('.codemirror52').val());\n      zip.file('libraries/codemirror/mode/stylus/stylus.js', $('.codemirror53').val());\n";
 
         $('.codemirror').trigger("change");
         $(".codemirrorzip").val(grabCodemirror);
@@ -3718,7 +3740,7 @@ var ruleSets = {
   "id-unique": true,
   "src-not-empty": true,
   "attr-no-duplication": true
-}
+};
 
 // IntelliSense with Tern
 function getURL(url, c) {
@@ -3753,37 +3775,37 @@ var htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
   lint: true,
   gutters: ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"],
   extraKeys: {
-    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()) },
-    "Ctrl-'": function(){ applyLowercase() },
-    "Ctrl-\\": function(){ applyUppercase() },
-    "Cmd-'": function(){ applyLowercase() },
-    "Cmd-\\": function(){ applyUppercase() },
-    "Shift-Ctrl-'": function(){ applyMinify() },
-    "Shift-Ctrl-\\": function(){ applyBeautify() },
-    "Shift-Cmd-'": function(){ applyMinify() },
-    "Shift-Cmd-\\": function(){ applyBeautify() },
+    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); },
+    "Ctrl-'": function(){ applyLowercase(); },
+    "Ctrl-\\": function(){ applyUppercase(); },
+    "Cmd-'": function(){ applyLowercase(); },
+    "Cmd-\\": function(){ applyUppercase(); },
+    "Shift-Ctrl-'": function(){ applyMinify(); },
+    "Shift-Ctrl-\\": function(){ applyBeautify(); },
+    "Shift-Cmd-'": function(){ applyMinify(); },
+    "Shift-Cmd-\\": function(){ applyBeautify(); },
     "Cmd-L": function(){ $("[data-action=gotoline]").trigger("click"); },
     "Ctrl-L": function(){ $("[data-action=gotoline]").trigger("click"); },
     "Alt-Delete": function(cm){ cm.execCommand("delWordAfter"); },
     "Alt-Shift-Cmd-[": function(cm){ 
       for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
         cm.foldCode({line: l, ch: 0}, null, "fold");
-   	  }
+      }
     },
     "Alt-Shift-Ctrl-[": function(cm){ 
       for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
         cm.foldCode({line: l, ch: 0}, null, "fold");
-   	  }
+      }
     },
     "Alt-Shift-Cmd-]": function(cm){ 
       for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
         cm.foldCode({line: l, ch: 0}, null, "unfold");
-   	  }
+      }
     },
     "Alt-Shift-Ctrl-]": function(cm){ 
       for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
         cm.foldCode({line: l, ch: 0}, null, "unfold");
-   	  }
+      }
     }
   },
   value: "<!-- comment -->\nhello world!",
@@ -3803,37 +3825,37 @@ var cssEditor = CodeMirror(document.getElementById("cssEditor"), {
   lint: true,
   gutters: ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"],
   extraKeys: {
-    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()) },
-    "Ctrl-'": function(){ applyLowercase() },
-    "Ctrl-\\": function(){ applyUppercase() },
-    "Cmd-'": function(){ applyLowercase() },
-    "Cmd-\\": function(){ applyUppercase() },
-    "Shift-Ctrl-'": function(){ applyMinify() },
-    "Shift-Ctrl-\\": function(){ applyBeautify() },
-    "Shift-Cmd-'": function(){ applyMinify() },
-    "Shift-Cmd-\\": function(){ applyBeautify() },
+    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); },
+    "Ctrl-'": function(){ applyLowercase(); },
+    "Ctrl-\\": function(){ applyUppercase(); },
+    "Cmd-'": function(){ applyLowercase(); },
+    "Cmd-\\": function(){ applyUppercase(); },
+    "Shift-Ctrl-'": function(){ applyMinify(); },
+    "Shift-Ctrl-\\": function(){ applyBeautify(); },
+    "Shift-Cmd-'": function(){ applyMinify(); },
+    "Shift-Cmd-\\": function(){ applyBeautify(); },
     "Cmd-L": function(){ $("[data-action=gotoline]").trigger("click"); },
     "Ctrl-L": function(){ $("[data-action=gotoline]").trigger("click"); },
     "Alt-Delete": function(cm){ cm.execCommand("delWordAfter"); },
     "Alt-Shift-Cmd-[": function(cm){ 
       for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
         cm.foldCode({line: l, ch: 0}, null, "fold");
-   	  }
+      }
     },
     "Alt-Shift-Ctrl-[": function(cm){ 
       for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
         cm.foldCode({line: l, ch: 0}, null, "fold");
-   	  }
+      }
     },
     "Alt-Shift-Cmd-]": function(cm){ 
       for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
         cm.foldCode({line: l, ch: 0}, null, "unfold");
-   	  }
+      }
     },
     "Alt-Shift-Ctrl-]": function(cm){ 
       for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
         cm.foldCode({line: l, ch: 0}, null, "unfold");
-   	  }
+      }
     }
   },
   paletteHints: true
@@ -3855,15 +3877,15 @@ var jsEditor = CodeMirror(document.getElementById("jsEditor"), {
   },
   gutters: ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"],
   extraKeys: {
-    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()) },
-    "Ctrl-'": function(){ applyLowercase() },
-    "Ctrl-\\": function(){ applyUppercase() },
-    "Cmd-'": function(){ applyLowercase() },
-    "Cmd-\\": function(){ applyUppercase() },
-    "Shift-Ctrl-'": function(){ applyMinify() },
-    "Shift-Ctrl-\\": function(){ applyBeautify() },
-    "Shift-Cmd-'": function(){ applyMinify() },
-    "Shift-Cmd-\\": function(){ applyBeautify() },
+    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); },
+    "Ctrl-'": function(){ applyLowercase(); },
+    "Ctrl-\\": function(){ applyUppercase(); },
+    "Cmd-'": function(){ applyLowercase(); },
+    "Cmd-\\": function(){ applyUppercase(); },
+    "Shift-Ctrl-'": function(){ applyMinify(); },
+    "Shift-Ctrl-\\": function(){ applyBeautify(); },
+    "Shift-Cmd-'": function(){ applyMinify(); },
+    "Shift-Cmd-\\": function(){ applyBeautify(); },
     "Ctrl-Space": "autocomplete",
     "Cmd-L": function(){ $("[data-action=gotoline]").trigger("click"); },
     "Ctrl-L": function(){ $("[data-action=gotoline]").trigger("click"); },
@@ -3871,22 +3893,22 @@ var jsEditor = CodeMirror(document.getElementById("jsEditor"), {
     "Alt-Shift-Cmd-[": function(cm){ 
       for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
         cm.foldCode({line: l, ch: 0}, null, "fold");
-   	  }
+      }
     },
     "Alt-Shift-Ctrl-[": function(cm){ 
       for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
         cm.foldCode({line: l, ch: 0}, null, "fold");
-   	  }
+      }
     },
     "Alt-Shift-Cmd-]": function(cm){ 
       for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
         cm.foldCode({line: l, ch: 0}, null, "unfold");
-   	  }
+      }
     },
     "Alt-Shift-Ctrl-]": function(cm){ 
       for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
         cm.foldCode({line: l, ch: 0}, null, "unfold");
-   	  }
+      }
     },
     "Cmd-/": function(cm){ 
       for (var line = cm.getCursor("to").line; line >= cm.getCursor("from").line; line--) {
@@ -3915,37 +3937,37 @@ var mdEditor = CodeMirror(document.getElementById("mdEditor"), {
   gutters: ["CodeMirror-linenumbers"],
   extraKeys: {
     "Enter": "newlineAndIndentContinueMarkdownList",
-    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()) },
-    "Ctrl-'": function(){ applyLowercase() },
-    "Ctrl-\\": function(){ applyUppercase() },
-    "Cmd-'": function(){ applyLowercase() },
-    "Cmd-\\": function(){ applyUppercase() },
-    "Shift-Ctrl-'": function(){ applyMinify() },
-    "Shift-Ctrl-\\": function(){ applyBeautify() },
-    "Shift-Cmd-'": function(){ applyMinify() },
-    "Shift-Cmd-\\": function(){ applyBeautify() },
+    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); },
+    "Ctrl-'": function(){ applyLowercase(); },
+    "Ctrl-\\": function(){ applyUppercase(); },
+    "Cmd-'": function(){ applyLowercase(); },
+    "Cmd-\\": function(){ applyUppercase(); },
+    "Shift-Ctrl-'": function(){ applyMinify(); },
+    "Shift-Ctrl-\\": function(){ applyBeautify(); },
+    "Shift-Cmd-'": function(){ applyMinify(); },
+    "Shift-Cmd-\\": function(){ applyBeautify(); },
     "Cmd-L": function(){ $("[data-action=gotoline]").trigger("click"); },
     "Ctrl-L": function(){ $("[data-action=gotoline]").trigger("click"); },
     "Alt-Delete": function(cm){ cm.execCommand("delWordAfter"); },
     "Alt-Shift-Cmd-[": function(cm){ 
       for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
         cm.foldCode({line: l, ch: 0}, null, "fold");
-   	  }
+      }
     },
     "Alt-Shift-Ctrl-[": function(cm){ 
       for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
         cm.foldCode({line: l, ch: 0}, null, "fold");
-   	  }
+      }
     },
     "Alt-Shift-Cmd-]": function(cm){ 
       for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
         cm.foldCode({line: l, ch: 0}, null, "unfold");
-   	  }
+      }
     },
     "Alt-Shift-Ctrl-]": function(cm){ 
       for (var l = cm.firstLine(); l <= cm.lastLine(); ++l) {
         cm.foldCode({line: l, ch: 0}, null, "unfold");
-   	  }
+      }
     }
   }
 });
@@ -3985,14 +4007,14 @@ var closeFinal = CodeMirror(document.getElementById("closeFinal"), {
 
 // Render Chosen CSS Preprocessor
 function cssPreProcessor(cssSelected) {
-  var cssSelected = $("#css-preprocessor  option:selected").val();
+  cssSelected = $("#css-preprocessor  option:selected").val();
 
   if (cssSelected == "none") {
     cssContent = cssEditor.getValue();
   } else if (cssSelected == "stylus") {
     var cssVal = cssEditor.getValue();
     stylus(cssVal).render(function(err, out) {
-      if(err != null) {
+      if(err !== null) {
         console.error("something went wrong");
       } else {
         cssContent = out;
@@ -4024,14 +4046,14 @@ function updatePreview() {
   }
 
   if ( htmlSelected == "none") {
-    var htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    " + jsContent + closeFinal.getValue();
+    htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    " + jsContent + closeFinal.getValue();
     preview.write(htmlContent);
   } else if ( htmlSelected == "jade") {
     var options = {
         pretty: true
-    }
+    };
     var jade2HTML = jade.render(htmlEditor.getValue(), options);
-    var htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + jsContent + closeFinal.getValue();
+    htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + jsContent + closeFinal.getValue();
     preview.write(htmlContent);
   }
   preview.close();
@@ -4138,158 +4160,158 @@ function displayPreview(file) {
       // x, y, width, height
       ctx16.clearRect(0, 0, 16, 16);
       ctx16.drawImage(img16, 0, 0, 16, 16);
-    }
+    };
     img32.onload = function() {
       // x, y, width, height
       ctx32.clearRect(0, 0, 32, 32);
       ctx32.drawImage(img32, 0, 0, 32, 32);
-    }
+    };
     img64.onload = function() {
       // x, y, width, height
       ctx64.clearRect(0, 0, 64, 64);
       ctx64.drawImage(img64, 0, 0, 64, 64);
-    }
+    };
     img.onload = function() {
       // x, y, width, height
       ctx.clearRect(0, 0, 128, 128);
       ctx.drawImage(img, 0, 0, 128, 128);
-    }
-  }
+    };
+  };
   reader.readAsDataURL(file);
   return false;
 }
 storeValues();
 
 var hash = window.location.hash.substring(1);
+function loadgist(gistid) {
+  $.ajax({
+    url: "https://api.github.com/gists/" + gistid,
+    type: "GET",
+    dataType: "jsonp",
+    jsonp: "callback"
+  }).success(function(gistdata) {
+    var htmlVal        = gistdata.data.files["index.html"];
+    var jadeVal        = gistdata.data.files["index.jade"];
+    var cssVal         = gistdata.data.files["index.css"];
+    var stylusVal      = gistdata.data.files["index.styl"];
+    var jsVal          = gistdata.data.files["index.js"];
+    var coffeeVal      = gistdata.data.files["index.coffee"];
+    var mdVal      = gistdata.data.files["README.md"];
+    var settings   = gistdata.data.files["settings.json"].content;
+    var libraries  = gistdata.data.files["libraries.json"].content;
+    var jsonSets   = JSON.parse(settings);
+    var jsonLibs   = JSON.parse(libraries);
+
+    // Return font settings from json
+    document.querySelector("[data-action=sitetitle]").value = jsonSets.siteTitle;
+    document.querySelector("[data-value=version]").value = jsonSets.version;
+    document.querySelector("[data-editor=fontSize]").value = jsonSets.editorFontSize;
+    document.querySelector("[data-action=sitedesc]").value = jsonSets.description;
+    document.querySelector("[data-action=siteauthor]").value = jsonSets.author;
+    storeValues();
+
+    // Return settings from the json
+    $(".metaboxes input.heading").trigger("keyup");
+
+    // Return libraries from json
+    $.each(jsonLibs, function(name, value) {
+      $(".ldd-submenu #" + name).prop("checked", value).trigger("keyup");
+    });
+
+    // Set checked libraries into preview
+    $("#jquery").trigger("keyup");
+
+    // Return the editor's values
+    if (mdVal) {
+      mdEditor.setValue(mdVal.content);
+    }
+    if (htmlVal) {
+      htmlEditor.setValue(htmlVal.content);
+      $("#html-preprocessor").val("none").trigger("change");
+    }
+    if (jadeVal) {
+      htmlEditor.setValue(jadeVal.content);
+      $("#html-preprocessor").val("jade").trigger("change");
+    }
+    if (!htmlVal && !jadeVal) {
+      htmlEditor.setValue("");
+    }
+    if (!htmlVal && !jadeVal && mdVal) {
+      var selectEditor = document.getElementById("selectEditor");
+      if (!selectEditor.checked) {
+        $("#selectEditor").trigger("click");
+        // Change grid to only show markdown
+        $("#splitContainer").jqxSplitter({
+          height: "auto",
+          width: "100%",
+          orientation: "vertical",
+          showSplitBar: true,
+          panels: [{ size: "50%",collapsible:false },
+                   { size: "50%" }]
+        });
+        $("#leftSplitter").jqxSplitter({
+          width: "100%",
+          height: "100%",
+          orientation: "horizontal",
+          showSplitBar: true,
+          panels: [{ size: "50%",collapsible:false },
+                   { size: "0%" }]
+        }).jqxSplitter("collapse");
+        $("#rightSplitter").jqxSplitter({
+          width: "100%",
+          height: "100%",
+          orientation: "horizontal",
+          showSplitBar: true,
+          panels: [{ size: "0%",collapsible:false },
+                   { size: "50%" }]
+        });
+      }
+    }
+    if (cssVal) {
+      cssEditor.setValue(cssVal.content);
+      $("#css-preprocessor").val("none").trigger("change");
+    }
+    if (stylusVal) {
+      cssEditor.setValue(stylusVal.content);
+      $("#css-preprocessor").val("stylus").trigger("change");
+    }
+    if (!cssVal && !stylusVal) {
+      cssEditor.setValue("");
+    }
+    if (jsVal) {
+      jsEditor.setValue(jsVal.content);
+      $("#js-preprocessor").val("none").trigger("change");
+    }
+    if (coffeeVal) {
+      jsEditor.setValue(coffeeVal.content);
+      $("#js-preprocessor").val("coffeescript").trigger("change");
+    }
+    if (!jsVal && !coffeeVal) {
+      jsEditor.setValue("");
+    }
+
+    setTimeout(function() {
+      mdEditor.setOption("paletteHints", "true");
+      htmlEditor.setOption("paletteHints", "true");
+      cssEditor.setOption("paletteHints", "true");
+      jsEditor.setOption("paletteHints", "true");
+    }, 300);
+    $(".preloader").remove();
+  }).error(function(e) {
+    // ajax error
+    console.warn("Error: Could not load weave!", e);
+    alertify.error("Error: Could not load weave!");
+  });
+}
 if (window.location.hash) {
   if (location.hash.substring(1) === "dataurl") {
     $("#dataurl").attr("checked", true).trigger("change");
   } else {
     $(document.body).append('<div class="fixedfill preloader" style="background: radial-gradient(ellipse at center, rgba(122, 188, 255, 0.85) 0%, rgba(64, 150, 238, 0.87) 100%)!important; color: #fff!important;"></div>');
     $(".preloader").html('<div class="table"><div class="cell"><h1>Loading Weave!</h1><div class="spinner"><div class="bounce1" style="background: #fff!important;"></div><div class="bounce2" style="background: #fff!important;"></div><div class="bounce3" style="background: #fff!important;"></div></div></div></div>');
-    function loadgist(gistid) {
-      $.ajax({
-        url: "https://api.github.com/gists/" + gistid,
-        type: "GET",
-        dataType: "jsonp",
-        jsonp: "callback"
-      }).success(function(gistdata) {
-        var htmlVal        = gistdata.data.files["index.html"];
-        var jadeVal        = gistdata.data.files["index.jade"];
-        var cssVal         = gistdata.data.files["index.css"];
-        var stylusVal      = gistdata.data.files["index.styl"];
-        var jsVal          = gistdata.data.files["index.js"];
-        var coffeeVal      = gistdata.data.files["index.coffee"];
-        var mdVal      = gistdata.data.files["README.md"];
-        var settings   = gistdata.data.files["settings.json"].content;
-        var libraries  = gistdata.data.files["libraries.json"].content;
-        var jsonSets   = JSON.parse(settings);
-        var jsonLibs   = JSON.parse(libraries);
-
-        // Return font settings from json
-        document.querySelector("[data-action=sitetitle]").value = jsonSets.siteTitle;
-        document.querySelector("[data-value=version]").value = jsonSets.version;
-        document.querySelector("[data-editor=fontSize]").value = jsonSets.editorFontSize;
-        document.querySelector("[data-action=sitedesc]").value = jsonSets.description;
-        document.querySelector("[data-action=siteauthor]").value = jsonSets.author;
-        storeValues();
-
-        // Return settings from the json
-        $(".metaboxes input.heading").trigger("keyup");
-
-        // Return libraries from json
-        $.each(jsonLibs, function(name, value) {
-          $(".ldd-submenu #" + name).prop("checked", value).trigger("keyup");
-        });
-
-        // Set checked libraries into preview
-        $("#jquery").trigger("keyup");
-
-        // Return the editor's values
-        if (mdVal) {
-          mdEditor.setValue(mdVal.content);
-        }
-        if (htmlVal) {
-          htmlEditor.setValue(htmlVal.content);
-          $("#html-preprocessor").val("none").trigger("change");
-        }
-        if (jadeVal) {
-          htmlEditor.setValue(jadeVal.content);
-          $("#html-preprocessor").val("jade").trigger("change");
-        }
-        if (!htmlVal && !jadeVal) {
-          htmlEditor.setValue("");
-        }
-        if (!htmlVal && !jadeVal && mdVal) {
-          var selectEditor = document.getElementById("selectEditor");
-          if (!selectEditor.checked) {
-            $("#selectEditor").trigger("click");
-            // Change grid to only show markdown
-            $("#splitContainer").jqxSplitter({
-              height: "auto",
-              width: "100%",
-              orientation: "vertical",
-              showSplitBar: true,
-              panels: [{ size: "50%",collapsible:false },
-                       { size: "50%" }]
-            });
-            $("#leftSplitter").jqxSplitter({
-              width: "100%",
-              height: "100%",
-              orientation: "horizontal",
-              showSplitBar: true,
-              panels: [{ size: "50%",collapsible:false },
-                       { size: "0%" }]
-            }).jqxSplitter("collapse");
-            $("#rightSplitter").jqxSplitter({
-              width: "100%",
-              height: "100%",
-              orientation: "horizontal",
-              showSplitBar: true,
-              panels: [{ size: "0%",collapsible:false },
-                       { size: "50%" }]
-            });
-          };
-        }
-        if (cssVal) {
-          cssEditor.setValue(cssVal.content);
-          $("#css-preprocessor").val("none").trigger("change");
-        }
-        if (stylusVal) {
-          cssEditor.setValue(stylusVal.content);
-          $("#css-preprocessor").val("stylus").trigger("change");
-        }
-        if (!cssVal && !stylusVal) {
-          cssEditor.setValue("");
-        }
-        if (jsVal) {
-          jsEditor.setValue(jsVal.content);
-          $("#js-preprocessor").val("none").trigger("change");
-        }
-        if (coffeeVal) {
-          jsEditor.setValue(coffeeVal.content);
-          $("#js-preprocessor").val("coffeescript").trigger("change");
-        }
-        if (!jsVal && !coffeeVal) {
-          jsEditor.setValue("");
-        }
-
-        setTimeout(function() {
-          mdEditor.setOption("paletteHints", "true");
-          htmlEditor.setOption("paletteHints", "true");
-          cssEditor.setOption("paletteHints", "true");
-          jsEditor.setOption("paletteHints", "true");
-        }, 300);
-        $(".preloader").remove();
-      }).error(function(e) {
-        // ajax error
-        console.warn("Error: Could not load weave!", e);
-        alertify.error("Error: Could not load weave!");
-      });
-    }
     loadgist(hash);
   }
-} {
+} else {
   setTimeout(function() {
     mdEditor.setOption("paletteHints", "true");
     htmlEditor.setOption("paletteHints", "true");
@@ -4321,9 +4343,9 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
     "editorFontSize": document.querySelector("[data-editor=fontSize]").value,
     "description": document.querySelector("[data-action=sitedesc]").value,
     "author": document.querySelector("[data-action=siteauthor]").value
-  }
+  };
 
-  var files = {}
+  var files = {};
 	if (htmlEditor.getValue()) {
       var htmlSelected = $("#html-preprocessor option:selected").val();
 
@@ -4336,7 +4358,7 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
       }
 	}
 	if (cssEditor.getValue()) {
-      var cssSelected = $("#css-preprocessor option:selected").val();
+      cssSelected = $("#css-preprocessor option:selected").val();
 
       if ( cssSelected == "none") {
         yourCSS = cssEditor.getValue();
@@ -4371,34 +4393,34 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
   
   if (!mdEditor.getValue().trim()) {
     $("#mdurl").prop("checked", false);
-    var hasMD = "";
+    hasMD = "";
   } else {
-    var hasMD = "md,";
+    hasMD = "md,";
   }
   if (!htmlEditor.getValue().trim()) {
     $("#htmlurl").prop("checked", false);
-    var hasHTML = "";
+    hasHTML = "";
   } else {
-    var hasHTML = "html,";
+    hasHTML = "html,";
   }
   if (!cssEditor.getValue().trim()) {
     $("#cssurl").prop("checked", false);
-    var hasCSS = "";
+    hasCSS = "";
   } else {
-    var hasCSS = "css,";
+    hasCSS = "css,";
   }
   if (!jsEditor.getValue().trim()) {
     $("#jsurl").prop("checked", false);
-    var hasJS = "";
+    hasJS = "";
   } else {
-    var hasJS = "js,";
+    hasJS = "js,";
   }
-  // var editEmbed = "edit,";
-  // var darkUI = "dark,";
-  // var seeThrough = "transparent,";
-  var hasResult = "result";
-  // var showEditors = hasMD + hasHTML + hasCSS + hasJS + editEmbed + darkUI + seeThrough + hasResult;
-  var showEditors = hasMD + hasHTML + hasCSS + hasJS + hasResult;
+  // editEmbed = "edit,";
+  // darkUI = "dark,";
+  // seeThrough = "transparent,";
+   hasResult = "result";
+  // showEditors = hasMD + hasHTML + hasCSS + hasJS + editEmbed + darkUI + seeThrough + hasResult;
+   showEditors = hasMD + hasHTML + hasCSS + hasJS + hasResult;
 
   // Post on Github via JQuery Ajax
   $.ajax({
@@ -4415,67 +4437,67 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
     document.querySelector("[data-output=projectURL]").onclick = function() {
       this.select(true);
     };
-    
+
     // Toggle Editor's Visibility for Embed
     $("[data-target=editorURL]").on("change", function() {
       if (document.getElementById("mdurl").checked) {
-        var hasMD = "md,";
+        hasMD = "md,";
       } else {
-        var hasMD = "";
+        hasMD = "";
       }
       if (document.getElementById("htmlurl").checked) {
-        var hasHTML = "html,";
+        hasHTML = "html,";
       } else {
-        var hasHTML = "";
+        hasHTML = "";
       }
       if (document.getElementById("cssurl").checked) {
-        var hasCSS = "css,";
+        hasCSS = "css,";
       } else {
-        var hasCSS = "";
+        hasCSS = "";
       }
       if (document.getElementById("jsurl").checked) {
-        var hasJS = "js,";
+        hasJS = "js,";
       } else {
-        var hasJS = "";
+        hasJS = "";
       }
       if (document.getElementById("resulturl").checked) {
-        var hasResult = "result";
+        hasResult = "result";
       } else {
-        var hasResult = "";
+        hasResult = "";
       }
       if (document.getElementById("jsurl").checked && !document.getElementById("resulturl").checked) {
-        var hasJS = "js";
+        hasJS = "js";
       }
       if (document.getElementById("cssurl").checked && !document.getElementById("jsurl").checked && !document.getElementById("resulturl").checked) {
-        var hasCSS = "css";
+        hasCSS = "css";
       }
       if (document.getElementById("htmlurl").checked && !document.getElementById("cssurl").checked && !document.getElementById("jsurl").checked && !document.getElementById("resulturl").checked) {
-        var hasHTML = "html";
+        hasHTML = "html";
       }
       if (document.getElementById("mdurl").checked && !document.getElementById("htmlurl").checked && !document.getElementById("cssurl").checked && !document.getElementById("jsurl").checked && !document.getElementById("resulturl").checked) {
-        var hasMD = "md";
+        hasMD = "md";
       }
       if (document.getElementById("resulturl").checked) {
-        var hasResult = "result";
+        hasResult = "result";
       } else {
-        var hasResult = "";
+        hasResult = "";
       }
       if (document.getElementById("transparentembed").checked) {
-        var seeThrough = "transparent,";
+        seeThrough = "transparent,";
       } else {
-        var seeThrough = "";
+        seeThrough = "";
       }
       if (document.getElementById("darkembed").checked) {
-        var darkUI = "dark,";
+        darkUI = "dark,";
       } else {
-        var darkUI = "";
+        darkUI = "";
       }
       if (document.getElementById("editembed").checked) {
-        var editEmbed = "edit,";
+        editEmbed = "edit,";
       } else {
-        var editEmbed = "";
+        editEmbed = "";
       }
-      var showEditors = hasMD + hasHTML + hasCSS + hasJS + editEmbed + darkUI + seeThrough + hasResult;
+      showEditors = hasMD + hasHTML + hasCSS + hasJS + editEmbed + darkUI + seeThrough + hasResult;
 
       document.getElementById("clearSharePreview").innerHTML = "";
       var shareFrame = document.createElement("iframe");
@@ -4498,7 +4520,7 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
     document.getElementById("clearSharePreview").appendChild(shareFrame);
     var previewWeave = document.getElementById("shareWeavePreview");
     previewWeave.src = "https://mikethedj4.github.io/kodeWeave/embed/#" + embedProject + "?" + showEditors;
-    document.querySelector("[data-output=embedProject]").value = "<iframe width=\"100%\" height=\"300\" src=\"https://mikethedj4.github.io/kodeWeave/embed/#" + embedProject + "?" + showEditors + "\" allowfullscreen=\"allowfullscreen\" frameborder=\"0\"></iframe>"
+    document.querySelector("[data-output=embedProject]").value = "<iframe width=\"100%\" height=\"300\" src=\"https://mikethedj4.github.io/kodeWeave/embed/#" + embedProject + "?" + showEditors + "\" allowfullscreen=\"allowfullscreen\" frameborder=\"0\"></iframe>";
     document.querySelector("[data-output=embedProject]").onclick = function() {
       this.select(true);
     };
