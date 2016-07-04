@@ -205,16 +205,18 @@ var closeFinal = CodeMirror(document.querySelector("#closeFinal"), {
 });
 
 // Render Chosen CSS Preprocessor
-var cssContent;
+var htmlContent,
+    cssContent,
+    cssSelected;
 function cssPreProcessor(cssSelected) {
-  var cssSelected = $("#css-preprocessor  option:selected").val();
+  cssSelected = $("#css-preprocessor  option:selected").val();
 
   if (cssSelected == "none") {
     cssContent = cssEditor.getValue();
   } else if (cssSelected == "stylus") {
     var cssVal = cssEditor.getValue();
     stylus(cssVal).render(function(err, out) {
-      if(err != null) {
+      if(err !== null) {
         console.error("something went wrong");
       } else {
         cssContent = out;
@@ -247,14 +249,14 @@ function updatePreview() {
   }
 
   if ( htmlSelected == "none") {
-    var htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    " + jsContent + closeFinal.getValue();
+    htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    " + jsContent + closeFinal.getValue();
     preview.write(htmlContent);
   } else if ( htmlSelected == "jade") {
     var options = {
         pretty: true
-    }
+    };
     var jade2HTML = jade.render(htmlEditor.getValue(), options);
-    var htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + jsContent + closeFinal.getValue();
+    htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + jsContent + closeFinal.getValue();
     preview.write(htmlContent);
   }
   preview.close();
@@ -341,7 +343,7 @@ $(window).on("load resize", function() {
 (function($) {
   $.fn.clear = function() {
     $(this).val("");
-  }
+  };
 }) (jQuery);
 
 var myarray = [],
@@ -852,101 +854,100 @@ var myarray = [],
 
 // Load Embeded Weave
 var hash = window.location.hash.substring(1);
-if (window.location.hash) {
-  function loadgist(gistid) {
-    $.ajax({
-      url: "https://api.github.com/gists/" + gistid,
-      type: "GET",
-      dataType: "jsonp",
-      jsonp: "callback"
-    }).success(function(gistdata) {
-      var htmlVal        = gistdata.data.files["index.html"];
-      var jadeVal        = gistdata.data.files["index.jade"];
-      var cssVal         = gistdata.data.files["index.css"];
-      var stylusVal      = gistdata.data.files["index.styl"];
-      var jsVal          = gistdata.data.files["index.js"];
-      var coffeeVal      = gistdata.data.files["index.coffee"];
-      var mdVal      = gistdata.data.files["README.md"];
-      var libraries  = gistdata.data.files["libraries.json"].content;
-      var jsonLibs   = JSON.parse(libraries);
+function loadgist(gistid) {
+  $.ajax({
+    url: "https://api.github.com/gists/" + gistid,
+    type: "GET",
+    dataType: "jsonp",
+    jsonp: "callback"
+  }).success(function(gistdata) {
+    var htmlVal        = gistdata.data.files["index.html"];
+    var jadeVal        = gistdata.data.files["index.jade"];
+    var cssVal         = gistdata.data.files["index.css"];
+    var stylusVal      = gistdata.data.files["index.styl"];
+    var jsVal          = gistdata.data.files["index.js"];
+    var coffeeVal      = gistdata.data.files["index.coffee"];
+    var mdVal      = gistdata.data.files["README.md"];
+    var libraries  = gistdata.data.files["libraries.json"].content;
+    var jsonLibs   = JSON.parse(libraries);
 
-      // Return libraries from json
-      $.each(jsonLibs, function(name, value) {
-        $(".ldd-submenu #" + name).prop("checked", value).trigger("keyup");
-      });
-
-      // Set checked libraries into preview
-      $("#jquery").trigger("keyup");
-
-      // Return the editor's values
-      if (mdVal) {
-        mdEditor.setValue(mdVal.content);
-      }
-      if (!mdVal) {
-        $("[data-target=mdEditor]").addClass("hide");
-      }
-      if (htmlVal) {
-        htmlEditor.setValue(htmlVal.content);
-        $("#html-preprocessor").val("none").change();
-      }
-      if (jadeVal) {
-        htmlEditor.setValue(jadeVal.content);
-        $("#html-preprocessor").val("jade").change();
-        $("[data-target=htmlEditor]").text("Jade");
-      }
-      if (!htmlVal && !jadeVal) {
-        $("[data-target=htmlEditor]").addClass("hide");
-      }
-      if (cssVal) {
-        cssEditor.setValue(cssVal.content);
-        $("#css-preprocessor").val("none").change();
-      }
-      if (stylusVal) {
-        cssEditor.setValue(stylusVal.content);
-        $("#css-preprocessor").val("stylus").change();
-        $(window).on("load resize", function() {
-          if ( $(this).width() <= 420 ) {
-            $("[data-target=cssEditor]").text("Styl");
-          } else {
-            $("[data-target=cssEditor]").text("Stylus");
-          }
-        });
-      }
-      if (!cssVal && !stylusVal) {
-        $("[data-target=cssEditor]").addClass("hide");
-      }
-      if (jsVal) {
-        jsEditor.setValue(jsVal.content);
-        $("#js-preprocessor").val("none").change();
-        $(window).on("load resize", function() {
-          if ( $(this).width() <= 420 ) {
-            $("[data-target=jsEditor]").text("JS");
-          } else {
-            $("[data-target=jsEditor]").text("JavaScript");
-          }
-        });
-      }
-      if (coffeeVal) {
-        jsEditor.setValue(coffeeVal.content);
-        $("#js-preprocessor").val("coffeescript").change();
-        $(window).on("load resize", function() {
-          if ( $(this).width() <= 420 ) {
-            $("[data-target=jsEditor]").text("Coffee");
-          } else {
-            $("[data-target=jsEditor]").text("CoffeeScript");
-          }
-        });
-      }
-      if (!jsVal && !coffeeVal) {
-        $("[data-target=jsEditor]").addClass("hide");
-      }
-    }).error(function(e) {
-      // ajax error
-      console.warn("Error: Could not load weave!", e);
-      alertify.error("Error: Could not load weave!");
+    // Return libraries from json
+    $.each(jsonLibs, function(name, value) {
+      $(".ldd-submenu #" + name).prop("checked", value).trigger("keyup");
     });
-  }
 
+    // Set checked libraries into preview
+    $("#jquery").trigger("keyup");
+
+    // Return the editor's values
+    if (mdVal) {
+      mdEditor.setValue(mdVal.content);
+    }
+    if (!mdVal) {
+      $("[data-target=mdEditor]").addClass("hide");
+    }
+    if (htmlVal) {
+      htmlEditor.setValue(htmlVal.content);
+      $("#html-preprocessor").val("none").change();
+    }
+    if (jadeVal) {
+      htmlEditor.setValue(jadeVal.content);
+      $("#html-preprocessor").val("jade").change();
+      $("[data-target=htmlEditor]").text("Jade");
+    }
+    if (!htmlVal && !jadeVal) {
+      $("[data-target=htmlEditor]").addClass("hide");
+    }
+    if (cssVal) {
+      cssEditor.setValue(cssVal.content);
+      $("#css-preprocessor").val("none").change();
+    }
+    if (stylusVal) {
+      cssEditor.setValue(stylusVal.content);
+      $("#css-preprocessor").val("stylus").change();
+      $(window).on("load resize", function() {
+        if ( $(this).width() <= 420 ) {
+          $("[data-target=cssEditor]").text("Styl");
+        } else {
+          $("[data-target=cssEditor]").text("Stylus");
+        }
+      });
+    }
+    if (!cssVal && !stylusVal) {
+      $("[data-target=cssEditor]").addClass("hide");
+    }
+    if (jsVal) {
+      jsEditor.setValue(jsVal.content);
+      $("#js-preprocessor").val("none").change();
+      $(window).on("load resize", function() {
+        if ( $(this).width() <= 420 ) {
+          $("[data-target=jsEditor]").text("JS");
+        } else {
+          $("[data-target=jsEditor]").text("JavaScript");
+        }
+      });
+    }
+    if (coffeeVal) {
+      jsEditor.setValue(coffeeVal.content);
+      $("#js-preprocessor").val("coffeescript").change();
+      $(window).on("load resize", function() {
+        if ( $(this).width() <= 420 ) {
+          $("[data-target=jsEditor]").text("Coffee");
+        } else {
+          $("[data-target=jsEditor]").text("CoffeeScript");
+        }
+      });
+    }
+    if (!jsVal && !coffeeVal) {
+      $("[data-target=jsEditor]").addClass("hide");
+    }
+  }).error(function(e) {
+    // ajax error
+    console.warn("Error: Could not load weave!", e);
+    alertify.error("Error: Could not load weave!");
+  });
+}
+if (window.location.hash) {
   loadgist(hash);
   updatePreview();
 }
@@ -986,7 +987,7 @@ $(".settings").on("click", function() {
 });
 // Preprocessors (Doesn't compile to preview)
 $("#html-preprocessor").on("change", function() {
-  var valueSelected = this.value
+  var valueSelected = this.value;
   if ( valueSelected == "none") {
     htmlEditor.setOption("mode", "text/html");
     htmlEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
@@ -1026,7 +1027,7 @@ $("#js-preprocessor").on("change", function() {
     jsEditor.setOption("lint", false);
     jsEditor.setOption("lint", true);
     // jsEditor.refresh();
-    $(".jsvalidator").show()
+    $(".jsvalidator").show();
   } else if ( valueSelected == "coffeescript") {
     jsEditor.setOption("mode", "text/x-coffeescript");
     jsEditor.setOption("lint", false);
