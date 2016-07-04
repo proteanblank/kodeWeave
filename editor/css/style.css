@@ -6,6 +6,7 @@
 @import url("../libraries/codemirror/addon/lint/lint.css");
 @import url("../libraries/codemirror/addon/dialog/dialog-custom.css");
 @import url("../libraries/codemirror/addon/hint/show-hint.css");
+@import url("../libraries/codemirror/addon/tern/tern.css");
 @import url("../libraries/alertifyjs/css/alertify.min.css");
 @import url("../libraries/alertifyjs/css/themes/default.min.css");
 @import url("../libraries/jqwidgets/styles/jqx.base.css");

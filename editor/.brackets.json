@@ -1,5 +1,5 @@
 {
     "jscodehints.detectedExclusions": [
-        "showdown.js"
+        "Applications/kodeWeave Echo.app/Contents/data/content/libraries/meta"
     ]
 }
