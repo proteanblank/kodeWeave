@@ -37,16 +37,7 @@ var str = window.location.href,
     htmlContent,
     cssContent,
     jsContent,
-    cssSelected,
-    renderYourJS = function() {
-      var jsSelected = $("#js-preprocessor option:selected").val();
-      
-      if ( jsSelected == "none") {
-        jsContent = jsEditor.getValue();
-      } else if ( jsSelected == "coffeescript") {
-        jsContent = CoffeeScript.compile(jsEditor.getValue(), { bare: true });
-      }
-    };
+    cssSelected;
 
 // Live preview
 function updatePreview() {
@@ -64,7 +55,6 @@ function updatePreview() {
   var jsSelected   = $("#js-preprocessor   option:selected").val();
   
   cssPreProcessor();
-  renderYourJS();
   
   if ( jsSelected == "none") {
     jsContent = "<script>" + jsEditor.getValue() + "</script>";
@@ -160,7 +150,8 @@ function loadgist(gistid) {
     }
     if (coffeeVal) {
       jsEditor.setValue(coffeeVal.content);
-      $("#js-preprocessor").val("coffeescript").change();
+      document.getElementById("js-preprocessor").value = "coffeescript"
+      // $("#js-preprocessor").val("coffeescript").change();
       $(window).on("load resize", function() {
         if ( $(this).width() <= 420 ) {
           $("[data-target=jsEditor]").text("Coffee");
