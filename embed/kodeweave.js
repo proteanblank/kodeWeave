@@ -82,12 +82,12 @@ function loadgist(gistid) {
     dataType: "jsonp",
     jsonp: "callback"
   }).success(function(gistdata) {
-    var htmlVal        = gistdata.data.files["index.html"];
-    var jadeVal        = gistdata.data.files["index.jade"];
-    var cssVal         = gistdata.data.files["index.css"];
-    var stylusVal      = gistdata.data.files["index.styl"];
-    var jsVal          = gistdata.data.files["index.js"];
-    var coffeeVal      = gistdata.data.files["index.coffee"];
+    var htmlVal    = gistdata.data.files["index.html"];
+    var jadeVal    = gistdata.data.files["index.jade"];
+    var cssVal     = gistdata.data.files["index.css"];
+    var stylusVal  = gistdata.data.files["index.styl"];
+    var jsVal      = gistdata.data.files["index.js"];
+    var coffeeVal  = gistdata.data.files["index.coffee"];
     var mdVal      = gistdata.data.files["README.md"];
     var libraries  = gistdata.data.files["libraries.json"].content;
     var jsonLibs   = JSON.parse(libraries);
@@ -140,6 +140,7 @@ function loadgist(gistid) {
     if (jsVal) {
       jsEditor.setValue(jsVal.content);
       $("#js-preprocessor").val("none").change();
+      jsContent = "<script>" + jsEditor.getValue() + "</script>";
       $(window).on("load resize", function() {
         if ( $(this).width() <= 420 ) {
           $("[data-target=jsEditor]").text("JS");
@@ -150,8 +151,8 @@ function loadgist(gistid) {
     }
     if (coffeeVal) {
       jsEditor.setValue(coffeeVal.content);
-      document.getElementById("js-preprocessor").value = "coffeescript"
-      // $("#js-preprocessor").val("coffeescript").change();
+      $("#js-preprocessor").val("coffeescript").change();
+      jsContent = "<script>" + CoffeeScript.compile(jsEditor.getValue(), { bare: true }) + "</script>";
       $(window).on("load resize", function() {
         if ( $(this).width() <= 420 ) {
           $("[data-target=jsEditor]").text("Coffee");
