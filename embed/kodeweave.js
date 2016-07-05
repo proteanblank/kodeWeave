@@ -36,7 +36,17 @@ var str = window.location.href,
     hash = window.location.hash,
     htmlContent,
     cssContent,
-    cssSelected;
+    jsContent,
+    cssSelected,
+    renderYourJS = function() {
+      var jsSelected = $("#js-preprocessor option:selected").val();
+      
+      if ( jsSelected == "none") {
+        jsContent = jsEditor.getValue();
+      } else if ( jsSelected == "coffeescript") {
+        jsContent = CoffeeScript.compile(jsEditor.getValue(), { bare: true });
+      }
+    };
 
 // Live preview
 function updatePreview() {
@@ -54,12 +64,7 @@ function updatePreview() {
   var jsSelected   = $("#js-preprocessor   option:selected").val();
   
   cssPreProcessor();
-  
-  if ( jsSelected == "none") {
-    jsContent = "<script>" + jsEditor.getValue() + "</script>";
-  } else if ( jsSelected == "coffeescript") {
-    jsContent = "<script>" + CoffeeScript.compile(jsEditor.getValue(), { bare: true }) + "</script>";
-  }
+  renderYourJS();
 
   if ( htmlSelected == "none") {
     htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    " + jsContent + closeFinal.getValue();
@@ -173,7 +178,7 @@ function loadgist(gistid) {
   });
 }
 
-// Render Chosen CSS Preprocessor
+// Render Chosen Preprocessor
 function cssPreProcessor(cssSelected) {
   cssSelected = $("#css-preprocessor  option:selected").val();
 
