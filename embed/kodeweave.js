@@ -61,19 +61,26 @@ function updatePreview() {
   // var heading = openHTML.getValue() + $("[data-action=sitetitle]").val() + closeHTML.getValue() + $("[data-action=library-code]").val() + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\">\n" + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\">\n";
   preview.open();
   var htmlSelected = $("#html-preprocessor option:selected").val();
+  var jsSelected   = $("#js-preprocessor   option:selected").val();
   
   cssPreProcessor();
   renderYourJS();
+  
+  if ( jsSelected == "none") {
+    jsContent = "<script>" + jsEditor.getValue() + "</script>";
+  } else if ( jsSelected == "coffeescript") {
+    jsContent = "<script>" + CoffeeScript.compile(jsEditor.getValue(), { bare: true }) + "</script>";
+  }
 
   if ( htmlSelected == "none") {
-    htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    " + "<scr" + "ipt>" + jsContent + "</s" + "cript>" + closeFinal.getValue();
+    htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    " + jsContent + closeFinal.getValue();
     preview.write(htmlContent);
   } else if ( htmlSelected == "jade") {
     var options = {
         pretty: true
     };
     var jade2HTML = jade.render(htmlEditor.getValue(), options);
-    htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + "<scr" + "ipt>" + jsContent + "</scr" + "ipt>" + closeFinal.getValue();
+    htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + jsContent + closeFinal.getValue();
     preview.write(htmlContent);
   }
   preview.close();
