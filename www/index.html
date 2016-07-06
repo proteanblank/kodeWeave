@@ -1309,9 +1309,12 @@
       </div>
       
       <div id="feed" class="walkthrough-content">
+        <!--
         <a class="twitter-timeline" href="https://twitter.com/kodeweave_app">Tweets by kodeweave_app</a>
         <script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
-        <style>.walkthrough-content iframe[id*="twitter-widget"] {float: none; width: 100%!important;}</style>
+        -->
+        <iframe id="twitter-widget" src="http://kodeweave.sourceforge.net/feed/" frameborder="0"></iframe>
+        <style>.walkthrough-content iframe[id*="twitter-widget"] {float: none; width: 100%!important; height: calc(100% - 4px);}</style>
       </div>
     </div>
     <script src="libraries/jqwidgets/jqxcore.js"></script>

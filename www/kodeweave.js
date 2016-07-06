@@ -27,26 +27,25 @@ function onDeviceReady() {
   // Device is ready
 }
 
-var timeout,
-    delay,
-    server,
-    selected_text,
-    str,
-    mynum,
-    start_cursor,
-    cursorLine,
-    cursorCh,
-    jsContent,
-    cssSelected,
-    htmlContent,
-    hasMD,
-    hasHTML,
-    hasCSS,
-    hasJS,
-    editEmbed,
-    darkUI,
-    seeThrough,
-    hasResult,
+var timeout, delay, server, selected_text, str, mynum,
+    start_cursor, cursorLine, cursorCh, jsContent,
+    cssSelected, htmlContent, hasMD, hasHTML, hasCSS,
+    hasJS, editEmbed, darkUI, seeThrough, hasResult,
+    welcomeDialog = function() {
+      // Use localStorage for Welcome dialog
+      // If user closed it prevent show upon every reload
+      var closedWelcome = localStorage.getItem("closedWelcome");
+      if (closedWelcome === "true") {
+        // hide dialog
+        $("#close-walkthrough").prop("checked", true);
+      } else {
+        // show dialog
+        $("#close-walkthrough").prop("checked", "");
+      }
+      $("#close-walkthrough").click(function() {
+        localStorage.setItem("closedWelcome", $(this).prop("checked"));
+      });
+    },
     checkStatus = function() {
       if (navigator.onLine) {
         // user is online
@@ -3860,6 +3859,7 @@ $("[data-action=check]").on("change keyup", function() {
 });
 $("#jquery").trigger("keyup");
 
+welcomeDialog();
 shortcutKeys();
 initGenerators();
 checkedLibs();
