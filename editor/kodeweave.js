@@ -5,28 +5,11 @@ if (site.substring(0, 7) === "http://") {
   window.location.href = "https://" + site.substring(7, site.length);
 }
 
-var timeout,
-    delay,
-    selected_text,
-    str,
-    mynum,
-    start_cursor,
-    cursorLine,
-    cursorCh,
-    blob,
-    jsContent,
-    htmlContent,
-    cssContent,
-    cssSelected,
-    showEditors,
-    hasMD,
-    hasHTML,
-    hasCSS,
-    hasJS,
-    editEmbed,
-    darkUI,
-    seeThrough,
-    hasResult,
+var timeout, delay, selected_text, str, mynum, 
+    start_cursor, cursorLine, cursorCh, blob,
+    jsContent, htmlContent, cssContent, cssSelected,
+    showEditors, hasMD, hasHTML, hasCSS, hasJS,
+    editEmbed, darkUI, seeThrough, hasResult,
     welcomeDialog = function() {
       // Stop YouTube Video from playing when other tabs are clicked
       $("#tab2, #tab3, #tab4, #close-walkthrough").click(function() {
