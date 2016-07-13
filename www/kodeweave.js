@@ -23,8 +23,14 @@ function saveFile(fileName, fileData) {
 }
 
 document.addEventListener("deviceready", onDeviceReady, false);
+app.initialize();
 function onDeviceReady() {
   // Device is ready
+  app.requestInterstitial(true);
+  // Show Ad After 3 Minutes
+  setTimeout(function() {
+    app.requestInterstitial(true);
+  }, 180000);
 }
 
 var timeout, delay, server, selected_text, str, mynum,
@@ -225,6 +231,7 @@ var timeout, delay, server, selected_text, str, mynum,
     },
     singleFileDownload = function() {
       document.querySelector(".savehtml").onclick = function() {
+	    app.requestInterstitial(true);
         var htmlSelected = $("#html-preprocessor option:selected").val();
 
         if ( htmlSelected == "none") {
@@ -235,6 +242,7 @@ var timeout, delay, server, selected_text, str, mynum,
         }
       };
       document.querySelector(".savecss").onclick = function() {
+	    app.requestInterstitial(true);
         cssSelected = $("#css-preprocessor option:selected").val();
 
         if ( cssSelected == "none") {
@@ -244,6 +252,7 @@ var timeout, delay, server, selected_text, str, mynum,
         }
       };
       document.querySelector(".savejs").onclick = function() {
+	    app.requestInterstitial(true);
         var jsSelected = $("#js-preprocessor option:selected").val();
 
         if ( jsSelected == "none") {
@@ -253,6 +262,7 @@ var timeout, delay, server, selected_text, str, mynum,
         }
       };
       document.querySelector(".savemd").onclick = function() {
+	    app.requestInterstitial(true);
         var blob = new Blob([ mdEditor.getValue() ], {type: "text/x-markdown"});
         saveAs(blob, "source.md");
       };
@@ -557,6 +567,7 @@ var timeout, delay, server, selected_text, str, mynum,
       };
       $(".adddemos-tablets a").click(function() {
         $("#jquery").trigger("keyup");
+        app.requestInterstitial(true);
       });
       document.querySelector("[data-action=alphabetizer]").onclick = function() {
         clearPreview();
@@ -3604,6 +3615,7 @@ storeValues();
 // Save as a Gist Online
 document.querySelector("[data-action=save-gist]").onclick = function() {
   $("input[name=menubar].active").trigger("click");
+  app.requestInterstitial(true);
 
   // Return checked libraries
   var arr = {};
