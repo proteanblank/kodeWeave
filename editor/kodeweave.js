@@ -748,20 +748,20 @@ var timeout, delay, selected_text, str, mynum,
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("Embed a PDF Example").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "jade") {
+        if (document.getElementById("html-preprocessor").value == "none") {
           htmlEditor.setValue("");
-          $("#html-preprocessor").val("none").trigger("change");
+          $("#html-preprocessor").val("jade").trigger("change");
         }
-        if (document.getElementById("css-preprocessor").value == "stylus") {
+        if (document.getElementById("css-preprocessor").value == "none") {
           cssEditor.setValue("");
-          $("#css-preprocessor").val("none").trigger("change");
+          $("#css-preprocessor").val("stylus").trigger("change");
         }
         if (document.getElementById("js-preprocessor").value == "coffeescript") {
           jsEditor.setValue("");
           $("#js-preprocessor").val("none").trigger("change");
         }
-        htmlEditor.setValue("<embed width=\"100%\" height=\"100%\" name=\"plugin\" src=\"http://www.usconstitution.net/const.pdf\" type=\"application/pdf\">");
-        cssEditor.setValue("html, body {\n  height: 100%;\n  overflow: hidden;\n}");
+        htmlEditor.setValue("iframe(src='http://docs.google.com/gview?url=http://www.usconstitution.net/const.pdf&embedded=true')");
+        cssEditor.setValue("html, body\n  height 100%\n  overflow hidden\n\niframe\n  width 100%\n  height 100%\n  border 0\n");
         jsEditor.setValue("");
         $(".hide-demos, #normalize").trigger("click");
         callCollabUpdate();
@@ -4062,41 +4062,80 @@ var cancel = setTimeout(function() {
   updatePreview();
 }, 300);
 
-htmlEditor.on("change", function() {
-  clearTimeout(cancel);
-  setTimeout(function() {
-    updatePreview();
-  }, 300);
-  localStorage.setItem("htmlData", htmlEditor.getValue());
-  
-  setTimeout(function() {
-    htmlEditor.setOption("paletteHints", "true");
-  }, 300);
-});
-cssEditor.on("change", function() {
-  cssPreProcessor();
-  $("#preview").contents().find("#b8c770cc").html(cssContent);
-  localStorage.setItem("cssData", cssEditor.getValue());
-  
-  setTimeout(function() {
-    cssEditor.setOption("paletteHints", "true");
-  }, 300);
-});
-jsEditor.on("change", function() {
-  clearTimeout(cancel);
-  setTimeout(function() {
-    updatePreview();
-  }, 300);
-  localStorage.setItem("jsData", jsEditor.getValue());
-  
-  setTimeout(function() {
-    jsEditor.setOption("paletteHints", "true");
-  }, 300);
-});
+// Toggle Auto Update Preview
+var checkedPrev = JSON.parse(localStorage.getItem("autoUpdate"));
+// If checkedPrev === null then the use has never been here before.
+// Make checkedPrev default to true
+checkedPrev = checkedPrev === null ? true : false;
+var changePrev = document.getElementById("changePrev");
+changePrev.checked = checkedPrev;
+(changePrev.checked) ? $("#runeditor").hide() : $("#runeditor").show();
+
+$("#changePrev").on("change", function() {
+  (this.checked) ? localStorage.setItem("autoUpdate", "true") : localStorage.setItem("autoUpdate", "false");
+  callPrev();
+  (this.checked) ? $("#runeditor").hide() : $("#runeditor").show();
+  $("input[name=menubar].active").trigger("click");
+}).trigger("change");
+
+function callPrev() {
+  htmlEditor.on("change", function() {
+    if (changePrev.checked) {
+      clearTimeout(cancel);
+      setTimeout(function() {
+        updatePreview();
+      }, 300);
+      localStorage.setItem("htmlData", htmlEditor.getValue());
+
+      setTimeout(function() {
+        htmlEditor.setOption("paletteHints", "true");
+      }, 300);
+      return false;
+    } else {
+      localStorage.setItem("htmlData", htmlEditor.getValue());
+
+      setTimeout(function() {
+        htmlEditor.setOption("paletteHints", "true");
+      }, 300);
+    }
+  });
+  cssEditor.on("change", function() {
+    cssPreProcessor();
+    $("#preview").contents().find("#b8c770cc").html(cssContent);
+    localStorage.setItem("cssData", cssEditor.getValue());
+
+    setTimeout(function() {
+      cssEditor.setOption("paletteHints", "true");
+    }, 300);
+    return false;
+  });
+  jsEditor.on("change", function() {
+    if (changePrev.checked) {
+      clearTimeout(cancel);
+      setTimeout(function() {
+        updatePreview();
+      }, 300);
+      localStorage.setItem("jsData", jsEditor.getValue());
+
+      setTimeout(function() {
+        jsEditor.setOption("paletteHints", "true");
+      }, 300);
+      return false;
+    } else {
+      localStorage.setItem("jsData", jsEditor.getValue());
+
+      setTimeout(function() {
+        jsEditor.setOption("paletteHints", "true");
+      }, 300);
+    }
+  });
+  return false;
+}
+
 mdEditor.on("change", function() {
   markdownPreview();
   localStorage.setItem("mdData", mdEditor.getValue());
-  
+
   setTimeout(function() {
     mdEditor.setOption("paletteHints", "true");
   }, 300);
