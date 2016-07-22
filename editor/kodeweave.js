@@ -2124,6 +2124,10 @@ var timeout, delay, selected_text, str, mynum,
               alertify.error("Sorry kodeWeave does not support that file type!");
             }
             
+            if (!changePrev.checked) {
+              $("#runeditor").trigger("click");
+            }
+            
             window.close();
           },
           cancel: function() {
@@ -2202,6 +2206,10 @@ var timeout, delay, selected_text, str, mynum,
         };
         $("input[name=menubar].active").trigger("click");
         reader.readAsText(input.files[0]);
+        
+        if (!changePrev.checked) {
+          $("#runeditor").trigger("click");
+        }
       }
 
       if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -4214,6 +4222,14 @@ jsEditor.on("drop", function() {
 });
 mdEditor.on("drop", function() {
   mdEditor.setValue("");
+});
+
+// Run Preview Button Click
+$("#runeditor").click(function() {
+  clearTimeout(cancel);
+  setTimeout(function() {
+    updatePreview();
+  }, 300);
 });
 
 validators();
