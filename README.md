@@ -10,7 +10,7 @@ If you've ever used jsfiddle, jsbin, dabblet, liveweave, codepen, cssdeck, cssde
 Version
 -------------
 
-1.1.24
+1.1.27
 
 License
 -------------
@@ -59,7 +59,7 @@ kodeWeave uses a number of open source projects to work properly:
 * [Cordova](https://cordova.apache.org/) - mobile application development framework
 * [DataURL Grabber](https://github.com/mikethedj4/DataURL-Grabber-PhoneGap-Build) - Embed an image directly into the document with data URIs
 
-To-Do
+Android To-Do
 -------------
 
  - Make code editor more responsive for mobile devices
