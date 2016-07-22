@@ -100,7 +100,7 @@
     <script src="lib/cssTidy.js"></script>
     <script src="lib/jsTidy.js"></script>
   </head>
-  <body class="app" onresize="app.onResize()">
+  <body class="app">
     <div id="fullpage" class="app">
       <!-- Opening and Closing for final index.html code -->
       <div class="hide">
@@ -141,7 +141,7 @@
 
           <div class="txtcenter fill">
             <a class="pointer block fn">
-              <label for="dataurl" class="pointer">
+              <label for="dataurl" class="pointer block fn">
                 DataURL Grabber
               </label>
             </a><br>
@@ -1016,7 +1016,12 @@
                 <a class="savefile savemd invisible">
                   <span class="fa fa-download"></span>
                 </a>
-                <a class="settings htmlSetting">
+                <!--
+                <a class="settings htmlSetting" href="https://play.google.com/store/apps/details?id=com.michael.kodeweavepro">
+                <a class="settings htmlSetting" href="market://details?id=com.michael.kodeweavepro" target="_top">
+window.open("market://details?=com.michael.kodeweavepro","_system");
+                -->
+                <a class="settings htmlSetting" href="javascript:window.open('market://details?=com.michael.kodeweavepro','_system');">
                   <span class="fa fa-gear"></span>
                 </a>
                 <label for="selectEditor" class="selectEditor pointer">
@@ -1033,7 +1038,12 @@
                 <a class="savefile savecss">
                   <span class="fa fa-download"></span>
                 </a>
-                <a class="settings cssSetting">
+                <!--
+                <a class="settings cssSetting" href="https://play.google.com/store/apps/details?id=com.michael.kodeweavepro">
+                <a class="settings cssSetting" href="market://details?id=com.michael.kodeweavepro" target="_top">
+window.open("market://details?=com.michael.kodeweavepro","_system");
+                -->
+                <a class="settings cssSetting" href="javascript:window.open('market://details?=com.michael.kodeweavepro','_system');">
                   <span class="fa fa-gear"></span>
                 </a> 
               </div>
@@ -1051,7 +1061,12 @@
                 <a class="savefile savejs">
                   <span class="fa fa-download"></span>
                 </a>
-                <a class="settings jsSetting">
+                <!--
+                <a class="settings jsSetting" href="https://play.google.com/store/apps/details?id=com.michael.kodeweavepro">
+                <a class="settings jsSetting" href="market://details?id=com.michael.kodeweavepro" target="_top">
+window.open("market://details?=com.michael.kodeweavepro","_system");
+                -->
+                <a class="settings jsSetting" href="javascript:window.open('market://details?=com.michael.kodeweavepro','_system');">
                   <span class="fa fa-gear"></span>
                 </a>
               </div>
@@ -1066,62 +1081,6 @@
         </div>
       </form>
 
-      <!-- Chrome Application Dialog -->
-      <div class="dialog-bg column hide" data-action="chromeappdialog">
-        <div>
-          <nav>
-            <div class="grid chromeappwindow">
-              <form class="form">
-                <textarea class="form__input" data-action="app-descr" placeholder="Description" rows="7"></textarea>
-
-                <h4>
-                  Offline:
-                </h4>
-
-                <p class="onoffswitch">
-                  <input type="checkbox" name="onoffswitch" class="offline-mode" id="myonoffswitch" checked>
-                  <label class="onoffswitch-label" for="myonoffswitch">
-                    <span class="onoffswitch-inner"></span>
-                    <span class="onoffswitch-switch"></span>
-                  </label>
-                </p>
-
-                <h4>
-                  Frameless:
-                </h4>
-
-                <p class="theframeswitch">
-                  <input type="checkbox" name="frameswitch" class="frame-mode" id="myframeswitch">
-                  <label class="frameswitch-label" for="myframeswitch">
-                    <span class="frameswitch-inner"></span>
-                    <span class="frameswitch-switch"></span>
-                  </label>
-                </p>
-              </form>
-
-              <div class="txtcenter">
-                <a class="btn--default" data-action="app-confirm">Confirm</a>
-                <a class="btn--warning" data-action="app-cancel">Cancel</a>
-              </div>
-            </div>
-          </nav>
-        </div>
-      </div>
-      <!-- Chrome Extension Dialog -->
-      <div class="dialog-bg column hide" data-action="chromeextdialog">
-        <div>
-          <nav>
-            <div class="grid chromeappwindow">
-              <textarea class="form__input" data-action="ext-descr" placeholder="Description" rows="7"></textarea>
-
-              <div class="txtcenter">
-                <a class="btn--default" data-action="ext-confirm">Confirm</a>
-                <a class="btn--warning" data-action="ext-cancel">Cancel</a>
-              </div>
-            </div>
-          </nav>
-        </div>
-      </div>
       <!-- Show Preloader Upon Active Download -->
       <div class="fixedfill preloader hide">
         <div class="table">
@@ -1131,75 +1090,6 @@
               <div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- Preprocessors Dialog -->
-      <div class="dialog-bg column preprocessordialog hide" data-action="preprocessors">
-        <div>
-          <nav>
-            <div class="grid preprocessors">
-              <div class="txtcenter">
-                <h1>Choose your preprocessor!</h1>
-
-                <h4 class="preprocessor html-preprocessor">HTML Preprocessor</h4>
-                <div class="preprocessor html-preprocessor">
-                  <select id="html-preprocessor">
-                    <option value="none">None</option>
-                    <option value="jade">Jade</option>
-                  </select>
-                </div>
-                <p>
-                  <a class="btn--default preprocessor html-preprocessor confirm-preprocessor html-preprocessor-convert" data-action="html-preprocessor">Convert</a>
-                  <a class="btn--info preprocessor html-preprocessor confirm-preprocessor" data-action="html-preprocessor">Close</a>
-                </p>
-
-                <h4 class="preprocessor css-preprocessor">CSS Preprocessor</h4>
-                <div class="preprocessor css-preprocessor">
-                  <select id="css-preprocessor">
-                    <option value="none">None</option>
-                    <!--
-<option value="less">LESS</option>
-<option value="scss">SCSS</option>
-<option value="sass">Sass</option>
--->
-                    <option value="stylus">Stylus</option>
-                  </select>
-                </div>
-                <p>
-                  <a class="btn--default preprocessor css-preprocessor confirm-preprocessor css-preprocessor-convert" data-action="css-preprocessor">Convert</a>
-                  <a class="btn--info preprocessor css-preprocessor confirm-preprocessor" data-action="css-preprocessor">Close</a>
-                </p> 
-
-                <h4 class="preprocessor js-preprocessor">JavaScript Preprocessor</h4>
-                <div class="preprocessor js-preprocessor">
-                  <select id="js-preprocessor">
-                    <option value="none">None</option>
-                    <option value="coffeescript">CoffeeScript</option>
-                  </select>
-
-                  <div class="jsvalidator" style="padding: 0 0 5em 0;">
-                    <h4 class="headtxt iblock fl">
-                      Validator
-                    </h4>
-                    <h4 class="iblock fr">&nbsp;
-                      <span class="jsvalidationswitch iblock tr">
-                        <input type="checkbox" name="jsvalidationswitch" class="jsvalidationswitch-checkbox" id="myjsvalidationswitch" checked>
-                        <label class="jsvalidationswitch-label" for="myjsvalidationswitch">
-                          <span class="jsvalidationswitch-inner"></span>
-                          <span class="jsvalidationswitch-switch"></span>
-                        </label>
-                      </span>
-                    </h4>
-                  </div>
-                </div>
-                <p style="margin: 0;">
-                  <a class="btn--default preprocessor js-preprocessor confirm-preprocessor js-preprocessor-convert" data-action="js-preprocessor">Convert</a>
-                  <a class="btn--info preprocessor js-preprocessor confirm-preprocessor" data-action="js-preprocessor">Close</a>
-                </p>
-              </div>
-            </div>
-          </nav>
         </div>
       </div>
 
@@ -1220,22 +1110,22 @@
                 <input class="txtbox block" data-output="embedProject" />
 
                 <p>
-                  <input type="checkbox" id="mdurl" checked="true" data-target="editorURL">
+                  <input type="checkbox" id="mdurl" checked data-target="editorURL">
                   <label for="mdurl">MD</label>
-                  <input type="checkbox" id="htmlurl" checked="true" data-target="editorURL">
+                  <input type="checkbox" id="htmlurl" checked data-target="editorURL">
                   <label for="htmlurl">HTML</label>
-                  <input type="checkbox" id="cssurl" checked="true" data-target="editorURL">
+                  <input type="checkbox" id="cssurl" checked data-target="editorURL">
                   <label for="cssurl">CSS</label>
-                  <input type="checkbox" id="jsurl" checked="true" data-target="editorURL">
+                  <input type="checkbox" id="jsurl" checked data-target="editorURL">
                   <label for="jsurl">JS</label>
-                  <input type="checkbox" id="resulturl" checked="true" data-target="editorURL">
+                  <input type="checkbox" id="resulturl" checked data-target="editorURL">
                   <label for="resulturl">Result</label><br>
 
-                  <input type="checkbox" id="transparentembed" data-target="editorURL">
+                  <input type="checkbox" id="transparentembed" data-target="editorURL" disabled>
                   <label for="transparentembed">Transparent</label>
-                  <input type="checkbox" id="darkembed" data-target="editorURL">
+                  <input type="checkbox" id="darkembed" data-target="editorURL" disabled>
                   <label for="darkembed">Dark</label>
-                  <input type="checkbox" id="editembed" data-target="editorURL">
+                  <input type="checkbox" id="editembed" data-target="editorURL" disabled>
                   <label for="editembed">Edit</label>
                 </p>
 
@@ -1289,43 +1179,41 @@
     </div>
     </div>
 
-  <!-- Walkthrough Navigation Dialog -->
-  <input type="radio" id="close-walkthrough" class="hide" name="walkthrough-group">
-  <label for="close-walkthrough" class="walkthrough-dialogbg pointer"></label>
-  <div class="walkthrough-dialog">
-    <!-- <input type="radio" id="tab1" class="hide" name="walkthrough-group" checked> -->
-    <!-- <input type="radio" id="tab2" class="hide" name="walkthrough-group"> -->
-    <input type="radio" id="tab3" class="hide" name="walkthrough-group" checked>
+    <!-- Walkthrough Navigation Dialog -->
+    <input type="radio" id="close-walkthrough" class="hide" name="walkthrough-group">
+    <label for="close-walkthrough" class="walkthrough-dialogbg pointer"></label>
+    <div class="walkthrough-dialog">
+      <!-- <input type="radio" id="tab1" class="hide" name="walkthrough-group" checked> -->
+      <!-- <input type="radio" id="tab2" class="hide" name="walkthrough-group"> -->
+      <input type="radio" id="tab3" class="hide" name="walkthrough-group" checked>
 
-    <div class="walkthrough-menu">
-      <!-- <label for="tab1">Using kodeWeave</label> -->
-      <!-- <label for="tab1">How To Use kodeWeave</label> -->
-      <!-- <label for="tab2">Exportation</label> -->
-      <label for="tab3">Feed</label>
-      <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BSYGA2RB5ZJCC" target="_blank">
-        <label>Donate</label>
-      </a>
+      <div class="walkthrough-menu">
+        <!-- <label for="tab1">Using kodeWeave</label> -->
+        <!-- <label for="tab1">How To Use kodeWeave</label> -->
+        <!-- <label for="tab2">Exportation</label> -->
+        <label for="tab3">Feed</label>
+        <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BSYGA2RB5ZJCC" target="_blank">
+          <label>Donate</label>
+        </a>
 
-      <label for="close-walkthrough" class="walkthrough-close">
-        <span class="fa fa-times-circle-o"></span>
-      </label>
+        <label for="close-walkthrough" class="walkthrough-close">
+          <span class="fa fa-times-circle-o"></span>
+        </label>
+      </div>
+
+      <!-- Tab Content -->
+      <div id="walkthrough" class="walkthrough-content"></div>
+
+      <div id="feed" class="walkthrough-content">
+        <!--
+  <a class="twitter-timeline" href="https://twitter.com/kodeweave_app">Tweets by kodeweave_app</a>
+  <script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  -->
+        <iframe id="twitter-widget" src="https://mikethedj4.github.io/kodeWeave/feed/"></iframe>
+        <style>.walkthrough-content iframe[id*="twitter-widget"] {float: none; width: 100%!important; height: calc(100% - 4px); border: 0;}</style>
+      </div>
     </div>
-
-    <!-- Tab Content -->
-    <div id="walkthrough" class="walkthrough-content">
-
     </div>
-
-    <div id="feed" class="walkthrough-content">
-      <!--
-<a class="twitter-timeline" href="https://twitter.com/kodeweave_app">Tweets by kodeweave_app</a>
-<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
--->
-      <iframe id="twitter-widget" src="https://mikethedj4.github.io/kodeWeave/feed/" frameborder="0"></iframe>
-      <style>.walkthrough-content iframe[id*="twitter-widget"] {float: none; width: 100%!important; height: calc(100% - 4px);}</style>
-    </div>
-  </div>
-  </div>
     <script src="libraries/jqwidgets/jqxcore.js"></script>
     <script src="libraries/jqwidgets/jqxsplitter.js"></script>
     <script src="lib/shortcut.js"></script>

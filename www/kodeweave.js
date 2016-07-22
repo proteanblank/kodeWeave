@@ -34,9 +34,10 @@ function onDeviceReady() {
 }
 
 var timeout, delay, server, selected_text, str, mynum,
-    start_cursor, cursorLine, cursorCh, jsContent,
-    cssSelected, htmlContent, hasMD, hasHTML, hasCSS,
-    hasJS, editEmbed, darkUI, seeThrough, hasResult,
+    start_cursor, cursorLine, cursorCh, cssSelected, 
+    hasMD, hasHTML, hasCSS, hasJS, editEmbed, darkUI, 
+    seeThrough, hasResult, htmlContent,
+    yourHTML, yourCSS, yourJS,
     welcomeDialog = function() {
       // Use localStorage for Welcome dialog
       // If user closed it prevent show upon every reload
@@ -121,8 +122,8 @@ var timeout, delay, server, selected_text, str, mynum,
           $("#html-preprocessor").val("none").change();
         }
         if (jadeVal) {
-          htmlEditor.setValue(jadeVal.content);
-          $("#html-preprocessor").val("jade").change();
+          htmlEditor.setValue("");
+          $(".htmlSetting").trigger("click");
         }
         if (!htmlVal && !jadeVal) {
           htmlEditor.setValue("");
@@ -132,8 +133,8 @@ var timeout, delay, server, selected_text, str, mynum,
           $("#css-preprocessor").val("none").change();
         }
         if (stylusVal) {
-          cssEditor.setValue(stylusVal.content);
-          $("#css-preprocessor").val("stylus").change();
+          cssEditor.setValue("");
+          $(".htmlSetting").trigger("click");
         }
         if (!cssVal && !stylusVal) {
           cssEditor.setValue("");
@@ -143,8 +144,8 @@ var timeout, delay, server, selected_text, str, mynum,
           $("#js-preprocessor").val("none").change();
         }
         if (coffeeVal) {
-          jsEditor.setValue(coffeeVal.content);
-          $("#js-preprocessor").val("coffeescript").change();
+          jsEditor.setValue("");
+          $(".htmlSetting").trigger("click");
         }
         if (!jsVal && !coffeeVal) {
           jsEditor.setValue("");
@@ -164,102 +165,18 @@ var timeout, delay, server, selected_text, str, mynum,
         alertify.error("Error: Could not load weave!");
       });
     },
-    renderYourHTML = function() {
-      var htmlSelected  = $("#html-preprocessor option:selected").val();
-
-      if ( htmlSelected == "none") {
-        yourHTML = htmlEditor.getValue();
-      } else if ( htmlSelected == "jade") {
-        var options = {
-            pretty: true
-        };
-        yourHTML = jade.render(htmlEditor.getValue(), options);
-      }
-    },
-    renderYourCSS = function() {
-      cssSelected = $("#css-preprocessor option:selected").val();
-
-      if ( cssSelected == "none") {
-        yourCSS = cssEditor.getValue();
-      } else if ( cssSelected == "stylus") {
-        stylus(cssEditor.getValue()).render(function(err, out) {
-          if(err !== null) {
-            console.error("something went wrong");
-          } else {
-            yourCSS = out;
-          }
-        });
-      }
-    },
-    renderYourJS = function() {
-      var jsSelected = $("#js-preprocessor option:selected").val();
-      
-      if ( jsSelected == "none") {
-        yourJS = jsEditor.getValue();
-      } else if ( jsSelected == "coffeescript") {
-        yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true });
-      }
-    },
-    JSValEnabled = function() {
-      // jsEditor.setOption("lint", true)
-      jsEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
-    },
-    JSValDisabled = function() {
-      // jsEditor.setOption("lint", false)
-      jsEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
-    },
-    validators = function() {
-      var JSValStatus = localStorage.getItem("JSValStatus");
-      if (JSValStatus === "true") {
-        $("#myjsvalidationswitch").prop("checked", true);
-        JSValEnabled();
-      } else {
-        $("#myjsvalidationswitch").prop("checked", "");
-        JSValDisabled();
-      }
-
-      document.getElementById("myjsvalidationswitch").onclick = function() {
-        localStorage.setItem("JSValStatus", $(this).prop("checked"));
-        if ( this.checked === true ) {
-          localStorage.setItem("SaveJSValSwitch", '"checked", "true"');
-          JSValEnabled();
-        } else {
-          localStorage.setItem("SaveJSValSwitch", '"checked", ""');
-          JSValDisabled();
-        }
-      };
-    },
     singleFileDownload = function() {
       document.querySelector(".savehtml").onclick = function() {
-	    app.requestInterstitial(true);
-        var htmlSelected = $("#html-preprocessor option:selected").val();
-
-        if ( htmlSelected == "none") {
-          yourHTML = htmlEditor.getValue();
-          saveFile("source.html", yourHTML);
-        } else if ( htmlSelected == "jade") {
-          saveFile("source.jade", yourHTML);
-        }
+        app.requestInterstitial(true);
+        saveFile("source.html", htmlEditor.getValue());
       };
       document.querySelector(".savecss").onclick = function() {
-	    app.requestInterstitial(true);
-        cssSelected = $("#css-preprocessor option:selected").val();
-
-        if ( cssSelected == "none") {
-          saveFile("source.css", cssEditor.getValue());
-        } else if ( cssSelected == "stylus") {
-          saveFile("source.styl", cssEditor.getValue());
-        }
+        app.requestInterstitial(true);
+        saveFile("source.css", cssEditor.getValue());
       };
       document.querySelector(".savejs").onclick = function() {
-	    app.requestInterstitial(true);
-        var jsSelected = $("#js-preprocessor option:selected").val();
-
-        if ( jsSelected == "none") {
-          saveFile("source.js", jsEditor.getValue());
-        } else if ( jsSelected == "coffeescript") {
-          saveFile("source.coffee", jsEditor.getValue());
-        }
+        app.requestInterstitial(true);
+        saveFile("source.js", jsEditor.getValue());
       };
       document.querySelector(".savemd").onclick = function() {
 	    app.requestInterstitial(true);
@@ -526,35 +443,6 @@ var timeout, delay, server, selected_text, str, mynum,
         // localStorage.removeItem("saveAuthor");
         // localStorage.removeItem("gridSetting");
         location.reload(true);
-        
-        /*
-        clearPreview();
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("site title").trigger("change");
-        $("[data-action=sitedesc]").val("sample description").trigger("change");
-        $("[data-action=siteauthor]").val("kodeWeave").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "jade") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("css-preprocessor").value == "stylus") {
-          cssEditor.setValue("");
-          $("#css-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "coffeescript") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("none").trigger("change");
-        }
-        mdEditor.setValue("");
-        htmlEditor.setValue("");
-        cssEditor.setValue("");
-        jsEditor.setValue("");
-        if ($("input[name=menubar].active").is(":visible")) {
-          $(".hide-demos").trigger("click");
-        }
-        
-        */
       };
     },
     appDemos = function() {
@@ -574,251 +462,109 @@ var timeout, delay, server, selected_text, str, mynum,
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("Alphabetizer").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "jade") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("css-preprocessor").value == "stylus") {
-          cssEditor.setValue("");
-          $("#css-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "coffeescript") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("none").trigger("change");
-        }
         htmlEditor.setValue("<div class=\"grid\">\n  <div class=\"grid__col--12\">\n    <button class=\"btn--default\" data-action=\"alphabetize\">Alphabetize</button>\n    <textarea class=\"form__input\" data-action=\"input-list\" rows=\"7\" placeholder=\"Alphabetize your text here...\">China\nIndia\nUnited States of America\nIndonesia\nBrazil\nPakistan\nNigeria\nBangladesh\nRussia\nJapan\nMexico\nPhilippines\nEthiopia\nVietnam\nEgypt\nGermany\nIran\nTurkey\nDemocratic Republic of the Congo\nFrance</textarea>\n  </div>\n</div>");
         cssEditor.setValue("");
-        jsEditor.setValue("var txt = document.querySelector(\"[data-action=input-list]\")\n\ndocument.querySelector(\"[data-action=alphabetize]\").addEventListener(\"click\", function() {\n  txt.value = (txt.value.split(\"\\n\").sort(caseInsensitive).join(\"\\n\"))\n\n  function caseInsensitive(a, b) {\n    return a.toLowerCase().localeCompare(b.toLowerCase())\n  }\n})\n");
+        jsEditor.setValue("var txt = document.querySelector(\"[data-action=input-list]\")\n\ndocument.querySelector(\"[data-action=alphabetize]\").addEventListener(\"click\", function() {\n  txt.value = (txt.value.split(\"\\n\").sort(caseInsensitive).join(\"\\n\"))\n\n  function caseInsensitive(a, b) {\n    return a.toLowerCase().localeCompare(b.toLowerCase())\n  }\n})");
         $(".hide-demos, #polyui").trigger("click");
-        
       };
       document.querySelector("[data-action=angular]").onclick = function() {
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("Angular JS Demo").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "jade") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "coffeescript") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("none").trigger("change");
-        }
-        $("#css-preprocessor").val("none").trigger("change");
         htmlEditor.setValue("<div class=\"page-wrap\" ng-app>\n  <h1 class=\"headline\">Simple content toggle with AngularJS</h1>\n  <p>\n    Choose what to display:\n    <select class=\"content-select\" ng-model=\"selection\">\n      <option value=\"content1\">Content #1</option>\n      <option value=\"content2\">Content #2</option>\n    </select>\n  </p>\n\n  <div class=\"container\">\n    <article ng-show=\"selection == 'content1'\">\n      <h2 class=\"h2\">Content #1</h2>\n      <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</p>\n    </article>\n    <article ng-show=\"selection == 'content2'\">\n      <h2 class=\"h2\">Content #2</h2>\n      <p>Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>\n    </article>\n  </div>\n</div>");
         cssEditor.setValue("body {\n  padding: 3em 2em;\n  font-size: 1em;\n  line-height: 1;\n}\n\n/* Pen specific CSS */\n.page-wrap {\n  margin: 0 auto;\n  max-width: 700px;\n}\n\n.headline {\n  margin: 0 0 .7em 0;\n  font-size: 1.7em;\n  font-weight: bold;\n}\n\n.content-select {\n  margin: 0 0 0 1em;\n}\n\narticle {\n  margin: 3em 0 0 0;\n}\narticle p {\n  margin: 0 0 .5em 0;\n  line-height: 1.3;\n}\narticle .h2 {\n  margin: 0 0 .5em 0;\n  font-size: 1.2em;\n}");
         jsEditor.setValue("");
         $(".hide-demos, #normalize, #angular").trigger("click");
-        
       };
       document.querySelector("[data-action=applicator]").onclick = function() {
         clearPreview();
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("Code Applicator").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "none") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("jade").trigger("change");
-        }
-        if (document.getElementById("css-preprocessor").value == "none") {
-          cssEditor.setValue("");
-          $("#css-preprocessor").val("stylus").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "none") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("coffeescript").trigger("change");
-        }
-        htmlEditor.setValue("textarea#addcode(placeholder='Encode here...')\ntextarea#encode(readonly='', placeholder='Encoded code goes here...')\n  | #decode Preview code here.");
-        cssEditor.setValue("body\n  margin 0\n\n::-webkit-input-placeholder\n  color #555\n\n:-moz-placeholder\n  color #555\n\n::-moz-placeholder\n  color #555\n\n:-ms-input-placeholder\n  color #555\n\n#addcode, #encode, #decode\n  position absolute\n  font-family monospace\n  line-height 1.4em\n  font-size 1em\n  overflow auto\n  resize none\n  margin 0\n  padding 0\n  border 0\n\n#encode, #decode\n  left 0\n  width 50%\n  height 50%\n  background-color #fff\n\n#addcode\n  top 0\n  right 0\n  bottom 0\n  margin 0\n  width 50%\n  height 100%\n  min-height 1.4em\n  border 0\n  border-radius 0\n  resize none\n  color #ccc\n  background-color #111\n\n#encode\n  top 0\n\n#decode\n  bottom 0");
-        jsEditor.setValue("document.querySelector('#addcode').onkeyup = ->\n  document.querySelector('#encode').textContent = @value\n  document.querySelector('#encode').textContent = document.querySelector('#encode').innerHTML\n  if @value == ''\n    document.querySelector('#decode').innerHTML = 'Preview code here.'\n  else\n    document.querySelector('#decode').innerHTML = @value\n  false\n\ndocument.querySelector('#encode').onclick = ->\n  @select()\n  false");
+        htmlEditor.setValue("<textarea id=\"addcode\" placeholder=\"Encode here...\"></textarea>\n<textarea id=\"encode\" readonly=\"\" placeholder=\"Encoded code goes here...\">#decode Preview code here.</textarea>");
+        cssEditor.setValue("body {\n  margin: 0;\n}\n\n::-webkit-input-placeholder {\n  color: #555;\n}\n\n:-moz-placeholder {\n  color: #555;\n}\n\n::-moz-placeholder {\n  color: #555;\n}\n\n:-ms-input-placeholder {\n  color: #555;\n}\n\n#addcode, #encode, #decode {\n  position: absolute;\n  font-family: monospace;\n  line-height: 1.4em;\n  font-size: 1em;\n  overflow: auto;\n  resize: none;\n  margin: 0;\n  padding: 0;\n  border: 0;\n}\n\n#encode, #decode {\n  left: 0;\n  width: 50%;\n  height: 50%;\n  background-color: #fff;\n}\n\n#addcode {\n  top: 0;\n  right: 0;\n  bottom: 0;\n  margin: 0;\n  width: 50%;\n  height: 100%;\n  min-height: 1.4em;\n  border: 0;\n  border-radius: 0;\n  resize: none;\n  color: #ccc;\n  background-color: #111;\n}\n\n#encode {\n  top: 0;\n}\n\n#decode {\n  bottom: 0;\n}\n");
+        jsEditor.setValue("document.querySelector('#addcode').onkeyup = function() {\n  document.querySelector('#encode').textContent = this.value;\n  document.querySelector('#encode').textContent = document.querySelector('#encode').innerHTML;\n  if (this.value === '') {\n    document.querySelector('#decode').innerHTML = 'Preview code here.';\n  } else {\n    document.querySelector('#decode').innerHTML = this.value;\n  }\n  return false;\n};\n\ndocument.querySelector('#encode').onclick = function() {\n  this.select();\n  return false;\n};");
         $(".hide-demos").trigger("click");
-        
       };
       document.querySelector("[data-action=charactermap]").onclick = function() {
         clearPreview();
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("Character Map").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "none") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("jade").trigger("change");
-        }
-        if (document.getElementById("css-preprocessor").value == "none") {
-          cssEditor.setValue("");
-          $("#css-preprocessor").val("stylus").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "coffeescript") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("none").trigger("change");
-        }
-        $("#html-preprocessor").val("jade").trigger("change");
-        $("#js-preprocessor").val("none").trigger("change");
-        htmlEditor.setValue("iframe(src='http://dev.w3.org/html5/html-author/charref')");
-        cssEditor.setValue("html, body\n  height 100%\n\niframe\n  width 100%\n  height 100%\n  border 0");
+        htmlEditor.setValue("<iframe src=\"http://dev.w3.org/html5/html-author/charref\"></iframe>");
+        cssEditor.setValue("html, body {\n  margin: 0;\n  height: 100%;\n}\niframe {\n  width: 100%;\n  height: calc(100% - 4px);\n  border: 0;\n}");
         jsEditor.setValue("");
         $(".hide-demos").trigger("click");
-        
       };
       document.querySelector("[data-action=codeeditor]").onclick = function() {
         clearPreview();
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("Code Editor").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "jade") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("css-preprocessor").value == "stylus") {
-          cssEditor.setValue("");
-          $("#css-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "coffeescript") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("none").trigger("change");
-        }
         htmlEditor.setValue("<textarea id=\"code\"><!doctype html>\n<html>\n  <head>\n    <meta charset=utf-8>\n    <title>HTML5 canvas demo</title>\n    <style>\n      p {\n        font: 12px Verdana, sans-serif;\n        color: #935033;\n      }\n    </style>\n  </head>\n  <body>\n    <p>Canvas pane goes here:</p>\n    <canvas id=\"pane\" width=\"300\" height=\"200\"></canvas>\n\n    <script>\n      var canvas = document.getElementById(\"pane\")\n      var context = canvas.getContext(\"2d\")\n\n      context.fillStyle = \"rgb(250,0,0)\"\n      context.fillRect(10, 10, 55, 50)\n\n      context.fillStyle = \"rgba(0, 0, 250, 0.5)\"\n      context.fillRect(30, 30, 55, 50)\n    </script>\n  </body>\n</html></textarea>\n\n<iframe id=\"preview\"></iframe>");
         cssEditor.setValue(".CodeMirror {\n  float: left;\n  width: 50%;\n  border: 1px solid #000;\n}\n\niframe {\n  width: 49%;\n  float: left;\n  height: 300px;\n  border: 1px solid #000;\n  border-left: 0;\n}");
-        jsEditor.setValue("var delay\n\n// Initialize CodeMirror editor\nvar editor = CodeMirror.fromTextArea(document.getElementById(\"code\"), {\n  mode: \"text/html\",\n  tabMode: \"indent\",\n  styleActiveLine: true,\n  lineNumbers: true,\n  lineWrapping: true,\n  autoCloseTags: true,\n  foldGutter: true,\n  dragDrop: true,\n  lint: true,\n  gutters: [\"CodeMirror-lint-markers\", \"CodeMirror-linenumbers\", \"CodeMirror-foldgutter\"]\n})\nInlet(editor)\nemmetCodeMirror(editor)\n\n// Live preview\neditor.on(\"change\", function() {\n  clearTimeout(delay)\n  delay = setTimeout(updatePreview, 300)\n})\n\nfunction updatePreview() {\n  var previewFrame = document.getElementById(\"preview\")\n  var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document\n  preview.open()\n  preview.write(editor.getValue())\n  preview.close()\n}\nsetTimeout(updatePreview, 300)\n");
+        jsEditor.setValue("var delay\n\n// Initialize CodeMirror editor\nvar editor = CodeMirror.fromTextArea(document.getElementById(\"code\"), {\n  mode: \"text/html\",\n  tabMode: \"indent\",\n  styleActiveLine: true,\n  lineNumbers: true,\n  lineWrapping: true,\n  autoCloseTags: true,\n  foldGutter: true,\n  dragDrop: true,\n  lint: true,\n  gutters: [\"CodeMirror-lint-markers\", \"CodeMirror-linenumbers\", \"CodeMirror-foldgutter\"]\n})\nInlet(editor)\nemmetCodeMirror(editor)\n\n// Live preview\neditor.on(\"change\", function() {\n  clearTimeout(delay)\n  delay = setTimeout(updatePreview, 300)\n})\n\nfunction updatePreview() {\n  var previewFrame = document.getElementById(\"preview\")\n  var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document\n  preview.open()\n  preview.write(editor.getValue())\n  preview.close()\n}\nsetTimeout(updatePreview, 300)");
         $(".hide-demos, #codemirror").trigger("click");
-        
       };
       document.querySelector("[data-action=convertforvalues]").onclick = function() {
         clearPreview();
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("Convert for Values").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "jade") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("css-preprocessor").value == "stylus") {
-          cssEditor.setValue("");
-          $("#css-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "coffeescript") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("none").trigger("change");
-        }
         htmlEditor.setValue("<textarea class=\"editor\" placeholder=\"Code with multiple lines here...\"></textarea>\n<textarea class=\"preview\" placeholder=\"Generated result here...\"></textarea>");
-        cssEditor.setValue("body {\n  margin: 0;\n  background: #333;\n}\n\n.editor, .preview {\n  position: absolute;\n  width: 50%;\n  height: 100%;\n  padding: 0;\n  font-family: monospace;\n  min-height: 1.4em;\n  line-height: 1.4em;\n  font-size: 1em;\n  border: 0;\n  border-radius: 0;\n  resize: none;\n}\n\n.editor {\n  left: 0;\n  color: #0b0;\n  background-color: #000;\n}\n\n::-webkit-input-placeholder { /* WebKit browsers */\n  color: #0f6;\n}\n:-moz-placeholder { /* Mozilla Firefox 4 to 18 */\n  color: #0f6;\n}\n::-moz-placeholder { /* Mozilla Firefox 19+ */\n  color: #0f6;\n}\n:-ms-input-placeholder { /* Internet Explorer 10+ */\n  color: #0f6;\n}\n\n.preview {\n  right: 0;\n  background-color: #fff;\n}\n");
-        jsEditor.setValue("$(document).ready(function() {\n  var editor = $(\".editor\"),\n      preview = $(\".preview\");\n  \n  // Remove new line and insert new line showing the text in value\n  editor.keyup(function() {\n    preview.val( this.value.replace(/\"/g,'\\\\\"').replace(/\\n/g,\"\\\\n\") )\n  }).click(function() {\n    this.select()\n  })\n  \n  // Easily Select Converted Code\n  preview.click(function() {\n    this.select()\n  })\n})\n");
+        cssEditor.setValue("body {\n  margin: 0;\n  background: #333;\n}\n\n.editor, .preview {\n  position: absolute;\n  width: 50%;\n  height: 100%;\n  padding: 0;\n  font-family: monospace;\n  min-height: 1.4em;\n  line-height: 1.4em;\n  font-size: 1em;\n  border: 0;\n  border-radius: 0;\n  resize: none;\n}\n\n.editor {\n  left: 0;\n  color: #0b0;\n  background-color: #000;\n}\n\n::-webkit-input-placeholder { /* WebKit browsers */\n  color: #0f6;\n}\n:-moz-placeholder { /* Mozilla Firefox 4 to 18 */\n  color: #0f6;\n}\n::-moz-placeholder { /* Mozilla Firefox 19+ */\n  color: #0f6;\n}\n:-ms-input-placeholder { /* Internet Explorer 10+ */\n  color: #0f6;\n}\n\n.preview {\n  right: 0;\n  background-color: #fff;\n}");
+        jsEditor.setValue("$(document).ready(function() {\n  var editor = $(\".editor\"),\n      preview = $(\".preview\");\n  \n  // Remove new line and insert new line showing the text in value\n  editor.keyup(function() {\n    preview.val( this.value.replace(/\"/g,'\\\\\"').replace(/\\n/g,\"\\\\n\") )\n  }).click(function() {\n    this.select()\n  })\n  \n  // Easily Select Converted Code\n  preview.click(function() {\n    this.select()\n  })\n})");
         $(".hide-demos, #normalize, #jquery").trigger("click");
-        
       };
       document.querySelector("[data-action=dateclock]").onclick = function() {
         clearPreview();
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("Date and Time").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "none") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("jade").trigger("change");
-        }
-        if (document.getElementById("css-preprocessor").value == "none") {
-          cssEditor.setValue("");
-          $("#css-preprocessor").val("stylus").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "coffeescript") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("none").trigger("change");
-        }
-        htmlEditor.setValue("span.date(data-action='leftdate')\nspan.date.fr(data-action='rightdate')\n.clock(data-action='clock')");
-        cssEditor.setValue(".date\n  font-family arial\n\n.fr\n  float right\n\n.clock\n  font bold 1.5em sans\n  text-align center");
-        jsEditor.setValue("// Define a function to display the current time\nfunction displayTime() {\n  var now = new Date();\n  document.querySelector('[data-action=clock]').innerHTML =  now.toLocaleTimeString();\n  setTimeout(displayTime, 1000);\n}\ndisplayTime();\n\n// Date\nvar currentTime = new Date();\nvar month = currentTime.getMonth() + 1;\nvar date = currentTime.getDate();\nvar year = currentTime.getFullYear();\ndocument.querySelector('[data-action=leftdate]').innerHTML = month + '/' + date + '/' + year;\n\nvar today = new Date();\nif (year < 1000)\n  year += 1900;\nvar day = today.getDay();\nvar monthname = today.getMonth();\nif (date < 10)\n  date = '0' + date;\nvar dayarray = new Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');\nvar montharray = new Array('January','February','March','April','May','June','July','August','September','October','November','December');\ndocument.querySelector('[data-action=rightdate]').innerHTML = dayarray[day] + ', ' + montharray[monthname] + ' ' + date + ', ' + year;\n");
+        htmlEditor.setValue("<span data-action=\"leftdate\" class=\"date\"></span><span data-action=\"rightdate\" class=\"date fr\"></span>\n<div data-action=\"clock\" class=\"clock\"></div>");
+        cssEditor.setValue(".date {\n  font-family: arial;\n}\n.fr {\n  float: right;\n}\n.clock {\n  font: bold 1.5em sans;\n  text-align: center;\n}");
+        jsEditor.setValue("// Define a function to display the current time\nfunction displayTime() {\n  var now = new Date();\n  document.querySelector('[data-action=clock]').innerHTML =  now.toLocaleTimeString();\n  setTimeout(displayTime, 1000);\n}\ndisplayTime();\n\n// Date\nvar currentTime = new Date();\nvar month = currentTime.getMonth() + 1;\nvar date = currentTime.getDate();\nvar year = currentTime.getFullYear();\ndocument.querySelector('[data-action=leftdate]').innerHTML = month + '/' + date + '/' + year;\n\nvar today = new Date();\nif (year < 1000)\n  year += 1900;\nvar day = today.getDay();\nvar monthname = today.getMonth();\nif (date < 10)\n  date = '0' + date;\nvar dayarray = new Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');\nvar montharray = new Array('January','February','March','April','May','June','July','August','September','October','November','December');\ndocument.querySelector('[data-action=rightdate]').innerHTML = dayarray[day] + ', ' + montharray[monthname] + ' ' + date + ', ' + year;");
         $(".hide-demos").trigger("click");
-        
       };
       document.querySelector("[data-action=detectorientation]").onclick = function() {
         clearPreview();
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("Detect Orientation").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "none") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("jade").trigger("change");
-        }
-        if (document.getElementById("css-preprocessor").value == "none") {
-          cssEditor.setValue("");
-          $("#css-preprocessor").val("stylus").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "coffeescript") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("none").trigger("change");
-        }
-        htmlEditor.setValue("h1.portrait Portrait\nh1.landscape Landscape\nfooter.foot");
-        cssEditor.setValue("body\n  font 26px arial\n\n.portrait,\n.landscape,\n.foot\n  text-align center\n\n.foot\n  position absolute\n  bottom 0\n  left 0\n  right 0\n  padding 26px");
-        jsEditor.setValue("var detectOrientation = function() {\n  if ( window.innerWidth > window.innerHeight ) {\n    document.querySelector(\".landscape\").style.display = \"block\"\n    document.querySelector(\".portrait\").style.display = \"none\"\n  } else if ( window.innerWidth < window.innerHeight ) {\n    document.querySelector(\".landscape\").style.display = \"none\"\n    document.querySelector(\".portrait\").style.display = \"block\"\n  }\n  document.querySelector(\".foot\").innerHTML =  window.innerWidth + \"px, \" + window.innerHeight + \"px\"\n}\n\nwindow.addEventListener(\"resize\", function() {\n  detectOrientation()\n})\n\ndetectOrientation()\n");
+        htmlEditor.setValue("<h1 class=\"portrait\">Portrait</h1>\n<h1 class=\"landscape\">Landscape</h1>\n<footer class=\"foot\"></footer>");
+        cssEditor.setValue("body {\n  font: 26px arial;\n}\n.portrait, .landscape, .foot {\n  text-align: center;\n}\n.foot {\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  padding: 26px;\n}");
+        jsEditor.setValue("var detectOrientation = function() {\n  if ( window.innerWidth > window.innerHeight ) {\n    document.querySelector(\".landscape\").style.display = \"block\"\n    document.querySelector(\".portrait\").style.display = \"none\"\n  } else if ( window.innerWidth < window.innerHeight ) {\n    document.querySelector(\".landscape\").style.display = \"none\"\n    document.querySelector(\".portrait\").style.display = \"block\"\n  }\n  document.querySelector(\".foot\").innerHTML =  window.innerWidth + \"px, \" + window.innerHeight + \"px\"\n}\n\nwindow.addEventListener(\"resize\", function() {\n  detectOrientation()\n})\n\ndetectOrientation()");
         $(".hide-demos").trigger("click");
-        
       };
       document.querySelector("[data-action=osdisplay]").onclick = function() {
         clearPreview();
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("Detect Operating System").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "none") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("jade").trigger("change");
-        }
-        if (document.getElementById("css-preprocessor").value == "stylus") {
-          cssEditor.setValue("");
-          $("#css-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "none") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("coffeescript").trigger("change");
-        }
-        htmlEditor.setValue("div(data-output='os')");
+        htmlEditor.setValue("<div data-output=\"os\"></div>");
         cssEditor.setValue("");
-        jsEditor.setValue("yourOS = document.querySelector('[data-output=os]')\n\ndocument.addEventListener 'DOMContentLoaded', ->\n  yourOS.innerHTML = '<strong>Operating System</strong>: ' + navigator.platform");
+        jsEditor.setValue("var yourOS = document.querySelector(\"[data-output=os]\");\n\ndocument.addEventListener(\"DOMContentLoaded\", function() {\n  yourOS.innerHTML = \"<strong>Operating System</strong>: \" + navigator.platform;\n});");
         $(".hide-demos").trigger("click");
-        
       };
       document.querySelector("[data-action=markdowneditor]").onclick = function() {
         clearPreview();
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("Live Markdown Editor").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "jade") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("css-preprocessor").value == "stylus") {
-          cssEditor.setValue("");
-          $("#css-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "none") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("coffeescript").trigger("change");
-        }
         htmlEditor.setValue("<div class=\"editor-and-preview-container\">\n  <div class=\"editor-container\">Markdown Editor</div>\n  <div class=\"preview-container\">Preview</div>\n</div>\n<div class=\"editor-and-preview-container\">\n  <div class=\"editor-container\">\n    <textarea id=\"editor\">Welcome!\n===================\n\n![Placer text](data:image/png;base64,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)  \n\nHey! I'm your placement Markdown text.\n\n----------\n\n\nTypography\n-------------\n\n[kodeWeave Link](https://mikethedj4.github.io/kodeWeave/)  \n**bold text**  \n*italic text*  \n\n### Blockquote:\n\n> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\n### Bullet List\n\n - Green\n - Eggs\n - and\n - Ham\n\n### Numbered List\n\n 1. Green\n 2. Eggs\n 3. and\n 4. Ham\n</textarea>\n  </div>\n  <div class=\"preview-container\">\n    <div id=\"preview\"></div>\n  </div>\n</div>");
         cssEditor.setValue("* {\n  box-sizing: border-box;\n}\n\nbody {\n  line-height: 1.4;\n}\n\n.editor-and-preview-container {\n  padding: 1em;\n  width: 100%;\n  height: 100%;\n}\n\n.editor-container, .preview-container {\n  display: inline;\n  overflow: hidden;\n  float: left;\n  width: 50%;\n  height: 100%;\n}\n\n#editor {\n  display: inline-block;\n  width: 100%;\n  height: 500px;\n  resize: none;\n  padding: 1em;\n  line-height: 1.5;\n}\n#editor:focus {\n  outline: none;\n}\n\n#preview {\n  width: 100%;\n  height: 500px;\n  border: 1px green solid;\n  padding: 0 1em;\n  overflow: auto;\n}");
-        jsEditor.setValue("mdconverter = new (Showdown.converter)\neditor = $('#editor')\npreview = $('#preview')\n\nupdatePreview = ->\n  preview.html mdconverter.makeHtml(editor.val())\n\nupdatePreview()\neditor.on 'keyup', ->\n  updatePreview()");
+        jsEditor.setValue("var mdconverter = new Showdown.converter,\n    editor = $('#editor'),\n    preview = $('#preview'),\n    updatePreview = function() {\n      preview.html(mdconverter.makeHtml(editor.val()));\n    };\n\nupdatePreview();\neditor.on('keyup', function() {\n  updatePreview();\n});");
         $(".hide-demos, #normalize, #jquery, #showdown").trigger("click");
-        
       };
       document.querySelector("[data-action=keylogger]").onclick = function() {
         clearPreview();
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("Keylogger").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "none") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("jade").trigger("change");
-        }
-        if (document.getElementById("css-preprocessor").value == "none") {
-          cssEditor.setValue("");
-          $("#css-preprocessor").val("stylus").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "none") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("coffeescript").trigger("change");
-        }
-        htmlEditor.setValue(".container-fluid\n  .row\n    .col-lg-12\n      input.form-control(type='text', data-action='input', placeholder='Type here for keyCode')");
-        cssEditor.setValue("html, body\n  height 100%\n\nbody\n  padding 1em 0\n  background #0072ff\n\n.form-control\n  border-radius 5px\n  box-shadow 0 0 25px #00162d");
-        jsEditor.setValue("$('[data-action=input]').keydown (e) ->\n  @value = e.which\n  e.preventDefault()\n");
+        htmlEditor.setValue("<div class=\"container-fluid\">\n  <div class=\"row\">\n    <div class=\"col-lg-12\">\n      <input type=\"text\" data-action=\"input\" placeholder=\"Type here for keyCode\" class=\"form-control\"/>\n    </div>\n  </div>\n</div>");
+        cssEditor.setValue("html, body {\n  height: 100%;\n}\nbody {\n  padding: 1em 0;\n  background: #0072ff;\n}\n.form-control {\n  border-radius: 5px;\n  box-shadow: 0 0 25px #00162d;\n}");
+        jsEditor.setValue("$('[data-action=input]').keydown(function(e) {\n  this.value = e.which;\n  e.preventDefault();\n});");
         $(".hide-demos, #jquery, #bootstrap").trigger("click");
-        
       };
       newDocument();
       document.querySelector("[data-action=packagezipfiles]").onclick = function() {
@@ -826,163 +572,70 @@ var timeout, delay, server, selected_text, str, mynum,
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("Package Zip Files [JSZip Demo]").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "jade") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("css-preprocessor").value == "stylus") {
-          cssEditor.setValue("");
-          $("#css-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "none") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("coffeescript").trigger("change");
-        }
         htmlEditor.setValue("<div class=\"grid\">\n  <div class=\"grid__col--12\">\n    <button class=\"btn--default download\">Run</button>\n    <textarea class=\"form__input\" id=\"jszipdemo\" rows=\"7\" placeholder=\"Demo code here...\">var zip = new JSZip();\nzip.file(\"Hello.txt\", \"Hello World\");\nvar folder = zip.folder(\"images\");\nfolder.file(\"folder.txt\", \"I'm a file in a new folder\");\nvar content = zip.generate({type:\"blob\"});\n// see FileSaver.js\nsaveAs(content, \"example.zip\");</textarea>\n  </div>\n</div>\n");
         cssEditor.setValue("");
-        jsEditor.setValue("$('.download').click ->\n  setTimeout $('#jszipdemo').val(), 0");
+        jsEditor.setValue("$('.download').click(function() {\n  setTimeout($('#jszipdemo').val(), 0);\n});");
         $(".hide-demos, #polyui, #jquery, #jszip").trigger("click");
-        
       };
       document.querySelector("[data-action=passwordgen]").onclick = function() {
         clearPreview();
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("Password Generator").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "jade") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("css-preprocessor").value == "stylus") {
-          cssEditor.setValue("");
-          $("#css-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "coffeescript") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("none").trigger("change");
-        }
         htmlEditor.setValue("<div class=\"container-fluid\">\n  <div class=\"row\">\n    <div class=\"col-lg-12\">\n      <div class=\"input-group\">\n        <input type=\"text\" class=\"form-control\" data-action=\"genoutput\" />\n        <span class=\"input-group-btn\">\n          <button class=\"btn btn-default btn-primary\" type=\"button\" data-action=\"gen\">\n            Generate!\n          </button>\n        </span>\n      </div>\n    </div>\n  </div>\n</div>");
         cssEditor.setValue("html, body {\n  height: 100%;\n}\n\nbody {\n  padding: 1em 0;\n  background: #0072ff;\n}\n\n.input-group {\n  box-shadow: 0 0 25px #00162d;\n}\n\n.input-group, .form-control, .input-group-btn, .btn {\n  border-radius: 5px;\n}");
         jsEditor.setValue("function PasswordGen() {\n  var char = \"0123456789abcdefghijklmnopqrstuvwxyz\",\n  fullchar = \"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\",\n  genHash  = \"\",\n             i;\n\n  for (i = 0; i < 8; i++) {\n    var rnum = Math.floor(Math.random() * char.length)\n    genHash += char.substring(rnum, rnum + 1)\n  }\n\n  $(\"[data-action=genoutput]\").val(genHash)\n}\n\n$(\"[data-action=gen]\").click(function() {\n  PasswordGen()\n})\n\nPasswordGen()");
         $(".hide-demos, #jquery, #bootstrap").trigger("click");
-        
       };
       document.querySelector("[data-action=pdfembed]").onclick = function() {
         clearPreview();
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("Embed a PDF Example").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "jade") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("css-preprocessor").value == "stylus") {
-          cssEditor.setValue("");
-          $("#css-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "coffeescript") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("none").trigger("change");
-        }
-        htmlEditor.setValue("<embed width=\"100%\" height=\"100%\" name=\"plugin\" src=\"http://www.usconstitution.net/const.pdf\" type=\"application/pdf\">");
-        cssEditor.setValue("html, body {\n  height: 100%;\n  overflow: hidden;\n}");
+        htmlEditor.setValue("<iframe src=\"http://docs.google.com/gview?url=http://www.usconstitution.net/const.pdf&embedded=true\"></iframe>");
+        cssEditor.setValue("html, body {\n  height: 100%;\n  overflow: hidden;\n}\n\niframe {\n  width: 100%;\n  height: 100%;\n  border: 0;\n}");
         jsEditor.setValue("");
         $(".hide-demos, #normalize").trigger("click");
-        
       };
       document.querySelector("[data-action=pictureviewer]").onclick = function() {
         clearPreview();
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("FileReader Picture Viewer").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "jade") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("css-preprocessor").value == "stylus") {
-          cssEditor.setValue("");
-          $("#css-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "coffeescript") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("none").trigger("change");
-        }
         htmlEditor.setValue("<div id=\"holder\">\n  Drag and drop image <a data-action=\"call\" href=\"javascript:void()\">here</a>...\n</div> \n\n<div class=\"fill check hide\" align=\"center\">\n  <canvas class=\"logo\" width=\"128\" height=\"128\"></canvas>\n</div>\n\n<div class=\"hide\">\n  <input type=\"file\" data-action=\"load\">\n</div>\n\n<p id=\"status\">\n  File API &amp; FileReader API not supported\n</p>");
         cssEditor.setValue("#holder {\n  border: 10px dashed #ccc;\n  margin: 20px auto;\n  text-align: center;\n}\n#holder.hover {\n  border: 10px dashed #333;\n}\n\n.hide {\n  display: none;\n}\n.fill {\n  width: 100%;\n}");
         jsEditor.setValue("var canvas = $(\".logo\"),\n    ctx = canvas[0].getContext(\"2d\"),\n    holder = document.getElementById(\"holder\"),\n    state = document.getElementById(\"status\");\n\nif (typeof window.FileReader === \"undefined\") {\n  state.className = \"fail\"\n} else {\n  state.className = \"success\"\n  state.innerHTML = \"File API & FileReader available\"\n}\n\nfunction displayPreview(file) {\n  var reader = new FileReader()\n\n  reader.onload = function(e) {\n    var img = new Image()\n    img.src = e.target.result\n    img.onload = function() {\n      // x, y, width, height\n      ctx.clearRect(0, 0, 128, 128)\n      ctx.drawImage(img, 0, 0, 128, 128)\n    }\n  }\n  reader.readAsDataURL(file)\n}\n\n$(\"[data-action=call]\").click(function() {\n  $(\"[data-action=load]\").trigger(\"click\")\n})\n\n$(\"[data-action=load]\").change(function(e) {\n  var file = e.target.files[0]\n  displayPreview(file)\n  $(\".check\").removeClass(\"hide\")\n})\n\n// Drag and drop image load\nholder.ondragover = function () {\n  this.className = \"hover\"\n  return false\n}\nholder.ondragend = function () {\n  this.className = \"\"\n  return false\n}\nholder.ondrop = function(e) {\n  this.className = \"\"\n  e.preventDefault()\n  var file = e.dataTransfer.files[0]\n  displayPreview(file)\n  $(\".check\").removeClass(\"hide\")\n}");
         $(".hide-demos, #jquery").trigger("click");
-        
       };
       document.querySelector("[data-action=polyui]").onclick = function() {
         clearPreview();
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("Poly UI Kit").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "jade") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("css-preprocessor").value == "stylus") {
-          cssEditor.setValue("");
-          $("#css-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "coffeescript") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("none").trigger("change");
-        }
         htmlEditor.setValue("<div class=\"grid\">\n  <header class=\"grid__col--12 panel--padded--centered\" role=\"banner\"> \n    <a class=\"site-logo\" href=\"javascript:void(0)\">\n      <b class=\"srt\">Poly - UI Toolkit</b>\n    </a>\n    <nav class=\"navbar\" role=\"navigation\">\n      <span id=\"toggle\" class=\"icn--nav-toggle is-displayed-mobile\">\n        <b class=\"srt\">Toggle</b>\n      </span>   \n      <ul class=\"nav is-collapsed-mobile\" role=\"navigation\">\n        <li class=\"nav__item\"><a href=\"#type\">Typography</a></li>\n        <li class=\"nav__item\"><a href=\"#buttons\">Buttons</a></li>\n        <li class=\"nav__item\"><a href=\"#forms\">Form</a></li>\n        <li class=\"nav__item\"><a href=\"#images\">Images</a></li>\n        <li class=\"nav__item\"><a href=\"#grid\">Grid</a></li>\n        <li class=\"nav__item--current\"><a href=\"#nav\">Navigation</a></li>\n        <!-- Current Page Class Style -->\n        <!-- <li class=\"nav__item--current\"><a href=\"#nav\">Navigation</a></li> -->\n      </ul>\n    </nav>\n  </header>\n</div>\n\n<div class=\"grid is-hidden-mobile\">\n  <div class=\"grid__col--12\">\n    <img class=\"img--hero\" src=\"http://treehouse-code-samples.s3.amazonaws.com/poly/img/hero.jpg\" alt=\"Poly - A simple UI Kit\">\n  </div>\n</div>\n\n<h4 id=\"type\" class=\"grid\">Typography</h4>\n\n<div class=\"grid\">\n  <div class=\"centered grid__col--8\">\n    <h1 class=\"headline-primary--grouped\">Take a look at this amazing headline</h1>\n    <h2 class=\"headline-secondary--grouped\">Don't forget about the subtitle</h2>\n    <p>This is a typical paragraph for the UI Kit. <a href=\"#\">Here is what a link might look like</a>. The typical font family for this kit is Helvetica Neue.  This kit is intended for clean and refreshing web layouts. No jazz hands here, just the essentials to make dreams come true, with minimal clean web design. The kit comes fully equipped with everything from full responsive media styling to buttons to form fields. <em>I enjoy using italics as well from time to time</em>. Fell free to create the most amazing designs ever with this kit. I truly hope you enjoy not only the kit but this amazing paragraph as well. :)</p>\n    <blockquote>You know what really gets me going? A really nice set of block quotes.  That's right, block quotes that say, \"Hey, I'm an article you want to read and nurture.\"</blockquote>\n  </div>\n</div>\n\n<h4 id=\"buttons\" class=\"grid\">Buttons</h4>\n\n<div class=\"grid\">\n  <div class=\"grid__col--12\">\n    <a class=\"btn--default\" href=\"#\">Button Default</a>\n    <a class=\"btn--success\" href=\"#\">Button Success</a>\n    <a class=\"btn--error\" href=\"#\">Button Error</a>\n    <button class=\"btn--warning\">Button Warning</button>\n    <button class=\"btn--info\">Button Info</button>\n  </div>\n</div>\n\n<h4 id=\"forms\" class=\"grid\">Form Elements</h4>\n\n<div class=\"grid\">\n  <div class=\"grid__col--7\"> \n    <form class=\"form\">\n      <label class=\"form__label--hidden\" for=\"name\">Name:</label> \n      <input class=\"form__input\" type=\"text\" id=\"name\" placeholder=\"Name\">\n\n      <label class=\"form__label--hidden\" for=\"email\">Email:</label>\n      <input class=\"form__input\" type=\"email\" id=\"email\" placeholder=\"email@website.com\">\n\n      <label class=\"form__label--hidden\" for=\"msg\">Message:</label>\n      <textarea class=\"form__input\" id=\"msg\" placeholder=\"Message...\" rows=\"7\"></textarea>\n\n      <input class=\"btn--default\" type=\"submit\" value=\"Submit\">\n      <input class=\"btn--warning\" type=\"reset\" value=\"Reset\">\n    </form>\n  </div>\n  <div class=\"grid__col--4\">\n    <img class=\"img--avatar\" src=\"http://treehouse-code-samples.s3.amazonaws.com/poly/img/avatar.png\" alt=\"Avatar\">\n    <form>\n      <label class=\"form__label--hidden\" for=\"username\">Username:</label> \n      <input class=\"form__input\" type=\"text\" id=\"username\" placeholder=\"Username\">\n      <label class=\"form__label--hidden\" for=\"password\">Password:</label>\n      <input class=\"form__input\" type=\"password\" id=\"password\" placeholder=\"Password\">\n      <input class=\"form__btn\" type=\"submit\" value=\"Login\">\n    </form>\n  </div>\n</div>\n\n<h4 id=\"images\" class=\"grid\">Images</h4>\n\n<div class=\"grid\">\n  <div class=\"grid__col--5\">\n    <img src=\"http://treehouse-code-samples.s3.amazonaws.com/poly/img/sample.jpg\" alt=\"sample image\">\n  </div>\n  <div class=\"grid__col--5\">\n    <img class=\"img--wrap\" src=\"http://treehouse-code-samples.s3.amazonaws.com/poly/img/sample.jpg\" alt=\"sample image\">\n  </div>\n  <div class=\"grid__col--2\">\n    <img class=\"img--avatar\" src=\"http://treehouse-code-samples.s3.amazonaws.com/poly/img/avatar.png\" alt=\"Avatar\">\n  </div>\n</div>\n\n<h4 id=\"grid\" class=\"grid\">Grid System</h4>\n\n<div class=\"theme__poly\">\n  <div class=\"grid\">\n    <div class=\"grid__col--12\">.grid__col--12</div>\n  </div>\n  <div class=\"grid\">\n    <div class=\"grid__col--6\">.grid__col--6</div>\n    <div class=\"grid__col--6\">.grid__col--6</div>\n  </div>\n  <div class=\"grid\">\n    <div class=\"grid__col--4\">.grid__col--4</div>\n    <div class=\"grid__col--4\">.grid__col--4</div>\n    <div class=\"grid__col--4\">.grid__col--4</div>\n  </div>\n  <div class=\"grid\">\n    <div class=\"grid__col--3\">.grid__col--3</div>\n    <div class=\"grid__col--3\">.grid__col--3</div>\n    <div class=\"grid__col--3\">.grid__col--3</div>\n    <div class=\"grid__col--3\">.grid__col--3</div>\n  </div>\n  <div class=\"grid\">\n    <div class=\"grid__col--5\">.grid__col--5</div>\n    <div class=\"grid__col--7\">.grid__col--7</div>\n  </div>\n  <div class=\"grid\">\n    <div class=\"grid__col--8\">.grid__col--8</div>\n    <div class=\"grid__col--4\">.grid__col--4</div>\n  </div>\n  <div class=\"grid\">\n    <div class=\"centered grid__col--7\">.centered .grid__col--7</div>\n  </div>\n</div>\n\n<div class=\"grid\">\n  <div class=\"grid__col--7\">\n    <h4 id=\"nav\">Navigation</h4>\n    <ul class=\"nav\" role=\"navigation\">\n      <li class=\"nav__item\"><a href=\"#\">Nav Link</a></li>\n      <li class=\"nav__item\"><a href=\"#\">Nav Link 2</a></li>\n      <li class=\"nav__item--current\"><a href=\"#\">Nav Current</a></li>\n    </ul>\n    <p>This is what the navigation menu looks like when the screen is at 769px or higher. When the screen is less than 769px, you will have the option to display a toggle menu icon.</p>\n  </div>\n\n  <div class=\"grid__col--4\">\n    <h4>Offcanvas Menu</h4>\n    <div class=\"offcanvas\">\n      <span class=\"icn--close\">\n        <b class=\"srt\">close</b>\n      </span>\n      <ul class=\"menu\" role=\"navigation\">\n        <a class=\"menu__link\" href=\"#\">Link 1</a>\n        <a class=\"menu__link\" href=\"#\">Link 2</a>\n        <a class=\"menu__link\" href=\"#\">Link 3</a>\n        <a class=\"menu__link--end\" href=\"#\">Link 4</a>\n      </ul>\n    </div>\n  </div>\n</div>");
         cssEditor.setValue("");
         jsEditor.setValue("// Toggle Menu for Phones\n$(\"#toggle\").click(function() {\n  $(this).next(\".nav\").toggleClass(\"is-collapsed-mobile\")\n})\n\n// Handles Navigation Style Classes\n$(\".nav__item\").on(\"click\", function() {\n  $(this).parent().find(\"li\").removeClass(\"nav__item--current\").addClass(\"nav__item\")\n  $(this).addClass(\"nav__item--current\").removeClass(\"nav__item\")\n})");
         $(".hide-demos, #polyui, #jquery").trigger("click");
-        
       };
-
       document.querySelector("[data-action=simpleslideshow]").onclick = function() {
         clearPreview();
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("Simplest jQuery Slideshow").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "jade") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("css-preprocessor").value == "stylus") {
-          cssEditor.setValue("");
-          $("#css-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "coffeescript") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("none").trigger("change");
-        }
         htmlEditor.setValue("<div class=\"fadelinks\">\n  <a>\n    <img src=\"http://farm3.static.flickr.com/2610/4148988872_990b6da667.jpg\">\n  </a>\n  <a>\n    <img src=\"http://farm3.static.flickr.com/2597/4121218611_040cd7b3f2.jpg\">\n  </a>\n  <a>\n    <img src=\"http://farm3.static.flickr.com/2531/4121218751_ac8bf49d5d.jpg\">\n  </a>\n</div>\n");
         cssEditor.setValue("body {\n  font-family: arial, helvetica, sans-serif;\n  font-size: 12px;\n}\n\n.fadelinks {\n  position: relative;\n  height: 332px;\n  width: 500px;\n}\n\n.fadelinks > a {\n  display: block;\n  position: absolute;\n  top: 0;\n  left: 0;\n}");
         jsEditor.setValue("$(document).ready(function() {\n  $(\".fadelinks > :gt(0)\").hide()\n  setInterval(function() {\n    $(\".fadelinks > :first-child\").fadeOut().next().fadeIn().end().appendTo(\".fadelinks\")\n  }, 3000)\n})");
         $(".hide-demos, #normalize, #jquery").trigger("click");
-        
       };
       document.querySelector("[data-action=splitter]").onclick = function() {
         clearPreview();
         $(".check").attr("checked", false).trigger("change");
         $("[data-action=library-code]").val("").trigger("change");
         $("[data-action=sitetitle]").val("JQWidgets Splitter").trigger("change");
-        if (document.getElementById("html-preprocessor").value == "jade") {
-          htmlEditor.setValue("");
-          $("#html-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("css-preprocessor").value == "stylus") {
-          cssEditor.setValue("");
-          $("#css-preprocessor").val("none").trigger("change");
-        }
-        if (document.getElementById("js-preprocessor").value == "coffeescript") {
-          jsEditor.setValue("");
-          $("#js-preprocessor").val("none").trigger("change");
-        }
-        
         htmlEditor.setValue("<div id=\"mainSplitter\">\n  <div>\n    <div id=\"firstNested\">\n      <div>\n        <div id=\"secondNested\">\n          <div>\n            <span>Panel 1</span></div>\n          <div>\n            <span>Panel 2</span></div>\n        </div>\n      </div>\n      <div>\n        <span>Panel 3</span></div>\n    </div>\n  </div>\n  <div>\n    <div id=\"thirdNested\">\n      <div>\n        <span>Panel 4</span></div>\n      <div>\n        <span>Panel 5</span></div>\n    </div>\n  </div>\n</div>\n");
         cssEditor.setValue("");
         jsEditor.setValue("$(document).ready(function () {\n  $(\"#mainSplitter\").jqxSplitter({\n    width: 850,\n    height: 850,\n    orientation: \"horizontal\",\n    panels: [{\n      size: 300,\n      collapsible: false\n    }]\n  });\n  $(\"#firstNested\").jqxSplitter({\n    width: \"100%\",\n    height: \"100%\",\n    orientation: \"vertical\",\n    panels: [{\n      size: 300,\n      collapsible: false\n    }]\n  });\n  $(\"#secondNested\").jqxSplitter({\n    width: \"100%\", \n    height: \"100%\", \n    orientation: \"horizontal\",\n    panels: [{ size: 150 }]\n  });\n  $(\"#thirdNested\").jqxSplitter({\n    width: \"100%\",\n    height: \"100%\", \n    orientation: \"horizontal\",\n    panels: [{\n      size: 150,\n      collapsible: false\n    }]\n  });\n});\n");
         $(".hide-demos, #jquery, #jqxsplitter").trigger("click");
-        
       };
     },
     activateMD = function() {
@@ -1793,78 +1446,78 @@ var timeout, delay, server, selected_text, str, mynum,
       };
     },
     initdataURLGrabber = function() {
-    var logo            = document.querySelector("[data-action=dataurloutput]"),
-        imgUrl          = document.querySelector("[data-url=dataurlimgurl]"),
-        dataurlholder   = document.getElementById("dataurlholder"),
-        JSimgUrl        = document.querySelector("[data-url=dataurlimgurl]");
+      var logo            = document.querySelector("[data-action=dataurloutput]"),
+          imgUrl          = document.querySelector("[data-url=dataurlimgurl]"),
+          dataurlholder   = document.getElementById("dataurlholder"),
+          JSimgUrl        = document.querySelector("[data-url=dataurlimgurl]");
 
-    $("#dataurl").on("change", function() {
-      (this.checked) ? $("input[name=menubar].active").trigger("click") : "";
-    });
-      
-    // Save Site Title Value for LocalStorage
-    function displayDURL(file) {
-      var reader = new FileReader();
+      $("#dataurl").on("change", function() {
+        (this.checked) ? $("input[name=menubar].active").trigger("click") : "";
+      });
 
-      reader.onload = function(e) {
-        var img = new Image();
-        img.src = e.target.result;
-        img.onload = function() {
-          var dataUrl = e.target.result;
-          logo.src = dataUrl;
-          imgUrl.value = logo.src;
+      // Save Site Title Value for LocalStorage
+      function displayDURL(file) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          var img = new Image();
+          img.src = e.target.result;
+          img.onload = function() {
+            var dataUrl = e.target.result;
+            logo.src = dataUrl;
+            imgUrl.value = logo.src;
+          };
         };
-      };
-      reader.readAsDataURL(file);
-    }
-
-    // Select all dataurl when textbox clicked
-    JSimgUrl.onfocus = function() {
-      this.select();
-      return false;
-    };
-
-    $("#inputdataurl").change(function(e) {
-      var file = e.target.files[0];
-      displayDURL(file);
-      $(".checkdataurl").removeClass("hide");
-    });
-
-    // Drag and drop image load
-    dataurlholder.ondragover = function () {
-      this.className = "block fn txtcenter pointer hover";
-      return false;
-    };
-    dataurlholder.ondragend = function () {
-      this.className = "block fn txtcenter pointer";
-      return false;
-    };
-    dataurlholder.ondrop = function(e) {
-      this.className = "block fn txtcenter pointer";
-      e.preventDefault();
-      var file = e.dataTransfer.files[0];
-      displayDURL(file);
-      $(".checkdataurl").removeClass("hide");
-    };
-
-    // Insert DataURL into Active Editor
-    document.querySelector("[data-action=dataURLtoEditor]").onclick = function() {
-      if ( activeEditor.value === "htmlEditor" ) {
-        htmlEditor.replaceSelection(imgUrl.value);
-        htmlEditor.focus();
-      } else if ( activeEditor.value === "cssEditor" ) {
-        cssEditor.replaceSelection(imgUrl.value);
-        cssEditor.focus();
-      } else if ( activeEditor.value === "jsEditor" ) {
-        jsEditor.replaceSelection(imgUrl.value);
-        jsEditor.focus();
-      } else if ( activeEditor.value === "mdEditor" ) {
-        mdEditor.replaceSelection(imgUrl.value);
-        mdEditor.focus();
+        reader.readAsDataURL(file);
       }
-      $("#dataurl").trigger("click");
-    };
-  },
+
+      // Select all dataurl when textbox clicked
+      JSimgUrl.onfocus = function() {
+        this.select();
+        return false;
+      };
+
+      $("#inputdataurl").change(function(e) {
+        var file = e.target.files[0];
+        displayDURL(file);
+        $(".checkdataurl").removeClass("hide");
+      });
+
+      // Drag and drop image load
+      dataurlholder.ondragover = function () {
+        this.className = "block fn txtcenter pointer hover";
+        return false;
+      };
+      dataurlholder.ondragend = function () {
+        this.className = "block fn txtcenter pointer";
+        return false;
+      };
+      dataurlholder.ondrop = function(e) {
+        this.className = "block fn txtcenter pointer";
+        e.preventDefault();
+        var file = e.dataTransfer.files[0];
+        displayDURL(file);
+        $(".checkdataurl").removeClass("hide");
+      };
+
+      // Insert DataURL into Active Editor
+      document.querySelector("[data-action=dataURLtoEditor]").onclick = function() {
+        if ( activeEditor.value === "htmlEditor" ) {
+          htmlEditor.replaceSelection(imgUrl.value);
+          htmlEditor.focus();
+        } else if ( activeEditor.value === "cssEditor" ) {
+          cssEditor.replaceSelection(imgUrl.value);
+          cssEditor.focus();
+        } else if ( activeEditor.value === "jsEditor" ) {
+          jsEditor.replaceSelection(imgUrl.value);
+          jsEditor.focus();
+        } else if ( activeEditor.value === "mdEditor" ) {
+          mdEditor.replaceSelection(imgUrl.value);
+          mdEditor.focus();
+        }
+        $("#dataurl").trigger("click");
+      };
+    },
     responsiveUI = function() {
       // Splitter Theme
       $("#mainSplitter, #splitContainer, #leftSplitter, #rightSplitter").jqxSplitter({
@@ -2237,13 +1890,15 @@ var timeout, delay, server, selected_text, str, mynum,
           if (path.toLowerCase().substring(path.length - 5) === ".html") {
             htmlEditor.setValue( e.target.result );
           } else if (path.toLowerCase().substring(path.length - 5) === ".jade") {
-            htmlEditor.setValue( e.target.result );
+            $(".htmlSetting").trigger("click");
           } else if (path.toLowerCase().substring(path.length - 4) === ".css") {
             cssEditor.setValue( e.target.result );
+          } else if (path.toLowerCase().substring(path.length - 5) === ".styl") {
+            $(".htmlSetting").trigger("click");
           } else if (path.toLowerCase().substring(path.length - 3) === ".js") {
             jsEditor.setValue( e.target.result );
           } else if (path.toLowerCase().substring(path.length - 7) === ".coffee") {
-            jsEditor.setValue( e.target.result );
+            $(".htmlSetting").trigger("click");
           } else if (path.toLowerCase().substring(path.length - 3) === ".md") {
             mdEditor.setValue( e.target.result );
           } else if (path.toLowerCase().substring(path.length - 3) === ".svg") {
@@ -2263,169 +1918,6 @@ var timeout, delay, server, selected_text, str, mynum,
       }
 
       singleFileDownload();
-    },
-    preprocessors = function() {
-      $(".settings").click(function() {
-        $("input[name=menubar].active").trigger("click");
-        $(".preprocessor").addClass("hide");
-        if ($(this).hasClass("htmlSetting")) {
-          $(".html-preprocessor").removeClass("hide");
-        } else if ($(this).hasClass("cssSetting")) {
-          $(".css-preprocessor").removeClass("hide");
-        } else if ($(this).hasClass("jsSetting")) {
-          $(".js-preprocessor").removeClass("hide");
-        }
-        if (document.getElementById("html-preprocessor").value == "none") {
-          if (!htmlEditor.getValue) {
-            $(".html-preprocessor-convert").addClass("hide");
-          }
-        } else if (document.getElementById("html-preprocessor").value == "jade") {
-          if (!htmlEditor.getValue) {
-            $(".html-preprocessor-convert").addClass("hide");
-          }
-        }
-        if (document.getElementById("js-preprocessor").value == "none") {
-          if (!jsEditor.getValue) {
-            $(".js-preprocessor-convert").addClass("hide");
-          }
-        } else if (document.getElementById("js-preprocessor").value == "coffeescript") {
-          if (!jsEditor.getValue) {
-            $(".js-preprocessor-convert").addClass("hide");
-          }
-        }
-        $("[data-action=preprocessors]").fadeIn();
-      });
-      $(".confirm-preprocessor").click(function() {
-        // Default fadeout speed is 400ms
-        $("[data-action=preprocessors]").fadeOut();
-        // Hiding all other preprocessors at 400ms
-        // Delay only works with animating methods
-        // Using setTimeout as an alternative:
-        setTimeout(function() {
-          $(".preprocessor").addClass("hide");
-        }, 400);
-      });
-      // Preprocessors (Doesn't compile to preview)
-      $("#html-preprocessor").on("change", function() {
-        var valueSelected = this.value;
-        localStorage.setItem("htmlPreprocessorVal", this.value);
-        if ( valueSelected == "none") {
-          htmlEditor.setOption("mode", "text/html");
-          htmlEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
-          // htmlEditor.refresh();
-        } else if ( valueSelected == "jade") {
-          htmlEditor.setOption("mode", "text/x-jade");
-          htmlEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
-          // htmlEditor.refresh();
-        } else {
-          htmlEditor.setOption("mode", "text/html");
-          htmlEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
-          // htmlEditor.refresh();
-        }
-        updatePreview();
-      }).trigger("change");
-      $("#css-preprocessor").on("change", function() {
-        var valueSelected = this.value;
-        localStorage.setItem("cssPreprocessorVal", this.value);
-
-        if ( valueSelected == "none") {
-          cssEditor.setOption("mode", "css");
-          cssEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
-          // cssEditor.setOption("lint", true);
-          // cssEditor.refresh();
-        } else if ( valueSelected == "stylus") {
-          cssEditor.setOption("mode", "text/x-styl");
-          cssEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
-          setTimeout(function() {
-            $(".CodeMirror-lint-mark-error, .CodeMirror-lint-mark-error-metro").removeClass("CodeMirror-lint-mark-error CodeMirror-lint-mark-error-metro");
-            $(".CodeMirror-lint-mark-warning, .CodeMirror-lint-mark-warning-metro").removeClass("CodeMirror-lint-mark-warning CodeMirror-lint-mark-warning-metro");
-          }, 300);
-          // cssEditor.setOption("lint", false);
-          // cssEditor.refresh();
-        } else {
-          cssEditor.setOption("mode", "css");
-          cssEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
-          // cssEditor.setOption("lint", true);
-          // cssEditor.refresh();
-        }
-        updatePreview();
-      }).trigger("change");
-      $("#js-preprocessor").on("change", function() {
-        var valueSelected = this.value;
-        localStorage.setItem("jsPreprocessorVal", this.value);
-        if ( valueSelected == "none") {
-          jsEditor.setOption("mode", "javascript");
-          jsEditor.refresh();
-        } else if ( valueSelected == "coffeescript") {
-          jsEditor.setOption("mode", "text/x-coffeescript");
-          jsEditor.setOption("lint", false);
-          jsEditor.setOption("lint", true);
-        }
-        updatePreview();
-      }).trigger("change");
-
-      // Compile preprocessors to preview
-      $(".html-preprocessor-convert").click(function() {
-        var options = {
-            pretty: true
-        };
-        if (document.getElementById("html-preprocessor").value == "none") {
-          Html2Jade.convertHtml(htmlEditor.getValue(), {selectById: true}, function (err, jadeString) {
-            if(err) {
-              console.error(err);
-            } else {
-              htmlEditor.setValue(jadeString);
-              htmlEditor.execCommand("selectAll");
-              htmlEditor.execCommand("indentLess");
-              htmlEditor.execCommand("indentLess");
-              htmlEditor.setCursor({line: 0 , ch : 0 });
-              htmlEditor.execCommand("deleteLine");
-              htmlEditor.execCommand("deleteLine");
-              htmlEditor.execCommand("deleteLine");
-            }
-          });
-          $("#html-preprocessor").val("jade").trigger("change");
-        } else if (document.getElementById("html-preprocessor").value == "jade") {
-          $("#html-preprocessor").val("none").trigger("change");
-          htmlContent = jade.render(htmlEditor.getValue(), options);
-          htmlEditor.setValue(htmlContent);
-          beautifyHTML();
-        }
-      });
-      $(".css-preprocessor-convert").click(function() {
-        if (document.getElementById("css-preprocessor").value == "none") {
-          var css = cssEditor.getValue();
-          var converter = new Css2Stylus.Converter(css);
-          converter.processCss();
-          cssEditor.setValue(converter.getStylus());
-          $("#css-preprocessor").val("stylus").trigger("change");
-          cssEditor.setOption("lint", false);
-          cssEditor.refresh();
-        } else if (document.getElementById("css-preprocessor").value == "stylus") {
-          var cssContent = cssEditor.getValue();
-          stylus(cssContent).render(function(err, out) {
-            if(err !== null) {
-              console.error("something went wrong");
-            } else {
-              cssEditor.setValue(out);
-            }
-          });
-          $("#css-preprocessor").val("none").trigger("change");
-          beautifyCSS();
-        }
-      });
-      $(".js-preprocessor-convert").click(function() {
-        if (document.getElementById("js-preprocessor").value == "none") {
-          jsContent = js2coffee.build(jsEditor.getValue()).code;
-          jsEditor.setValue(jsContent);
-          $("#js-preprocessor").val("coffeescript").trigger("change");
-        } else if (document.getElementById("js-preprocessor").value == "coffeescript") {
-          $("#js-preprocessor").val("none").trigger("change");
-          jsContent = CoffeeScript.compile(jsEditor.getValue(), { bare: true });
-          jsEditor.setValue(jsContent);
-          beautifyJS();
-        }
-      });
     },
     miscellaneous = function() {
       // Tool Inputs
@@ -2505,16 +1997,6 @@ var timeout, delay, server, selected_text, str, mynum,
       $("[data-action=siteauthor]").on("keyup change", function() {
         localStorage.setItem("saveAuthor", this.value);
       });
-      // Save Preprocessors
-      if ( localStorage.getItem("htmlPreprocessorVal")) {
-        $("#html-preprocessor").val(localStorage.getItem("htmlPreprocessorVal"));
-      }
-      if ( localStorage.getItem("cssPreprocessorVal")) {
-        $("#css-preprocessor").val(localStorage.getItem("cssPreprocessorVal"));
-      }
-      if ( localStorage.getItem("jsPreprocessorVal")) {
-        document.getElementById("js-preprocessor").value = localStorage.getItem("jsPreprocessorVal");
-      }
     },
     checkedLibs = function() {
       if ( $("#alertify").is(":checked") ) {
@@ -3417,24 +2899,6 @@ var closeFinal = CodeMirror(document.getElementById("closeFinal"), {
   value: "\n  </body>\n</html>"
 });
 
-// Render Chosen CSS Preprocessor
-function cssPreProcessor(cssSelected) {
-  cssSelected = $("#css-preprocessor  option:selected").val();
-
-  if (cssSelected == "none") {
-    cssContent = cssEditor.getValue();
-  } else if (cssSelected == "stylus") {
-    var cssVal = cssEditor.getValue();
-    stylus(cssVal).render(function(err, out) {
-      if(err !== null) {
-        console.error("something went wrong");
-      } else {
-        cssContent = out;
-      }
-    });
-  }
-}
-
 // Live preview
 function updatePreview() {
   $(".preview-editor").empty();
@@ -3446,28 +2910,10 @@ function updatePreview() {
   var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
   var heading = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\">\n" + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\">\n";
   preview.open();
-  var htmlSelected = $("#html-preprocessor option:selected").val();
-  var jsSelected   = $("#js-preprocessor   option:selected").val();
-  
-  cssPreProcessor();
-  
-  if ( jsSelected == "none") {
-    jsContent = "<script>" + jsEditor.getValue() + "</script>";
-  } else if ( jsSelected == "coffeescript") {
-    jsContent = "<script>" + CoffeeScript.compile(jsEditor.getValue(), { bare: true }) + "</script>";
-  }
 
-  if ( htmlSelected == "none") {
-    htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    " + jsContent + closeFinal.getValue();
-    preview.write(htmlContent);
-  } else if ( htmlSelected == "jade") {
-    var options = {
-        pretty: true
-    };
-    var jade2HTML = jade.render(htmlEditor.getValue(), options);
-    htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + jsContent + closeFinal.getValue();
-    preview.write(htmlContent);
-  }
+  htmlContent = heading + "<style id='b8c770cc'>" + cssEditor.getValue() + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    <scr"+"ipt>" + jsEditor.getValue() + "<"+"/scr"+"ipt>" + closeFinal.getValue();
+  preview.write(htmlContent);
+
   preview.close();
 }
 function markdownPreview() {
@@ -3503,8 +2949,7 @@ htmlEditor.on("change", function() {
   }, 300);
 });
 cssEditor.on("change", function() {
-  cssPreProcessor();
-  $("#preview").contents().find("#b8c770cc").html(cssContent);
+  $("#preview").contents().find("#b8c770cc").html(cssEditor.getValue());
   localStorage.setItem("cssData", cssEditor.getValue());
   
   setTimeout(function() {
@@ -3545,7 +2990,6 @@ mdEditor.on("drop", function() {
   mdEditor.setValue("");
 });
 
-validators();
 responsiveUI();
 loadFiles();
 
@@ -3640,37 +3084,16 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
 
   var files = {};
 	if (htmlEditor.getValue()) {
-      var htmlSelected = $("#html-preprocessor option:selected").val();
-
-      if ( htmlSelected == "none") {
-        yourHTML = htmlEditor.getValue();
-        files["index.html"] = htmlEditor.getValue() ? { content: yourHTML } : null;
-      } else if ( htmlSelected == "jade") {
-        yourHTML = htmlEditor.getValue();
-        files["index.jade"] = htmlEditor.getValue() ? { content: yourHTML } : null;
-      }
+    yourHTML = htmlEditor.getValue();
+    files["index.html"] = htmlEditor.getValue() ? { content: yourHTML } : null;
 	}
 	if (cssEditor.getValue()) {
-      cssSelected = $("#css-preprocessor option:selected").val();
-
-      if ( cssSelected == "none") {
-        yourCSS = cssEditor.getValue();
-        files["index.css"] = cssEditor.getValue() ? { content: yourCSS } : null;
-      } else if ( cssSelected == "stylus") {
-        yourCSS = cssEditor.getValue();
-        files["index.styl"] = cssEditor.getValue() ? { content: yourCSS } : null;
-      }
+    yourCSS = cssEditor.getValue();
+    files["index.css"] = cssEditor.getValue() ? { content: yourCSS } : null;
 	}
 	if (jsEditor.getValue()) {
-    var jsSelected = $("#js-preprocessor option:selected").val();
-
-    if ( jsSelected == "none") {
-      yourJS = jsEditor.getValue();
-      files["index.js"] = jsEditor.getValue() ? { content: yourJS } : null;
-    } else if ( jsSelected == "coffeescript") {
-      yourJS = jsEditor.getValue();
-      files["index.coffee"] = jsEditor.getValue() ? { content: yourJS } : null;
-    }
+    yourJS = jsEditor.getValue();
+    files["index.js"] = jsEditor.getValue() ? { content: yourJS } : null;
 	}
 	if (mdEditor.getValue()) {
 		files["README.md"] = mdEditor.getValue() ? { content: mdEditor.getValue() } : null;
@@ -3708,7 +3131,7 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
   } else {
     hasJS = "js,";
   }
-  //ar editEmbed = "edit,";
+  // editEmbed = "edit,";
   // darkUI = "dark,";
   // seeThrough = "transparent,";
   hasResult = "result";
