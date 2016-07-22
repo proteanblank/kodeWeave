@@ -2127,6 +2127,12 @@ var timeout, delay, selected_text, str, mynum,
             if (!changePrev.checked) {
               $("#runeditor").trigger("click");
             }
+            setTimeout(function() {
+              mdEditor.setOption("paletteHints", "true");
+              htmlEditor.setOption("paletteHints", "true");
+              cssEditor.setOption("paletteHints", "true");
+              jsEditor.setOption("paletteHints", "true");
+            }, 300);
             
             window.close();
           },
@@ -2210,6 +2216,12 @@ var timeout, delay, selected_text, str, mynum,
         if (!changePrev.checked) {
           $("#runeditor").trigger("click");
         }
+        setTimeout(function() {
+          mdEditor.setOption("paletteHints", "true");
+          htmlEditor.setOption("paletteHints", "true");
+          cssEditor.setOption("paletteHints", "true");
+          jsEditor.setOption("paletteHints", "true");
+        }, 300);
       }
 
       if (window.File && window.FileReader && window.FileList && window.Blob) {
