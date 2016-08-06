@@ -59,11 +59,19 @@ kodeWeave uses a number of open source projects to work properly:
 * [Cordova](https://cordova.apache.org/) - mobile application development framework
 * [DataURL Grabber](https://github.com/mikethedj4/DataURL-Grabber-PhoneGap-Build) - Embed an image directly into the document with data URIs
 
-Android To-Do
+To-Do
 -------------
 
+### Web and Desktop
+
+ - Update Chrome App exportation
+ - Remove font-awesome libraries from desktop zip files and merge font-awesome.zip into desktop zip files upon exportation *([example](https://mikethedj4.github.io/kodeWeave/editor/#ca2d1692722e8f6c321c322cd33ed246))*
  - Make code editor more responsive for mobile devices
- - Incorporate export as zip
+
+### Android
+
+ - Make code editor more responsive for mobile devices
+ - Export as zip or export contents into a new folder
 
 Development
 -------------
