@@ -65,7 +65,7 @@ To-Do
 ### Web and Desktop
 
  - Update Chrome App exportation
- - Remove font-awesome libraries from desktop zip files and merge font-awesome.zip into desktop zip files upon exportation *([example](https://mikethedj4.github.io/kodeWeave/editor/#ca2d1692722e8f6c321c322cd33ed246))*
+ - Remove font-awesome libraries from desktop zip files and merge font-awesome.zip into desktop zip files upon exportation *(This should lower the overall application's file size - [example](https://mikethedj4.github.io/kodeWeave/editor/#ca2d1692722e8f6c321c322cd33ed246))*
  - Make code editor more responsive for mobile devices
 
 ### Android
