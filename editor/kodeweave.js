@@ -2516,13 +2516,6 @@ var timeout, delay, selected_text, str, mynum,
       
       document.title = "kodeWeave: " + document.querySelector("[data-action=sitetitle]").value;
 
-      // Save App Version for LocalStorage
-      if ( localStorage.getItem("appVersion")) {
-        document.querySelector("[data-value=version]").value = localStorage.getItem("appVersion");
-      }
-      $("[data-value=version]").on("keyup change", function() {
-        localStorage.setItem("appVersion", this.value);
-      });
       // Save FontSize for LocalStorage
       if ( localStorage.getItem("fontSize")) {
         document.querySelector("[data-editor=fontSize]").value = localStorage.getItem("fontSize");
@@ -3543,7 +3536,6 @@ function loadgist(gistid) {
 
     // Return font settings from json
     document.querySelector("[data-action=sitetitle]").value = jsonSets.siteTitle;
-    document.querySelector("[data-value=version]").value = jsonSets.version;
     document.querySelector("[data-editor=fontSize]").value = jsonSets.editorFontSize;
     document.querySelector("[data-action=sitedesc]").value = jsonSets.description;
     document.querySelector("[data-action=siteauthor]").value = jsonSets.author;
@@ -3672,13 +3664,12 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
 
   // check if description and markdown editor have a value
   if ( !document.querySelector("[data-action=sitedesc]").value) {
-    $("[data-action=sitedesc]").val("Saved from kodeWeave!");
+     document.querySelector("[data-action=sitedesc]").value = "Saved from kodeWeave!";
   }
 
   // Return user settings
   var sArr = {
     "siteTitle": document.querySelector("[data-action=sitetitle]").value,
-    "version": document.querySelector("[data-value=version]").value,
     "editorFontSize": document.querySelector("[data-editor=fontSize]").value,
     "description": document.querySelector("[data-action=sitedesc]").value,
     "author": document.querySelector("[data-action=siteauthor]").value
