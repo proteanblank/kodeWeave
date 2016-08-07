@@ -10,6 +10,7 @@ var timeout, delay, selected_text, str, mynum,
     jsContent, htmlContent, cssContent, cssSelected,
     showEditors, hasMD, hasHTML, hasCSS, hasJS,
     editEmbed, darkUI, seeThrough, hasResult,
+    activeEditor = document.querySelector("[data-action=activeEditor]"),
     welcomeDialog = function() {
       // Stop YouTube Video from playing when other tabs are clicked
       $("#tab2, #tab3, #tab4, #close-walkthrough").click(function() {
@@ -2482,8 +2483,7 @@ var timeout, delay, selected_text, str, mynum,
 
       // Allow Users To Share Weaves via Twitter
       // Test with Something2Do Feed
-      // $(".adddemos-tablets").html('<a class="twitter-timeline" data-dnt="true" href="https://twitter.com/hashtag/Something2Do" data-widget-id="734863226400280576" data-chrome="noheader nofooter noborders transparent" height="100%">#Something2Do Tweets</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");<'+'/scr'+'ipt><style>iframe[id*="twitter-widget"] {float: none; width: 100% !important; height: 250px !important; }</style>');
-      $(".adddemos-tablets").html('<a data-action="newdocument" class="online">new document</a><a data-action="feed">feed</a><br><a class="twitter-timeline"  href="https://twitter.com/hashtag/kodeWeaveShare" data-widget-id="747302832529825797">#kodeWeaveShare Tweets</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");<'+'/scr'+'ipt><style>.adddemos-tablets iframe[id*="twitter-widget"] {float: none; width: 100% !important; height: calc(100vh - 141px) !important; }</style>');
+      document.querySelector(".adddemos-tablets").innerHTML = '<a data-action="newdocument" class="online">new document</a><a data-action="feed">feed</a><br><a class="twitter-timeline"  href="https://twitter.com/hashtag/kodeWeaveShare" data-widget-id="747302832529825797">#kodeWeaveShare Tweets</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?\'http\':\'https\';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");<'+'/scr'+'ipt><style>.adddemos-tablets iframe[id*="twitter-widget"] {float: none; width: 100% !important; height: calc(100vh - 141px) !important; }</style>';
 
       // Show Twitter Feed
       document.querySelector("[data-action=feed]").onclick = function() {
@@ -2497,9 +2497,7 @@ var timeout, delay, selected_text, str, mynum,
       };
       
       welcomeDialog();
-      preprocessors();
     },
-    activeEditor = document.querySelector("[data-action=activeEditor]"),
     storeValues = function() {
       // Save Site Title Value for LocalStorage
       if ( localStorage.getItem("siteTitle")) {
@@ -3049,8 +3047,7 @@ var timeout, delay, selected_text, str, mynum,
       return $.get(url, null, function (data) {
         el.setValue(data);
       }, "text");
-    },
-    addDemos = '<ul class="ldd-menu">\n<li>\n<div class="ldd-submenu">\n<ul style="border-left:none;">\n<li class="ldd-heading">A</li>\n<li><a data-action="alphabetizer">alphabetizer</a></li>\n<li><a data-action="angular">angular JS demo</a></li>\n<li><a data-action="applicator">applicator</a></li>\n<li>&nbsp;</li>\n<li class="ldd-heading">C</li>\n<li><a data-action="charactermap">character map</a></li>\n<li><a data-action="codeeditor">code editor</a></li>\n<li><a data-action="convertforvalues">convert for values</a></li>\n<li>&nbsp;</li>\n<li class="ldd-heading">D</li>\n<li><a data-action="dateclock">date and time</a></li>\n<li><a data-action="detectorientation">detect orientation</a></li>\n<li><a data-action="osdisplay">display operating system</a></li>\n<li>&nbsp;</li>\n<li class="ldd-heading">K</li>\n<li><a data-action="keylogger">keylogger</a></li>\n<li>&nbsp;</li>\n</ul>\n<ul>\n<li class="ldd-heading">M</li>\n<li><a data-action="markdowneditor">markdown editor</a></li>\n<li>&nbsp;</li>\n<li class="ldd-heading">N</li>\n<li><a data-action="newdocument">new document</a></li>\n<li>&nbsp;</li>\n<li class="ldd-heading">P</li>\n<li><a data-action="packagezipfiles">package zip files</a></li>\n<li><a data-action="passwordgen">password generator</a></li>\n<li><a data-action="pdfembed">pdf embed</a></li>\n<li><a data-action="pictureviewer">picture viewer</a></li>\n<li><a data-action="polyui">poly ui kit</a></li>\n<li>&nbsp;</li>\n<li class="ldd-heading">S</li>\n<li><a data-action="simpleslideshow">simple slideshow</a></li>\n<li><a data-action="splitter">splitter</a></li>\n<li>&nbsp;</li>\n</ul>\n</div>\n</li>\n</ul>';
+    };
 
 // Rules Specified for HTML Validation
 var ruleSets = {
@@ -3495,12 +3492,12 @@ mdEditor.on("drop", function() {
 });
 
 // Run Preview Button Click
-$("#runeditor").click(function() {
+document.getElementById("runeditor").onclick = function() {
   clearTimeout(cancel);
   setTimeout(function() {
     updatePreview();
   }, 300);
-});
+};
 
 validators();
 responsiveUI();
@@ -3975,6 +3972,7 @@ charGeneration();
 initdataURLGrabber();
 miscellaneous();
 newDocument();
+preprocessors();
 
 // Scroll Character Menu
 (function() {
