@@ -132,7 +132,7 @@ header > label {
   bottom: auto;
 }
 .download-dialog {
-  width: 325px;
+  width: 300px;
   left: 154.359px;
 }
 
@@ -341,22 +341,20 @@ header > label {
 }
 
 /* Download Dialog */
-.download-dialog li:not(.hide) {
-  display: table;
+.download-dialog a {
+  display: block;
+  float: none;
+  text-align: left;
+  padding: 3px 0;
 }
 
 /* Chrome Dialog */
 .dialog-bg {
   z-index: 9999!important;
 }
-.chromeappwindow, .socialdialog, .preprocessors {
+.socialdialog, .preprocessors {
   padding: 2em;
   border-radius: 0.4em;
-}
-.chromeappwindow input .chromeappwindow textarea {
-  display: block;
-  margin-left: 0;
-  margin-right: 0;
 }
 .column > div {
   display: table;
@@ -372,15 +370,11 @@ nav {
   vertical-align: middle;
   z-index: 1;
 }
-#holder, 
 #dataurlholder {
   border: 7px dashed #ccc;
   margin: 0 auto 20px auto;
   padding: 8px;
   text-align: center;
-}
-#holder.hover {
-  border: 7px dashed #333;
 }
 #dataurlholder.hover {
   border: 7px dashed #fff;

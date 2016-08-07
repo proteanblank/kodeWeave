@@ -146,7 +146,6 @@
         <!-- Website Title -->
         <div class="txtcenter metaboxes">
           <input class="heading txtcenter block" type="text" data-action="sitetitle" placeholder="site title" value="site title">
-          <input class="heading block" type="number" min="0.1" step="0.1" value="0.1" data-value="version">
           <input class="heading block" type="number" min="8" step="1" value="14" data-editor="fontSize">
           <input class="heading block" type="text" data-action="sitedesc" placeholder="description" value="sample description">
           <input class="heading block" type="text" data-action="siteauthor" placeholder="author" value="kodeWeave">
@@ -873,84 +872,22 @@
       </label>
       <!-- If image has loaded adjust dialog size -->
       <input type="radio" id="imagehasloaded" class="invisible">
-      <div class="dialog download-dialog fl">
-        <div id="holder" class="txtcenter">
-          Drag and drop image 
-          <a href="javascript:void(0)" class="fn nomar call">
-            <label for="load" class="pointer">here</label>
-          </a>...
-        </div>
-
-        <div class="txtcenter hide">
-          <input type="file" id="load" accept="image/*" />
-          <br><br>
-        </div>
-
-        <div class="fill watch hide">
-          <canvas class="call pointer" data-action="n16" width="16" height="16"></canvas>
-          <canvas class="call pointer" data-action="n32" width="32" height="32"></canvas>
-          <canvas class="call pointer" data-action="n64" width="64" height="64"></canvas>
-          <canvas class="call pointer" data-action="holder" width="128" height="128"></canvas>
-          <br><br>
-        </div>
-
-        <ul>
-          <li>
-            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BSYGA2RB5ZJCC" target="_blank">
-              Donate to the kodeWeave project
-            </a>
-          </li>
-          <li>
-            <a href="http://build.phonegap.com/" target="_blank">
-              Export for mobile devices
-            </a>
-          </li>
-          <li class="watch hide">
-            <a data-action="download-as-win-app">
-              Export Windows 64bit App (NW.js)
-            </a>
-          </li>
-          <li class="watch hide">
-            <a data-action="download-as-win32-app">
-              Export Windows 32bit App (NW.js)
-            </a>
-          </li>
-          <li class="watch hide">
-            <a data-action="download-as-mac-app">
-              Export as Mac App (NW.js)
-            </a>
-          </li>
-          <li class="watch hide">
-            <a data-action="download-as-lin-app">
-              Export as Linux 64bit App (NW.js)
-            </a>
-          </li>
-          <li class="watch hide">
-            <a data-action="download-as-lin32-app">
-              Export as Linux 32bit App (NW.js)
-            </a>
-          </li>
-          <li class="watch hide">
-            <a data-action="download-as-chrome-app">
-              Export as Chrome App
-            </a>
-          </li>
-          <li class="watch hide">
-            <a data-action="download-as-chrome-ext">
-              Export as Chrome Extension
-            </a>
-          </li>
-          <li>
-            <a data-action="download-zip" title="Ctrl+S">
-              Download as .zip
-            </a>
-          </li>
-          <li>
-            <a data-action="save-gist">
-              Save weave
-            </a>
-          </li>
-        </ul>
+      <div class="dialog download-dialog">
+        <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BSYGA2RB5ZJCC" target="_blank">
+          Donate to the kodeWeave project
+        </a>
+        
+        <a href="https://mikethedj4.github.io/WebDGap/" target="_blank">
+          Export for Desktop and Mobile
+        </a>
+        
+        <a data-action="download-zip" title="Ctrl+S">
+          Export as a .zip file
+        </a>
+        
+        <a data-action="save-gist">
+          Save weave
+        </a>
       </div>
 
       <!-- Code Section -->
@@ -1174,63 +1111,6 @@
         </div>
       </div>
     </form>
-
-    <!-- Chrome Application Dialog -->
-    <div class="dialog-bg column hide" data-action="chromeappdialog">
-      <div>
-        <nav>
-          <div class="grid chromeappwindow">
-            <form class="form">
-              <textarea class="form__input" data-action="app-descr" placeholder="Description" rows="7"></textarea>
-
-              <h4>
-                Offline:
-              </h4>
-
-              <p class="onoffswitch">
-                <input type="checkbox" name="onoffswitch" class="offline-mode" id="myonoffswitch" checked>
-                <label class="onoffswitch-label" for="myonoffswitch">
-                  <span class="onoffswitch-inner"></span>
-                  <span class="onoffswitch-switch"></span>
-                </label>
-              </p>
-
-              <h4>
-                Frameless:
-              </h4>
-
-              <p class="theframeswitch">
-                <input type="checkbox" name="frameswitch" class="frame-mode" id="myframeswitch">
-                <label class="frameswitch-label" for="myframeswitch">
-                  <span class="frameswitch-inner"></span>
-                  <span class="frameswitch-switch"></span>
-                </label>
-              </p>
-            </form>
-
-            <div class="txtcenter">
-              <a class="btn--default" data-action="app-confirm">Confirm</a>
-              <a class="btn--warning" data-action="app-cancel">Cancel</a>
-            </div>
-          </div>
-        </nav>
-      </div>
-    </div>
-    <!-- Chrome Extension Dialog -->
-    <div class="dialog-bg column hide" data-action="chromeextdialog">
-      <div>
-        <nav>
-          <div class="grid chromeappwindow">
-            <textarea class="form__input" data-action="ext-descr" placeholder="Description" rows="7"></textarea>
-
-            <div class="txtcenter">
-              <a class="btn--default" data-action="ext-confirm">Confirm</a>
-              <a class="btn--warning" data-action="ext-cancel">Cancel</a>
-            </div>
-          </div>
-        </nav>
-      </div>
-    </div>
     
     <!-- Preprocessors Dialog -->
     <div class="dialog-bg column preprocessordialog hide" data-action="preprocessors">

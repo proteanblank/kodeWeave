@@ -3,14 +3,12 @@ kodeWeave
 
 kodeWeave is a realtime coding playground for Markdown, HTML, CSS and Javascript. Similar to JSFiddle and JSBin, but kodeWeave was made specifically to work not just for mobile devices, but also to work offline as well.
 
-kodeWeave is great for prototyping and to build applications for desktop operating systems while on mobile devices. ([PhoneGap Build](http://build.phonegap.com/) is recommended for mobile devices)
-
 If you've ever used jsfiddle, jsbin, dabblet, liveweave, codepen, cssdeck, cssdesk, tinkerbin, d3 playground, plunker and/or pastebin kodeWeave is the tool for you when you're away from a computer!
 
 Version
 -------------
 
-1.1.27
+1.1.28
 
 License
 -------------
@@ -64,14 +62,17 @@ To-Do
 
 ### Web and Desktop
 
- - Update Chrome App exportation
- - Remove font-awesome libraries from desktop zip files and merge font-awesome.zip into desktop zip files upon exportation *(This should lower the overall application's file size - [example](https://mikethedj4.github.io/kodeWeave/editor/#ca2d1692722e8f6c321c322cd33ed246))*
  - Make code editor more responsive for mobile devices
 
 ### Android
 
  - Make code editor more responsive for mobile devices
  - Export as zip or export contents into a new folder
+
+[Export Your Web App for Desktop or Mobile!](https://mikethedj4.github.io/WebDGap/)
+-------------
+
+ - [WebDGap](https://mikethedj4.github.io/WebDGap/) allows you to convert any html/css/javascript web application as a native Win/Lin/Mac/Chrome application & extention. In addition you can also export as a PhoneGap Build application!
 
 Development
 -------------
