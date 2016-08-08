@@ -48,6 +48,7 @@
   <plugin name="cordova-plugin-whitelist" version="1"/>
 
   <preference name="phonegap-version" value="cli-5.2.0" />
+  <!--<preference name="phonegap-version" value="cli-6.3.0" />-->
   <preference name="android-minSdkVersion" value="7" />
   <preference name="android-targetSdkVersion" value="19" />
   <preference name="AndroidPersistentFileLocation" value="Compatibility" />
