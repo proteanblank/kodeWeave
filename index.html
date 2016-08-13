@@ -2,493 +2,134 @@
 <html>
   <head>
     <title>kodeWeave</title>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/vnd.microsoft.icon" href="favicon.ico">
-    <!-- <link rel="SHORTCUT ICON" href="favicon.ico"> -->
-    <link rel="shortcut icon" href="assets/images/logo-512x512-71.png" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0">
     <meta name="description" content="HTML/CSS/JS and Markdown Code Playground For Web Designers and Developers">
-    <meta name="author" content="Michael Schwartz">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:700,400&amp;subset=cyrillic,latin,greek,vietnamese">
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/animate.css/animate.min.css">
-    <link rel="stylesheet" href="assets/socicon/css/socicon.min.css">
-    <link rel="stylesheet" href="assets/font-awesome/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/font-awesome/macset.css">
-    <link rel="stylesheet" href="assets/mobirise/css/style.css">
-    <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css">
-    <link rel="stylesheet" href="assets/alertifyjs/css/alertify.min.css">
-    <link rel="stylesheet" href="assets/alertifyjs/css/themes/default.min.css">
-    <link rel="stylesheet" href="misc.css">
+    <meta name="author" content="kodeWeave">
+    <link href="img/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="img/256.png" rel="apple-touch-icon">
+    <link rel="stylesheet" href="libraries/socicon/css/socicon.min.css">
+    <link rel="stylesheet" href="libraries/normalize/normalize.css" />
+    <link rel="stylesheet" href="libraries/font-awesome/font-awesome.css" />
+    <link rel="stylesheet" href="libraries/font-awesome/macset.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="libraries/jquery/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
+    <script>
+      WebFont.load({
+        google: {
+          families: ["Lato:100,100italic,300,300italic,400,400italic,700,700italic,900,900italic", "Open Sans:300,300italic,400,400italic,600,600italic,700,700italic,800,800italic"]
+        }
+      });
+    </script>
   </head>
   <body>
-    <div class="social-screenshot-preview" style="display: none;">
-      <img src="https://a.fsdn.com/con/app/proj/kodeweave/screenshots/ub2i3fkb2%20f23ufb%20jk2.png" alt="kodeWeave Editor">
+    <div class="header">
+      <div class="overlay">
+        <div class="headtxt">
+          <h1 class="head thin" data-ix="name">kodeWeave</h1>
+          <h4 class="thin" data-ix="1sth4">Finally a coding playground made for mobile!</h4>
+          <h4 class="thin" data-ix="2ndh4">Supports HTML/CSS/JavaScript/Markdown with Integrated Preprocessors
+          </h4>
+          <a class="btn w-inline-block w-lightbox" data-ix="download" href="#">
+            Watch
+            <script class="w-json" type="application/json">
+            {
+              "items": [{
+              "type": "video",
+              "html": "<iframe class=\"embedly-embed\" src=\"https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FxDLO4ACC3D4%3Fautoplay%3D1%26feature%3Doembed&url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DxDLO4ACC3D4&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FxDLO4ACC3D4%2Fhqdefault.jpg&key=c4e54deccf4d4ec997a64902e9a30300&autoplay=1&type=text%2Fhtml&schema=youtube\" width=\"940\" height=\"528\" scrolling=\"no\" frameborder=\"0\" allowfullscreen></iframe>",
+              "thumbnailUrl": "https://i.embed.ly/1/image?url=https%3A%2F%2Fi.ytimg.com%2Fvi%2FxDLO4ACC3D4%2Fhqdefault.jpg&key=866738f8f18b4394a18e371517a66ae0",
+              "width": 940,
+              "height": 528,
+              "url": "http://www.youtube.com/watch?v=xDLO4ACC3D4"
+            }]
+            }
+            </script>
+          </a>
+          <a class="btn w-button" data-ix="download" href="https://mikethedj4.github.io/kodeWeave/editor/">
+            Launch
+          </a>
+        </div>
+      </div>
     </div>
-    <section class="mbr-navbar mbr-navbar--freeze mbr-navbar--absolute mbr-navbar--transparent mbr-navbar--sticky mbr-navbar--auto-collapse" id="ext_menu-0">
-      <div class="mbr-navbar__section mbr-section">
-        <div class="mbr-section__container container">
-          <div class="mbr-navbar__container">
-            <div class="mbr-navbar__column mbr-navbar__column--s mbr-navbar__brand">
-              <span class="mbr-navbar__brand-link mbr-brand mbr-brand--inline">
-                <span class="mbr-brand__logo">
-                  <a href="http://kodeweave.sourceforge.net/">
-                    <img class="mbr-navbar__brand-img mbr-brand__img" src="assets/images/logo.svg" alt="kodeWeave">
-                  </a>
-                </span>
-                <span class="mbr-brand__name">
-                  <a class="mbr-brand__name text-white" href="http://kodeweave.sourceforge.net/">
-                    kodeWeave
-                  </a>
-                </span>
-              </span>
+    <div class="donatewrap">
+      <h2 data-ix="donate-scroll-into-view">Help me maintain the software!</h2><a class="donate w-button" data-ix="donate-scroll-into-view-btn" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=BSYGA2RB5ZJCC" target="_blank">Donate to the project!</a>
+    </div>
+    <div class="users">
+      <div class="overlay usrsoverlay">
+        <h1 class="reviewshead" data-ix="download">What our fantastic users say!</h1>
+        <div class="slider w-slider" data-animation="slide" data-duration="500" data-infinite="1">
+          <div class="w-slider-mask">
+            <div class="w-slide">
+              <blockquote>“Now this looks to be an awesome Real Time Editor. It's got everything I could hope for. I'm really, really impressed!!! Keep up the good work and this will really take off!!! Also it works with Tablets too and Marshmallow!”</blockquote>
+              <div class="user">Darin Murphy: User</div>
             </div>
-            <div class="mbr-navbar__hamburger mbr-hamburger text-white"><span class="mbr-hamburger__line"></span></div>
-            <div class="mbr-navbar__column mbr-navbar__menu">
-              <nav class="mbr-navbar__menu-box mbr-navbar__menu-box--inline-right">
-                <div class="mbr-navbar__column">
-                  <ul class="mbr-navbar__items mbr-navbar__items--right mbr-buttons mbr-buttons--freeze mbr-buttons--right btn-decorator mbr-buttons--active">
-                    <li class="mbr-navbar__item">
-                      <a class="mbr-buttons__link btn text-white" href="index.html#features1-5">
-                        WHAT IS IT?
-                      </a>
-                    </li>
-                    <li class="mbr-navbar__item">
-                      <a class="mbr-buttons__link btn text-white" href="index.html#features1-20">
-                        FEATURES
-                      </a>
-                    </li>
-                    <li class="mbr-navbar__item">
-                      <a class="mbr-buttons__link btn text-white" href="index.html#testimonials1-10">
-                        FEEDBACK
-                      </a>
-                    </li>
-                    <li class="mbr-navbar__item">
-                      <a class="mbr-buttons__link btn text-white" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=BSYGA2RB5ZJCC" target="_blank">
-                        DONATE
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="mbr-navbar__column">
-                  <ul class="mbr-navbar__items mbr-navbar__items--right mbr-buttons mbr-buttons--freeze mbr-buttons--right btn-inverse mbr-buttons--active">
-                    <li class="mbr-navbar__item">
-                      <a class="mbr-buttons__btn btn btn-danger" href="editor/">
-                        LAUNCH
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </nav>
+            <div class="w-slide">
+              <blockquote>“I teach a web development course and I introduced my students to kodeWeave. They absolutely love it!!!”</blockquote>
+              <div class="user">Dale Smith: User</div>
+            </div>
+            <div class="w-slide">
+              <blockquote>“kodeWeave is amazing! I don't understand why so few developers have bothered to create desktop, offline, cross-platform - web playgrounds.”</blockquote>
+              <div class="user">Ava Morales: User</div>
             </div>
           </div>
+          <div class="leftarrow w-slider-arrow-left">
+            <div class="w-icon-slider-left"></div>
+          </div>
+          <div class="rightarrow w-slider-arrow-right">
+            <div class="w-icon-slider-right"></div>
+          </div>
+          <div class="w-round w-slider-nav"></div>
         </div>
       </div>
-    </section>
-
-    <section class="mbr-box mbr-section mbr-section--relative mbr-section--fixed-size mbr-section--full-height mbr-section--bg-adapted mbr-parallax-background" id="header4-4" style="background-image: url(assets/images/bg.jpg);">
-      <div class="mbr-box__magnet mbr-box__magnet--sm-padding mbr-box__magnet--center-center mbr-after-navbar">
-
-        <div class="mbr-box__container mbr-section__container container">
-          <div class="mbr-box mbr-box--stretched">
-            <div class="mbr-box__magnet mbr-box__magnet--center-center">
-              <div class="row">
-                <div class=" col-sm-8 col-sm-offset-2">
-                  <div class="mbr-hero animated fadeInUp">
-                    <h1 class="mbr-hero__text">
-                      kodeWeave
-                    </h1>
-                    <p class="mbr-hero__subtext">
-                      HTML/CSS/JS and Markdown Playground For Web Designers and Developers<br>
-                    </p>
-                  </div>
-                  <div class="mbr-buttons btn-inverse mbr-buttons--center">
-                    <!-- <a class="mbr-buttons__btn btn btn-lg btn-danger animated fadeInUp delay" href="https://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-win.zip/download" target="_blank">
-                      FOR WINDOWS
+    </div>
+    <div class="conthead">
+      <div class="storecontain w-row" data-ix="download">
+        <div class="w-col w-col-6">
+          <a class="w-inline-block" href="https://chrome.google.com/webstore/detail/kodeweave/blcgppajmopfndnmegepihhkilaejipf" target="_blank">
+            <img class="store" src="data:image/png;base64,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">
+          </a>
+        </div>
+        <div class="w-col w-col-6">
+          <a class="w-inline-block" href="https://play.google.com/store/apps/details?id=com.michael.kodeweave" target="_blank">
+            <img class="store" src="data:image/png;base64,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">
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+        <div class="w-container">
+            <div class="w-row" data-ix="download">
+                <div class="w-col w-col-4">
+                    <h1 class="followus">follow us</h1>
+                </div>
+                <div class="followlinks w-col w-col-8">
+                    <a class="social-icons socicon-bg-facebook thanks" title="Facebook" href="https://www.facebook.com/kodeweave" target="_blank">
+                      <i class="socicon socicon-facebook"></i>
                     </a>
-                    <a class="mbr-buttons__btn btn btn-lg btn-default animated fadeInUp delay" href="https://sourceforge.net/projects/kodeweave/files/beta/kodeWeave-mac.zip/download" target="_blank">
-                      FOR MAC
-                    </a> -->
-                    <p>
-                      <a class="btn-lg animated fadeInUp delay" href="https://chrome.google.com/webstore/detail/kodeweave/blcgppajmopfndnmegepihhkilaejipf" title="Download kodeWeave on the Chrome Web Store" target="_blank" style="display: inline-block; background-image: url('assets/images/ChromeWebStore_BadgeWBorder_v2_496x150.png'); background-size: 100%; width: 220px; height: 65px;"></a>
-                      
-                      <a class="btn-lg animated fadeInUp delay" href="https://play.google.com/store/apps/details?id=com.michael.kodeweave" title="Download kodeWeave on Google Play" target="_blank" style="display: inline-block; background-image: url('assets/images/google-play-badge.png'); background-size: 100%; width: 220px; height: 65px;"></a>
-                    </p>
-                    <p>
-                    </p>
-                  </div>
+                    <a class="social-icons socicon-bg-twitter thanks" title="Twitter" href="https://twitter.com/kodeweave_app" target="_blank">
+                      <i class="socicon socicon-twitter"></i>
+                    </a>
+                    <a class="social-icons socicon-bg-googleplus thanks" title="Google+" href="https://plus.google.com/u/0/115267670001822188181" target="_blank">
+                      <i class="socicon socicon-googleplus"></i>
+                    </a>
+                    <a class="social-icons socicon-bg-youtube thanks" title="YouTube" href="https://www.youtube.com/channel/UCYnzda0-gAIbH2oF494TuAQ" target="_blank">
+                      <i class="socicon socicon-youtube"></i>
+                    </a>
+                    <a class="social-icons socicon-bg-android thanks" title="Google Play" href="https://play.google.com/store/apps/details?id=com.michael.kodeweave" target="_blank">
+                      <i class="socicon socicon-android"></i>
+                    </a>
+                    <a class="social-icons socicon-bg-paypal" title="Help keep the project alive!" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BSYGA2RB5ZJCC" target="_blank">
+                      <i class="socicon socicon-paypal"></i>
+                    </a>
+                    <a class="social-icons socicon-bg-github thanks" title="GitHub" href="https://github.com/mikethedj4/kodeWeave" target="_blank">
+                      <i class="socicon socicon-github"></i>
+                    </a>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-    </section>
-
-    <section class="mbr-section mbr-section--relative mbr-section--fixed-size" id="features1-5" style="background-color: rgb(255, 255, 255);">
-      <div class="mbr-section__container container mbr-section__container--std-top-padding">
-        <div class="mbr-section__row row">
-          <div class="mbr-section__col col-xs-12 col-sm-4">
-            <div class="mbr-section__container mbr-section__container--center mbr-section__container--middle">
-              <figure class="mbr-figure"><img class="mbr-figure__img" src="assets/images/what.svg"></figure>
-            </div>
-            <div class="mbr-section__container mbr-section__container--middle">
-              <div class="mbr-header mbr-header--reduce mbr-header--center mbr-header--wysiwyg">
-                <h3 class="mbr-header__text">
-                  WHAT IS KODEWEAVE?
-                </h3>
-              </div>
-            </div>
-            <div class="mbr-section__container mbr-section__container--last">
-              <div class="mbr-article mbr-article--wysiwyg">
-                <p>
-                  kodeWeave is the perfect solution for web designers and developers; it provides a custom environment (based on user selections) to test (or fiddle with) your JavaScript, HTML, CSS and Markdown code right inside your browser.<br>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="mbr-section__col col-xs-12 col-sm-4">
-            <div class="mbr-section__container mbr-section__container--center mbr-section__container--middle">
-              <figure class="mbr-figure"><img class="mbr-figure__img" src="assets/images/me.svg"></figure>
-            </div>
-            <div class="mbr-section__container mbr-section__container--middle">
-              <div class="mbr-header mbr-header--reduce mbr-header--center mbr-header--wysiwyg">
-                <h3 class="mbr-header__text">
-                  IS IT GOOD FOR ME?
-                </h3>
-              </div>
-            </div>
-            <div class="mbr-section__container mbr-section__container--last">
-              <div class="mbr-article mbr-article--wysiwyg">
-                <p>
-                  kodeWeave is great for non-techies and pro-coders for fast prototyping and small customers' projects.<br><br>
-                  kodeWeave runs as an offline application for Windows, Mac, Linux and Android users. Incorporated with many of the CSS and JavaScript libraries you love.<br>
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="mbr-section__col col-xs-12 col-sm-4">
-            <div class="mbr-section__container mbr-section__container--center mbr-section__container--middle">
-              <figure class="mbr-figure"><img class="mbr-figure__img" src="assets/images/why.svg"></figure>
-            </div>
-            <div class="mbr-section__container mbr-section__container--middle">
-              <div class="mbr-header mbr-header--reduce mbr-header--center mbr-header--wysiwyg">
-                <h3 class="mbr-header__text">
-                  WHY KODEWEAVE?
-                </h3>
-              </div>
-            </div>
-            <div class="mbr-section__container mbr-section__container--last">
-              <div class="mbr-article mbr-article--wysiwyg">
-                <p>
-                  Key differences from traditional editors:<br>
-                  * Built-in markdown editor<br>
-                  * Mobile-friendliness<br>
-                  * Easy-to-use interface<br>
-                  * Free for commercial and non-profit use<br>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <figure class="mbr-figure mbr-figure--wysiwyg mbr-figure--full-width mbr-figure--caption-outside-bottom" id="video1-18" style="background-color: rgb(37, 37, 37);">
-      <div><iframe class="mbr-embedded-video" src="https://www.youtube.com/embed/F2srMbHHnAw?rel=0&amp;autoplay=0&amp;loop=0" width="1280" height="720" frameborder="0" allowfullscreen></iframe></div>
-    </figure>
-
-    <section class="mbr-section mbr-section--relative mbr-section--fixed-size" id="social-buttons1-9" style="background-color: rgb(239, 239, 239);">
-      <div class="mbr-section__container container">
-        <h3 class="mbr-header__text" style="margin: 41px 0; padding: 0; text-align: center;">
-          <a class="mbr-buttons__btn btn btn-lg btn-success" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BSYGA2RB5ZJCC" style="display: block; text-decoration: none; font-size: 16px;" target="_blank">
-            DONATE TO THE PROJECT!
-          </a>
-        </h3>
-      </div>
-    </section>
-
-    <section class="mbr-section mbr-section--relative mbr-section--fixed-size" id="features1-5" style="background-color: rgb(255, 255, 255);">
-      <div class="mbr-section__container container mbr-section__container--std-top-padding">
-        <div class="mbr-section__row row">
-          <div class="mbr-section__col col-xs-12 col-sm-4">
-            <div class="mbr-section__container mbr-section__container--center mbr-section__container--middle">
-              <figure class="mbr-figure"><img class="mbr-figure__img" src="assets/images/bootstrap.png"></figure>
-            </div>
-            <div class="mbr-section__container mbr-section__container--middle">
-              <div class="mbr-header mbr-header--reduce mbr-header--center mbr-header--wysiwyg">
-                <h3 class="mbr-header__text">
-                  BOOTSTRAP 3
-                </h3>
-              </div>
-            </div>
-            <div class="mbr-section__container mbr-section__container--middle">
-              <div class="mbr-article mbr-article--wysiwyg">
-                <p>
-                  Bootstrap 3 has been noted as one of the most reliable and proven frameworks and kodeWeave has been equipped to develop websites using this framework.
-                </p>
-              </div>
-            </div>
-            <div class="mbr-section__container mbr-section__container--last">
-              <div class="mbr-buttons mbr-buttons--center"><a href="http://getbootstrap.com/" class="mbr-buttons__btn btn btn-wrap btn-xs-lg btn-default" target="_blank">LEARN MORE</a></div>
-            </div>
-          </div>
-          <div class="mbr-section__col col-xs-12 col-sm-4">
-            <div class="mbr-section__container mbr-section__container--center mbr-section__container--middle">
-              <figure class="mbr-figure"><img class="mbr-figure__img" src="assets/images/jquery.svg"></figure>
-            </div>
-            <div class="mbr-section__container mbr-section__container--middle">
-              <div class="mbr-header mbr-header--reduce mbr-header--center mbr-header--wysiwyg">
-                <h3 class="mbr-header__text">
-                  JQUERY
-                </h3>
-              </div>
-            </div>
-            <div class="mbr-section__container mbr-section__container--middle">
-              <div class="mbr-article mbr-article--wysiwyg">
-                <p>
-                  kodeWeave gives you the freedom to utilize jQuery which is a fast, small, and feature-rich JavaScript library. It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler with an easy-to-use API that works across a multitude of browsers.
-                </p>
-              </div>
-            </div>
-            <div class="mbr-section__container mbr-section__container--last">
-              <div class="mbr-buttons mbr-buttons--center">
-                <a href="https://jquery.com/" class="mbr-buttons__btn btn btn-wrap btn-xs-lg btn-default" target="_blank">
-                  LEARN MORE
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="mbr-section__col col-xs-12 col-xs-12 col-sm-4">
-            <div class="mbr-section__container mbr-section__container--center mbr-section__container--middle">
-              <figure class="mbr-figure"><img class="mbr-figure__img" src="assets/images/cross-platform.svg"></figure>
-            </div>
-            <div class="mbr-section__container mbr-section__container--middle">
-              <div class="mbr-header mbr-header--reduce mbr-header--center mbr-header--wysiwyg">
-                <h3 class="mbr-header__text">
-                  MULTI PLATFORM
-                </h3>
-              </div>
-            </div>
-            <div class="mbr-section__container mbr-section__container--middle">
-              <div class="mbr-article mbr-article--wysiwyg">
-                <p>
-                  kodeWeave has been designed to work specifically on both desktops and mobile devices. So reguardless of what device you're using you will have all the same features and functionality as if you were on a desktop when you're on a phone.
-                </p>
-              </div>
-            </div>
-            <div class="mbr-section__container mbr-section__container--last">
-              <div class="mbr-buttons mbr-buttons--center">
-                <a href="https://en.wikipedia.org/wiki/Cross-platform" class="mbr-buttons__btn btn btn-wrap btn-xs-lg btn-default" target="_blank">
-                  LEARN MORE
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <section class="mbr-section mbr-section--relative mbr-section--fixed-size" style="background-color: rgb(239, 239, 239);">
-      <div class="mbr-section__container container">
-        <div class="mbr-header mbr-header--inline row">
-          <div class="col-sm-4">
-            <h3 class="mbr-header__text">
-              SHARE THIS PAGE!
-            </h3>
-          </div>
-          <div class="mbr-social-icons col-sm-8">
-            <div class="mbr-social-likes social-likes_style-1" data-counters="true">
-              <div class="mbr-social-icons__icon social-likes__icon facebook socicon-bg-facebook" title="Share link on Facebook">
-                <i class="socicon socicon-facebook"></i>
-              </div>
-              <div class="mbr-social-icons__icon social-likes__icon plusone socicon-bg-googleplus" title="Share link on Google+">
-                <i class="socicon socicon-googleplus"></i>
-              </div>
-              <div class="mbr-social-icons__icon social-likes__icon twitter socicon-bg-twitter" title="Share link on Twitter">
-                <i class="socicon socicon-twitter"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="mbr-section mbr-section--relative mbr-section--fixed-size" id="testimonials1-10" style="background-color: rgb(255, 255, 255);">
-      <div>
-        <div class="mbr-section__container mbr-section__container--std-padding container">
-          <div class="row">
-            <div class="col-sm-12">
-              <h2 class="mbr-section__header">
-                WHAT OUR FANTASTIC USERS SAY
-              </h2>
-              <ul class="mbr-reviews mbr-reviews--wysiwyg row">
-                <li class="mbr-reviews__item col-sm-6 col-md-4">
-                  <div class="mbr-reviews__text">
-                    <p class="mbr-reviews__p">
-                      “Now this looks to be an awesome Real Time Editor. It's got everything I could hope for. I'm really, really impressed!!! Keep up the good work and this will really take off!!! Also it works with Tablets too and Marshmallow!”<br>
-                    </p>
-                  </div>
-                  <div class="mbr-reviews__author mbr-reviews__author--short">
-                    <div class="mbr-reviews__author-name">
-                      Darin Murphy.
-                    </div>
-                    <div class="mbr-reviews__author-bio">
-                      User
-                    </div>
-                  </div>
-                </li><li class="mbr-reviews__item col-sm-6 col-md-4">
-                <div class="mbr-reviews__text">
-                  <p class="mbr-reviews__p">
-                    “I teach a web development course and I introduced my students to kodeWeave. They absolutely love it!!!”
-                  </p>
-                </div>
-                <div class="mbr-reviews__author mbr-reviews__author--short">
-                  <div class="mbr-reviews__author-name">
-                    Dale Smith.
-                  </div>
-                  <div class="mbr-reviews__author-bio">
-                    User
-                  </div>
-                </div>
-                </li><li class="mbr-reviews__item col-sm-6 col-md-4">
-                <div class="mbr-reviews__text">
-                  <p class="mbr-reviews__p">
-                    “kodeWeave is amazing! I don't understand why so few developers have bothered to create desktop, offline, cross-platform - web playgrounds.”
-                  </p>
-                </div>
-                <div class="mbr-reviews__author mbr-reviews__author--short">
-                  <div class="mbr-reviews__author-name">
-                    Ava MORALES.
-                  </div>
-                  <div class="mbr-reviews__author-bio">
-                    User
-                  </div>
-                </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-<!--
-    <section class="mbr-section mbr-section--relative mbr-section--fixed-size" id="social-buttons1-9" style="background-color: rgb(239, 239, 239);">
-      <div class="mbr-section__container container">
-        <h3 class="mbr-header__text" style="margin: 41px 0; padding: 0; text-align: center;">
-          <a class="mbr-buttons__btn btn btn-lg btn-success" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BSYGA2RB5ZJCC" style="display: block; text-decoration: none; font-size: 20px;" target="_blank">
-            DONATE TO THE PROJECT!
-          </a>
-        </h3>
-      </div>
-    </section>
--->
-
-    <section class="mbr-section" id="header3-19">
-      <div class="mbr-section__container container mbr-section__container--first">
-        <div class="mbr-header mbr-header--wysiwyg row">
-          <div class="col-sm-8 col-sm-offset-2">
-            <h3 class="mbr-header__text">
-              FREE DOWNLOAD
-            </h3>
-            <p class="mbr-header__subtext">
-              <span style="line-height: 1.42857143;">
-                kodeWeave is free for both personal and commercial use. You can download and use kodeWeave for your own work or client's websites or applications without restrictions.
-              </span><br>
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="mbr-section" id="buttons1-12">
-      <div class="mbr-section__container container mbr-section__container--last">
-        <div class="row">
-          <div class="col-sm-8 col-sm-offset-2">
-            <div class="mbr-buttons mbr-buttons--center">
-               <a class="mbr-buttons__btn btn btn-lg btn-default thanksDwld" href="http://downloads.sourceforge.net/project/kodeweave/v1.1.24/kodeWeave-win.zip?r=&ts=1463159248&use_mirror=iweb" target="_blank">
-                FOR WINDOWS (XP+ 64bit)
-              </a>
-               <a class="mbr-buttons__btn btn btn-lg btn-default thanksDwld" href="http://downloads.sourceforge.net/project/kodeweave/v1.1.24/kodeWeave-win32.zip?r=&ts=1463159274&use_mirror=iweb" target="_blank">
-                FOR WINDOWS (XP+ 32bit)
-              </a>
-              <a class="mbr-buttons__btn btn btn-lg btn-default thanksDwld" href="http://downloads.sourceforge.net/project/kodeweave/v1.1.24/kodeWeave-lin.zip?r=&ts=1463159288&use_mirror=pilotfiber" target="_blank">
-                FOR LINUX (amd64/64bit)
-              </a>
-              <a class="mbr-buttons__btn btn btn-lg btn-default thanksDwld" href="http://downloads.sourceforge.net/project/kodeweave/v1.1.24/kodeWeave-lin32.zip?r=&ts=1463159302&use_mirror=pilotfiber" target="_blank">
-                FOR LINUX (i386/32bit)
-              </a>
-              <a class="mbr-buttons__btn btn btn-lg btn-default thanksDwld" href="http://downloads.sourceforge.net/project/kodeweave/v1.1.24/kodeWeave-mac.zip?r=&ts=1463159321&use_mirror=pilotfiber" target="_blank">
-                FOR MAC (10.6.8+)
-              </a>
-              <a class="mbr-buttons__btn btn btn-lg btn-default thanksDwld" href="https://play.google.com/store/apps/details?id=com.michael.kodeweave" target="_blank">
-                FOR ANDROID (4.O+)
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="mbr-section mbr-section--relative mbr-section--fixed-size" id="social-buttons2-13" style="background-color: rgb(240, 240, 240);">
-      <div class="mbr-section__container container">
-        <div class="mbr-header mbr-header--inline row">
-          <div class="col-sm-4">
-            <h3 class="mbr-header__text">
-              FOLLOW US
-            </h3>
-          </div>
-          <div class="mbr-social-icons mbr-social-icons--style-1 col-sm-8">
-            <a class="mbr-social-icons__icon socicon-bg-facebook thanks" title="Facebook" href="https://www.facebook.com/kodeweave" target="_blank">
-              <i class="socicon socicon-facebook"></i>
-            </a>
-            <a class="mbr-social-icons__icon socicon-bg-twitter thanks" title="Twitter" href="https://twitter.com/kodeweave_app" target="_blank">
-              <i class="socicon socicon-twitter"></i>
-            </a>
-            <a class="mbr-social-icons__icon socicon-bg-googleplus thanks" title="Google+" href="https://plus.google.com/u/0/115267670001822188181" target="_blank">
-              <i class="socicon socicon-googleplus"></i>
-            </a>
-            <a class="mbr-social-icons__icon socicon-bg-youtube thanks" title="YouTube" href="https://www.youtube.com/channel/UCYnzda0-gAIbH2oF494TuAQ" target="_blank">
-              <i class="socicon socicon-youtube"></i>
-            </a>
-            <a class="mbr-social-icons__icon socicon-bg-android thanks" title="Google Play" href="https://play.google.com/store/apps/details?id=com.michael.kodeweave" target="_blank">
-              <i class="socicon socicon-android"></i>
-            </a>
-            <a class="mbr-social-icons__icon socicon-bg-paypal" title="Help keep the project alive!" href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BSYGA2RB5ZJCC" target="_blank">
-              <i class="socicon socicon-paypal"></i>
-            </a>
-            <a class="mbr-social-icons__icon socicon-bg-github thanks" title="GitHub" href="https://github.com/mikethedj4/kodeWeave" target="_blank">
-              <i class="socicon socicon-github"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <script src="assets/alertifyjs/alertify.min.js"></script>
-    <script src="assets/web/assets/jquery/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/smooth-scroll/SmoothScroll.js"></script>
-    <script src="assets/jarallax/jarallax.js"></script>
-    <script src="assets/social-likes/social-likes.js"></script>
-    <!--[if lte IE 9]>
-      <script src="assets/jquery-placeholder/jquery.placeholder.min.js"></script>
-    <![endif]-->
-    <script src="assets/mobirise/js/script.js"></script>
-    <script src="assets/formoid/formoid.min.js"></script>
+    </div>
+    <script src="https://daks2k3a4ib2z.cloudfront.net/57ae8b141fd32dc352aee5fb/js/webflow.c2402ef5c.js"></script>
     <script src="index.js"></script>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-75970821-1', 'auto');
-      ga('send', 'pageview');
-
-    </script>
   </body>
 </html>
