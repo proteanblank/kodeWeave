@@ -22,7 +22,7 @@ Availability
 [Android](https://play.google.com/store/apps/details?id=com.michael.kodeweave)  
 [Chrome Application](https://chrome.google.com/webstore/detail/kodeweave-touch/blcgppajmopfndnmegepihhkilaejipf)
 
-**No longer Supported** *(main kodeweave)*  
+**No longer Supported** *(desktop version of kodeweave is deprecated)*  
 [Windows 64](http://sourceforge.net/projects/kodeweave/files/v1.1.24/kodeWeave-win.zip/download)  
 [Windows 32](http://sourceforge.net/projects/kodeweave/files/v1.1.24/kodeWeave-win32.zip/download)  
 [Mac](http://sourceforge.net/projects/kodeweave/files/v1.1.24/kodeWeave-mac.zip/download)  
