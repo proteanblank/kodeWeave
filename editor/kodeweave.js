@@ -3075,11 +3075,21 @@ function getURL(url, c) {
   };
 }
 
-getURL("https://ternjs.net/defs/ecma5.json", function(err, code) {
-  if (err) throw new Error("Request for ecma5.json: " + err);
-  server = new CodeMirror.TernServer({defs: [JSON.parse(code)]});
-  jsEditor.on("cursorActivity", function(cm) { server.updateArgHints(cm); });
-});
+  var server;
+  getURL("//ternjs.net/defs/ecmascript.json", function(err, code) {
+    if (err) throw new Error("Request for ecmascript.json: " + err);
+    server = new CodeMirror.TernServer({defs: [JSON.parse(code)]});
+    // jsEditor.setOption("extraKeys", {
+    //   "Ctrl-Space": function(cm) { server.complete(cm); },
+    //   "Ctrl-I": function(cm) { server.showType(cm); },
+    //   "Ctrl-O": function(cm) { server.showDocs(cm); },
+    //   "Alt-.": function(cm) { server.jumpToDef(cm); },
+    //   "Alt-,": function(cm) { server.jumpBack(cm); },
+    //   "Ctrl-Q": function(cm) { server.rename(cm); },
+    //   "Ctrl-.": function(cm) { server.selectName(cm); }
+    // })
+    jsEditor.on("cursorActivity", function(cm) { server.updateArgHints(cm); });
+  });
 
 // Initialize Editors
 var htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
