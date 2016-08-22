@@ -54,6 +54,7 @@ kodeWeave uses a number of open source projects to work properly:
 * [HTML2Jade](http://html2jade.org/) - Convert HTML to Jade and back
 * [CSS2Stylus](http://css2stylus.com/) - Convert CSS to Stylus and back
 * [JS2Coffee](http://js2.coffee/) - Convert Javascript to CoffeeScript and back
+* [AlertifyJS](http://alertifyjs.com/) - For the awesome and stylish alert notification dialogs
 * [Cordova](https://cordova.apache.org/) - mobile application development framework
 * [DataURL Grabber](https://github.com/mikethedj4/DataURL-Grabber-PhoneGap-Build) - Embed an image directly into the document with data URIs
 
