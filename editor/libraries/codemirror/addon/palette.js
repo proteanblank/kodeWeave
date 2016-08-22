@@ -2,7 +2,7 @@
 // bookmarks next to color values with a background matching the
 // value.
 
-// To enable a plugin pass set `paletteHints` option on htmlEditor to
+// To enable a plugin pass set `paletteHints` option on cm to
 // `true`.
 (function() {
   var PALETTE_TOKEN = "palette";
@@ -20,7 +20,7 @@
   function isPaletteMark(mark) { return mark.isPaletteMark; }
   function clear(mark) { return mark.clear(); }
 
-  function findMarks(htmlEditor, range) {
+  function findMarks(cm, range) {
     var markers = [];
     var from = range.from;
     var to = range.to;
@@ -28,7 +28,7 @@
     var lastLine = to.line;
     var lineNumber = from.line;
     while (lineNumber <= lastLine) {
-      var line = htmlEditor.getLineHandle(lineNumber);
+      var line = cm.getLineHandle(lineNumber);
       var spans = line && line.markedSpans;
       if (spans) {
         var isLastLine = lineNumber === lastLine;
@@ -54,12 +54,12 @@
     return markers;
   }
 
-  function updatePaletteWidgets(htmlEditor, range) {
-    var doc = htmlEditor.getDoc();
-    findMarks(htmlEditor, range).filter(isPaletteMark).forEach(clear);
+  function updatePaletteWidgets(cm, range) {
+    var doc = cm.getDoc();
+    findMarks(cm, range).filter(isPaletteMark).forEach(clear);
 
     var isFirstLine = true;
-    htmlEditor.eachLine(range.from.line, range.to.line + 1, function(line) {
+    cm.eachLine(range.from.line, range.to.line + 1, function(line) {
       var text = line.text;
       var match = null;
       var offset = 0;
@@ -88,32 +88,32 @@
     });
   }
 
-  function batchUpdate(htmlEditor, change) {
+  function batchUpdate(cm, change) {
     // If pasted more lines of code than was prior to that in buffer,
     // change passed in will contain changes upto prior state. There
     // for take last change from history that should contain all changes.
     if (change.origin === "paste") {
-      var done = htmlEditor.getHistory().done;
+      var done = cm.getHistory().done;
       change = done[done.length - 1].changes[0]
     }
 
     while (change) {
-      updatePaletteWidgets(htmlEditor, change);
+      updatePaletteWidgets(cm, change);
       change = change.next;
     }
   }
 
-  CodeMirror.defineOption("paletteHints", false, function(htmlEditor, current, past) {
+  CodeMirror.defineOption("paletteHints", false, function(cm, current, past) {
     if (current) {
-      htmlEditor.on("change", batchUpdate);
-      updatePaletteWidgets(htmlEditor, {
-        from: {line: htmlEditor.firstLine(), ch: 0},
-        to: {line: htmlEditor.lastLine() + 1, ch: 0}
+      cm.on("change", batchUpdate);
+      updatePaletteWidgets(cm, {
+        from: {line: cm.firstLine(), ch: 0},
+        to: {line: cm.lastLine() + 1, ch: 0}
       });
     }
     else {
-      htmlEditor.off("change", batchUpdate);
-      htmlEditor.getAllMarks().filter(isPaletteMark).forEach(clear);
+      cm.off("change", batchUpdate);
+      cm.getAllMarks().filter(isPaletteMark).forEach(clear);
     }
   });
 })();
