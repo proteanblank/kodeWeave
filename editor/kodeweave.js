@@ -143,46 +143,38 @@ var timeout, delay, selected_text, str, mynum,
       if ( activeEditor.value === "htmlEditor" ) {
         selected_text = htmlEditor.getSelection().toLowerCase();  // Need to grab the Active Selection
 
-        htmlEditor.replaceSelection(selected_text);
-        htmlEditor.focus();
+        htmlEditor.replaceSelection(selected_text).focus();
       } else if ( activeEditor.value === "cssEditor" ) {
         selected_text = cssEditor.getSelection().toLowerCase();  // Need to grab the Active Selection
 
-        cssEditor.replaceSelection(selected_text);
-        cssEditor.focus();
+        cssEditor.replaceSelection(selected_text).focus();
       } else if ( activeEditor.value === "jsEditor" ) {
         selected_text = jsEditor.getSelection().toLowerCase();  // Need to grab the Active Selection
 
-        jsEditor.replaceSelection(selected_text);
-        jsEditor.focus();
+        jsEditor.replaceSelection(selected_text).focus();
       } else if ( activeEditor.value === "mdEditor" ) {
         selected_text = mdEditor.getSelection().toLowerCase();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection(selected_text);
-        mdEditor.focus();
+        mdEditor.replaceSelection(selected_text).focus();
       }
     },
     applyUppercase = function() {
       if ( activeEditor.value === "htmlEditor" ) {
         selected_text = htmlEditor.getSelection().toUpperCase();  // Need to grab the Active Selection
 
-        htmlEditor.replaceSelection(selected_text);
-        htmlEditor.focus();
+        htmlEditor.replaceSelection(selected_text).focus();
       } else if ( activeEditor.value === "cssEditor" ) {
         selected_text = cssEditor.getSelection().toUpperCase();  // Need to grab the Active Selection
 
-        cssEditor.replaceSelection(selected_text);
-        cssEditor.focus();
+        cssEditor.replaceSelection(selected_text).focus();
       } else if ( activeEditor.value === "jsEditor" ) {
         selected_text = jsEditor.getSelection().toUpperCase();  // Need to grab the Active Selection
 
-        jsEditor.replaceSelection(selected_text);
-        jsEditor.focus();
+        jsEditor.replaceSelection(selected_text).focus();
       } else if ( activeEditor.value === "mdEditor" ) {
         selected_text = mdEditor.getSelection().toUpperCase();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection(selected_text);
-        mdEditor.focus();
+        mdEditor.replaceSelection(selected_text).focus();
       }
     },
     applyMinify = function() {
@@ -309,7 +301,6 @@ var timeout, delay, selected_text, str, mynum,
         } else if ( activeEditor.value === "mdEditor" ) {
           mdEditor.execCommand("gotoLine");
         }
-
         $("input[name=menubar].active").trigger("click");
       };
 
@@ -324,7 +315,6 @@ var timeout, delay, selected_text, str, mynum,
         } else if ( activeEditor.value === "mdEditor" ) {
           mdEditor.execCommand("emmet.toggle_comment");
         }
-
         $("input[name=menubar].active").trigger("click");
       };
 
@@ -898,44 +888,33 @@ var timeout, delay, selected_text, str, mynum,
       };
       document.getElementById("tabindent").onclick = function() {
         if ( activeEditor.value === "htmlEditor" ) {
-          htmlEditor.execCommand("indentMore");
-          htmlEditor.focus();
+          htmlEditor.execCommand("indentMore").focus();
         } else if ( activeEditor.value === "cssEditor" ) {
-          cssEditor.execCommand("indentMore");
-          cssEditor.focus();
+          cssEditor.execCommand("indentMore").focus();
         } else if ( activeEditor.value === "jsEditor" ) {
-          jsEditor.execCommand("indentMore");
-          jsEditor.focus();
+          jsEditor.execCommand("indentMore").focus();
         } else if ( activeEditor.value === "mdEditor" ) {
-          mdEditor.execCommand("indentMore");
-          mdEditor.focus();
+          mdEditor.execCommand("indentMore").focus();
         }
       };
       document.getElementById("taboutdent").onclick = function() {
         if ( activeEditor.value === "htmlEditor" ) {
-          htmlEditor.execCommand("indentLess");
-          htmlEditor.focus();
+          htmlEditor.execCommand("indentLess").focus();
         } else if ( activeEditor.value === "cssEditor" ) {
-          cssEditor.execCommand("indentLess");
-          cssEditor.focus();
+          cssEditor.execCommand("indentLess").focus();
         } else if ( activeEditor.value === "jsEditor" ) {
-          jsEditor.execCommand("indentLess");
-          jsEditor.focus();
+          jsEditor.execCommand("indentLess").focus();
         } else if ( activeEditor.value === "mdEditor" ) {
-          mdEditor.execCommand("indentLess");
-          mdEditor.focus();
+          mdEditor.execCommand("indentLess").focus();
         }
       };
       document.getElementById("zeninit").onclick = function() {
         if ( activeEditor.value === "htmlEditor" ) {
-          htmlEditor.execCommand("emmet.expand_abbreviation_with_tab");
-          htmlEditor.focus();
+          htmlEditor.execCommand("emmet.expand_abbreviation_with_tab").focus();
         } else if ( activeEditor.value === "cssEditor" ) {
-          cssEditor.execCommand("emmet.expand_abbreviation_with_tab");
-          cssEditor.focus();
+          cssEditor.execCommand("emmet.expand_abbreviation_with_tab").focus();
         } else if ( activeEditor.value === "jsEditor" ) {
-          jsEditor.execCommand("emmet.expand_abbreviation_with_tab");
-          jsEditor.focus();
+          jsEditor.execCommand("emmet.expand_abbreviation_with_tab").focus();
         }
       };
       document.getElementById("charsym1").onclick = function() {
@@ -944,8 +923,7 @@ var timeout, delay, selected_text, str, mynum,
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("", htmlEditor.getCursor());
-            htmlEditor.replaceRange("<>", htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange("<>", htmlEditor.getCursor()).focus();
             str = ">";
             mynum = str.length;
             start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
@@ -954,21 +932,18 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor()).focus();
           } else {
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-            htmlEditor.replaceSelection("<" + selected_text + ">");
-            htmlEditor.focus();
+            htmlEditor.replaceSelection("<" + selected_text + ">").focus();
           }
         } else if ( activeEditor.value === "cssEditor" ) {
           if (!cssEditor.getSelection().split(" ").join("")) {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("", cssEditor.getCursor());
-            cssEditor.replaceRange("<>", cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange("<>", cssEditor.getCursor()).focus();
             str = ">";
             mynum = str.length;
             start_cursor = cssEditor.getCursor();  // Need to get the cursor position
@@ -977,21 +952,18 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            cssEditor.replaceRange(selected_text, cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange(selected_text, cssEditor.getCursor()).focus();
           } else {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-            cssEditor.replaceSelection("<" + selected_text + ">");
-            cssEditor.focus();
+            cssEditor.replaceSelection("<" + selected_text + ">").focus();
           }
         } else if ( activeEditor.value === "jsEditor" ) {
           if (!jsEditor.getSelection().split(" ").join("")) {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("", jsEditor.getCursor());
-            jsEditor.replaceRange("<>", jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange("<>", jsEditor.getCursor()).focus();
             str = ">";
             mynum = str.length;
             start_cursor = jsEditor.getCursor();  // Need to get the cursor position
@@ -1000,21 +972,18 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            jsEditor.replaceRange(selected_text, jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange(selected_text, jsEditor.getCursor()).focus();
           } else {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-            jsEditor.replaceSelection("<" + selected_text + ">");
-            jsEditor.focus();
+            jsEditor.replaceSelection("<" + selected_text + ">").focus();
           }
         } else if ( activeEditor.value === "mdEditor" ) {
           if (!mdEditor.getSelection().split(" ").join("")) {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("", mdEditor.getCursor());
-            mdEditor.replaceRange("<>", mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange("<>", mdEditor.getCursor()).focus();
             str = ">";
             mynum = str.length;
             start_cursor = mdEditor.getCursor();  // Need to get the cursor position
@@ -1023,13 +992,11 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            mdEditor.replaceRange(selected_text, mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange(selected_text, mdEditor.getCursor()).focus();
           } else {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-            mdEditor.replaceSelection("<" + selected_text + ">");
-            mdEditor.focus();
+            mdEditor.replaceSelection("<" + selected_text + ">").focus();
           }
         }
       };
@@ -1039,8 +1006,7 @@ var timeout, delay, selected_text, str, mynum,
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("", htmlEditor.getCursor());
-            htmlEditor.replaceRange("{}", htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange("{}", htmlEditor.getCursor()).focus();
             str = "}";
             mynum = str.length;
             start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
@@ -1049,21 +1015,18 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor()).focus();
           } else {
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-            htmlEditor.replaceSelection("{" + selected_text + "}");
-            htmlEditor.focus();
+            htmlEditor.replaceSelection("{" + selected_text + "}").focus();
           }
         } else if ( activeEditor.value === "cssEditor" ) {
           if (!cssEditor.getSelection().split(" ").join("")) {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("", cssEditor.getCursor());
-            cssEditor.replaceRange("{}", cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange("{}", cssEditor.getCursor()).focus();
             str = "}";
             mynum = str.length;
             start_cursor = cssEditor.getCursor();  // Need to get the cursor position
@@ -1072,21 +1035,18 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            cssEditor.replaceRange(selected_text, cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange(selected_text, cssEditor.getCursor()).focus();
           } else {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-            cssEditor.replaceSelection("{" + selected_text + "}");
-            cssEditor.focus();
+            cssEditor.replaceSelection("{" + selected_text + "}").focus();
           }
         } else if ( activeEditor.value === "jsEditor" ) {
           if (!jsEditor.getSelection().split(" ").join("")) {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("", jsEditor.getCursor());
-            jsEditor.replaceRange("{}", jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange("{}", jsEditor.getCursor()).focus();
             str = "}";
             mynum = str.length;
             start_cursor = jsEditor.getCursor();  // Need to get the cursor position
@@ -1095,21 +1055,18 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            jsEditor.replaceRange(selected_text, jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange(selected_text, jsEditor.getCursor()).focus();
           } else {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-            jsEditor.replaceSelection("{" + selected_text + "}");
-            jsEditor.focus();
+            jsEditor.replaceSelection("{" + selected_text + "}").focus();
           }
         } else if ( activeEditor.value === "mdEditor" ) {
           if (!mdEditor.getSelection().split(" ").join("")) {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("", mdEditor.getCursor());
-            mdEditor.replaceRange("{}", mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange("{}", mdEditor.getCursor()).focus();
             str = "}";
             mynum = str.length;
             start_cursor = mdEditor.getCursor();  // Need to get the cursor position
@@ -1118,13 +1075,11 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            mdEditor.replaceRange(selected_text, mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange(selected_text, mdEditor.getCursor()).focus();
           } else {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-            mdEditor.replaceSelection("{" + selected_text + "}");
-            mdEditor.focus();
+            mdEditor.replaceSelection("{" + selected_text + "}").focus();
           }
         }
       };
@@ -1134,8 +1089,7 @@ var timeout, delay, selected_text, str, mynum,
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("", htmlEditor.getCursor());
-            htmlEditor.replaceRange('""', htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange('""', htmlEditor.getCursor()).focus();
             str = '"';
             mynum = str.length;
             start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
@@ -1144,21 +1098,18 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor()).focus();
           } else {
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-            htmlEditor.replaceSelection('"' + selected_text + '"');
-            htmlEditor.focus();
+            htmlEditor.replaceSelection('"' + selected_text + '"').focus();
           }
         } else if ( activeEditor.value === "cssEditor" ) {
           if (!cssEditor.getSelection().split(" ").join("")) {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("", cssEditor.getCursor());
-            cssEditor.replaceRange('""', cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange('""', cssEditor.getCursor()).focus();
             str = '"';
             mynum = str.length;
             start_cursor = cssEditor.getCursor();  // Need to get the cursor position
@@ -1167,21 +1118,18 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            cssEditor.replaceRange(selected_text, cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange(selected_text, cssEditor.getCursor()).focus();
           } else {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-            cssEditor.replaceSelection('"' + selected_text + '"');
-            cssEditor.focus();
+            cssEditor.replaceSelection('"' + selected_text + '"').focus();
           }
         } else if ( activeEditor.value === "jsEditor" ) {
           if (!jsEditor.getSelection().split(" ").join("")) {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("", jsEditor.getCursor());
-            jsEditor.replaceRange('""', jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange('""', jsEditor.getCursor()).focus();
             str = '"';
             mynum = str.length;
             start_cursor = jsEditor.getCursor();  // Need to get the cursor position
@@ -1190,21 +1138,18 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            jsEditor.replaceRange(selected_text, jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange(selected_text, jsEditor.getCursor()).focus();
           } else {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-            jsEditor.replaceSelection('"' + selected_text + '"');
-            jsEditor.focus();
+            jsEditor.replaceSelection('"' + selected_text + '"').focus();
           }
         } else if ( activeEditor.value === "mdEditor" ) {
           if (!mdEditor.getSelection().split(" ").join("")) {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("", mdEditor.getCursor());
-            mdEditor.replaceRange('""', mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange('""', mdEditor.getCursor()).focus();
             str = '"';
             mynum = str.length;
             start_cursor = mdEditor.getCursor();  // Need to get the cursor position
@@ -1213,13 +1158,11 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            mdEditor.replaceRange(selected_text, mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange(selected_text, mdEditor.getCursor()).focus();
           } else {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-            mdEditor.replaceSelection('"' + selected_text + '"');
-            mdEditor.focus();
+            mdEditor.replaceSelection('"' + selected_text + '"').focus();
           }
         }
       };
@@ -1229,8 +1172,7 @@ var timeout, delay, selected_text, str, mynum,
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("", htmlEditor.getCursor());
-            htmlEditor.replaceRange("''", htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange("''", htmlEditor.getCursor()).focus();
             str = "'";
             mynum = str.length;
             start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
@@ -1239,21 +1181,18 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor()).focus();
           } else {
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-            htmlEditor.replaceSelection("'" + selected_text + "'");
-            htmlEditor.focus();
+            htmlEditor.replaceSelection("'" + selected_text + "'").focus();
           }
         } else if ( activeEditor.value === "cssEditor" ) {
           if (!cssEditor.getSelection().split(" ").join("")) {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("", cssEditor.getCursor());
-            cssEditor.replaceRange("''", cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange("''", cssEditor.getCursor()).focus();
             str = "'";
             mynum = str.length;
             start_cursor = cssEditor.getCursor();  // Need to get the cursor position
@@ -1262,21 +1201,18 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            cssEditor.replaceRange(selected_text, cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange(selected_text, cssEditor.getCursor()).focus();
           } else {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-            cssEditor.replaceSelection("'" + selected_text + "'");
-            cssEditor.focus();
+            cssEditor.replaceSelection("'" + selected_text + "'").focus();
           }
         } else if ( activeEditor.value === "jsEditor" ) {
           if (!jsEditor.getSelection().split(" ").join("")) {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("", jsEditor.getCursor());
-            jsEditor.replaceRange("''", jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange("''", jsEditor.getCursor()).focus();
             str = "'";
             mynum = str.length;
             start_cursor = jsEditor.getCursor();  // Need to get the cursor position
@@ -1285,21 +1221,18 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            jsEditor.replaceRange(selected_text, jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange(selected_text, jsEditor.getCursor()).focus();
           } else {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-            jsEditor.replaceSelection("'" + selected_text + "'");
-            jsEditor.focus();
+            jsEditor.replaceSelection("'" + selected_text + "'").focus();
           }
         } else if ( activeEditor.value === "mdEditor" ) {
           if (!mdEditor.getSelection().split(" ").join("")) {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("", mdEditor.getCursor());
-            mdEditor.replaceRange("''", mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange("''", mdEditor.getCursor()).focus();
             str = "'";
             mynum = str.length;
             start_cursor = mdEditor.getCursor();  // Need to get the cursor position
@@ -1308,13 +1241,11 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            mdEditor.replaceRange(selected_text, mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange(selected_text, mdEditor.getCursor()).focus();
           } else {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-            mdEditor.replaceSelection("'" + selected_text + "'");
-            mdEditor.focus();
+            mdEditor.replaceSelection("'" + selected_text + "'").focus();
           }
         }
       };
@@ -1324,8 +1255,7 @@ var timeout, delay, selected_text, str, mynum,
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("", htmlEditor.getCursor());
-            htmlEditor.replaceRange("()", htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange("()", htmlEditor.getCursor()).focus();
             str = ")";
             mynum = str.length;
             start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
@@ -1334,21 +1264,18 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor()).focus();
           } else {
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-            htmlEditor.replaceSelection("(" + selected_text + ")");
-            htmlEditor.focus();
+            htmlEditor.replaceSelection("(" + selected_text + ")").focus();
           }
         } else if ( activeEditor.value === "cssEditor" ) {
           if (!cssEditor.getSelection().split(" ").join("")) {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("", cssEditor.getCursor());
-            cssEditor.replaceRange("()", cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange("()", cssEditor.getCursor()).focus();
             str = ")";
             mynum = str.length;
             start_cursor = cssEditor.getCursor();  // Need to get the cursor position
@@ -1357,21 +1284,18 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            cssEditor.replaceRange(selected_text, cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange(selected_text, cssEditor.getCursor()).focus();
           } else {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-            cssEditor.replaceSelection("(" + selected_text + ")");
-            cssEditor.focus();
+            cssEditor.replaceSelection("(" + selected_text + ")").focus();
           }
         } else if ( activeEditor.value === "jsEditor" ) {
           if (!jsEditor.getSelection().split(" ").join("")) {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("", jsEditor.getCursor());
-            jsEditor.replaceRange("()", jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange("()", jsEditor.getCursor()).focus();
             str = ")";
             mynum = str.length;
             start_cursor = jsEditor.getCursor();  // Need to get the cursor position
@@ -1380,21 +1304,18 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            jsEditor.replaceRange(selected_text, jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange(selected_text, jsEditor.getCursor()).focus();
           } else {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-            jsEditor.replaceSelection("(" + selected_text + ")");
-            jsEditor.focus();
+            jsEditor.replaceSelection("(" + selected_text + ")").focus();
           }
         } else if ( activeEditor.value === "mdEditor" ) {
           if (!mdEditor.getSelection().split(" ").join("")) {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("", mdEditor.getCursor());
-            mdEditor.replaceRange("()", mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange("()", mdEditor.getCursor()).focus();
             str = ")";
             mynum = str.length;
             start_cursor = mdEditor.getCursor();  // Need to get the cursor position
@@ -1403,13 +1324,11 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            mdEditor.replaceRange(selected_text, mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange(selected_text, mdEditor.getCursor()).focus();
           } else {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-            mdEditor.replaceSelection("(" + selected_text + ")");
-            mdEditor.focus();
+            mdEditor.replaceSelection("(" + selected_text + ")").focus();
           }
         }
       };
@@ -1419,8 +1338,7 @@ var timeout, delay, selected_text, str, mynum,
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("", htmlEditor.getCursor());
-            htmlEditor.replaceRange("[]", htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange("[]", htmlEditor.getCursor()).focus();
             str = "]";
             mynum = str.length;
             start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
@@ -1429,21 +1347,18 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor()).focus();
           } else {
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-            htmlEditor.replaceSelection("[" + selected_text + "]");
-            htmlEditor.focus();
+            htmlEditor.replaceSelection("[" + selected_text + "]").focus();
           }
         } else if ( activeEditor.value === "cssEditor" ) {
           if (!cssEditor.getSelection().split(" ").join("")) {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("", cssEditor.getCursor());
-            cssEditor.replaceRange("[]", cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange("[]", cssEditor.getCursor()).focus();
             str = "]";
             mynum = str.length;
             start_cursor = cssEditor.getCursor();  // Need to get the cursor position
@@ -1452,21 +1367,18 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            cssEditor.replaceRange(selected_text, cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange(selected_text, cssEditor.getCursor()).focus();
           } else {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-            cssEditor.replaceSelection("[" + selected_text + "]");
-            cssEditor.focus();
+            cssEditor.replaceSelection("[" + selected_text + "]").focus();
           }
         } else if ( activeEditor.value === "jsEditor" ) {
           if (!jsEditor.getSelection().split(" ").join("")) {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("", jsEditor.getCursor());
-            jsEditor.replaceRange("[]", jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange("[]", jsEditor.getCursor()).focus();
             str = "]";
             mynum = str.length;
             start_cursor = jsEditor.getCursor();  // Need to get the cursor position
@@ -1475,21 +1387,18 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            jsEditor.replaceRange(selected_text, jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange(selected_text, jsEditor.getCursor()).focus();
           } else {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-            jsEditor.replaceSelection("[" + selected_text + "]");
-            jsEditor.focus();
+            jsEditor.replaceSelection("[" + selected_text + "]").focus();
           }
         } else if ( activeEditor.value === "mdEditor" ) {
           if (!mdEditor.getSelection().split(" ").join("")) {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("", mdEditor.getCursor());
-            mdEditor.replaceRange("[]", mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange("[]", mdEditor.getCursor()).focus();
             str = "]";
             mynum = str.length;
             start_cursor = mdEditor.getCursor();  // Need to get the cursor position
@@ -1498,13 +1407,11 @@ var timeout, delay, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            mdEditor.replaceRange(selected_text, mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange(selected_text, mdEditor.getCursor()).focus();
           } else {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-            mdEditor.replaceSelection("[" + selected_text + "]");
-            mdEditor.focus();
+            mdEditor.replaceSelection("[" + selected_text + "]").focus();
           }
         }
       };
@@ -1512,38 +1419,32 @@ var timeout, delay, selected_text, str, mynum,
         if ( activeEditor.value === "htmlEditor" ) {
           selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-          htmlEditor.replaceSelection("function() {}");
-          htmlEditor.focus();
+          htmlEditor.replaceSelection("function() {}").focus();
         } else if ( activeEditor.value === "cssEditor" ) {
           alertify.alert("Can't add <strong>\"function() {}\"</strong> into CSS").set("basic", true);
         } else if ( activeEditor.value === "jsEditor" ) {
           selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-          jsEditor.replaceSelection("function() {}");
-          jsEditor.focus();
+          jsEditor.replaceSelection("function() {}").focus();
         }
       };
       $("[data-add=sym]").on("click", function() {
         if ( activeEditor.value === "htmlEditor" ) {
           selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-          htmlEditor.replaceSelection(selected_text + this.textContent);
-          htmlEditor.focus();
+          htmlEditor.replaceSelection(selected_text + this.textContent).focus();
         } else if ( activeEditor.value === "cssEditor" ) {
           selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-          cssEditor.replaceSelection(selected_text + this.textContent);
-          cssEditor.focus();
+          cssEditor.replaceSelection(selected_text + this.textContent).focus();
         } else if ( activeEditor.value === "jsEditor" ) {
           selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-          jsEditor.replaceSelection(selected_text + this.textContent);
-          jsEditor.focus();
+          jsEditor.replaceSelection(selected_text + this.textContent).focus();
         } else if ( activeEditor.value === "mdEditor" ) {
           selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-          mdEditor.replaceSelection(selected_text + this.textContent);
-          mdEditor.focus();
+          mdEditor.replaceSelection(selected_text + this.textContent).focus();
         }
       });
 
@@ -1551,26 +1452,22 @@ var timeout, delay, selected_text, str, mynum,
       document.getElementById("lorem").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam impedit dolore magnam dolor, atque quia dicta voluptatum. Nam impedit distinctio, tempore molestiae voluptatibus ducimus ullam! Molestiae consectetur, recusandae labore? Cupiditate.");
-        mdEditor.focus();
+        mdEditor.replaceSelection("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam impedit dolore magnam dolor, atque quia dicta voluptatum. Nam impedit distinctio, tempore molestiae voluptatibus ducimus ullam! Molestiae consectetur, recusandae labore? Cupiditate.").focus();
       };
       document.getElementById("bold").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("**" + selected_text + "**");
-        mdEditor.focus();
+        mdEditor.replaceSelection("**" + selected_text + "**").focus();
       };
       document.getElementById("italic").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("*" + selected_text + "*");
-        mdEditor.focus();
+        mdEditor.replaceSelection("*" + selected_text + "*").focus();
       };
       document.getElementById("strike").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("<strike>" + selected_text + "</strike>");
-        mdEditor.focus();
+        mdEditor.replaceSelection("<strike>" + selected_text + "</strike>").focus();
       };
       document.getElementById("anchor").onclick = function() {
         alertify.prompt("Enter URL Below", "",
@@ -1578,8 +1475,7 @@ var timeout, delay, selected_text, str, mynum,
           selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
           mdEditor.replaceSelection("");
-          mdEditor.replaceSelection("["+ selected_text +"]("+ value +")");
-          mdEditor.focus();
+          mdEditor.replaceSelection("["+ selected_text +"]("+ value +")").focus();
         },
         function() {
           // User clicked cancel
@@ -1588,14 +1484,12 @@ var timeout, delay, selected_text, str, mynum,
       document.getElementById("quote").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("\n  > " + selected_text.replace(/\n/g,'\n  > '));
-        mdEditor.focus();
+        mdEditor.replaceSelection("\n  > " + selected_text.replace(/\n/g,'\n  > ')).focus();
       };
       document.getElementById("code").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("`" + selected_text + "`");
-        mdEditor.focus();
+        mdEditor.replaceSelection("`" + selected_text + "`").focus();
       };
       document.getElementById("img").onclick = function() {
         alertify.prompt("Enter Image URL Below", "",
@@ -1603,8 +1497,7 @@ var timeout, delay, selected_text, str, mynum,
           selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
           mdEditor.replaceSelection("");
-          mdEditor.replaceSelection("!["+ selected_text +"]("+ value +")");
-          mdEditor.focus();
+          mdEditor.replaceSelection("!["+ selected_text +"]("+ value +")").focus();
         },
         function() {
           // User clicked cancel
@@ -1617,131 +1510,118 @@ var timeout, delay, selected_text, str, mynum,
         for (i = 0, len = selected_text.split("\n").length, text = ""; i < len; i++) {
             text += i + 1 + ". " + selected_text.split("\n")[i] + "\n  ";
         }
-        mdEditor.replaceSelection("\n  " + text);
-        mdEditor.focus();
+        mdEditor.replaceSelection("\n  " + text).focus();
       };
       document.getElementById("list-ul").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("\n  - " + selected_text.replace(/\n/g,'\n  - '));
-        mdEditor.focus();
+        mdEditor.replaceSelection("\n  - " + selected_text.replace(/\n/g,'\n  - ')).focus();
       };
       document.getElementById("h1").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("# " + selected_text);
-        mdEditor.focus();
+        mdEditor.replaceSelection("# " + selected_text).focus();
       };
       document.getElementById("h2").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("## " + selected_text);
-        mdEditor.focus();
+        mdEditor.replaceSelection("## " + selected_text).focus();
       };
       document.getElementById("h3").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("### " + selected_text);
-        mdEditor.focus();
+        mdEditor.replaceSelection("### " + selected_text).focus();
       };
       document.getElementById("h4").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("#### " + selected_text);
-        mdEditor.focus();
+        mdEditor.replaceSelection("#### " + selected_text).focus();
       };
       document.getElementById("h5").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("##### " + selected_text);
-        mdEditor.focus();
+        mdEditor.replaceSelection("##### " + selected_text).focus();
       };
       document.getElementById("h6").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("###### " + selected_text);
-        mdEditor.focus();
+        mdEditor.replaceSelection("###### " + selected_text).focus();
       };
       document.getElementById("hr").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection(selected_text + "\n\n----------\n\n");
-        mdEditor.focus();
+        mdEditor.replaceSelection(selected_text + "\n\n----------\n\n").focus();
       };
     },
     initdataURLGrabber = function() {
-    var logo            = document.querySelector("[data-action=dataurloutput]"),
-        imgUrl          = document.querySelector("[data-url=dataurlimgurl]"),
-        dataurlholder   = document.getElementById("dataurlholder"),
-        JSimgUrl        = document.querySelector("[data-url=dataurlimgurl]");
+      var logo            = document.querySelector("[data-action=dataurloutput]"),
+          imgUrl          = document.querySelector("[data-url=dataurlimgurl]"),
+          dataurlholder   = document.getElementById("dataurlholder"),
+          JSimgUrl        = document.querySelector("[data-url=dataurlimgurl]");
 
-    $("#dataurl").on("change", function() {
-      (this.checked) ? $("input[name=menubar].active").trigger("click") : "";
-    });
-      
-    // Save Site Title Value for LocalStorage
-    function displayDURL(file) {
-      var reader = new FileReader();
+      $("#dataurl").on("change", function() {
+        (this.checked) ? $("input[name=menubar].active").trigger("click") : "";
+      });
 
-      reader.onload = function(e) {
-        var img = new Image();
-        img.src = e.target.result;
-        img.onload = function() {
-          var dataUrl = e.target.result;
-          logo.src = dataUrl;
-          imgUrl.value = logo.src;
+      // Save Site Title Value for LocalStorage
+      function displayDURL(file) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          var img = new Image();
+          img.src = e.target.result;
+          img.onload = function() {
+            var dataUrl = e.target.result;
+            logo.src = dataUrl;
+            imgUrl.value = logo.src;
+          };
         };
-      };
-      reader.readAsDataURL(file);
-    }
-
-    // Select all dataurl when textbox clicked
-    JSimgUrl.onfocus = function() {
-      this.select();
-      return false;
-    };
-
-    $("#inputdataurl").change(function(e) {
-      var file = e.target.files[0];
-      displayDURL(file);
-      $(".checkdataurl").removeClass("hide");
-    });
-
-    // Drag and drop image load
-    dataurlholder.ondragover = function () {
-      this.className = "block fn txtcenter pointer hover";
-      return false;
-    };
-    dataurlholder.ondragend = function () {
-      this.className = "block fn txtcenter pointer";
-      return false;
-    };
-    dataurlholder.ondrop = function(e) {
-      this.className = "block fn txtcenter pointer";
-      e.preventDefault();
-      var file = e.dataTransfer.files[0];
-      displayDURL(file);
-      $(".checkdataurl").removeClass("hide");
-    };
-
-    // Insert DataURL into Active Editor
-    document.querySelector("[data-action=dataURLtoEditor]").onclick = function() {
-      if ( activeEditor.value === "htmlEditor" ) {
-        htmlEditor.replaceSelection(imgUrl.value);
-        htmlEditor.focus();
-      } else if ( activeEditor.value === "cssEditor" ) {
-        cssEditor.replaceSelection(imgUrl.value);
-        cssEditor.focus();
-      } else if ( activeEditor.value === "jsEditor" ) {
-        jsEditor.replaceSelection(imgUrl.value);
-        jsEditor.focus();
-      } else if ( activeEditor.value === "mdEditor" ) {
-        mdEditor.replaceSelection(imgUrl.value);
-        mdEditor.focus();
+        reader.readAsDataURL(file);
       }
-      $("#dataurl").trigger("click");
-    };
-  },
+
+      // Select all dataurl when textbox clicked
+      JSimgUrl.onfocus = function() {
+        this.select();
+        return false;
+      };
+
+      $("#inputdataurl").change(function(e) {
+        var file = e.target.files[0];
+        displayDURL(file);
+        $(".checkdataurl").removeClass("hide");
+      });
+
+      // Drag and drop image load
+      dataurlholder.ondragover = function () {
+        this.className = "block fn txtcenter pointer hover";
+        return false;
+      };
+      dataurlholder.ondragend = function () {
+        this.className = "block fn txtcenter pointer";
+        return false;
+      };
+      dataurlholder.ondrop = function(e) {
+        this.className = "block fn txtcenter pointer";
+        e.preventDefault();
+        var file = e.dataTransfer.files[0];
+        displayDURL(file);
+        $(".checkdataurl").removeClass("hide");
+      };
+
+      // Insert DataURL into Active Editor
+      document.querySelector("[data-action=dataURLtoEditor]").onclick = function() {
+        if ( activeEditor.value === "htmlEditor" ) {
+          htmlEditor.replaceSelection(imgUrl.value).focus();
+        } else if ( activeEditor.value === "cssEditor" ) {
+          cssEditor.replaceSelection(imgUrl.value).focus();
+        } else if ( activeEditor.value === "jsEditor" ) {
+          jsEditor.replaceSelection(imgUrl.value).focus();
+        } else if ( activeEditor.value === "mdEditor" ) {
+          mdEditor.replaceSelection(imgUrl.value).focus();
+        }
+        $("#dataurl").trigger("click");
+      };
+    },
     responsiveUI = function() {
       // Splitter Theme
       $("#mainSplitter, #splitContainer, #leftSplitter, #rightSplitter").jqxSplitter({
@@ -2343,14 +2223,21 @@ var timeout, delay, selected_text, str, mynum,
             if(err) {
               console.error(err);
             } else {
+              if (!/<html>/.test(htmlEditor.getValue())) {
+                jadeString = jadeString
+                              .replace('html\n', '')
+                              .replace('head\n', '')
+                              .replace(/^\s\s/, '')
+                              .replace(/\n\s\s/, '\n');
+              }
+
+              if (!/<body>/.test(htmlEditor.getValue())) {
+                jadeString = jadeString
+                              .replace(/.*body\n/, '')
+                              .replace(/^\s\s/, '')
+                              .replace(/\n\s\s/, '\n');
+              };
               htmlEditor.setValue(jadeString);
-              htmlEditor.execCommand("selectAll");
-              htmlEditor.execCommand("indentLess");
-              htmlEditor.execCommand("indentLess");
-              htmlEditor.setCursor({line: 0 , ch : 0 });
-              htmlEditor.execCommand("deleteLine");
-              htmlEditor.execCommand("deleteLine");
-              htmlEditor.execCommand("deleteLine");
             }
           });
           $("#html-preprocessor").val("jade").trigger("change");
@@ -3076,7 +2963,7 @@ function getURL(url, c) {
 }
 
   var server;
-  getURL("//ternjs.net/defs/ecmascript.json", function(err, code) {
+  getURL("https://ternjs.net/defs/ecmascript.json", function(err, code) {
     if (err) throw new Error("Request for ecmascript.json: " + err);
     server = new CodeMirror.TernServer({defs: [JSON.parse(code)]});
     // jsEditor.setOption("extraKeys", {
@@ -3877,7 +3764,7 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
 };
 
 // Download as zip
-$("[data-action=download-zip]").on("click", function() {
+document.querySelector("[data-action=download-zip]").onclick = function() {
   $("input[name=menubar].active").trigger("click");
 
   JSZipUtils.getBinaryContent("zips/font-awesome.zip", function(err, data) {
@@ -3936,7 +3823,7 @@ $("[data-action=download-zip]").on("click", function() {
     $(".preloader").remove();
     return false;
   });
-});
+};
 
 // Save Checked Libraries for LocalStorage
 var textarea = document.querySelector("[data-action=library-code]");
@@ -3962,7 +3849,9 @@ $("[data-action=check]").on("change keyup", function() {
     textarea.value = textarea.value.replace( value, "");
   }
 
-  updatePreview();
+  if (!changePrev.checked) {
+    $("#runeditor").trigger("click");
+  }
 
   var checked = $("[type=checkbox].check:checked");
   var lsChecked = [];
