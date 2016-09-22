@@ -860,6 +860,15 @@ if (!url) {
         } else {
           $('.qooxdoo, .qooxdooszip').clear();
         }
+        if ( $("#react").is(":checked") ) {
+          $('.react').clear();
+          download_to_textbox('../editor/libraries/react/react-with-addons.js', $('.react1'));
+          download_to_textbox('../editor/libraries/react/react-dom.js', $('.react2'));
+          $('.react1, .react2').trigger("change");
+          $(".reactzip").val("zip.file('libraries/react/react-with-addons.js', $('.react1').val());\n  zip.file('libraries/react/react-dom.js', $('.react2').val());");
+        } else {
+          $('.react, .reactzip').clear();
+        }
         if ( $("#raphael").is(":checked") ) {
           $('.raphael').clear();
           download_to_textbox('../editor/libraries/raphael/raphael.js', $('.raphael'));
