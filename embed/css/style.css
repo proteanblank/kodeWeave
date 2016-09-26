@@ -156,6 +156,28 @@ header a {
   right: 0;
   height: calc(100vh - 54px);
 }
+.preview-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+}
+.rerun {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  color: #fff;
+  background: #242a2a;
+  border: 1px solid #444;
+  padding: 0.8em;
+  font-size: 12px;
+  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+}
+.rerun:hover {
+  background: #3a4040;
+}
 #preview {
   width: 100%;
   height: 100%;

@@ -41,11 +41,12 @@ var str = window.location.href,
 
 // Live preview
 function updatePreview() {
-  $(".preview-editor").empty();
+  $(".preview-frame").empty();
   var frame = document.createElement("iframe");
   frame.setAttribute("id", "preview");
   frame.setAttribute("sandbox", "allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts");
-  document.querySelector(".preview-editor").appendChild(frame);
+  document.querySelector(".preview-frame").appendChild(frame);
+  
   var previewFrame = document.getElementById("preview");
   var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
   var heading = openHTML.getValue() + closeHTML.getValue() + $("[data-action=library-code]").val() + "<link rel=\"stylesheet\" href=\"../editor/libraries/font-awesome/font-awesome.css\"><link rel=\"stylesheet\" href=\"../editor/libraries/font-awesome/macset.css\">\n";
@@ -53,9 +54,9 @@ function updatePreview() {
   preview.open();
   var htmlSelected = $("#html-preprocessor option:selected").val();
   var jsSelected   = $("#js-preprocessor   option:selected").val();
-  
+
   cssPreProcessor();
-  
+
   if ( jsSelected == "none") {
     jsContent = "<script>" + jsEditor.getValue() + "</script>";
   } else if ( jsSelected == "coffeescript") {
@@ -75,6 +76,11 @@ function updatePreview() {
   }
   preview.close();
 }
+
+document.querySelector("[data-action=rerun]").onclick = function(e) {
+  e.preventDefault();
+  updatePreview();
+};
 function loadgist(gistid) {
   $.ajax({
     url: "https://api.github.com/gists/" + gistid,
@@ -353,6 +359,9 @@ if (!url) {
     }
     if (url.indexOf("transparent") === -1) {
       $(".editor, .result").css("z-index", "1");
+    }
+    if (url.indexOf("norerun") > -1) {
+      document.querySelector(".rerun").remove();
     }
 
     setTimeout(function() {
