@@ -212,23 +212,18 @@ if (!url) {
 
     if (url.indexOf("md") > -1) {
       $("[data-target=mdEditor]").removeClass("hide");
-      mdeditor.checked = true;
     }
     if (url.indexOf("html") > -1) {
       $("[data-target=htmlEditor]").removeClass("hide");
-      htmleditor.checked = true;
     }
     if (url.indexOf("css") > -1) {
       $("[data-target=cssEditor]").removeClass("hide");
-      csseditor.checked = true;
     }
     if (url.indexOf("js") > -1) {
       $("[data-target=jsEditor]").removeClass("hide");
-      jseditor.checked = true;
     }
     if (url.indexOf("result") > -1) {
       $("[data-target=preview]").removeClass("hide");
-      previeweditor.checked = true;
     }
     if (url.indexOf("edit") > -1) {
       // Initialize HTML editor
@@ -445,10 +440,20 @@ if (!url) {
     }, 300);
     return false;
   });
-
+  var urlHash = window.location.search;
   $(window).on("load resize", function() {
-    if (previeweditor.checked === true) {
-      if (mdeditor.checked || htmleditor.checked || csseditor.checked || jseditor.checked) {
+    if (urlHash.length > 1) {
+      var search = urlHash.substr(1); // remove char ?
+      if (search === 'result') {
+        document.querySelector(".rerun").remove();
+        $(".editor").css("width", "100%");
+        $("#editors, .preview-editor").css("top", "0");
+        $("#editors").css("bottom", "0");
+        $(".preview-editor").css("left", "0");
+        $(".preview-editor").css("height", "calc(100vh - 4px)");
+        $("[data-target=preview]").show();
+        return false;
+      } else {
         if ( $(this).width() <= 617 ) {
           $(".editor").css("width", "100%");
           $(".preview-editor").css("left", "0");
@@ -472,14 +477,6 @@ if (!url) {
         } else {
           $("[data-target=mdEditor]").text("Markdown");
         }
-      } else {
-        document.querySelector(".rerun").remove();
-        $(".editor").css("width", "100%");
-        $("#editors, .preview-editor").css("top", "0");
-        $("#editors").css("bottom", "0");
-        $(".preview-editor").css("left", "0");
-        $(".preview-editor").css("height", "calc(100vh - 4px)");
-        $("[data-target=preview]").show();
       }
     }
   });
