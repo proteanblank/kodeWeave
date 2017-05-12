@@ -34,10 +34,7 @@ var closeFinal = CodeMirror(document.querySelector("#closeFinal"), {
 var str = window.location.href,
     url = window.location.hash,
     hash = window.location.hash,
-    htmlContent,
-    cssContent,
-    jsContent,
-    cssSelected;
+    htmlContent, cssContent, jsContent, cssSelected;
 
 // Live preview
 function updatePreview() {
@@ -478,10 +475,10 @@ if (!url) {
       } else {
         document.querySelector(".rerun").remove();
         $(".editor").css("width", "100%");
-        $("#editors").css("top", "0");
+        $("#editors, .preview-editor").css("top", "0");
         $("#editors").css("bottom", "0");
-        $(".preview-editor").css("height", "100%");
         $(".preview-editor").css("left", "0");
+        $(".preview-editor").css("height", "calc(100vh - 4px)");
         $("[data-target=preview]").show();
       }
     }
