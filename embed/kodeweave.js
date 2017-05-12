@@ -1,10 +1,10 @@
 // Show Editors If URL Contains Them
 // If domain is HTTP
-var site = window.location;
-site = site.toString();
-if (site.substring(0, 7) === "http://") {
-  window.location.href = "https://" + site.substring(7, site.length);
-}
+//var site = window.location;
+//site = site.toString();
+//if (site.substring(0, 7) === "http://") {
+//  window.location.href = "https://" + site.substring(7, site.length);
+//}
 
 // Clear Input Values - JQuery Plugin
 (function($) {
@@ -215,18 +215,23 @@ if (!url) {
 
     if (url.indexOf("md") > -1) {
       $("[data-target=mdEditor]").removeClass("hide");
+      mdeditor.checked = true;
     }
     if (url.indexOf("html") > -1) {
       $("[data-target=htmlEditor]").removeClass("hide");
+      htmleditor.checked = true;
     }
     if (url.indexOf("css") > -1) {
       $("[data-target=cssEditor]").removeClass("hide");
+      csseditor.checked = true;
     }
     if (url.indexOf("js") > -1) {
       $("[data-target=jsEditor]").removeClass("hide");
+      jseditor.checked = true;
     }
     if (url.indexOf("result") > -1) {
       $("[data-target=preview]").removeClass("hide");
+      previeweditor.checked = true;
     }
     if (url.indexOf("edit") > -1) {
       // Initialize HTML editor
@@ -445,28 +450,40 @@ if (!url) {
   });
 
   $(window).on("load resize", function() {
-    if ( $(this).width() <= 617 ) {
-      $(".editor").css("width", "100%");
-      $(".preview-editor").css("left", "0");
-      $("[data-target=preview]").show();
-    } else {
-      $(".editor").css("width", "50%");
-      $(".preview-editor").css("left", "50%");
-      if ($("[data-target=preview]").hasClass("selected")) {
-        $("[data-target=preview]").hide().removeClass("selected");
-        setTimeout(function() {
-          $(".mainmenu a:not(.hide):first").trigger("click");
-        });
-      } else {
-        $("[data-target=preview]").hide();
-        $("#preview").show();
-      }
-    }
+    if (previeweditor.checked === true) {
+      if (mdeditor.checked || htmleditor.checked || csseditor.checked || jseditor.checked) {
+        if ( $(this).width() <= 617 ) {
+          $(".editor").css("width", "100%");
+          $(".preview-editor").css("left", "0");
+          $("[data-target=preview]").show();
+        } else {
+          $(".editor").css("width", "50%");
+          $(".preview-editor").css("left", "50%");
+          if ($("[data-target=preview]").hasClass("selected")) {
+            $("[data-target=preview]").hide().removeClass("selected");
+            setTimeout(function() {
+              $(".mainmenu a:not(.hide):first").trigger("click");
+            });
+          } else {
+            $("[data-target=preview]").hide();
+            $("#preview").show();
+          }
+        }
 
-    if ( $(this).width() <= 420 ) {
-      $("[data-target=mdEditor]").text("MD");
-    } else {
-      $("[data-target=mdEditor]").text("Markdown");
+        if ( $(this).width() <= 420 ) {
+          $("[data-target=mdEditor]").text("MD");
+        } else {
+          $("[data-target=mdEditor]").text("Markdown");
+        }
+      } else {
+        document.querySelector(".rerun").remove();
+        $(".editor").css("width", "100%");
+        $("#editors").css("top", "0");
+        $("#editors").css("bottom", "0");
+        $(".preview-editor").css("height", "100%");
+        $(".preview-editor").css("left", "0");
+        $("[data-target=preview]").show();
+      }
     }
   });
 
