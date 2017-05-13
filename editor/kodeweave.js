@@ -3715,6 +3715,11 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
       } else {
         hasResult = "";
       }
+      if (document.getElementById("norerun").checked) {
+        noRerun = "norerun,";
+      } else {
+        noRerun = "";
+      }
       if (document.getElementById("transparentembed").checked) {
         seeThrough = "transparent,";
       } else {
@@ -3730,7 +3735,7 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
       } else {
         editEmbed = "";
       }
-      showEditors = hasMD + hasHTML + hasCSS + hasJS + editEmbed + darkUI + seeThrough + hasResult;
+      showEditors = hasMD + hasHTML + hasCSS + hasJS + editEmbed + darkUI + noRerun + seeThrough + hasResult;
 
       document.getElementById("clearSharePreview").innerHTML = "";
       var shareFrame = document.createElement("iframe");
