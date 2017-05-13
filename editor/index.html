@@ -1136,62 +1136,85 @@
           <div class="grid preprocessors">
             <div class="txtcenter">
               <h1>Choose your preprocessor!</h1>
+              
+              <div class="preprocessor-tabs">
+                <div class="preprocessor-tab">
+                  <input type="radio" id="html-preprocessors" name="preprocessor-list" checked>
+                  <label for="html-preprocessors">HTML</label>
 
-              <h4 class="preprocessor html-preprocessor">HTML Preprocessor</h4>
-              <div class="preprocessor html-preprocessor">
-                <select id="html-preprocessor">
-                  <option value="none">None</option>
-                  <option value="jade">Jade</option>
-                </select>
-              </div>
-              <p>
-                <a class="btn--default preprocessor html-preprocessor confirm-preprocessor html-preprocessor-convert" data-action="html-preprocessor">Convert</a>
-                <a class="btn--info preprocessor html-preprocessor confirm-preprocessor" data-action="html-preprocessor">Close</a>
-              </p>
+                  <div class="content">
+                    <h4 class="html-preprocessor">HTML Preprocessor</h4>
+                    <div class="html-preprocessor">
+                      <select id="html-preprocessor">
+                        <option value="none">None</option>
+                        <option value="jade">Jade</option>
+                      </select>
+                    </div>
+                    <p>
+                      <a class="btn--default html-preprocessor confirm-preprocessor html-preprocessor-convert" data-action="html-preprocessor">Convert</a>
+                      <a class="btn--info html-preprocessor confirm-preprocessor" data-action="html-preprocessor">Close</a>
+                    </p>
+                  </div> 
+                </div>
 
-              <h4 class="preprocessor css-preprocessor">CSS Preprocessor</h4>
-              <div class="preprocessor css-preprocessor">
-                <select id="css-preprocessor">
-                  <option value="none">None</option>
+                <div class="preprocessor-tab">
+                  <input type="radio" id="css-preprocessors" name="preprocessor-list">
+                  <label for="css-preprocessors">CSS</label>
+
+                  <div class="content">
+                    <h4 class="css-preprocessor">CSS Preprocessor</h4>
+                    <div class="css-preprocessor">
+                      <select id="css-preprocessor">
+                        <option value="none">None</option>
 <!--
-                  <option value="less">LESS</option>
-                  <option value="scss">SCSS</option>
-                  <option value="sass">Sass</option>
+                        <option value="less">LESS</option>
+                        <option value="scss">SCSS</option>
+                        <option value="sass">Sass</option>
 -->
-                  <option value="stylus">Stylus</option>
-                </select>
-              </div>
-              <p>
-                <a class="btn--default preprocessor css-preprocessor confirm-preprocessor css-preprocessor-convert" data-action="css-preprocessor">Convert</a>
-                <a class="btn--info preprocessor css-preprocessor confirm-preprocessor" data-action="css-preprocessor">Close</a>
-              </p> 
+                        <option value="stylus">Stylus</option>
+                      </select>
+                    </div>
+                    <p>
+                      <a class="btn--default css-preprocessor confirm-preprocessor css-preprocessor-convert" data-action="css-preprocessor">Convert</a>
+                      <a class="btn--info css-preprocessor confirm-preprocessor" data-action="css-preprocessor">Close</a>
+                    </p> 
+                  </div> 
+                </div>
 
-              <h4 class="preprocessor js-preprocessor">JavaScript Preprocessor</h4>
-              <div class="preprocessor js-preprocessor">
-                <select id="js-preprocessor">
-                  <option value="none">None</option>
-                  <option value="coffeescript">CoffeeScript</option>
-                </select>
+                <div class="preprocessor-tab">
+                  <input type="radio" id="js-preprocessors" name="preprocessor-list">
+                  <label for="js-preprocessors">Javascript</label>
 
-                <div class="jsvalidator" style="padding: 0 0 5em 0;">
-                  <h4 class="headtxt iblock fl">
-                    Validator
-                  </h4>
-                  <h4 class="iblock fr">&nbsp;
-                    <span class="jsvalidationswitch iblock tr">
-                      <input type="checkbox" name="jsvalidationswitch" class="jsvalidationswitch-checkbox" id="myjsvalidationswitch" checked>
-                      <label class="jsvalidationswitch-label" for="myjsvalidationswitch">
-                        <span class="jsvalidationswitch-inner"></span>
-                        <span class="jsvalidationswitch-switch"></span>
-                      </label>
-                    </span>
-                  </h4>
+                  <div class="content">
+                    <h4 class="js-preprocessor">JavaScript Preprocessor</h4>
+                    <div class="js-preprocessor">
+                      <select id="js-preprocessor">
+                        <option value="none">None</option>
+                        <option value="coffeescript">CoffeeScript</option>
+                      </select>
+
+                      <div class="jsvalidator" style="padding: 0 0 5em 0;">
+                        <h4 class="headtxt iblock fl">
+                          Validator
+                        </h4>
+                        <h4 class="iblock fr">&nbsp;
+                          <span class="jsvalidationswitch iblock tr">
+                            <input type="checkbox" name="jsvalidationswitch" class="jsvalidationswitch-checkbox" id="myjsvalidationswitch" checked>
+                            <label class="jsvalidationswitch-label" for="myjsvalidationswitch">
+                              <span class="jsvalidationswitch-inner"></span>
+                              <span class="jsvalidationswitch-switch"></span>
+                            </label>
+                          </span>
+                        </h4>
+                      </div>
+                    </div>
+                    <p style="margin: 0;">
+                      <a class="btn--default js-preprocessor confirm-preprocessor js-preprocessor-convert" data-action="js-preprocessor">Convert</a>
+                      <a class="btn--info js-preprocessor confirm-preprocessor" data-action="js-preprocessor">Close</a>
+                    </p>
+                  </div> 
                 </div>
               </div>
-              <p style="margin: 0;">
-                <a class="btn--default preprocessor js-preprocessor confirm-preprocessor js-preprocessor-convert" data-action="js-preprocessor">Convert</a>
-                <a class="btn--info preprocessor js-preprocessor confirm-preprocessor" data-action="js-preprocessor">Close</a>
-              </p>
             </div>
           </div>
         </nav>

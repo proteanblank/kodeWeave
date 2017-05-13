@@ -136,6 +136,50 @@ header > label {
   left: 154.359px;
 }
 
+/* Preprocessor Tabs */
+.preprocessor-tabs {
+  position: relative;   
+  min-height: 200px; /* This part sucks */
+  clear: both;
+  margin: 25px 0;
+}
+.preprocessor-tab {
+  display: inline-block;
+}
+.preprocessor-tab > label {
+  cursor: pointer;
+  position: relative;
+  top: 4px;
+  margin: 0 12px;
+  font-size: 1.25em;
+  padding: 0.5em;
+  background: #eee; 
+  border: 1px solid #ccc; 
+  border-bottom: 1px solid transparent;
+}
+.preprocessor-tab [type=radio] {
+  display: none;   
+}
+.content {
+  position: absolute;
+  top: 35px;
+  left: 0;
+  background: white;
+  right: 0;
+  bottom: -84px;
+  padding: 20px;
+  border: 1px solid #ccc; 
+  overflow: auto;
+}
+[type=radio]:checked ~ label {
+  background: white;
+  border-bottom: 1px solid white;
+  z-index: 2;
+}
+[type=radio]:checked ~ label ~ .content {
+  z-index: 1;
+}
+
 /* Libraries & Demos Dialog */
 .libraries-dialog a, .demos-dialog a {
   margin: 0;
@@ -353,7 +397,7 @@ header > label {
   z-index: 9999!important;
 }
 .socialdialog, .preprocessors {
-  padding: 2em;
+  padding: 2em 2em 5.5em 2em;
   border-radius: 0.4em;
 }
 .column > div {

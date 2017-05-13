@@ -1,9 +1,9 @@
 // If domain is HTTP
-var site = window.location;
-site = site.toString();
-if (site.substring(0, 7) === "http://") {
-  window.location.href = "https://" + site.substring(7, site.length);
-}
+//var site = window.location;
+//site = site.toString();
+//if (site.substring(0, 7) === "http://") {
+//  window.location.href = "https://" + site.substring(7, site.length);
+//}
 
 var timeout, delay, selected_text, str, mynum, 
     start_cursor, cursorLine, cursorCh, blob,
@@ -187,6 +187,45 @@ var timeout, delay, selected_text, str, mynum,
         selected_text = mdEditor.getSelection().toUpperCase();  // Need to grab the Active Selection
 
         mdEditor.replaceSelection(selected_text).focus();
+      }
+    },
+    applyDuplication = function() {
+      if ( activeEditor.value === "htmlEditor" ) {
+        selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+        
+        if (!selected_text) {
+          var selectedText = htmlEditor.getLine(htmlEditor.getCursor().line)
+          htmlEditor.replaceSelection('\n' + selectedText).focus();
+        } else {
+          htmlEditor.replaceSelection(selected_text + '\n' + selected_text).focus();
+        }
+      } else if ( activeEditor.value === "cssEditor" ) {
+        selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+
+        if (!selected_text) {
+          var selectedText = cssEditor.getLine(cssEditor.getCursor().line)
+          cssEditor.replaceSelection('\n' + selectedText).focus();
+        } else {
+          cssEditor.replaceSelection(selected_text + '\n' + selected_text).focus();
+        }
+      } else if ( activeEditor.value === "jsEditor" ) {
+        selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+
+        if (!selected_text) {
+          var selectedText = jsEditor.getLine(jsEditor.getCursor().line)
+          jsEditor.replaceSelection('\n' + selectedText).focus();
+        } else {
+          jsEditor.replaceSelection(selected_text + '\n' + selected_text).focus();
+        }
+      } else if ( activeEditor.value === "mdEditor" ) {
+        selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+
+        if (!selected_text) {
+          var selectedText = mdEditor.getLine(mdEditor.getCursor().line)
+          mdEditor.replaceSelection('\n' + selectedText).focus();
+        } else {
+          mdEditor.replaceSelection(selected_text + '\n' + selected_text).focus();
+        }
       }
     },
     applyMinify = function() {
@@ -2128,13 +2167,12 @@ var timeout, delay, selected_text, str, mynum,
     preprocessors = function() {
       $(".settings").click(function() {
         $("input[name=menubar].active").trigger("click");
-        $(".preprocessor").addClass("hide");
         if ($(this).hasClass("htmlSetting")) {
-          $(".html-preprocessor").removeClass("hide");
+          $("#html-preprocessors").attr("checked", true);
         } else if ($(this).hasClass("cssSetting")) {
-          $(".css-preprocessor").removeClass("hide");
+          $("#css-preprocessors").attr("checked", true);
         } else if ($(this).hasClass("jsSetting")) {
-          $(".js-preprocessor").removeClass("hide");
+          $("#js-preprocessors").attr("checked", true);
         }
         if (document.getElementById("html-preprocessor").value == "none") {
           if (!htmlEditor.getValue) {
@@ -2159,12 +2197,6 @@ var timeout, delay, selected_text, str, mynum,
       $(".confirm-preprocessor").click(function() {
         // Default fadeout speed is 400ms
         $("[data-action=preprocessors]").fadeOut();
-        // Hiding all other preprocessors at 400ms
-        // Delay only works with animating methods
-        // Using setTimeout as an alternative:
-        setTimeout(function() {
-          $(".preprocessor").addClass("hide");
-        }, 400);
       });
       // Preprocessors (Doesn't compile to preview)
       $("#html-preprocessor").on("change", function() {
@@ -3015,8 +3047,10 @@ var htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
     "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); },
     "Ctrl-'": function(){ applyLowercase(); },
     "Ctrl-\\": function(){ applyUppercase(); },
+    "Ctrl-I": function(){ applyDuplication(); },
     "Cmd-'": function(){ applyLowercase(); },
     "Cmd-\\": function(){ applyUppercase(); },
+    "Cmd-I": function(){ applyDuplication(); },
     "Shift-Ctrl-'": function(){ applyMinify(); },
     "Shift-Ctrl-\\": function(){ applyBeautify(); },
     "Shift-Cmd-'": function(){ applyMinify(); },
@@ -3065,8 +3099,10 @@ var cssEditor = CodeMirror(document.getElementById("cssEditor"), {
     "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); },
     "Ctrl-'": function(){ applyLowercase(); },
     "Ctrl-\\": function(){ applyUppercase(); },
+    "Ctrl-I": function(){ applyDuplication(); },
     "Cmd-'": function(){ applyLowercase(); },
     "Cmd-\\": function(){ applyUppercase(); },
+    "Cmd-I": function(){ applyDuplication(); },
     "Shift-Ctrl-'": function(){ applyMinify(); },
     "Shift-Ctrl-\\": function(){ applyBeautify(); },
     "Shift-Cmd-'": function(){ applyMinify(); },
@@ -3117,8 +3153,10 @@ var jsEditor = CodeMirror(document.getElementById("jsEditor"), {
     "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); },
     "Ctrl-'": function(){ applyLowercase(); },
     "Ctrl-\\": function(){ applyUppercase(); },
+    "Ctrl-I": function(){ applyDuplication(); },
     "Cmd-'": function(){ applyLowercase(); },
     "Cmd-\\": function(){ applyUppercase(); },
+    "Cmd-I": function(){ applyDuplication(); },
     "Shift-Ctrl-'": function(){ applyMinify(); },
     "Shift-Ctrl-\\": function(){ applyBeautify(); },
     "Shift-Cmd-'": function(){ applyMinify(); },
@@ -3177,8 +3215,10 @@ var mdEditor = CodeMirror(document.getElementById("mdEditor"), {
     "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); },
     "Ctrl-'": function(){ applyLowercase(); },
     "Ctrl-\\": function(){ applyUppercase(); },
+    "Ctrl-I": function(){ applyDuplication(); },
     "Cmd-'": function(){ applyLowercase(); },
     "Cmd-\\": function(){ applyUppercase(); },
+    "Cmd-I": function(){ applyDuplication(); },
     "Shift-Ctrl-'": function(){ applyMinify(); },
     "Shift-Ctrl-\\": function(){ applyBeautify(); },
     "Shift-Cmd-'": function(){ applyMinify(); },
