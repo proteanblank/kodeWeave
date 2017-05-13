@@ -307,6 +307,13 @@ header > label {
   visibility: visible;
   opacity: 1;
 }
+@media all and (max-width:430px) {
+  .preprocessor-tab > label {
+    top: 8px;
+    margin: 0;
+    font-size: 1em;
+  }
+}
 
 /* Toolbox Queries */
 @media all and (min-height:548px) {
