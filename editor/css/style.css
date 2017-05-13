@@ -379,7 +379,7 @@ nav {
 #dataurlholder.hover {
   border: 7px dashed #fff;
 }
-.txtcenter {
+.txtcenter, .tc {
   text-align: center;
 }
 textarea {

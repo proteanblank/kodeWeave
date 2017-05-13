@@ -110,6 +110,9 @@ var timeout, delay, selected_text, str, mynum,
           blob = new Blob([ htmlEditor.getValue() ], {type: "text/x-jade"});
           saveAs(blob, "source.jade");
         }
+        
+        // Ask to support open source software.
+        alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\"><img src=\"../assets/images/model-2.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
       };
       document.querySelector(".savecss").onclick = function() {
         cssSelected = $("#css-preprocessor option:selected").val();
@@ -122,6 +125,9 @@ var timeout, delay, selected_text, str, mynum,
           blob = new Blob([ cssEditor.getValue() ], {type: "text/x-styl"});
           saveAs(blob, "source.styl");
         }
+        
+        // Ask to support open source software.
+        alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\"><img src=\"../assets/images/model-2.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
       };
       document.querySelector(".savejs").onclick = function() {
         var jsSelected = $("#js-preprocessor option:selected").val();
@@ -133,10 +139,16 @@ var timeout, delay, selected_text, str, mynum,
           blob = new Blob([ jsEditor.getValue() ], {type: "text/x-coffeescript"});
           saveAs(blob, "source.coffee");
         }
+        
+        // Ask to support open source software.
+        alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\"><img src=\"../assets/images/model-2.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
       };
       document.querySelector(".savemd").onclick = function() {
         var blob = new Blob([ mdEditor.getValue() ], {type: "text/x-markdown"});
         saveAs(blob, "source.md");
+        
+        // Ask to support open source software.
+        alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\"><img src=\"../assets/images/model-2.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
       };
     },
     applyLowercase = function() {
@@ -3769,8 +3781,9 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
     $(".share-linkedin-square").attr("href", "https://www.linkedin.com/shareArticle?mini=true&url=https%3A//mikethedj4.github.io/kodeWeave/editor/%23"+ hash +"&title=Checkout%20my%20%23weave%20on%20%23kodeWeave%3A%20&summary=&source=");
     $("[data-action=socialdialog]").fadeIn();
 
-    // Let user view gist
-    alertify.success("Your weave is saved!");
+    // Successfully saved weave. 
+    // Ask to support open source software.
+    alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\"><img src=\"../assets/images/model-2.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
   }).error(function(e) {
     console.warn("Error: Could not save weave!", e);
     alertify.error("Error: Could not save weave!");
@@ -3886,6 +3899,9 @@ initdataURLGrabber();
 miscellaneous();
 newDocument();
 preprocessors();
+
+// Buy kodeWeave T-Shirt Ad
+alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/0rtzt?msg=31&r=tw\" target=\"_blank\"><img src=\"../assets/images/model-1.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/0rtzt?msg=31&r=tw\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
 
 // Scroll Character Menu
 (function() {
