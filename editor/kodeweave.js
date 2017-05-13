@@ -2168,11 +2168,11 @@ var timeout, delay, selected_text, str, mynum,
       $(".settings").click(function() {
         $("input[name=menubar].active").trigger("click");
         if ($(this).hasClass("htmlSetting")) {
-          $("#html-preprocessors").attr("checked", true);
+          $("#html-preprocessors").attr("checked", true).trigger("change");
         } else if ($(this).hasClass("cssSetting")) {
-          $("#css-preprocessors").attr("checked", true);
+          $("#css-preprocessors").attr("checked", true).trigger("change");
         } else if ($(this).hasClass("jsSetting")) {
-          $("#js-preprocessors").attr("checked", true);
+          $("#js-preprocessors").attr("checked", true).trigger("change");
         }
         if (document.getElementById("html-preprocessor").value == "none") {
           if (!htmlEditor.getValue) {
