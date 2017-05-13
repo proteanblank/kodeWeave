@@ -445,7 +445,7 @@ if (!url) {
     if (urlHash.length > 1) {
       var search = urlHash.substr(1); // remove char ?
       if (search === 'result') {
-        document.querySelector(".rerun").remove();
+        $(".header, .rerun").remove();
         $(".editor").css("width", "100%");
         $("#editors, .preview-editor").css("top", "0");
         $("#editors").css("bottom", "0");
