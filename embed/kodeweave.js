@@ -1,10 +1,10 @@
 // Show Editors If URL Contains Them
 // If domain is HTTP
-var site = window.location;
-site = site.toString();
-if (site.substring(0, 7) === "http://") {
-  window.location.href = "https://" + site.substring(7, site.length);
-}
+//var site = window.location;
+//site = site.toString();
+//if (site.substring(0, 7) === "http://") {
+//  window.location.href = "https://" + site.substring(7, site.length);
+//}
 
 // Clear Input Values - JQuery Plugin
 (function($) {
@@ -212,18 +212,23 @@ if (!url) {
 
     if (url.indexOf("md") > -1) {
       $("[data-target=mdEditor]").removeClass("hide");
+      mdeditor.checked = true;
     }
     if (url.indexOf("html") > -1) {
       $("[data-target=htmlEditor]").removeClass("hide");
+      htmleditor.checked = true;
     }
     if (url.indexOf("css") > -1) {
       $("[data-target=cssEditor]").removeClass("hide");
+      csseditor.checked = true;
     }
     if (url.indexOf("js") > -1) {
       $("[data-target=jsEditor]").removeClass("hide");
+      jseditor.checked = true;
     }
     if (url.indexOf("result") > -1) {
       $("[data-target=preview]").removeClass("hide");
+      previeweditor.checked = true;
     }
     if (url.indexOf("edit") > -1) {
       // Initialize HTML editor
@@ -358,7 +363,7 @@ if (!url) {
       $(".editor, .result").css("z-index", "1");
     }
     if (url.indexOf("norerun") > -1) {
-      document.querySelector(".rerun").remove();
+      $(".rerun").remove();
     }
 
     setTimeout(function() {
@@ -440,20 +445,10 @@ if (!url) {
     }, 300);
     return false;
   });
-  var urlHash = window.location.search;
+
   $(window).on("load resize", function() {
-    if (urlHash.length > 1) {
-      var search = urlHash.substr(1); // remove char ?
-      if (search === 'result') {
-        $(".header, .rerun").remove();
-        $(".editor").css("width", "100%");
-        $("#editors, .preview-editor").css("top", "0");
-        $("#editors").css("bottom", "0");
-        $(".preview-editor").css("left", "0");
-        $(".preview-editor").css("height", "calc(100vh - 4px)");
-        $("[data-target=preview]").show();
-        return false;
-      } else {
+    if (previeweditor.checked === true) {
+      if (mdeditor.checked || htmleditor.checked || csseditor.checked || jseditor.checked) {
         if ( $(this).width() <= 617 ) {
           $(".editor").css("width", "100%");
           $(".preview-editor").css("left", "0");
@@ -477,6 +472,14 @@ if (!url) {
         } else {
           $("[data-target=mdEditor]").text("Markdown");
         }
+      } else {
+        $("header, .rerun").remove();
+        $(".editor").css("width", "100%");
+        $("#editors, .preview-editor").css("top", "0");
+        $("#editors").css("bottom", "0");
+        $(".preview-editor").css("left", "0");
+        $(".preview-editor").css("height", "calc(100vh - 4px)");
+        $("[data-target=preview]").show();
       }
     }
   });
