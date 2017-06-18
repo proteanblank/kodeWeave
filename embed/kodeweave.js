@@ -1001,8 +1001,12 @@ if (!url) {
 
   // Load Embeded Weave
   var hash = window.location.hash.substring(1);
-  $(document.body).append('<div class="fixedfill preloader" style="background: radial-gradient(ellipse at center, rgba(122, 188, 255, 0.85) 0%, rgba(64, 150, 238, 0.87) 100%)!important; color: #fff!important;"></div>');
-  $(".preloader").html('<div class="table"><div class="cell"><h1>Loading Weave!</h1><div class="spinner"><div class="bounce1" style="background: #fff!important;"></div><div class="bounce2" style="background: #fff!important;"></div><div class="bounce3" style="background: #fff!important;"></div></div></div></div>');
+//  $(document.body).append('<div class="fixedfill preloader" style="background: radial-gradient(ellipse at center, rgba(122, 188, 255, 0.85) 0%, rgba(64, 150, 238, 0.87) 100%)!important; color: #fff!important;"></div>');
+//  $(".preloader").html('<div class="table"><div class="cell"><h1>Loading Weave!</h1><div class="spinner"><div class="bounce1" style="background: #fff!important;"></div><div class="bounce2" style="background: #fff!important;"></div><div class="bounce3" style="background: #fff!important;"></div></div></div></div>');
+  $(document.body).append('<div class="fixedfill preloader" style="background: #fff;"></div>');
+  $(".preloader").html('<div class="table"><div class="cell"><img class="spin" src="assets/loading.svg"></div></div>');
+//  $(document.body).append('<div class="fixedfill preloader" style="background: #fff;"></div>');
+//  $(".preloader").html('<div class="table"><div class="cell"><img src="assets/loading-animation.svg" style="width: 30%;"></div></div>');
   loadgist(hash);
   updatePreview();
 
