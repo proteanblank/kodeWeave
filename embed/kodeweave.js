@@ -688,7 +688,7 @@ if (!url) {
           $('.jarallax').clear();
           download_to_textbox('../editor/libraries/jarallax/jarallax.js', $('.jarallax'));
           $('.jarallax').trigger("change");
-          $(".jarallaxzip").val("zip.file('../editor/libraries/jarallax/jarallax.js', $(\".jarallax\").val());");
+          $(".jarallaxzip").val("zip.file('libraries/jarallax/jarallax.js', $(\".jarallax\").val());");
         } else {
           $('.jarallax, .jarallaxzip').clear();
         }
@@ -936,7 +936,7 @@ if (!url) {
           $('.smoothscroll').clear();
           download_to_textbox('../editor/libraries/snap-svg/snap-svg.js', $('.smoothscroll'));
           $('.smoothscroll').trigger("change");
-          $(".smoothscrollzip").val("zip.file('../editor/libraries/SmoothScroll/SmoothScroll.js', $(\".smoothscroll\").val());");
+          $(".smoothscrollzip").val("zip.file('libraries/SmoothScroll/SmoothScroll.js', $(\".smoothscroll\").val());");
         } else {
           $('.smoothscroll, .smoothscrollzip').clear();
         }
