@@ -1,10 +1,10 @@
 // Show Editors If URL Contains Them
 // If domain is HTTP
-//var site = window.location;
-//site = site.toString();
-//if (site.substring(0, 7) === "http://") {
-//  window.location.href = "https://" + site.substring(7, site.length);
-//}
+var site = window.location;
+site = site.toString();
+if (site.substring(0, 7) === "http://") {
+  window.location.href = "https://" + site.substring(7, site.length);
+}
 
 // Clear Input Values - JQuery Plugin
 (function($) {
@@ -684,6 +684,14 @@ if (!url) {
         } else {
           $('.fabric, .fabriczip').clear();
         }
+        if ( $("#jarallax").is(":checked") ) {
+          $('.jarallax').clear();
+          download_to_textbox('../editor/libraries/jarallax/jarallax.js', $('.jarallax'));
+          $('.jarallax').trigger("change");
+          $(".jarallaxzip").val("zip.file('../editor/libraries/jarallax/jarallax.js', $(\".jarallax\").val());");
+        } else {
+          $('.jarallax, .jarallaxzip').clear();
+        }
         if ( $("#jquery").is(":checked") ) {
           $('.jquery').clear();
           download_to_textbox('../editor/libraries/jquery/jquery.js', $('.jquery'));
@@ -923,6 +931,14 @@ if (!url) {
           $(".scriptaculouszip").val("zip.file('libraries/scriptaculous/scriptaculous.js', $(\".scriptaculous\").val());");
         } else {
           $('.scriptaculous, .scriptaculouszip').clear();
+        }
+        if ( $("#smoothscroll").is(":checked") ) {
+          $('.smoothscroll').clear();
+          download_to_textbox('../editor/libraries/snap-svg/snap-svg.js', $('.smoothscroll'));
+          $('.smoothscroll').trigger("change");
+          $(".smoothscrollzip").val("zip.file('../editor/libraries/SmoothScroll/SmoothScroll.js', $(\".smoothscroll\").val());");
+        } else {
+          $('.smoothscroll, .smoothscrollzip').clear();
         }
         if ( $("#snapsvg").is(":checked") ) {
           $('.snapsvg').clear();
