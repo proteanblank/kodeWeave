@@ -1,9 +1,9 @@
 // If domain is HTTP
-var site = window.location;
-site = site.toString();
-if (site.substring(0, 7) === "http://") {
-  window.location.href = "https://" + site.substring(7, site.length);
-}
+//var site = window.location;
+//site = site.toString();
+//if (site.substring(0, 7) === "http://") {
+//  window.location.href = "https://" + site.substring(7, site.length);
+//}
 
 var timeout, delay, selected_text, str, mynum, 
     start_cursor, cursorLine, cursorCh, blob,
@@ -2674,6 +2674,14 @@ var timeout, delay, selected_text, str, mynum,
       } else {
         $('.fabric, .fabriczip').clear();
       }
+      if ( $("#jarallax").is(":checked") ) {
+        $('.jarallax').clear();
+        download_to_textbox('libraries/jarallax/jarallax.js', $('.jarallax'));
+        $('.jarallax').trigger("change");
+        $(".jarallaxzip").val("zip.file('libraries/jarallax/jarallax.js', $(\".jarallax\").val());");
+      } else {
+        $('.jarallax, .jarallaxzip').clear();
+      }
       if ( $("#jquery").is(":checked") ) {
         $('.jquery').clear();
         download_to_textbox('libraries/jquery/jquery.js', $('.jquery'));
@@ -2913,6 +2921,14 @@ var timeout, delay, selected_text, str, mynum,
         $(".scriptaculouszip").val("zip.file('libraries/scriptaculous/scriptaculous.js', $(\".scriptaculous\").val());");
       } else {
         $('.scriptaculous, .scriptaculouszip').clear();
+      }
+      if ( $("#smoothscroll").is(":checked") ) {
+        $('.smoothscroll').clear();
+        download_to_textbox('libraries/snap-svg/snap-svg.js', $('.smoothscroll'));
+        $('.smoothscroll').trigger("change");
+        $(".smoothscrollzip").val("zip.file('libraries/SmoothScroll/SmoothScroll.js', $(\".smoothscroll\").val());");
+      } else {
+        $('.smoothscroll, .smoothscrollzip').clear();
       }
       if ( $("#snapsvg").is(":checked") ) {
         $('.snapsvg').clear();
