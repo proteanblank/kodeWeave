@@ -511,6 +511,14 @@ if (!url) {
         } else {
           $('.angularjs, .angularzip').clear();
         }
+      
+        if ( $("#animatecss").is(":checked") ) {
+          $('.animatecss').clear();
+          download_to_textbox('../editor/libraries/animateCSS/animate.min.css', $('.animatecss'));
+          $(".animatecsszip").val("zip.file('libraries/animateCSS/animate.min.css', $(\".animatecss\").val());");
+        } else {
+          $('.animatecss, .animatecsszip').clear();
+        }
 
         if ( $("#bootstrap").is(":checked") ) {
           $('.bootstrap').clear();
