@@ -2682,6 +2682,14 @@ var timeout, delay, selected_text, str, mynum,
       } else {
         $('.fabric, .fabriczip').clear();
       }
+      if ( $("#hintcss").is(":checked") ) {
+        $('.hintcss').clear();
+        download_to_textbox('libraries/hintCSS/hint.min.css', $('.hintcss'));
+        $('.hintcss').trigger("change");
+        $(".hintcsszip").val("zip.file('libraries/hintCSS/hint.min.css', $(\".hintcss\").val());");
+      } else {
+        $('.hintcss, .hintcsszip').clear();
+      }
       if ( $("#jarallax").is(":checked") ) {
         $('.jarallax').clear();
         download_to_textbox('libraries/jarallax/jarallax.js', $('.jarallax'));

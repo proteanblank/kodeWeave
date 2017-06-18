@@ -692,6 +692,14 @@ if (!url) {
         } else {
           $('.fabric, .fabriczip').clear();
         }
+        if ( $("#hintcss").is(":checked") ) {
+          $('.hintcss').clear();
+          download_to_textbox('../editor/libraries/hintCSS/hint.min.css', $('.hintcss'));
+          $('.hintcss').trigger("change");
+          $(".hintcsszip").val("zip.file('libraries/hintCSS/hint.min.css', $(\".hintcss\").val());");
+        } else {
+          $('.hintcss, .hintcsszip').clear();
+        }
         if ( $("#jarallax").is(":checked") ) {
           $('.jarallax').clear();
           download_to_textbox('../editor/libraries/jarallax/jarallax.js', $('.jarallax'));
