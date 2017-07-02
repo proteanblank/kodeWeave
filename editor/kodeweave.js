@@ -2970,6 +2970,16 @@ var timeout, delay, selected_text, str, mynum,
       } else {
         $('.threejs, .threejszip').clear();
       }
+      if ( $("#uikit").is(":checked") ) {
+        $('.uikit').clear();
+        download_to_textbox('libraries/uikit/css/uikit.css', $('.uikit1'));
+        download_to_textbox('libraries/uikit/js/uikit.js', $('.uikit2'));
+        download_to_textbox('libraries/uikit/js/uikit-icons.js', $('.uikit3'));
+        $('.uikit').trigger("change");
+        $(".uikitzip").val("zip.file('libraries/uikit/css/uikit.css', $('.uikit1').val());\n  zip.file('libraries/uikit/js/uikit.js', $('.uikit2').val());\n  zip.file('libraries/uikit/js/uikit-icons.js', $('.uikit3').val());");
+      } else {
+        $('.uikit, .uikitzip').clear();
+      }
       if ( $("#underscorejs").is(":checked") ) {
         $('.underscorejs').clear();
         download_to_textbox('libraries/underscore/underscore.js', $('.underscorejs'));
