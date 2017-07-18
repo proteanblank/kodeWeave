@@ -2682,6 +2682,14 @@ var timeout, delay, selected_text, str, mynum,
       } else {
         $('.fabric, .fabriczip').clear();
       }
+      if ( $("#handlebars").is(":checked") ) {
+        $('.handlebars').clear();
+        download_to_textbox('libraries/handlebars/handlebars.min.js', $('.handlebars'));
+        $('.handlebars').trigger("change");
+        $(".handlebarszip").val("zip.file('libraries/handlebars/handlebars.min.js', $(\".handlebars\").val());");
+      } else {
+        $('.handlebars, .handlebarszip').clear();
+      }
       if ( $("#hintcss").is(":checked") ) {
         $('.hintcss').clear();
         download_to_textbox('libraries/hintCSS/hint.min.css', $('.hintcss'));
@@ -2824,6 +2832,15 @@ var timeout, delay, selected_text, str, mynum,
         $(".knockoutzip").val("zip.file('libraries/knockout/knockout.js', $(\".knockout\").val());");
       } else {
         $('.knockout, .knockoutzip').clear();
+      }
+      if ( $("#mdl").is(":checked") ) {
+        $('.mdl').clear();
+        download_to_textbox('libraries/mdl/material.min.css', $('.mdl1'));
+        download_to_textbox('libraries/mdl/material.min.js', $('.mdl2'));
+        $('.mdl1, .mdl2').trigger("change");
+        $(".mdlzip").val("zip.file('libraries/mdl/material.min.css', $('.mdl1').val());\n  zip.file('libraries/mdl/material.min.js', $('.mdl2').val());");
+      } else {
+        $('.mdl, .mdlzip').clear();
       }
       if ( $("#modernizer").is(":checked") ) {
         $('.modernizer').clear();
