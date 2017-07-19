@@ -2877,9 +2877,10 @@ var timeout, delay, selected_text, str, mynum,
       }
       if ( $("#jquery").is(":checked") ) {
         $('.jquery').clear();
-        download_to_textbox('libraries/jquery/jquery.js', $('.jquery'));
+        download_to_textbox('libraries/jquery/jquery.js', $('.jquery1'));
+        download_to_textbox('libraries/jquery/jquery-migrate-1.2.1.min.js', $('.jquery2'));
         $('.jquery').trigger("change");
-        $(".jqueryzip").val("zip.file('libraries/jquery/jquery.js', $(\".jquery\").val());");
+        $(".jqueryzip").val("zip.file('libraries/jquery/jquery.js', $(\".jquery1\").val());\nzip.file('libraries/jquery/jquery-migrate-1.2.1.min.js', $(\".jquery2\").val());");
       } else {
         $('.jquery, .jqueryzip').clear();
       }
