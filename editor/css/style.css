@@ -501,7 +501,8 @@ textarea {
   z-index: 0;
   margin: 0 5px 10px 5px;
 }
-.sidebtns a:hover {
+.sidebtns a:hover,
+.preview-mode-toggle:hover {
   opacity: 1;
 }
 .sidebtns a > label:hover {
@@ -522,6 +523,11 @@ textarea {
   position: absolute;
   right: 20px;
   bottom: 15px;
+  display: block;
+  opacity: 0.6;
+  font-size: 1.75em;
+  z-index: 0;
+  margin: 0 5px 10px 5px;
 }
 .editoractionlist {
   list-style: none;

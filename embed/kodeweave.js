@@ -529,7 +529,14 @@ if (!url) {
         } else {
           $('.animatecss, .animatecsszip').clear();
         }
-
+        if ( $("#backbone").is(":checked") ) {
+          $('.backbone').clear();
+          download_to_textbox('../editor/libraries/backbone/backbone.js', $('.backbone'));
+          $('.backbone').trigger("change");
+          $(".backbonezip").val("zip.file('libraries/backbone/backbone.js', $('.backbone').val());");
+        } else {
+          $('.backbone, .backbonezip').clear();
+        }
         if ( $("#bootstrap").is(":checked") ) {
           $('.bootstrap').clear();
           download_to_textbox('../editor/libraries/bootstrap/bootstrap.css', $('.bootstrap1'));
@@ -539,7 +546,6 @@ if (!url) {
         } else {
           $('.bootstrap, .bootstrapzip').clear();
         }
-
         if ( $("#chartjs").is(":checked") ) {
           $('.chartjs').clear();
           download_to_textbox('../editor/libraries/chartjs/chart.min.js', $('.chartjs'));
@@ -727,6 +733,14 @@ if (!url) {
         } else {
           $('.hintcss, .hintcsszip').clear();
         }
+        if ( $("#immutable").is(":checked") ) {
+          $('.immutable').clear();
+          download_to_textbox('../editor/libraries/immutable/immutable.min.js', $('.immutable'));
+          $('.immutable').trigger("change");
+          $(".immutablezip").val("zip.file('libraries/immutable/immutable.min.js', $('.immutable').val());");
+        } else {
+          $('.immutable, .immutablezip').clear();
+        }
         if ( $("#jarallax").is(":checked") ) {
           $('.jarallax').clear();
           download_to_textbox('../editor/libraries/jarallax/jarallax.js', $('.jarallax'));
@@ -862,6 +876,14 @@ if (!url) {
           $(".knockoutzip").val("zip.file('libraries/knockout/knockout.js', $(\".knockout\").val());");
         } else {
           $('.knockout, .knockoutzip').clear();
+        }
+        if ( $("#immutable").is(":checked") ) {
+          $('.immutable').clear();
+          download_to_textbox('../editor/libraries/immutable/lodash.core.js', $('.lodash'));
+          $('.lodash').trigger("change");
+          $(".lodashzip").val("zip.file('libraries/immutable/lodash.core.js', $('.lodash').val());");
+        } else {
+          $('.lodash, .lodashzip').clear();
         }
         if ( $("#mdl").is(":checked") ) {
           $('.mdl').clear();
