@@ -89,6 +89,7 @@ function loadgist(gistid) {
     var jadeVal    = gistdata.data.files["index.jade"];
     var cssVal     = gistdata.data.files["index.css"];
     var stylusVal  = gistdata.data.files["index.styl"];
+    var lessVal    = gistdata.data.files["index.less"];
     var jsVal      = gistdata.data.files["index.js"];
     var coffeeVal  = gistdata.data.files["index.coffee"];
     var mdVal      = gistdata.data.files["README.md"];
@@ -137,7 +138,12 @@ function loadgist(gistid) {
         }
       });
     }
-    if (!cssVal && !stylusVal) {
+    if (lessVal) {
+      cssEditor.setValue(lessVal.content);
+      $("#css-preprocessor").val("less").change();
+      $("[data-target=cssEditor]").text("Pug");
+    }
+    if (!cssVal && !stylusVal && !lessVal) {
       $("[data-target=cssEditor]").addClass("hide");
     }
     if (jsVal) {
@@ -193,6 +199,10 @@ function cssPreProcessor(cssSelected) {
       } else {
         cssContent = out;
       }
+    });
+  } else if ( cssSelected == "less") {
+    less.render(cssEditor.getValue(), function (e, output) {
+      yourCSS = output.css;
     });
   }
 }
@@ -1128,6 +1138,10 @@ if (!url) {
       // cssEditor.refresh();
     } else if ( valueSelected == "stylus") {
       cssEditor.setOption("mode", "text/x-styl");
+      cssEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
+      // cssEditor.refresh();
+    } else if ( valueSelected == "less") {
+      cssEditor.setOption("mode", "text/x-less");
       cssEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
       // cssEditor.refresh();
     } else {

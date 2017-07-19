@@ -25,7 +25,8 @@
     <script src="../editor/lib/html2jade.js"></script>
     <script src="../editor/lib/js2coffee.js"></script>
     <script src="../editor/lib/stylus.min.js"></script>
-    <script src="../editor/lib/css2stylus.js"></script>
+    <script src="../editor/lib/css2stylus.js"></script>t>
+    <script src="../editor/lib/less.min.js"></script>
 
     <script src="../editor/libraries/alertifyjs/alertify.min.js"></script>
     <script src="../editor/libraries/showdown/Showdown.min.js"></script>
@@ -865,30 +866,22 @@
               <div class="preprocessor html-preprocessor">
                 <select id="html-preprocessor">
                   <option value="none">None</option>
-                  <option value="jade">Jade</option>
+                  <option value="jade">Pug</option>
                 </select>
               </div>
-              <p>
-                <a class="btn--default preprocessor html-preprocessor confirm-preprocessor html-preprocessor-convert" data-action="html-preprocessor">Convert</a>
-                <a class="btn--info preprocessor html-preprocessor confirm-preprocessor" data-action="html-preprocessor">Close</a>
-              </p>
 
               <h4 class="preprocessor css-preprocessor">CSS Preprocessor</h4>
               <div class="preprocessor css-preprocessor">
                 <select id="css-preprocessor">
                   <option value="none">None</option>
-<!--
                   <option value="less">LESS</option>
+<!--
                   <option value="scss">SCSS</option>
                   <option value="sass">Sass</option>
 -->
                   <option value="stylus">Stylus</option>
                 </select>
               </div>
-              <p>
-                <a class="btn--default preprocessor css-preprocessor confirm-preprocessor css-preprocessor-convert" data-action="css-preprocessor">Convert</a>
-                <a class="btn--info preprocessor css-preprocessor confirm-preprocessor" data-action="css-preprocessor">Close</a>
-              </p> 
 
               <h4 class="preprocessor js-preprocessor">JavaScript Preprocessor</h4>
               <div class="preprocessor js-preprocessor">
@@ -912,10 +905,6 @@
                   </h4>
                 </div>
               </div>
-              <p style="margin: 0;">
-                <a class="btn--default preprocessor js-preprocessor confirm-preprocessor js-preprocessor-convert" data-action="js-preprocessor">Convert</a>
-                <a class="btn--info preprocessor js-preprocessor confirm-preprocessor" data-action="js-preprocessor">Close</a>
-              </p>
             </div>
           </div>
         </nav>

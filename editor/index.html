@@ -30,6 +30,7 @@
     <script src="lib/js2coffee.js"></script>
     <script src="lib/stylus.min.js"></script>
     <script src="lib/css2stylus.js"></script>
+    <script src="lib/less.min.js"></script>
 
     <script src="lib/jsbeautify/beautify.js"></script>
     <script src="lib/jsbeautify/beautify-css.js"></script>
@@ -177,21 +178,6 @@
         </div><br><br>
 
         <div>
-          <a class="fl" data-action="minify">
-            <i class="fa fa-code"></i> Minify
-          </a>
-          <a class="fr" data-action="tidy">
-            <i class="fa fa-code"></i> Beautify
-          </a>
-        </div><br><br>
-
-        <div>
-          <a class="fl" data-action="lowercase">
-            Lowercase
-          </a>
-          <a class="fr" data-action="uppercase">
-            Uppercase
-          </a><br>
           <a class="fl" data-action="search">
             Find
           </a>
@@ -1162,35 +1148,45 @@
                 <div id="htmlEditor"></div>
                 <div id="mdEditor" class="invisible"></div>
               </div>
-              <a class="fullscreen-html-toggle unfill">
-                <span class="fa fa-expand" id="fullscreen-html"></span>
-              </a>
-              <a class="savefile savehtml">
-                <span class="fa fa-download"></span>
-              </a>
-              <a class="savefile savemd invisible">
-                <span class="fa fa-download"></span>
-              </a>
-              <a class="settings htmlSetting">
-                <span class="fa fa-gear"></span>
-              </a>
-              <label for="selectEditor" class="selectEditor pointer">
-                <img class="pickEditor pointer" src="assets/md-small.svg">
-              </label>
+              <div class="sidebtns">
+                <a class="htmlarea" data-call="dropdown">
+                  <span class="fa fa-caret-down"></span>
+                </a>
+                <a class="fullscreen-html-toggle unfill">
+                  <span class="fa fa-expand" id="fullscreen-html"></span>
+                </a>
+                <a class="savefile savehtml">
+                  <span class="fa fa-download"></span>
+                </a>
+                <a class="savefile savemd invisible">
+                  <span class="fa fa-download"></span>
+                </a>
+                <a class="pointer htmlSetting" data-call="settings">
+                  <label for="html-preprocessors" class="pointer fa fa-gear"></label>
+                </a>
+                <label for="selectEditor" class="selectEditor pointer">
+                  <img class="pickEditor pointer" src="assets/md-small.svg">
+                </label>
+              </div>
             </div>
             <div>
               <div class="editor-container css-editor">
                 <div id="cssEditor"></div>
               </div>
-              <a class="fullscreen-css-toggle unfill">
-                <span class="fa fa-expand" id="fullscreen-css"></span>
-              </a>
-              <a class="savefile savecss">
-                <span class="fa fa-download"></span>
-              </a>
-               <a class="settings cssSetting">
-                <span class="fa fa-gear"></span>
-              </a> 
+              <div class="sidebtns">
+                <a class="cssarea" data-call="dropdown">
+                  <span class="fa fa-caret-down"></span>
+                </a>
+                <a class="fullscreen-css-toggle unfill">
+                  <span class="fa fa-expand" id="fullscreen-css"></span>
+                </a>
+                <a class="savecss">
+                  <span class="fa fa-download"></span>
+                </a>
+                 <a class="pointer cssSetting" data-call="settings">
+                  <label for="css-preprocessors" class="pointer fa fa-gear"></label>
+                </a> 
+              </div>
             </div>
           </div>
         </div>
@@ -1200,15 +1196,20 @@
               <div class="editor-container js-editor">
                 <div id="jsEditor"></div>
               </div>
-              <a class="fullscreen-js-toggle unfill">
-                <span class="fa fa-expand" id="fullscreen-js"></span>
-              </a>
-              <a class="savefile savejs">
-                <span class="fa fa-download"></span>
-              </a>
-              <a class="settings jsSetting">
-                <span class="fa fa-gear"></span>
-              </a>
+              <div class="sidebtns">
+                <a class="jsarea" data-call="dropdown">
+                  <span class="fa fa-caret-down"></span>
+                </a>
+                <a class="fullscreen-js-toggle unfill">
+                  <span class="fa fa-expand" id="fullscreen-js"></span>
+                </a>
+                <a class="savefile savejs">
+                  <span class="fa fa-download"></span>
+                </a>
+                <a class="pointer jsSetting" data-call="settings">
+                  <label for="js-preprocessors" class="pointer fa fa-gear"></label>
+                </a>
+              </div>
             </div>
             <div>
               <div class="editor-container preview-editor"></div>
@@ -1239,7 +1240,7 @@
                     <div class="html-preprocessor">
                       <select id="html-preprocessor">
                         <option value="none">None</option>
-                        <option value="jade">Jade</option>
+                        <option value="jade">Pug (Jade)</option>
                       </select>
                     </div>
                     <p>
@@ -1258,8 +1259,8 @@
                     <div class="css-preprocessor">
                       <select id="css-preprocessor">
                         <option value="none">None</option>
-<!--
                         <option value="less">LESS</option>
+<!--
                         <option value="scss">SCSS</option>
                         <option value="sass">Sass</option>
 -->
@@ -1267,7 +1268,6 @@
                       </select>
                     </div>
                     <p>
-                      <a class="btn--default css-preprocessor confirm-preprocessor css-preprocessor-convert" data-action="css-preprocessor">Convert</a>
                       <a class="btn--info css-preprocessor confirm-preprocessor" data-action="css-preprocessor">Close</a>
                     </p> 
                   </div> 
@@ -1312,7 +1312,26 @@
         </nav>
       </div>
     </div>
-
+    
+    <!-- Dropdown list for editor -->
+    <ul class="editoractionlist hide">
+      <li class="pointer viewcompiledcode" data-action="compile">
+        Convert to HTML
+      </li>
+      <li class="pointer tidycode" data-action="tidy">
+        Tidy HTML
+      </li>
+      <li class="pointer minifycode" data-action="minify">
+        Minify HTML
+      </li>
+      <li class="pointer beautifycode" data-action="lowercase">
+        Lowercase Selection
+      </li>
+      <li class="pointer beautifycode" data-action="uppercase">
+        Uppercase Selection
+      </li>
+    </ul>
+    
     <!-- Share to social networks dialog -->
     <div class="dialog-bg column hide" data-action="socialdialog">
       <div>

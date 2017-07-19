@@ -58,6 +58,10 @@ var timeout, delay, selected_text, str, mynum,
             yourCSS = out;
           }
         });
+      } else if ( cssSelected == "less") {
+        less.render(cssEditor.getValue(), function (e, output) {
+          yourCSS = output.css;
+        });
       }
     },
     renderYourJS = function() {
@@ -124,6 +128,9 @@ var timeout, delay, selected_text, str, mynum,
         } else if ( cssSelected == "stylus") {
           blob = new Blob([ cssEditor.getValue() ], {type: "text/x-styl"});
           saveAs(blob, "source.styl");
+        } else if ( cssSelected == "less") {
+          blob = new Blob([ cssEditor.getValue() ], {type: "text/x-less"});
+          saveAs(blob, "source.less");
         }
         
         // Ask to support open source software.
@@ -151,7 +158,10 @@ var timeout, delay, selected_text, str, mynum,
         alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\"><img src=\"../assets/images/model-2.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
       };
     },
-    applyLowercase = function() {
+    applyLowercase = function() {      
+      if ($(".editoractionlist").is(':visible')) {
+        $(".editoractionlist").addClass('hide');
+      }
       if ( activeEditor.value === "htmlEditor" ) {
         selected_text = htmlEditor.getSelection().toLowerCase();  // Need to grab the Active Selection
 
@@ -170,7 +180,10 @@ var timeout, delay, selected_text, str, mynum,
         mdEditor.replaceSelection(selected_text).focus();
       }
     },
-    applyUppercase = function() {
+    applyUppercase = function() {      
+      if ($(".editoractionlist").is(':visible')) {
+        $(".editoractionlist").addClass('hide');
+      }
       if ( activeEditor.value === "htmlEditor" ) {
         selected_text = htmlEditor.getSelection().toUpperCase();  // Need to grab the Active Selection
 
@@ -228,7 +241,10 @@ var timeout, delay, selected_text, str, mynum,
         }
       }
     },
-    applyMinify = function() {
+    applyMinify = function() {      
+      if ($(".editoractionlist").is(':visible')) {
+        $(".editoractionlist").addClass('hide');
+      }
       if ( activeEditor.value === "htmlEditor" ) {
         htmlEditor.setValue(htmlEditor.getValue().replace(/\<\!--\s*?[^\s?\[][\s\S]*?--\>/g,'').replace(/\>\s*\</g,'><'));
         $("input[name=menubar].active").trigger("click");
@@ -238,7 +254,10 @@ var timeout, delay, selected_text, str, mynum,
         jsEditor.setValue( jsEditor.getValue().replace(/\/\*[\s\S]*?\*\/|\/\/.*\n|\s{2,}|\n|\t|\v|\s(?=function\(.*?\))|\s(?=\=)|\s(?=\{)/g,"").replace(/\s?function\s?\(/g,"function(").replace(/\s?\{\s?/g,"{").replace(/\s?\}\s?/g,"}").replace(/\,\s?/g,",").replace(/if\s?/g,"if") );
       }
     },
-    applyBeautify = function() {
+    applyBeautify = function() {      
+      if ($(".editoractionlist").is(':visible')) {
+        $(".editoractionlist").addClass('hide');
+      }
       if ( activeEditor.value === "htmlEditor" ) {
         beautifyHTML();
       } else if ( activeEditor.value === "cssEditor" ) {
@@ -331,14 +350,13 @@ var timeout, delay, selected_text, str, mynum,
         // }
 
         applyBeautify();
-
-        $("input[name=menubar].active").trigger("click");
+        $(".editoractionlist").addClass('hide');
       };
 
       // Minify Code
       document.querySelector("[data-action=minify]").onclick = function() {
         applyMinify();
-        $("input[name=menubar].active").trigger("click");
+        $(".editoractionlist").addClass('hide');
       };
 
       // Go To Line
@@ -372,13 +390,13 @@ var timeout, delay, selected_text, str, mynum,
       // Make text selection lowercase
       document.querySelector("[data-action=lowercase]").onclick = function() {
         applyLowercase();
-        $("input[name=menubar].active").trigger("click");
+        $(".editoractionlist").addClass('hide');
       };
 
       // Make text selection uppercase
       document.querySelector("[data-action=uppercase]").onclick = function() {
         applyUppercase();
-        $("input[name=menubar].active").trigger("click");
+        $(".editoractionlist").addClass('hide');
       };
 
       document.querySelector("[data-action=search]").onclick = function() {
@@ -1678,10 +1696,151 @@ var timeout, delay, selected_text, str, mynum,
       $("#mainSplitter, #splitContainer, #leftSplitter, #rightSplitter").jqxSplitter({
         theme: "metro"
       });
+      
+      // Handle dropdown list for Editors
+      $("[data-call=dropdown]").click(function(e) {
+        $("input[name=menubar].active").trigger("click");
+        var offset = $(this).offset();
+
+        // If no preprocessor is selected dont show compile
+        var htmlSelected = $("#html-preprocessor option:selected").val();
+        var cssSelected = $("#css-preprocessor  option:selected").val();
+        var jsSelected   = $("#js-preprocessor   option:selected").val();
+        
+        if ($(this).hasClass("htmlarea")) {
+          htmlEditor.focus();
+          activeEditor.value = 'htmlEditor';
+          $(".editoractionlist").css({
+            top: offset.top + 21 - 4,
+            left: offset.left - $(".editoractionlist").width() + 10
+          });
+          if ( htmlSelected == "none") {
+            $(".viewcompiledcode").addClass('hide');
+            $(".minifycode, .tidycode").removeClass('hide');
+            $("[data-action=tidy]").text('Tidy HTML');
+            $("[data-action=minify]").text('Minify HTML');
+          } else {
+            $(".viewcompiledcode").removeClass('hide');
+            $(".minifycode, .tidycode").removeClass('hide');
+            if (htmlSelected == "jade") {
+              $(".minifycode, .tidycode").addClass('hide');
+            }
+            $("[data-action=compile]").text('Convert ' + $("#html-preprocessor option:selected").val() + ' to HTML');
+            $("[data-action=tidy]").text('Tidy ' + $("#html-preprocessor option:selected").val());
+            $("[data-action=minify]").text('Minify ' + $("#html-preprocessor option:selected").val());
+          }
+        } else if ($(this).hasClass("cssarea")) {
+          cssEditor.focus();
+          activeEditor.value = 'cssEditor';
+          $(".editoractionlist").css({
+            top: offset.top + 21 - 4,
+            left: offset.left - $(".editoractionlist").width() + 10
+          });
+          if (cssSelected == "none") {
+            $(".viewcompiledcode").addClass('hide');
+            $(".minifycode, .tidycode").removeClass('hide');
+            $("[data-action=tidy]").text('Tidy CSS');
+            $("[data-action=minify]").text('Minify CSS');
+          } else {
+            $(".viewcompiledcode").removeClass('hide');
+            $(".minifycode, .tidycode").removeClass('hide');
+            if (cssSelected == "stylus") {
+              $(".minifycode, .tidycode").addClass('hide');
+            }
+            $("[data-action=compile]").text('Convert ' + $("#css-preprocessor option:selected").val() + ' to CSS');
+            $("[data-action=tidy]").text('Tidy ' + $("#css-preprocessor option:selected").val());
+            $("[data-action=minify]").text('Minify ' + $("#css-preprocessor option:selected").val());
+          }
+        } else if ($(this).hasClass("jsarea")) {
+          jsEditor.focus();
+          activeEditor.value = 'jsEditor';
+          $(".editoractionlist").css({
+            top: offset.top + 21 - 4,
+            left: offset.left - $(".editoractionlist").width() + 10
+          });
+          if ( jsSelected == "none") {
+            $(".viewcompiledcode").addClass('hide');
+            $(".minifycode, .tidycode").removeClass('hide');
+            $("[data-action=tidy]").text('Tidy Javascript');
+            $("[data-action=minify]").text('Minify Javascript');
+          } else {
+            $(".viewcompiledcode").removeClass('hide');
+            $(".minifycode, .tidycode").removeClass('hide');
+            if (jsSelected == "coffeescript") {
+              $(".minifycode, .tidycode").addClass('hide');
+            }
+            $("[data-action=compile]").text('Convert ' + $("#js-preprocessor option:selected").val() + ' to Javascript');
+            $("[data-action=tidy]").text('Tidy ' + $("#js-preprocessor option:selected").val());
+            $("[data-action=minify]").text('Minify ' + $("#js-preprocessor option:selected").val());
+          }
+        }
+        
+        if ($('.editoractionlist').hasClass('hide')) {
+          $('.editoractionlist').removeClass('hide');
+        }
+      });
+      $('[data-action=compile]').click(function() {
+        if ($(".editoractionlist").hasClass('hide')) {
+          $(".editoractionlist").removeClass('hide');
+        }
+        
+        // If no preprocessor is selected dont show compile
+        var htmlSelected = $("#html-preprocessor option:selected").val();
+        var cssSelected = $("#css-preprocessor  option:selected").val();
+        var jsSelected   = $("#js-preprocessor   option:selected").val();
+        
+        // Check HTML
+        if ( htmlSelected == "jade") {
+          $("[data-action=html-preprocessor]").trigger('click');
+        }
+        // Check css
+        if (cssSelected == "stylus") {
+          $(".viewcompiledcode").removeClass('hide');
+          var cssVal = cssEditor.getValue();
+          stylus(cssVal).render(function(err, out) {
+            if(err !== null) {
+              console.error("something went wrong");
+            } else {
+              cssEditor.setValue(out);
+              $('#css-preprocessor option').filter(function() { 
+                return ($(this).text() == 'None');
+              }).prop('selected', true);
+            }
+          });
+        } else if (cssSelected == "less") {
+          $(".viewcompiledcode").removeClass('hide');
+          var cssVal = cssEditor.getValue();
+          less.render(cssVal, function (e, output) {
+            cssEditor.setValue(output.css);
+            $('#css-preprocessor option').filter(function() { 
+              return ($(this).text() == 'None');
+            }).prop('selected', true);
+          });
+        }
+        // Check Javascript
+        if ( jsSelected == "coffeescript") {
+          $("[data-action=html-preprocessor]").trigger('click');
+        }
+      });
+      
+      // Hide dropdown if other elements are clicked
+      $("header a, header label").click(function() {
+        if ($(".editoractionlist").is(':visible')) {
+          $(".editoractionlist").addClass('hide');
+        }
+      });
+      $(".sidebtns a:not([data-call=dropdown])").click(function() {
+        if ($(".editoractionlist").is(':visible')) {
+          $(".editoractionlist").addClass('hide');
+        }
+      });
 
       // Select active editor when clicked/touched
       $("#htmlEditor, #cssEditor, #jsEditor, #mdEditor").on("mousedown touchend", function() {
         $("input[name=menubar].active").trigger("click");
+        if ($(".editoractionlist").is(':visible')) {
+          $(".editoractionlist").addClass('hide');
+        }
 
         if ( $(this).attr("id") === "htmlEditor" ) {
           activeEditor.value = "htmlEditor";
@@ -2165,15 +2324,16 @@ var timeout, delay, selected_text, str, mynum,
       singleFileDownload();
     },
     preprocessors = function() {
-      $(".settings").click(function() {
+      $("[data-call=settings]").click(function() {
         $("input[name=menubar].active").trigger("click");
         if ($(this).hasClass("htmlSetting")) {
-          $("#html-preprocessors").attr("checked", true).trigger("change");
+          $("#html-preprocessors").attr("checked", true);
         } else if ($(this).hasClass("cssSetting")) {
-          $("#css-preprocessors").attr("checked", true).trigger("change");
+          $("#css-preprocessors").attr("checked", true);
         } else if ($(this).hasClass("jsSetting")) {
-          $("#js-preprocessors").attr("checked", true).trigger("change");
+          $("#js-preprocessors").attr("checked", true);
         }
+        $("input[name=preprocessor-list]").trigger('change');
         if (document.getElementById("html-preprocessor").value == "none") {
           if (!htmlEditor.getValue) {
             $(".html-preprocessor-convert").addClass("hide");
@@ -2228,6 +2388,15 @@ var timeout, delay, selected_text, str, mynum,
           // cssEditor.refresh();
         } else if ( valueSelected == "stylus") {
           cssEditor.setOption("mode", "text/x-styl");
+          cssEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
+          setTimeout(function() {
+            $(".CodeMirror-lint-mark-error, .CodeMirror-lint-mark-error-metro").removeClass("CodeMirror-lint-mark-error CodeMirror-lint-mark-error-metro");
+            $(".CodeMirror-lint-mark-warning, .CodeMirror-lint-mark-warning-metro").removeClass("CodeMirror-lint-mark-warning CodeMirror-lint-mark-warning-metro");
+          }, 300);
+          // cssEditor.setOption("lint", false);
+          // cssEditor.refresh();
+        } else if ( valueSelected == "less") {
+          cssEditor.setOption("mode", "text/x-less");
           cssEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
           setTimeout(function() {
             $(".CodeMirror-lint-mark-error, .CodeMirror-lint-mark-error-metro").removeClass("CodeMirror-lint-mark-error CodeMirror-lint-mark-error-metro");
@@ -3356,6 +3525,11 @@ function cssPreProcessor(cssSelected) {
         cssContent = out;
       }
     });
+  } else if (cssSelected == "less") {
+    var cssVal = cssEditor.getValue();
+    less.render(cssVal, function (e, output) {
+      cssContent = output.css;
+    });
   }
 }
 
@@ -3540,6 +3714,7 @@ function loadgist(gistid) {
     var jadeVal        = gistdata.data.files["index.jade"];
     var cssVal         = gistdata.data.files["index.css"];
     var stylusVal      = gistdata.data.files["index.styl"];
+    var lessVal        = gistdata.data.files["index.less"];
     var jsVal          = gistdata.data.files["index.js"];
     var coffeeVal      = gistdata.data.files["index.coffee"];
     var mdVal      = gistdata.data.files["README.md"];
@@ -3620,7 +3795,11 @@ function loadgist(gistid) {
       cssEditor.setValue(stylusVal.content);
       $("#css-preprocessor").val("stylus").trigger("change");
     }
-    if (!cssVal && !stylusVal) {
+    if (lessVal) {
+      cssEditor.setValue(lessVal.content);
+      $("#css-preprocessor").val("less").trigger("change");
+    }
+    if (!cssVal && !stylusVal && !lessVal) {
       cssEditor.setValue("");
     }
     if (jsVal) {
@@ -3710,6 +3889,9 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
       } else if ( cssSelected == "stylus") {
         yourCSS = cssEditor.getValue();
         files["index.styl"] = cssEditor.getValue() ? { content: yourCSS } : null;
+      } else if ( cssSelected == "less") {
+        yourCSS = cssEditor.getValue();
+        files["index.less"] = cssEditor.getValue() ? { content: yourCSS } : null;
       }
 	}
 	if (jsEditor.getValue()) {
