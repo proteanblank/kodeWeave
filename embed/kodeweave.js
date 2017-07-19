@@ -702,6 +702,15 @@ if (!url) {
         } else {
           $('.fabric, .fabriczip').clear();
         }
+        if ( $("#foundation").is(":checked") ) {
+          $('.foundation').clear();
+          download_to_textbox('../editor/libraries/foundation/foundation.min.css', $('.foundation1'));
+          download_to_textbox('../editor/libraries/foundation/foundation.min.js', $('.foundation2'));
+          $('.foundation').trigger("change");
+          $(".fabriczip").val("zip.file('libraries/foundation/foundation.min.css', $(\".foundation1\").val());\nzip.file('libraries/foundation/foundation.min.js', $(\".foundation2\").val());");
+        } else {
+          $('.foundation, .foundationzip').clear();
+        }
         if ( $("#handlebars").is(":checked") ) {
           $('.handlebars').clear();
           download_to_textbox('../editor/libraries/handlebars/handlebars.min.js', $('.handlebars'));
