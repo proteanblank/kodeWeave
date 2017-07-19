@@ -3206,6 +3206,14 @@ var timeout, delay, selected_text, str, mynum,
       } else {
         $('.underscorejs, .underscorejszip').clear();
       }
+      if ( $("#vue").is(":checked") ) {
+        $('.vue').clear();
+        download_to_textbox('libraries/vue/vue.js', $('.vue'));
+        $('.vue').trigger("change");
+        $(".vuezip").val("zip.file('libraries/vue/vue.js', $('.vue').val());");
+      } else {
+        $('.vue, .vuezip').clear();
+      }
       if ( $("#webfontloader").is(":checked") ) {
         $('.webfontloader').clear();
         download_to_textbox('libraries/webfont/webfont.js', $('.webfontloader'));

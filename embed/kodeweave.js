@@ -1057,6 +1057,14 @@ if (!url) {
         } else {
           $('.underscorejs, .underscorejszip').clear();
         }
+        if ( $("#vue").is(":checked") ) {
+          $('.vue').clear();
+          download_to_textbox('../editor/libraries/vue/vue.js', $('.vue'));
+          $('.vue').trigger("change");
+          $(".vuezip").val("zip.file('libraries/vue/vue.js', $('.vue').val());");
+        } else {
+          $('.vue, .vuezip').clear();
+        }
         if ( $("#webfontloader").is(":checked") ) {
           $('.webfontloader').clear();
           download_to_textbox('../editor/libraries/webfont/webfont.js', $('.webfontloader'));
