@@ -50,6 +50,7 @@ kodeWeave uses a number of open source projects to work properly:
 * [JSHint](http://jslint.com/) - for javascript syntax validation
 * [Jade](http://jade-lang.com/) - an html preprocessor
 * [Stylus](http://stylus-lang.com/) - a css preprocessor
+* [Less](http://lesscss.org/) - a css preprocessor
 * [CoffeeScript](http://coffeescript.org/) - a javascript preprocessor
 * [HTML2Jade](http://html2jade.org/) - Convert HTML to Jade and back
 * [CSS2Stylus](http://css2stylus.com/) - Convert CSS to Stylus and back
