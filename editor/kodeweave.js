@@ -2849,6 +2849,14 @@ var timeout, delay, selected_text, str, mynum,
       } else {
         $('.dojo, .dojozip').clear();
       }
+      if ( $("#enhance").is(":checked") ) {
+        $('.enhance').clear();
+        download_to_textbox('libraries/enhance/enhance.js', $('.enhance'));
+        $('.enhance').trigger("change");
+        $(".enhancezip").val("zip.file('libraries/enhance/enhance.js', $('.enhance').val());");
+      } else {
+        $('.enhance, .enhancezip').clear();
+      }
       if ( $("#fabric").is(":checked") ) {
         $('.fabric').clear();
         download_to_textbox('libraries/fabric/fabric.min.js', $('.fabric'));
@@ -3042,6 +3050,25 @@ var timeout, delay, selected_text, str, mynum,
         $(".mdlzip").val("zip.file('libraries/mdl/material.min.css', $('.mdl1').val());\n  zip.file('libraries/mdl/material.min.js', $('.mdl2').val());");
       } else {
         $('.mdl, .mdlzip').clear();
+      }
+      if ( $("#moment").is(":checked") ) {
+        $('.moment').clear();
+        download_to_textbox('libraries/moment/moment.js', $('.moment'));
+        download_to_textbox('libraries/moment/moment-with-locales.js', $('.moment'));
+        $('.moment').trigger("change");
+        $(".momentzip").val("zip.file('libraries/moment/moment.js', $(\".moment1\").val());\nzip.file('libraries/moment/moment-with-locales.js', $(\".moment2\").val());");
+      } else {
+        $('.moment, .momentzip').clear();
+      }
+      if ( $("#momenttimezone").is(":checked") ) {
+        $('.momenttimezone').clear();
+        download_to_textbox('libraries/moment-timezone/moment-timezone-with-data-2012-2022.js', $('.momenttimezone1'));
+        download_to_textbox('libraries/moment-timezone/moment-timezone-with-data.js', $('.momenttimezone2'));
+        download_to_textbox('libraries/moment-timezone/moment-timezone.js', $('.momenttimezone3'));
+        $('.momenttimezone').trigger("change");
+        $(".momenttimezonezip").val("zip.file('libraries/moment/moment.js', $(\".momenttimezone1\").val());\nzip.file('libraries/moment/moment.js', $(\".momenttimezone2\").val());\nzip.file('libraries/moment/moment.js', $(\".momenttimezone3\").val());");
+      } else {
+        $('.momenttimezone, .momenttimezonezip').clear();
       }
       if ( $("#modernizer").is(":checked") ) {
         $('.modernizer').clear();
