@@ -532,6 +532,18 @@ if (!url) {
         } else {
           $('.angularjs, .angularzip').clear();
         }
+
+        if ( $("#angularmaterial").is(":checked") ) {
+          $('.angularmaterial').clear();
+          download_to_textbox('../editor//angular-material/angular-material.min.css', $('.angularmaterial1'));
+          download_to_textbox('../editor//angular-material/angular.min.js', $('.angularmaterial2'));
+          download_to_textbox('../editor//angular-material/angular-material.min.js', $('.angularmaterial3'));
+          download_to_textbox('../editor//angular-animate.min.js', $('.angularmaterial4'));
+          download_to_textbox('../editor//angular-material/angular-aria.min.js', $('.angularmaterial5'));
+          $(".angularmaterialzip").val("zip.file('libraries/angular-material/angular-material.min.css', $(\".angularmaterial1\").val());\n zip.file('libraries/angular-material/angular.min.js', $(\".angularmaterial2\").val());\n zip.file('libraries/angular-material/angular-material.min.js', $(\".angularmaterial3\").val());\n zip.file('libraries/angular-material/angular-animate.min.js', $(\".angularmaterial4\").val());\n zip.file('libraries/angular-material/angular-aria.min.js', $(\".angularmaterial5\").val());");
+        } else {
+          $('.angularmaterial, .angularmaterialzip').clear();
+        }
       
         if ( $("#animatecss").is(":checked") ) {
           $('.animatecss').clear();
