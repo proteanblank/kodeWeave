@@ -58,6 +58,8 @@ function updatePreview() {
     jsContent = "<script>" + jsEditor.getValue() + "</script>";
   } else if ( jsSelected == "coffeescript") {
     jsContent = "<script>" + CoffeeScript.compile(jsEditor.getValue(), { bare: true }) + "</script>";
+  } else if ( jsSelected == "typescript") {
+    jsContent = "<script type=\"text/javascript\" src='../editor/lib/typescript.min.js'></script>\n  <script type=\"text/javascript\" src='../editor/lib/typescript.compile.min.js'></script>\n  <script type=\"text/typescript\">" + jsEditor.getValue() + "</script>";
   }
 
   if ( htmlSelected == "none") {
@@ -92,6 +94,7 @@ function loadgist(gistid) {
     var lessVal    = gistdata.data.files["index.less"];
     var jsVal      = gistdata.data.files["index.js"];
     var coffeeVal  = gistdata.data.files["index.coffee"];
+    var tsVal      = gistdata.data.files["index.ts"];
     var mdVal      = gistdata.data.files["README.md"];
     var libraries  = gistdata.data.files["libraries.json"].content;
     var jsonLibs   = JSON.parse(libraries);
@@ -118,7 +121,7 @@ function loadgist(gistid) {
     if (jadeVal) {
       htmlEditor.setValue(jadeVal.content);
       $("#html-preprocessor").val("jade").change();
-      $("[data-target=htmlEditor]").text("Jade");
+      $("[data-target=htmlEditor]").text("Pug");
     }
     if (!htmlVal && !jadeVal) {
       $("[data-target=htmlEditor]").addClass("hide");
@@ -141,7 +144,7 @@ function loadgist(gistid) {
     if (lessVal) {
       cssEditor.setValue(lessVal.content);
       $("#css-preprocessor").val("less").change();
-      $("[data-target=cssEditor]").text("Pug");
+      $("[data-target=cssEditor]").text("LESS");
     }
     if (!cssVal && !stylusVal && !lessVal) {
       $("[data-target=cssEditor]").addClass("hide");
@@ -170,7 +173,19 @@ function loadgist(gistid) {
         }
       });
     }
-    if (!jsVal && !coffeeVal) {
+    if (tsVal) {
+      jsEditor.setValue(tsVal.content);
+      $("#js-preprocessor").val("typescript").change();
+      jsContent = "<script type='text/typescript'>" + jsEditor.getValue() + "</script>";
+      $(window).on("load resize", function() {
+        if ( $(this).width() <= 420 ) {
+          $("[data-target=jsEditor]").text("TS");
+        } else {
+          $("[data-target=jsEditor]").text("TypeScript");
+        }
+      });
+    }
+    if (!jsVal && !coffeeVal && !tsVal) {
       $("[data-target=jsEditor]").addClass("hide");
     }
     $(".preloader").remove();
@@ -273,11 +288,7 @@ if (!url) {
         autoCloseTags: true,
         foldGutter: true,
         dragDrop: true,
-        lint: {
-          options: {
-            "asi": true
-          }
-        },
+        lint: false,
         gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
         mode: {name: "javascript", globalVars: false}
       });
@@ -1224,20 +1235,17 @@ if (!url) {
     var valueSelected = this.value;
     if ( valueSelected == "none") {
       jsEditor.setOption("mode", "text/javascript");
-      jsEditor.setOption("lint", false);
-      jsEditor.setOption("lint", true);
       // jsEditor.refresh();
       $(".jsvalidator").show();
     } else if ( valueSelected == "coffeescript") {
       jsEditor.setOption("mode", "text/x-coffeescript");
-      jsEditor.setOption("lint", false);
-      jsEditor.setOption("lint", true);
+      // jsEditor.refresh();
+    } else if ( valueSelected == "typescript") {
+      jsEditor.setOption("mode", "text/typescript");
       // jsEditor.refresh();
     } else {
       $(".jsvalidator").show();
       jsEditor.setOption("mode", "text/javascript");
-      jsEditor.setOption("lint", false);
-      jsEditor.setOption("lint", true);
       // jsEditor.refresh();
     }
     updatePreview();
