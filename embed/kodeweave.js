@@ -59,7 +59,7 @@ function updatePreview() {
   } else if ( jsSelected == "coffeescript") {
     jsContent = "<script>" + CoffeeScript.compile(jsEditor.getValue(), { bare: true }) + "</script>";
   } else if ( jsSelected == "typescript") {
-    jsContent = "<script type=\"text/javascript\" src='../editor/lib/typescript.min.js'></script>\n  <script type=\"text/javascript\" src='../editor/lib/typescript.compile.min.js'></script>\n  <script type=\"text/typescript\">" + jsEditor.getValue() + "</script>";
+    jsContent = "<script type=\"text/typescript\">" + jsEditor.getValue() + "</script>\n  <script type=\"text/javascript\" src='../editor/lib/typescript.min.js'></script>\n  <script type=\"text/javascript\" src='../editor/lib/typescript.compile.min.js'></script>";
   }
 
   if ( htmlSelected == "none") {
