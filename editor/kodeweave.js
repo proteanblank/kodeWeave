@@ -9,7 +9,7 @@ var timeout, delay, selected_text, str, mynum,
     start_cursor, cursorLine, cursorCh, blob,
     jsContent, htmlContent, cssContent, cssSelected,
     showEditors, hasMD, hasHTML, hasCSS, hasJS,
-    editEmbed, darkUI, seeThrough, hasResult,
+    editEmbed, darkUI, seeThrough, hasResult, offset,
     activeEditor = document.querySelector("[data-action=activeEditor]"),
     welcomeDialog = function() {
       // Stop YouTube Video from playing when other tabs are clicked
@@ -1700,7 +1700,6 @@ var timeout, delay, selected_text, str, mynum,
       // Handle dropdown list for Editors
       $("[data-call=dropdown]").click(function(e) {
         $("input[name=menubar].active").trigger("click");
-        var offset = $(this).offset();
 
         // If no preprocessor is selected dont show compile
         var htmlSelected = $("#html-preprocessor option:selected").val();
@@ -1710,15 +1709,16 @@ var timeout, delay, selected_text, str, mynum,
         if ($(this).hasClass("htmlarea")) {
           htmlEditor.focus();
           activeEditor.value = 'htmlEditor';
-          $(".editoractionlist").css({
-            top: offset.top + 21 - 4,
-            left: offset.left - $(".editoractionlist").width() + 10
-          });
           if ( htmlSelected == "none") {
             $(".viewcompiledcode").addClass('hide');
             $(".minifycode, .tidycode").removeClass('hide');
             $("[data-action=tidy]").text('Tidy HTML');
             $("[data-action=minify]").text('Minify HTML');
+            offset = $(this).offset();
+            $(".editoractionlist").css({
+              top: offset.top + 21 - 4,
+              left: offset.left - $(".editoractionlist").width() + 10
+            });
           } else {
             $(".viewcompiledcode").removeClass('hide');
             $(".minifycode, .tidycode").removeClass('hide');
@@ -1728,19 +1728,25 @@ var timeout, delay, selected_text, str, mynum,
             $("[data-action=compile]").text('Convert ' + $("#html-preprocessor option:selected").val() + ' to HTML');
             $("[data-action=tidy]").text('Tidy ' + $("#html-preprocessor option:selected").val());
             $("[data-action=minify]").text('Minify ' + $("#html-preprocessor option:selected").val());
+            offset = $(this).offset();
+            $(".editoractionlist").css({
+              top: offset.top + 21 - 4,
+              left: offset.left - $(".editoractionlist").width() + 10
+            });
           }
         } else if ($(this).hasClass("cssarea")) {
           cssEditor.focus();
           activeEditor.value = 'cssEditor';
-          $(".editoractionlist").css({
-            top: offset.top + 21 - 4,
-            left: offset.left - $(".editoractionlist").width() + 10
-          });
           if (cssSelected == "none") {
             $(".viewcompiledcode").addClass('hide');
             $(".minifycode, .tidycode").removeClass('hide');
             $("[data-action=tidy]").text('Tidy CSS');
             $("[data-action=minify]").text('Minify CSS');
+            offset = $(this).offset();
+            $(".editoractionlist").css({
+              top: offset.top + 21 - 4,
+              left: offset.left - $(".editoractionlist").width() + 10
+            });
           } else {
             $(".viewcompiledcode").removeClass('hide');
             $(".minifycode, .tidycode").removeClass('hide');
@@ -1750,19 +1756,25 @@ var timeout, delay, selected_text, str, mynum,
             $("[data-action=compile]").text('Convert ' + $("#css-preprocessor option:selected").val() + ' to CSS');
             $("[data-action=tidy]").text('Tidy ' + $("#css-preprocessor option:selected").val());
             $("[data-action=minify]").text('Minify ' + $("#css-preprocessor option:selected").val());
+            offset = $(this).offset();
+            $(".editoractionlist").css({
+              top: offset.top + 21 - 4,
+              left: offset.left - $(".editoractionlist").width() + 10
+            });
           }
         } else if ($(this).hasClass("jsarea")) {
           jsEditor.focus();
           activeEditor.value = 'jsEditor';
-          $(".editoractionlist").css({
-            top: offset.top + 21 - 4,
-            left: offset.left - $(".editoractionlist").width() + 10
-          });
           if ( jsSelected == "none") {
             $(".viewcompiledcode").addClass('hide');
             $(".minifycode, .tidycode").removeClass('hide');
             $("[data-action=tidy]").text('Tidy Javascript');
             $("[data-action=minify]").text('Minify Javascript');
+            offset = $(this).offset();
+            $(".editoractionlist").css({
+              top: offset.top + 21 - 4,
+              left: offset.left - $(".editoractionlist").width() + 10
+            });
           } else {
             $(".viewcompiledcode").removeClass('hide');
             $(".minifycode, .tidycode").removeClass('hide');
@@ -1772,11 +1784,16 @@ var timeout, delay, selected_text, str, mynum,
             $("[data-action=compile]").text('Convert ' + $("#js-preprocessor option:selected").val() + ' to Javascript');
             $("[data-action=tidy]").text('Tidy ' + $("#js-preprocessor option:selected").val());
             $("[data-action=minify]").text('Minify ' + $("#js-preprocessor option:selected").val());
+            offset = $(this).offset();
+            $(".editoractionlist").css({
+              top: offset.top + 21 - 4,
+              left: offset.left - $(".editoractionlist").width() + 10
+            });
           }
         }
         
         if ($('.editoractionlist').hasClass('hide')) {
-          $('.editoractionlist').removeClass('hide');
+          $(".editoractionlist").removeClass('hide');
         }
       });
       $('[data-action=compile]').click(function() {

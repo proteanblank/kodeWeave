@@ -532,7 +532,6 @@ textarea {
 .editoractionlist {
   list-style: none;
   position: absolute;
-  width: 220px;
 }
 .editoractionlist li {
   background: #fff;
