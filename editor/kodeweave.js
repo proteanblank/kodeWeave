@@ -3589,7 +3589,7 @@ function updatePreview() {
   document.querySelector(".preview-editor").appendChild(frame);
   var previewFrame = document.getElementById("preview");
   var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
-  var heading = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\">\n" + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\">\n";
+  var heading = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\">\n" + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\">\n" + "<script src=\"    lib/screenlog.js\"></script>";
   preview.open();
   var htmlSelected = $("#html-preprocessor option:selected").val();
   var jsSelected   = $("#js-preprocessor   option:selected").val();
@@ -3597,11 +3597,11 @@ function updatePreview() {
   cssPreProcessor();
   
   if ( jsSelected == "none") {
-    jsContent = "<script>" + jsEditor.getValue() + "</script>";
+    jsContent = "<script>screenLog.init({ autoScroll: false });\n\n" + jsEditor.getValue() + "</script>";
   } else if ( jsSelected == "coffeescript") {
-    jsContent = "<script>" + CoffeeScript.compile(jsEditor.getValue(), { bare: true }) + "</script>";
+    jsContent = "<script>screenLog.init({ autoScroll: false });</script><script>" + CoffeeScript.compile(jsEditor.getValue(), { bare: true }) + "</script>";
   } else if ( jsSelected == "typescript") {
-    jsContent = "<script type='text/typescript'>" + jsEditor.getValue() + "</script>\n    <script src='lib/typescript.min.js'></script>\n    <script src='lib/typescript.compile.min.js'></script>";
+    jsContent = "<script>screenLog.init({ autoScroll: false });</script><script type='text/typescript'>" + jsEditor.getValue() + "</script>\n    <script src='lib/typescript.min.js'></script>\n    <script src='lib/typescript.compile.min.js'></script>";
   }
 
   if ( htmlSelected == "none") {
