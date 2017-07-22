@@ -16,6 +16,10 @@
 @import url("polyui.css");
 @import url("jqueryminicolors.css");
 
+input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
 @font-face {
   font-family: Lato;
   src: url("fonts/Lato-Light.ttf");
@@ -200,7 +204,7 @@ header > label {
   text-align: left;
 }
 .addlibrary-tablets {
-  width: 650px;
+  width: 655px;
   overflow-x: visible;
   overflow-y: visible;
 }
@@ -344,7 +348,7 @@ header > label {
     width: 100%!important;
   }
 }
-@media all and (max-height:700px) {
+@media all and (max-height:800px) {
   .libraries-dialog {
     bottom: 25px;
   }

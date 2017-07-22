@@ -4217,6 +4217,32 @@ if (localStorage.getItem("checkedLibraries")) {
  }
 }
 
+// Search Libraries
+$("[data-search=libraries]").on("keyup change", function(e) {
+  if(this.value.toLowerCase()) {
+    $("[data-clear=search]").show();
+    $(".ldd-submenu ul > div").hide();
+    $(".ldd-submenu ul").attr('style', '');
+    $(".ldd-submenu ul").css({
+      'float': 'none',
+      'border': '0'
+    });
+    $(".ldd-submenu ul > div."+ this.value.charAt(0).toLowerCase()).css('display', 'inline-block');
+  } else {
+    $("[data-clear=search]").hide();
+    $(".ldd-submenu ul").attr('style', '');
+    $(".ldd-submenu ul > div").attr('style', '');
+  }
+}).trigger('change');
+$("[data-clear=search]").click(function() {
+  $("[data-search=libraries]").val('').trigger('change');
+});
+
+$("#libraries").empty();
+$.each($("[type=checkbox].check"), function(id, value) {
+  $("#libraries").append('<option value="'+ $(this).next().text() +'">'+ $(this).next().text() +'</option>')
+});
+
 // Add/Remove Libraries
 $("[data-action=check]").on("change keyup", function() {
   var value = $(this).parent().nextAll("div").children(".libsources:first").val() + "\n";
