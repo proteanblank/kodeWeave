@@ -198,7 +198,7 @@ function loadgist(gistid) {
         $("[data-target=jsEditor]").text("Babel");
       });
     }
-    if (!jsVal && !coffeeVal && !typescriptVal && !babelVal) {
+    if (!jsVal && !coffeeVal && !tsVal && !babelVal) {
       jsEditor.setValue("");
     }
     $(".preloader").remove();
