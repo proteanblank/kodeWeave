@@ -4341,7 +4341,7 @@ $("[data-toggle=dimensions]").click(function() {
     $(this).find(".fa").removeClass('fa-eye').addClass('fa-eye-slash')
   }
 });
-$('#rightSplitter').on('expanded resize', function() {
+$('#splitContainer, #rightSplitter').on('collapsed expanded resize', function() {
   if ($("[data-toggle=previewdimensions]").is(":visible")) {
     $("[data-output=dimensions]").text($(".preview-editor").css('width') + ", " + $(".preview-editor").css('height'));
   }
@@ -4383,7 +4383,7 @@ newDocument();
 preprocessors();
 
 // Buy kodeWeave T-Shirt Ad
-//alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/0rtzt?msg=31&r=tw\" target=\"_blank\"><img src=\"../assets/images/model-1.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/0rtzt?msg=31&r=tw\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
+alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/0rtzt?msg=31&r=tw\" target=\"_blank\"><img src=\"../assets/images/model-1.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/0rtzt?msg=31&r=tw\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
 
 // Scroll Character Menu
 (function() {
