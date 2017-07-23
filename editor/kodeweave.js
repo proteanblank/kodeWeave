@@ -3938,7 +3938,7 @@ function loadgist(gistid) {
       jsEditor.setValue(typescriptVal.content);
       $("#js-preprocessor").val("typescript").trigger("change");
     }
-    if (babelValVal) {
+    if (babelVal) {
       jsEditor.setValue(babelVal.content);
       $("#js-preprocessor").val("babel").trigger("change");
     }
