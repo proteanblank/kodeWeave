@@ -2098,6 +2098,10 @@ var timeout, delay, selected_text, str, mynum,
         var checkbox = document.getElementById("changeGrid");
         (checkbox.checked) ? gridChecked() : gridNotChecked();
         (checkbox.checked) ? localStorage.setItem("gridSetting", "true") : localStorage.setItem("gridSetting", "false");
+        
+        if ($("[data-toggle=previewdimensions]").is(":visible")) {
+          $("[data-output=dimensions]").text($(".preview-editor").css('width') + ", " + $(".preview-editor").css('height'));
+        }
       }
       $("#changeGrid").on("change", function() {
         GridScheme();
@@ -4320,17 +4324,33 @@ $("[data-clear=search]").click(function() {
   $("[data-search=libraries]").val('').trigger('change');
 });
 
+// Add libraries to autocomplete search
 $("#libraries").empty();
 $.each($("[type=checkbox].check"), function(id, value) {
   $("#libraries").append('<option value="'+ $(this).next().text() +'">'+ $(this).next().text() +'</option>')
+});
+
+// Show preview dimensions
+$("[data-toggle=dimensions]").click(function() {
+  if ($("[data-toggle=previewdimensions]").is(":visible")) {
+    $("[data-toggle=previewdimensions]").addClass('hide');
+    $(this).find(".fa").removeClass('fa-eye-slash').addClass('fa-eye')
+  } else {
+    $("[data-toggle=previewdimensions]").removeClass('hide');
+    $("[data-output=dimensions]").text($(".preview-editor").css('width') + ", " + $(".preview-editor").css('height'));
+    $(this).find(".fa").removeClass('fa-eye').addClass('fa-eye-slash')
+  }
+});
+$('#rightSplitter').on('expanded resize', function() {
+  if ($("[data-toggle=previewdimensions]").is(":visible")) {
+    $("[data-output=dimensions]").text($(".preview-editor").css('width') + ", " + $(".preview-editor").css('height'));
+  }
 });
 
 // Add/Remove Libraries
 $("[data-action=check]").on("change keyup", function() {
   var value = $(this).parent().nextAll("div").children(".libsources:first").val() + "\n";
   checkedLibs();
-
-  var libsTextarea = $("[data-action=libstextarea]");
 
   if ( $(this).prop("checked") === true ) {
     textarea.value = textarea.value + value;
@@ -4363,7 +4383,7 @@ newDocument();
 preprocessors();
 
 // Buy kodeWeave T-Shirt Ad
-alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/0rtzt?msg=31&r=tw\" target=\"_blank\"><img src=\"../assets/images/model-1.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/0rtzt?msg=31&r=tw\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
+//alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/0rtzt?msg=31&r=tw\" target=\"_blank\"><img src=\"../assets/images/model-1.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/0rtzt?msg=31&r=tw\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
 
 // Scroll Character Menu
 (function() {

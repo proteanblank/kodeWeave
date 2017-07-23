@@ -505,8 +505,7 @@ textarea {
   z-index: 0;
   margin: 0 5px 10px 5px;
 }
-.sidebtns a:hover,
-.preview-mode-toggle:hover {
+.sidebtns a:hover {
   opacity: 1;
 }
 .sidebtns a > label:hover {
@@ -516,22 +515,18 @@ textarea {
 .sidebtns a > label:hover:before {
   border: 0!important;
 }
+.previewbtns {
+  top: auto;
+  bottom: 10px;
+  right: 20px;
+ z-index: 1;
+}
 .selectEditor img {
   width: 30px;
   opacity: 0.5;
 }
 .selectEditor img:hover {
   opacity: 1;
-}
-.preview-mode-toggle {
-  position: absolute;
-  right: 20px;
-  bottom: 15px;
-  display: block;
-  opacity: 0.6;
-  font-size: 1.75em;
-  z-index: 0;
-  margin: 0 5px 10px 5px;
 }
 .editoractionlist {
   list-style: none;
