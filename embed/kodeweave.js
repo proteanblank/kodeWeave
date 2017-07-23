@@ -191,7 +191,7 @@ function loadgist(gistid) {
         }
       });
     }
-    if (babelValVal) {
+    if (babelVal) {
       $("#js-preprocessor").val("babel").trigger("change");
       jsEditor.setValue(babelVal.content);
       $(window).on("load resize", function() {
