@@ -60,6 +60,11 @@ function updatePreview() {
     jsContent = "<script>screenLog.init({ autoScroll: false });</script><script>" + CoffeeScript.compile(jsEditor.getValue(), { bare: true }) + "</script>";
   } else if ( jsSelected == "typescript") {
     jsContent = "<script>screenLog.init({ autoScroll: false });</script><script type=\"text/typescript\">" + jsEditor.getValue() + "</script>\n  <script type=\"text/javascript\" src='../editor/lib/typescript.min.js'></script>\n  <script type=\"text/javascript\" src='../editor/lib/typescript.compile.min.js'></script>";
+  } else if ( jsSelected == "babel") {
+    var result = Babel.transform(jsEditor.getValue(), {
+      presets: ['latest', 'stage-2', 'react']
+    });
+    jsContent = "<script>screenLog.init({ autoScroll: false });\n\n" + result.code + "</script>";
   }
 
   if ( htmlSelected == "none") {
@@ -95,6 +100,7 @@ function loadgist(gistid) {
     var jsVal      = gistdata.data.files["index.js"];
     var coffeeVal  = gistdata.data.files["index.coffee"];
     var tsVal      = gistdata.data.files["index.ts"];
+    var babelVal   = gistdata.data.files["index.jsx"];
     var mdVal      = gistdata.data.files["README.md"];
     var libraries  = gistdata.data.files["libraries.json"].content;
     var jsonLibs   = JSON.parse(libraries);
@@ -185,8 +191,12 @@ function loadgist(gistid) {
         }
       });
     }
-    if (!jsVal && !coffeeVal && !tsVal) {
-      $("[data-target=jsEditor]").addClass("hide");
+    if (babelValVal) {
+      jsEditor.setValue(babelVal.content);
+      $("#js-preprocessor").val("babel").trigger("change");
+    }
+    if (!jsVal && !coffeeVal && !typescriptVal && !babelVal) {
+      jsEditor.setValue("");
     }
     $(".preloader").remove();
     setTimeout(function() {
@@ -1254,6 +1264,9 @@ if (!url) {
       // jsEditor.refresh();
     } else if ( valueSelected == "typescript") {
       jsEditor.setOption("mode", "text/typescript");
+      // jsEditor.refresh();
+    } else if ( valueSelected == "babel") {
+      jsEditor.setOption("mode", "text/javascript");
       // jsEditor.refresh();
     } else {
       $(".jsvalidator").show();

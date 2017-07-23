@@ -31,6 +31,8 @@
     <script src="lib/stylus.min.js"></script>
     <script src="lib/css2stylus.js"></script>
     <script src="lib/less.min.js"></script>
+    <script src="lib/babel.min.js"></script>
+    <script src="lib/babel-polyfill.min.js"></script>
 
     <script src="lib/jsbeautify/beautify.js"></script>
     <script src="lib/jsbeautify/beautify-css.js"></script>
@@ -1466,7 +1468,8 @@
                       <select id="js-preprocessor">
                         <option value="none">None</option>
                         <option value="coffeescript">CoffeeScript</option>
-                        <option value="typescript">TypeScript</option>
+                        <option value="typescript">TypeScript</option>ption>
+                        <option value="babel">Babel</option>
                       </select>
                     </div>
                     <p style="margin: 0;">
@@ -1492,10 +1495,10 @@
       <li class="pointer minifycode" data-action="minify">
         Minify HTML
       </li>
-      <li class="pointer beautifycode" data-action="lowercase">
+      <li class="pointer texttransform" data-action="lowercase">
         Lowercase Selection
       </li>
-      <li class="pointer beautifycode" data-action="uppercase">
+      <li class="pointer texttransform" data-action="uppercase">
         Uppercase Selection
       </li>
     </ul>

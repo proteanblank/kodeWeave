@@ -8,7 +8,7 @@ If you've ever used jsfiddle, jsbin, dabblet, liveweave, codepen, cssdeck, cssde
 Version
 -------------
 
-1.1.28
+1.1.29
 
 License
 -------------
@@ -53,7 +53,7 @@ kodeWeave uses a number of open source projects to work properly:
 * [Less](http://lesscss.org/) - a css preprocessor
 * [CoffeeScript](http://coffeescript.org/) - a javascript preprocessor
 * [HTML2Jade](http://html2jade.org/) - Convert HTML to Jade and back
-* [CSS2Stylus](http://css2stylus.com/) - Convert CSS to Stylus and back
+* [CSS2Stylus](http://dciccale.github.io/css2stylus.js/) - Convert CSS to Stylus and back
 * [JS2Coffee](http://js2.coffee/) - Convert Javascript to CoffeeScript and back
 * [AlertifyJS](http://alertifyjs.com/) - For the awesome and stylish alert notification dialogs
 * [Cordova](https://cordova.apache.org/) - mobile application development framework

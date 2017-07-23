@@ -73,6 +73,11 @@ var timeout, delay, selected_text, str, mynum,
         yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true });
       } else if ( jsSelected == "typescript") {
         yourJS = jsEditor.getValue();
+      } else if ( jsSelected == "babel") {
+        var result = Babel.transform(jsEditor.getValue(), {
+          presets: ['latest', 'stage-2', 'react']
+        });
+        yourJS = result.code;
       }
     },
     singleFileDownload = function() {
@@ -121,6 +126,9 @@ var timeout, delay, selected_text, str, mynum,
         } else if ( jsSelected == "typescript") {
           blob = new Blob([ jsEditor.getValue() ], {type: "text/typescript"});
           saveAs(blob, "source.ts");
+        } else if ( jsSelected == "babel") {
+          blob = new Blob([ jsEditor.getValue() ], {type: "text/javascript"});
+          saveAs(blob, "source.jsx");
         }
         
         // Ask to support open source software.
@@ -1676,108 +1684,154 @@ var timeout, delay, selected_text, str, mynum,
       // Handle dropdown list for Editors
       $("[data-call=dropdown]").click(function(e) {
         $("input[name=menubar].active").trigger("click");
+        
+        if ($(this).hasClass('openeddropdown')) {
+          $(".editoractionlist").addClass('hide');
+          $(this).removeClass('openeddropdown');
+          return false;
+        } else if ($("[data-call=dropdown].openeddropdown").is(":visible")) {
+          $("[data-call=dropdown]").removeClass('openeddropdown');
+          return false;
+        }
 
         // If no preprocessor is selected dont show compile
         var htmlSelected = $("#html-preprocessor option:selected").val();
-        var cssSelected = $("#css-preprocessor  option:selected").val();
+        var cssSelected  = $("#css-preprocessor  option:selected").val();
         var jsSelected   = $("#js-preprocessor   option:selected").val();
         
+        // Check HTML
         if ($(this).hasClass("htmlarea")) {
-          htmlEditor.focus();
-          activeEditor.value = 'htmlEditor';
-          if ( htmlSelected == "none") {
-            $(".viewcompiledcode").addClass('hide');
-            $(".minifycode, .tidycode").removeClass('hide');
-            $("[data-action=tidy]").text('Tidy HTML');
-            $("[data-action=minify]").text('Minify HTML');
+          if ( activeEditor.value == "mdEditor") {
+            mdEditor.focus();
+            $(".editoractionlist li").addClass('hide');
+            $(".texttransform").removeClass('hide');
             offset = $(this).offset();
             $(".editoractionlist").css({
               top: offset.top + 21 - 4,
               left: offset.left - $(".editoractionlist").width() + 10
             });
           } else {
-            $(".viewcompiledcode").removeClass('hide');
-            $(".minifycode, .tidycode").removeClass('hide');
-            if (htmlSelected == "jade") {
-              $(".minifycode, .tidycode").addClass('hide');
-            }
-            $("[data-action=compile]").text('Convert ' + $("#html-preprocessor option:selected").val() + ' to HTML');
-            $("[data-action=tidy]").text('Tidy ' + $("#html-preprocessor option:selected").val());
-            $("[data-action=minify]").text('Minify ' + $("#html-preprocessor option:selected").val());
-            offset = $(this).offset();
-            $(".editoractionlist").css({
-              top: offset.top + 21 - 4,
-              left: offset.left - $(".editoractionlist").width() + 10
-            });
+            htmlEditor.focus();
+            activeEditor.value = 'htmlEditor';
           }
-        } else if ($(this).hasClass("cssarea")) {
+          if (activeEditor.value == "htmlEditor") {
+            if ( htmlSelected == "none") {
+              htmlEditor.focus();
+              activeEditor.value = 'htmlEditor';
+              $(".viewcompiledcode").text('Run html2jade');
+              $(".minifycode, .tidycode").removeClass('hide');
+              $("[data-action=tidy]").text('Tidy HTML');
+              $("[data-action=minify]").text('Minify HTML');
+              offset = $(this).offset();
+              $(".editoractionlist").css({
+                top: offset.top + 21 - 4,
+                left: offset.left - $(".editoractionlist").width() + 10
+              });
+            } else if ( htmlSelected == "jade") {
+              htmlEditor.focus();
+              activeEditor.value = 'htmlEditor';
+              $(".viewcompiledcode").removeClass('hide');
+              $(".minifycode, .tidycode").removeClass('hide');
+              if (htmlSelected == "jade") {
+                $(".minifycode, .tidycode").addClass('hide');
+              }
+              $(".viewcompiledcode").text('Convert ' + $("#html-preprocessor option:selected").val() + ' to HTML');
+              $("[data-action=tidy]").text('Tidy ' + $("#html-preprocessor option:selected").val());
+              $("[data-action=minify]").text('Minify ' + $("#html-preprocessor option:selected").val());
+              offset = $(this).offset();
+              $(".editoractionlist").css({
+                top: offset.top + 21 - 4,
+                left: offset.left - $(".editoractionlist").width() + 10
+              });
+            }
+          }
+        }
+        // Check CSS
+        if ($(this).hasClass("cssarea")) {
           cssEditor.focus();
           activeEditor.value = 'cssEditor';
-          if (cssSelected == "none") {
-            $(".viewcompiledcode").addClass('hide');
-            $(".minifycode, .tidycode").removeClass('hide');
-            $("[data-action=tidy]").text('Tidy CSS');
-            $("[data-action=minify]").text('Minify CSS');
-            offset = $(this).offset();
-            $(".editoractionlist").css({
-              top: offset.top + 21 - 4,
-              left: offset.left - $(".editoractionlist").width() + 10
-            });
-          } else {
-            $(".viewcompiledcode").removeClass('hide');
-            $(".minifycode, .tidycode").removeClass('hide');
-            if (cssSelected == "stylus") {
-              $(".minifycode, .tidycode").addClass('hide');
+          if (activeEditor.value == "cssEditor") {
+            if (cssSelected == "none") {
+              $(".viewcompiledcode").removeClass('hide');
+              $(".viewcompiledcode").text('Run css2stylus');
+              $(".minifycode, .tidycode").removeClass('hide');
+              $("[data-action=tidy]").text('Tidy CSS');
+              $("[data-action=minify]").text('Minify CSS');
+              offset = $(this).offset();
+              $(".editoractionlist").css({
+                top: offset.top + 21 - 4,
+                left: offset.left - $(".editoractionlist").width() + 10
+              });
+            } else {
+              $(".viewcompiledcode").removeClass('hide');
+              $(".minifycode, .tidycode").removeClass('hide');
+              if (cssSelected == "stylus") {
+                $(".minifycode, .tidycode").addClass('hide');
+              }
+              $(".viewcompiledcode").text('Convert ' + $("#css-preprocessor option:selected").val() + ' to CSS');
+              $("[data-action=tidy]").text('Tidy ' + $("#css-preprocessor option:selected").val());
+              $("[data-action=minify]").text('Minify ' + $("#css-preprocessor option:selected").val());
+              offset = $(this).offset();
+              $(".editoractionlist").css({
+                top: offset.top + 21 - 4,
+                left: offset.left - $(".editoractionlist").width() + 10
+              });
             }
-            $("[data-action=compile]").text('Convert ' + $("#css-preprocessor option:selected").val() + ' to CSS');
-            $("[data-action=tidy]").text('Tidy ' + $("#css-preprocessor option:selected").val());
-            $("[data-action=minify]").text('Minify ' + $("#css-preprocessor option:selected").val());
-            offset = $(this).offset();
-            $(".editoractionlist").css({
-              top: offset.top + 21 - 4,
-              left: offset.left - $(".editoractionlist").width() + 10
-            });
           }
-        } else if ($(this).hasClass("jsarea")) {
+        }
+        // Check Javascript
+        if ($(this).hasClass("jsarea")) {
           jsEditor.focus();
           activeEditor.value = 'jsEditor';
-          if ( jsSelected == "none") {
-            $(".viewcompiledcode").addClass('hide');
-            $(".minifycode, .tidycode").removeClass('hide');
-            $("[data-action=tidy]").text('Tidy Javascript');
-            $("[data-action=minify]").text('Minify Javascript');
-            offset = $(this).offset();
-            $(".editoractionlist").css({
-              top: offset.top + 21 - 4,
-              left: offset.left - $(".editoractionlist").width() + 10
-            });
-          } else {
-            $(".viewcompiledcode").removeClass('hide');
-            $(".minifycode, .tidycode").removeClass('hide');
-            if (jsSelected == "typescript") {
-              $(".minifycode, .tidycode, .viewcompiledcode").addClass('hide');
-            } else if (jsSelected == "coffeescript") {
-              $(".minifycode, .tidycode").addClass('hide');
+          if (activeEditor.value == "jsEditor") {
+            if ( jsSelected == "none") {
+              $(".viewcompiledcode").text('Run js2Coffee');
+              $(".minifycode, .tidycode").removeClass('hide');
+              $("[data-action=tidy]").text('Tidy Javascript');
+              $("[data-action=minify]").text('Minify Javascript');
+              offset = $(this).offset();
+              $(".editoractionlist").css({
+                top: offset.top + 21 - 4,
+                left: offset.left - $(".editoractionlist").width() + 10
+              });
+            } else {
+              $(".viewcompiledcode").removeClass('hide');
+              $(".minifycode, .tidycode").removeClass('hide');
+              if (jsSelected == "typescript") {
+                $(".minifycode, .tidycode, .viewcompiledcode").addClass('hide');
+              } else if (jsSelected == "coffeescript") {
+                $(".minifycode, .tidycode").addClass('hide');
+              } else if (jsSelected == "babel") {
+                $(".minifycode, .tidycode").addClass('hide');
+              }
+              $(".viewcompiledcode").text('Convert ' + $("#js-preprocessor option:selected").val() + ' to Javascript');
+              $("[data-action=tidy]").text('Tidy ' + $("#js-preprocessor option:selected").val());
+              $("[data-action=minify]").text('Minify ' + $("#js-preprocessor option:selected").val());
+              offset = $(this).offset();
+              $(".editoractionlist").css({
+                top: offset.top + 21 - 4,
+                left: offset.left - $(".editoractionlist").width() + 10
+              });
             }
-            $("[data-action=compile]").text('Convert ' + $("#js-preprocessor option:selected").val() + ' to Javascript');
-            $("[data-action=tidy]").text('Tidy ' + $("#js-preprocessor option:selected").val());
-            $("[data-action=minify]").text('Minify ' + $("#js-preprocessor option:selected").val());
-            offset = $(this).offset();
-            $(".editoractionlist").css({
-              top: offset.top + 21 - 4,
-              left: offset.left - $(".editoractionlist").width() + 10
-            });
           }
         }
         
-        if ($('.editoractionlist').hasClass('hide')) {
+        if ($('.editoractionlist').is(':visible')) {
+          offset = $(this).offset();
+          $(".editoractionlist").css({
+            top: offset.top + 21 - 4,
+            left: offset.left - $(".editoractionlist").width() + 10
+          });
+          return false;
+        } else if ($('.editoractionlist').hasClass('hide')) {
           $(".editoractionlist").removeClass('hide');
+          $(this).addClass('openeddropdown');
+          return false;
         }
+        return false;
       });
       $('[data-action=compile]').click(function() {
-        if ($(".editoractionlist").hasClass('hide')) {
-          $(".editoractionlist").removeClass('hide');
-        }
+        $(".editoractionlist").removeClass('hide');
         
         // If no preprocessor is selected dont show compile
         var htmlSelected = $("#html-preprocessor option:selected").val();
@@ -1785,39 +1839,106 @@ var timeout, delay, selected_text, str, mynum,
         var jsSelected   = $("#js-preprocessor   option:selected").val();
         
         // Check HTML
-        if ( htmlSelected == "jade") {
-          $("[data-action=html-preprocessor]").trigger('click');
+        if (activeEditor.value === "htmlEditor") {
+          if ( htmlSelected == "none") {
+            $("#html-preprocessor").val("jade").trigger("change");
+            var options = {
+                pretty: true
+            };
+            Html2Jade.convertHtml(htmlEditor.getValue(), {selectById: true}, function (err, jadeString) {
+              if(err) {
+                console.error(err);
+              } else {
+                if (!/<html>/.test(htmlEditor.getValue())) {
+                  jadeString = jadeString
+                                .replace('html\n', '')
+                                .replace('head\n', '')
+                                .replace(/^\s\s/, '')
+                                .replace(/\n\s\s/, '\n');
+                }
+
+                if (!/<body>/.test(htmlEditor.getValue())) {
+                  jadeString = jadeString
+                                .replace(/.*body\n/, '')
+                                .replace(/^\s\s/, '')
+                                .replace(/\n\s\s/, '\n');
+                };
+                htmlEditor.setValue(jadeString);
+              }
+            });
+            $(".editoractionlist").addClass('hide');
+          } else if ( htmlSelected == "jade") {
+            $("#html-preprocessor").val("none").trigger("change");
+            htmlContent = jade.render(htmlEditor.getValue(), options);
+            htmlEditor.setValue(htmlContent);
+            beautifyHTML();
+            $(".editoractionlist").addClass('hide');
+          }
         }
-        // Check css
-        if (cssSelected == "stylus") {
-          $(".viewcompiledcode").removeClass('hide');
-          var cssVal = cssEditor.getValue();
-          stylus(cssVal).render(function(err, out) {
-            if(err !== null) {
-              console.error("something went wrong");
-            } else {
-              cssEditor.setValue(out);
+
+        // Check CSS
+        if (activeEditor.value === "cssEditor") {
+          if ( cssSelected == "none") {
+            $("#css-preprocessor").val("stylus").trigger("change");
+            $(".viewcompiledcode").removeClass('hide');
+            var css = cssEditor.getValue();
+            var converter = new Css2Stylus.Converter(css);
+            converter.processCss();
+            cssEditor.setValue(converter.getStylus());
+            $(".editoractionlist").addClass('hide');
+          } else if (cssSelected == "stylus") {
+            $("#css-preprocessor").val("none").trigger("change");
+            $(".viewcompiledcode").removeClass('hide');
+            var cssVal = cssEditor.getValue();
+            stylus(cssVal).render(function(err, out) {
+              if(err !== null) {
+                console.error("something went wrong");
+              } else {
+                cssEditor.setValue(out);
+                $('#css-preprocessor option').filter(function() { 
+                  return ($(this).text() == 'None');
+                }).prop('selected', true);
+              }
+            });
+            $(".editoractionlist").addClass('hide');
+          } else if (cssSelected == "less") {
+            $("#css-preprocessor").val("none").trigger("change");
+            $(".viewcompiledcode").removeClass('hide');
+            var cssVal = cssEditor.getValue();
+            less.render(cssVal, function (e, output) {
+              cssEditor.setValue(output.css);
               $('#css-preprocessor option').filter(function() { 
                 return ($(this).text() == 'None');
               }).prop('selected', true);
-            }
-          });
-        } else if (cssSelected == "less") {
-          $(".viewcompiledcode").removeClass('hide');
-          var cssVal = cssEditor.getValue();
-          less.render(cssVal, function (e, output) {
-            cssEditor.setValue(output.css);
-            $('#css-preprocessor option').filter(function() { 
-              return ($(this).text() == 'None');
-            }).prop('selected', true);
-          });
+            });
+            $(".editoractionlist").addClass('hide');
+          }
         }
+
         // Check Javascript
-        if ( jsSelected == "coffeescript") {
-          $("#js-preprocessor").val("none").trigger("change");
-          jsContent = CoffeeScript.compile(jsEditor.getValue(), { bare: true });
-          jsEditor.setValue(jsContent);
-          beautifyJS();
+        if (activeEditor.value === "jsEditor") {
+          if ( jsSelected == "none") {
+            $("#js-preprocessor").val("coffeescript").trigger("change");
+            result = js2coffee.build(jsEditor.getValue());
+            jsEditor.setValue(result.code);
+            $(".editoractionlist").addClass('hide');
+          } else if ( jsSelected == "coffeescript") {
+            $("#js-preprocessor").val("none").trigger("change");
+            jsContent = CoffeeScript.compile(jsEditor.getValue(), { bare: true });
+            jsEditor.setValue(jsContent);
+            beautifyJS();
+            $(".editoractionlist").addClass('hide');
+          } else if ( jsSelected == "babel") {
+            $("#js-preprocessor").val("none").trigger("change");
+            var result = Babel.transform(jsEditor.getValue(), {
+              presets: ['latest', 'stage-2', 'react']
+            });
+            jsContent = result.code;
+            jsEditor.setValue(jsContent);
+            beautifyJS();
+            $(".editoractionlist").addClass('hide');
+            $("#js-preprocessor").val("none").trigger("change");
+          }
         }
       });
       
@@ -2331,25 +2452,6 @@ var timeout, delay, selected_text, str, mynum,
         } else if ($(this).hasClass("jsSetting")) {
           $("#js-preprocessors").attr("checked", true);
         }
-        $("input[name=preprocessor-list]").trigger('change');
-        if (document.getElementById("html-preprocessor").value == "none") {
-          if (!htmlEditor.getValue) {
-            $(".html-preprocessor-convert").addClass("hide");
-          }
-        } else if (document.getElementById("html-preprocessor").value == "jade") {
-          if (!htmlEditor.getValue) {
-            $(".html-preprocessor-convert").addClass("hide");
-          }
-        }
-        if (document.getElementById("js-preprocessor").value == "none") {
-          if (!jsEditor.getValue) {
-            $(".js-preprocessor-convert").addClass("hide");
-          }
-        } else if (document.getElementById("js-preprocessor").value == "coffeescript") {
-          if (!jsEditor.getValue) {
-            $(".js-preprocessor-convert").addClass("hide");
-          }
-        }
         $("[data-action=preprocessors]").fadeIn();
       });
       $(".confirm-preprocessor").click(function() {
@@ -2428,45 +2530,12 @@ var timeout, delay, selected_text, str, mynum,
         } else if ( valueSelected == "typescript") {
           jsEditor.setOption("mode", "text/typescript");
           $(".js-editor").css('background-image', 'url("assets/typescript.svg")');
+        } else if ( valueSelected == "babel") {
+          jsEditor.setOption("mode", "text/javascript");
+          $(".js-editor").css('background-image', 'url("assets/babel.svg")');
         }
         updatePreview();
       }).trigger("change");
-
-      // Compile preprocessors to preview
-      $(".html-preprocessor-convert").click(function() {
-        var options = {
-            pretty: true
-        };
-        if (document.getElementById("html-preprocessor").value == "none") {
-          Html2Jade.convertHtml(htmlEditor.getValue(), {selectById: true}, function (err, jadeString) {
-            if(err) {
-              console.error(err);
-            } else {
-              if (!/<html>/.test(htmlEditor.getValue())) {
-                jadeString = jadeString
-                              .replace('html\n', '')
-                              .replace('head\n', '')
-                              .replace(/^\s\s/, '')
-                              .replace(/\n\s\s/, '\n');
-              }
-
-              if (!/<body>/.test(htmlEditor.getValue())) {
-                jadeString = jadeString
-                              .replace(/.*body\n/, '')
-                              .replace(/^\s\s/, '')
-                              .replace(/\n\s\s/, '\n');
-              };
-              htmlEditor.setValue(jadeString);
-            }
-          });
-          $("#html-preprocessor").val("jade").trigger("change");
-        } else if (document.getElementById("html-preprocessor").value == "jade") {
-          $("#html-preprocessor").val("none").trigger("change");
-          htmlContent = jade.render(htmlEditor.getValue(), options);
-          htmlEditor.setValue(htmlContent);
-          beautifyHTML();
-        }
-      });
     },
     initCollab = function() {
       function callCollabUpdate() {
@@ -3602,6 +3671,11 @@ function updatePreview() {
     jsContent = "<script>screenLog.init({ autoScroll: false });</script><script>" + CoffeeScript.compile(jsEditor.getValue(), { bare: true }) + "</script>";
   } else if ( jsSelected == "typescript") {
     jsContent = "<script>screenLog.init({ autoScroll: false });</script><script type='text/typescript'>" + jsEditor.getValue() + "</script>\n    <script src='lib/typescript.min.js'></script>\n    <script src='lib/typescript.compile.min.js'></script>";
+  } else if ( jsSelected == "babel") {
+    var result = Babel.transform(jsEditor.getValue(), {
+      presets: ['latest', 'stage-2', 'react']
+    });
+    jsContent = "<script>screenLog.init({ autoScroll: false });\n\n" + result.code + "</script>";
   }
 
   if ( htmlSelected == "none") {
@@ -3766,6 +3840,7 @@ function loadgist(gistid) {
     var jsVal          = gistdata.data.files["index.js"];
     var coffeeVal      = gistdata.data.files["index.coffee"];
     var typescriptVal  = gistdata.data.files["index.ts"];
+    var babelVal       = gistdata.data.files["index.jsx"];
     var mdVal      = gistdata.data.files["README.md"];
     var settings   = gistdata.data.files["settings.json"].content;
     var libraries  = gistdata.data.files["libraries.json"].content;
@@ -3863,7 +3938,11 @@ function loadgist(gistid) {
       jsEditor.setValue(typescriptVal.content);
       $("#js-preprocessor").val("typescript").trigger("change");
     }
-    if (!jsVal && !coffeeVal && !typescriptVal) {
+    if (babelValVal) {
+      jsEditor.setValue(babelVal.content);
+      $("#js-preprocessor").val("babel").trigger("change");
+    }
+    if (!jsVal && !coffeeVal && !typescriptVal && !babelVal) {
       jsEditor.setValue("");
     }
 
@@ -3948,18 +4027,21 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
       }
 	}
 	if (jsEditor.getValue()) {
-    var jsSelected = $("#js-preprocessor option:selected").val();
+      var jsSelected = $("#js-preprocessor option:selected").val();
 
-    if ( jsSelected == "none") {
-      yourJS = jsEditor.getValue();
-      files["index.js"] = jsEditor.getValue() ? { content: yourJS } : null;
-    } else if ( jsSelected == "coffeescript") {
-      yourJS = jsEditor.getValue();
-      files["index.coffee"] = jsEditor.getValue() ? { content: yourJS } : null;
-    } else if ( jsSelected == "typescript") {
-      yourJS = jsEditor.getValue();
-      files["index.ts"] = jsEditor.getValue() ? { content: yourJS } : null;
-    }
+      if ( jsSelected == "none") {
+        yourJS = jsEditor.getValue();
+        files["index.js"] = jsEditor.getValue() ? { content: yourJS } : null;
+      } else if ( jsSelected == "coffeescript") {
+        yourJS = jsEditor.getValue();
+        files["index.coffee"] = jsEditor.getValue() ? { content: yourJS } : null;
+      } else if ( jsSelected == "typescript") {
+        yourJS = jsEditor.getValue();
+        files["index.ts"] = jsEditor.getValue() ? { content: yourJS } : null;
+      } else if ( jsSelected == "babel") {
+        yourJS = jsEditor.getValue();
+        files["index.jsx"] = jsEditor.getValue() ? { content: yourJS } : null;
+      }
 	}
 	if (mdEditor.getValue()) {
 		files["README.md"] = mdEditor.getValue() ? { content: mdEditor.getValue() } : null;
