@@ -2269,6 +2269,9 @@ var timeout, delay, selected_text, str, mynum,
             panels: [{ size: "0%"},
                      { size: "100%"}]
           });
+          if ($("[data-toggle=previewdimensions]").is(":visible")) {
+            $("[data-output=dimensions]").text($(".preview-editor").css('width') + ", " + $(".preview-editor").css('height'));
+          }
         }
       };
       
@@ -4342,6 +4345,11 @@ $("[data-toggle=dimensions]").click(function() {
   }
 });
 $('#splitContainer, #rightSplitter').on('collapsed expanded resize', function() {
+  if ($("[data-toggle=previewdimensions]").is(":visible")) {
+    $("[data-output=dimensions]").text($(".preview-editor").css('width') + ", " + $(".preview-editor").css('height'));
+  }
+});
+$(window).resize(function() {
   if ($("[data-toggle=previewdimensions]").is(":visible")) {
     $("[data-output=dimensions]").text($(".preview-editor").css('width') + ", " + $(".preview-editor").css('height'));
   }
