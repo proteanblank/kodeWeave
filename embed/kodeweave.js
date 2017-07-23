@@ -192,8 +192,11 @@ function loadgist(gistid) {
       });
     }
     if (babelValVal) {
-      jsEditor.setValue(babelVal.content);
       $("#js-preprocessor").val("babel").trigger("change");
+      jsEditor.setValue(babelVal.content);
+      $(window).on("load resize", function() {
+        $("[data-target=jsEditor]").text("Babel");
+      });
     }
     if (!jsVal && !coffeeVal && !typescriptVal && !babelVal) {
       jsEditor.setValue("");
