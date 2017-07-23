@@ -52,24 +52,29 @@ kodeWeave uses a number of open source projects to work properly:
 * [Stylus](http://stylus-lang.com/) - a css preprocessor
 * [Less](http://lesscss.org/) - a css preprocessor
 * [CoffeeScript](http://coffeescript.org/) - a javascript preprocessor
+* [TypeScript](http://www.typescriptlang.org/) - a javascript preprocessor
+* [Babel](http://babeljs.io/) - a javascript preprocessor used to write ES6
 * [HTML2Jade](http://html2jade.org/) - Convert HTML to Jade and back
 * [CSS2Stylus](http://dciccale.github.io/css2stylus.js/) - Convert CSS to Stylus and back
 * [JS2Coffee](http://js2.coffee/) - Convert Javascript to CoffeeScript and back
 * [AlertifyJS](http://alertifyjs.com/) - For the awesome and stylish alert notification dialogs
 * [Cordova](https://cordova.apache.org/) - mobile application development framework
 * [DataURL Grabber](https://github.com/mikethedj4/DataURL-Grabber-PhoneGap-Build) - Embed an image directly into the document with data URIs
+* Also comes prebuilt with, "just about every framework you can name off the top of your head" - Says [Web Designer Depot](https://www.webdesignerdepot.com/2017/06/5-essential-open-source-tools-for-web-designers/)
 
 To-Do
 -------------
 
-### Web and Desktop
+- Make code editor more responsive for mobile devices
 
- - Make code editor more responsive for mobile devices
+### Desktop
+- Save code snippets for offline use
+- Reintegrate [WebDGap](https://mikethedj4.github.io/WebDGap/) for desktop exportation
 
 ### Android
 
- - Make code editor more responsive for mobile devices
- - Export as zip or export contents into a new folder
+ - Save code snippets for offline use
+ - Export file as zip
 
 [Export Your Web App for Desktop or Mobile!](https://mikethedj4.github.io/WebDGap/)
 -------------
