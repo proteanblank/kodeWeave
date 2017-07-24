@@ -61,12 +61,12 @@ To-Do
 - Make code editor more responsive for mobile devices
 
 ### Desktop
-- Add SASS & SCSS preprocessors
-- Release v1.1.29 for desktops
+ - Save code snippets for offline use
+ - Incorporate [WebDGap](https://mikethedj4.github.io/WebDGap/) for desktop exportation
+ - Release v1.1.29 for desktops
 
 ### Android
 
- - Add SASS & SCSS preprocessors
  - Save code snippets for offline use
  - Export file as zip
  - Release v1.1.29 for Android
