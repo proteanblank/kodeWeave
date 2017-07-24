@@ -9,7 +9,7 @@ var timeout, delay, selected_text, str, mynum,
     start_cursor, cursorLine, cursorCh, blob,
     jsContent, htmlContent, cssContent, cssSelected,
     showEditors, hasMD, hasHTML, hasCSS, hasJS,
-    editEmbed, darkUI, seeThrough, hasResult, offset, tsCode, tsCompileCode
+    editEmbed, darkUI, seeThrough, hasResult, offset, tsCode, tsCompileCode,
     activeEditor = document.querySelector("[data-action=activeEditor]"),
     welcomeDialog = function() {
       // Stop YouTube Video from playing when other tabs are clicked
@@ -2294,48 +2294,55 @@ var timeout, delay, selected_text, str, mynum,
       options = {
           success: function(file) {
             if (file[0].link.toLowerCase().substring(file[0].link.length - 5) === ".html") {
-              if (document.getElementById("html-preprocessor").value == "jade") {
-                htmlEditor.setValue("");
-                $("#html-preprocessor").val("none").trigger("change");
-              }
+              htmlEditor.setValue("");
+              $("#html-preprocessor").val("none").trigger("change");
               download_to_editor(file[0].link, htmlEditor);
             } else if (file[0].link.toLowerCase().substring(file[0].link.length - 5) === ".jade") {
-              if (document.getElementById("html-preprocessor").value == "none") {
-                htmlEditor.setValue("");
-                $("#html-preprocessor").val("jade").trigger("change");
-              }
+              htmlEditor.setValue("");
+              $("#html-preprocessor").val("none").trigger("change");
               download_to_editor(file[0].link, htmlEditor);
             } else if (file[0].link.toLowerCase().substring(file[0].link.length - 4) === ".css") {
-              if (document.getElementById("css-preprocessor").value == "stylus") {
-                cssEditor.setValue("");
-                $("#css-preprocessor").val("none").trigger("change");
-              }
+              htmlEditor.setValue("");
+              $("#html-preprocessor").val("none").trigger("change");
               download_to_editor(file[0].link, cssEditor);
             } else if (file[0].link.toLowerCase().substring(file[0].link.length - 5) === ".styl") {
-              if (document.getElementById("css-preprocessor").value == "none") {
-                cssEditor.setValue("");
-                $("#css-preprocessor").val("stylus").trigger("change");
-              }
+              htmlEditor.setValue("");
+              $("#html-preprocessor").val("none").trigger("change");
+              download_to_editor(file[0].link, cssEditor);
+            } else if (file[0].link.toLowerCase().substring(file[0].link.length - 5) === ".less") {
+              if (document.getElementById("css-preprocessor").value == "none")               htmlEditor.setValue("");
+              $("#html-preprocessor").val("none").trigger("change");
               download_to_editor(file[0].link, cssEditor);
             } else if (file[0].link.toLowerCase().substring(file[0].link.length - 3) === ".js") {
-              if (document.getElementById("js-preprocessor").value == "coffeescript") {
-                jsEditor.setValue("");
-                $("#js-preprocessor").val("none").trigger("change");
-              }
+              jsEditor.setValue("");
+              $("#js-preprocessor").val("none").trigger("change");
               download_to_editor(file[0].link, jsEditor);
             } else if (file[0].link.toLowerCase().substring(file[0].link.length - 7) === ".coffee") {
-              if (document.getElementById("js-preprocessor").value == "none") {
-                jsEditor.setValue("");
-                $("#js-preprocessor").val("coffeescript").trigger("change");
-              }
+              jsEditor.setValue("");
+              $("#js-preprocessor").val("coffeescript").trigger("change");
+              download_to_editor(file[0].link, jsEditor);
+            } else if (file[0].link.toLowerCase().substring(file[0].link.length - 3) === ".ts") {
+              jsEditor.setValue("");
+              $("#js-preprocessor").val("typescript").trigger("change");
+              download_to_editor(file[0].link, jsEditor);
+            } else if (file[0].link.toLowerCase().substring(file[0].link.length - 3) === ".es") {
+              jsEditor.setValue("");
+              $("#js-preprocessor").val("babel").trigger("change");
+              download_to_editor(file[0].link, jsEditor);
+            } else if (file[0].link.toLowerCase().substring(file[0].link.length - 4) === ".es6") {
+              jsEditor.setValue("");
+              $("#js-preprocessor").val("babel").trigger("change");
+              download_to_editor(file[0].link, jsEditor);
+            } else if (file[0].link.toLowerCase().substring(file[0].link.length - 4) === ".jsx") {
+              jsEditor.setValue("");
+              $("#js-preprocessor").val("babel").trigger("change");
               download_to_editor(file[0].link, jsEditor);
             } else if (file[0].link.toLowerCase().substring(file[0].link.length - 3) === ".md") {
+              mdEditor.setValue("");
               download_to_editor(file[0].link, mdEditor);
             } else if (file[0].link.toLowerCase().substring(file[0].link.length - 3) === ".svg") {
-              if (document.getElementById("html-preprocessor").value == "jade") {
-                htmlEditor.setValue("");
-                $("#html-preprocessor").val("none").trigger("change");
-              }
+              htmlEditor.setValue("");
+              $("#html-preprocessor").val("none").trigger("change");
               download_to_editor(file[0].link, htmlEditor);
             } else {
               alertify.error("Sorry kodeWeave does not support that file type!");
@@ -2358,7 +2365,7 @@ var timeout, delay, selected_text, str, mynum,
           },
           linkType: "direct", // "preview" or "direct"
           multiselect: false, // true or false
-          extensions: [".html", ".jade", ".css", ".js", ".coffee", ".md", ".svg"]
+          extensions: [".html", ".jade", ".css", ".styl", ".less", ".js", ".json", ".es", ".es6", ".ts", ".jsx", ".coffee", ".md", ".svg"]
       };
 
       document.querySelector("[data-action=open-dropbox]").onclick = function() {
@@ -2380,65 +2387,70 @@ var timeout, delay, selected_text, str, mynum,
           // var path = input.value.replace(/.*(\/|\\)/, '');
           var path = input.value;
           if (path.toLowerCase().substring(path.length - 5) === ".html") {
-            if (document.getElementById("html-preprocessor").value == "jade") {
-              htmlEditor.setValue("");
-              $("#html-preprocessor").val("none").trigger("change");
-            }
+            htmlEditor.setValue("");
             htmlEditor.setValue( e.target.result );
+            $("#html-preprocessor").val("none").trigger("change");
           } else if (path.toLowerCase().substring(path.length - 5) === ".jade") {
-            if (document.getElementById("html-preprocessor").value == "none") {
-              htmlEditor.setValue("");
-              $("#html-preprocessor").val("jade").trigger("change");
-            }
+            htmlEditor.setValue("");
             htmlEditor.setValue( e.target.result );
+            $("#html-preprocessor").val("jade").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 4) === ".pug") {
+            htmlEditor.setValue("");
+            htmlEditor.setValue( e.target.result );
+            $("#html-preprocessor").val("jade").trigger("change");
           } else if (path.toLowerCase().substring(path.length - 4) === ".css") {
-            if (document.getElementById("css-preprocessor").value == "stylus") {
-              cssEditor.setValue("");
-              $("#css-preprocessor").val("none").trigger("change");
-            }
+            cssEditor.setValue("");
             cssEditor.setValue( e.target.result );
+            $("#css-preprocessor").val("none").trigger("change");
           } else if (path.toLowerCase().substring(path.length - 5) === ".styl") {
-            if (document.getElementById("css-preprocessor").value == "none") {
-              cssEditor.setValue("");
-              $("#css-preprocessor").val("stylus").trigger("change");
-            }
+            cssEditor.setValue("");
             cssEditor.setValue( e.target.result );
+            $("#css-preprocessor").val("styl").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 5) === ".less") {
+            cssEditor.setValue("");
+            cssEditor.setValue( e.target.result );
+            $("#css-preprocessor").val("less").trigger("change");
           } else if (path.toLowerCase().substring(path.length - 3) === ".js") {
-            if (document.getElementById("js-preprocessor").value == "coffeescript") {
-              jsEditor.setValue("");
-              $("#js-preprocessor").val("none").trigger("change");
-            }
+            jsEditor.setValue("");
             jsEditor.setValue( e.target.result );
+            $("#js-preprocessor").val("none").trigger("change");
           } else if (path.toLowerCase().substring(path.length - 7) === ".coffee") {
-            if (document.getElementById("js-preprocessor").value == "none") {
-              jsEditor.setValue("");
-              $("#js-preprocessor").val("coffeescript").trigger("change");
-            }
+            jsEditor.setValue("");
             jsEditor.setValue( e.target.result );
+            $("#js-preprocessor").val("coffee").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 3) === ".ts") {
+            jsEditor.setValue("");
+            jsEditor.setValue( e.target.result );
+            $("#js-preprocessor").val("typescript").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 4) === ".jsx") {
+            jsEditor.setValue("");
+            jsEditor.setValue( e.target.result );
+            $("#js-preprocessor").val("babel").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 3) === ".es") {
+            jsEditor.setValue("");
+            jsEditor.setValue( e.target.result );
+            $("#js-preprocessor").val("babel").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 4) === ".es6") {
+            jsEditor.setValue("");
+            jsEditor.setValue( e.target.result );
+            $("#js-preprocessor").val("babel").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 5) === ".json") {
+            jsEditor.setValue("");
+            jsEditor.setValue( e.target.result );
+            $("#js-preprocessor").val("none").trigger("change");
           } else if (path.toLowerCase().substring(path.length - 3) === ".md") {
+            mdEditor.setValue("");
             mdEditor.setValue( e.target.result );
-          } else if (path.toLowerCase().substring(path.length - 3) === ".svg") {
-            if (document.getElementById("html-preprocessor").value == "jade") {
-              htmlEditor.setValue("");
-              $("#html-preprocessor").val("none").trigger("change");
-            }
+          } else if (path.toLowerCase().substring(path.length - 4) === ".svg") {
+            htmlEditor.setValue("");
             htmlEditor.setValue( e.target.result );
+            $("#html-preprocessor").val("none").trigger("change");
           } else {
             alertify.error("Sorry kodeWeave does not support that file type!");
           }
         };
         $("input[name=menubar].active").trigger("click");
         reader.readAsText(input.files[0]);
-        
-        if (!changePrev.checked) {
-          $("#runeditor").trigger("click");
-        }
-        setTimeout(function() {
-          mdEditor.setOption("paletteHints", "true");
-          htmlEditor.setOption("paletteHints", "true");
-          cssEditor.setOption("paletteHints", "true");
-          jsEditor.setOption("paletteHints", "true");
-        }, 300);
       }
 
       if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -3266,6 +3278,15 @@ var timeout, delay, selected_text, str, mynum,
         $(".svgjszip").val("zip.file('libraries/svg-svg/svg-svg.js', $(\".svgjs\").val());");
       } else {
         $('.svgjs, .svgjszip').clear();
+      }
+      if ( $("#sweetalert2").is(":checked") ) {
+        $('.sweetalert').clear();
+        download_to_textbox('libraries/sweetalert2/sweetalert2.min.css', $('.sweetalert1'));
+        download_to_textbox('libraries/sweetalert2/sweetalert2.min.js', $('.sweetalert2'));
+        $('.sweetalert').trigger("change");
+        $(".sweetalertzip").val("zip.file('libraries/sweetalert2/sweetalert2.min.css', $(\".sweetalert1\").val());\nzip.file('libraries/sweetalert2/sweetalert2.min.js', $(\".sweetalert2\").val());");
+      } else {
+        $('.sweetalert, .sweetalertzip').clear();
       }
       if ( $("#threejs").is(":checked") ) {
         $('.threejs').clear();

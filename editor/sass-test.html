@@ -25,8 +25,10 @@
     <script>
       var code = document.getElementById('code'),
           //sass = new Sass('https://cdnjs.cloudflare.com/ajax/libs/sass.js/0.10.5/sass.worker.min.js'),
-          sass = new Sass('lib/sass.worker.js"'),
+          sass = new Sass('lib/sass.worker.js'),
           scss = "$someVar: 123px; .some-selector { width: $someVar; }";
+
+          //Sass.setWorkerUrl('lib/sass.worker.js');
 
       sass.compile(scss, function(result) {
         code.value = result;
