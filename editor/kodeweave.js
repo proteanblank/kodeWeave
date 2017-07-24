@@ -2324,19 +2324,27 @@ var timeout, delay, selected_text, str, mynum,
               download_to_editor(file[0].link, htmlEditor);
             } else if (file[0].link.toLowerCase().substring(file[0].link.length - 5) === ".jade") {
               htmlEditor.setValue("");
-              $("#html-preprocessor").val("none").trigger("change");
+              $("#html-preprocessor").val("jade").trigger("change");
               download_to_editor(file[0].link, htmlEditor);
             } else if (file[0].link.toLowerCase().substring(file[0].link.length - 4) === ".css") {
-              htmlEditor.setValue("");
-              $("#html-preprocessor").val("none").trigger("change");
+              cssEditor.setValue("");
+              $("#css-preprocessor").val("none").trigger("change");
               download_to_editor(file[0].link, cssEditor);
             } else if (file[0].link.toLowerCase().substring(file[0].link.length - 5) === ".styl") {
-              htmlEditor.setValue("");
-              $("#html-preprocessor").val("none").trigger("change");
+              cssEditor.setValue("");
+              $("#css-preprocessor").val("stylus").trigger("change");
               download_to_editor(file[0].link, cssEditor);
             } else if (file[0].link.toLowerCase().substring(file[0].link.length - 5) === ".less") {
-              if (document.getElementById("css-preprocessor").value == "none")               htmlEditor.setValue("");
-              $("#html-preprocessor").val("none").trigger("change");
+              cssEditor.setValue("");
+              $("#css-preprocessor").val("less").trigger("change");
+              download_to_editor(file[0].link, cssEditor);
+            } else if (file[0].link.toLowerCase().substring(file[0].link.length - 5) === ".scss") {
+              cssEditor.setValue("");
+              $("#css-preprocessor").val("scss").trigger("change");
+              download_to_editor(file[0].link, cssEditor);
+            } else if (file[0].link.toLowerCase().substring(file[0].link.length - 5) === ".sass") {
+              cssEditor.setValue("");
+              $("#css-preprocessor").val("sass").trigger("change");
               download_to_editor(file[0].link, cssEditor);
             } else if (file[0].link.toLowerCase().substring(file[0].link.length - 3) === ".js") {
               jsEditor.setValue("");
@@ -2430,11 +2438,19 @@ var timeout, delay, selected_text, str, mynum,
           } else if (path.toLowerCase().substring(path.length - 5) === ".styl") {
             cssEditor.setValue("");
             cssEditor.setValue( e.target.result );
-            $("#css-preprocessor").val("styl").trigger("change");
+            $("#css-preprocessor").val("stylus").trigger("change");
           } else if (path.toLowerCase().substring(path.length - 5) === ".less") {
             cssEditor.setValue("");
             cssEditor.setValue( e.target.result );
             $("#css-preprocessor").val("less").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 5) === ".scss") {
+            cssEditor.setValue("");
+            cssEditor.setValue( e.target.result );
+            $("#css-preprocessor").val("scss").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 5) === ".sass") {
+            cssEditor.setValue("");
+            cssEditor.setValue( e.target.result );
+            $("#css-preprocessor").val("sass").trigger("change");
           } else if (path.toLowerCase().substring(path.length - 3) === ".js") {
             jsEditor.setValue("");
             jsEditor.setValue( e.target.result );
@@ -2442,7 +2458,7 @@ var timeout, delay, selected_text, str, mynum,
           } else if (path.toLowerCase().substring(path.length - 7) === ".coffee") {
             jsEditor.setValue("");
             jsEditor.setValue( e.target.result );
-            $("#js-preprocessor").val("coffee").trigger("change");
+            $("#js-preprocessor").val("coffeescript").trigger("change");
           } else if (path.toLowerCase().substring(path.length - 3) === ".ts") {
             jsEditor.setValue("");
             jsEditor.setValue( e.target.result );
