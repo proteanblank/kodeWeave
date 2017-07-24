@@ -66,6 +66,7 @@ To-Do
 -------------
 
 - Make code editor more responsive for mobile devices
+- Add SASS & SCSS preprocessors
 
 ### Desktop
 - Save code snippets for offline use

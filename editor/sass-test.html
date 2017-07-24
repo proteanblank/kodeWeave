@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
+    <title>Sass Compile Test</title>
     <style>
     html, body, textarea {
       margin: 0;
@@ -19,19 +20,20 @@
   </head>
   <body>
     <textarea id="code"></textarea>
-    
-    <script src="lib/sass.min.js"></script>
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/sass.js/0.10.5/sass.min.js"></script>-->
+
+    <script src="lib/sass.js"></script>
     <script>
+      // when loading the worker api via script[src$="/sass.js"] it's a safe bet the worker
+      // will be found relative to that file. In any other case you'd have to define where
+      // the worker is located before initializing Sass:
+      // Sass.setWorkerUrl('dist/sass.worker.js');
+      var sass = new Sass();
+      
       var code = document.getElementById('code'),
-          //sass = new Sass('https://cdnjs.cloudflare.com/ajax/libs/sass.js/0.10.5/sass.worker.min.js'),
-          sass = new Sass('lib/sass.worker.js'),
           scss = "$someVar: 123px; .some-selector { width: $someVar; }";
 
-          //Sass.setWorkerUrl('lib/sass.worker.js');
-
       sass.compile(scss, function(result) {
-        code.value = result;
+        code.value = result.text;
         console.log(result);
       });
     </script>
