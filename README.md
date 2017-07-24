@@ -68,12 +68,6 @@ To-Do
  - Incorporate [WebDGap](https://mikethedj4.github.io/WebDGap/) for desktop exportation
  - Release v1.1.29 for desktops
 
-### Android
-
- - Save code snippets for offline use
- - Export file as zip
- - Release v1.1.29 for Android
-
 [Export Your Web App for Desktop or Mobile!](https://mikethedj4.github.io/WebDGap/)
 -------------
 
