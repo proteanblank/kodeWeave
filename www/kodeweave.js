@@ -1,4 +1,4 @@
-function saveFile(fileName, fileData) {
+function saveFile(fileData, fileName) {
   // Get access to the file system
   window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSystem) {
     // Create the file.
@@ -23,21 +23,27 @@ function saveFile(fileName, fileData) {
 }
 
 document.addEventListener("deviceready", onDeviceReady, false);
-app.initialize();
 function onDeviceReady() {
   // Device is ready
-  app.requestInterstitial(true);
-  // Show Ad After 3 Minutes
-  setTimeout(function() {
-    app.requestInterstitial(true);
-  }, 180000);
 }
 
-var timeout, delay, server, selected_text, str, mynum,
-    start_cursor, cursorLine, cursorCh, cssSelected, 
-    hasMD, hasHTML, hasCSS, hasJS, editEmbed, darkUI, 
-    seeThrough, hasResult, htmlContent,
-    yourHTML, yourCSS, yourJS,
+var timeout, delay, selected_text, str, mynum, 
+    start_cursor, cursorLine, cursorCh, blob,
+    jsContent, htmlContent, cssContent, cssSelected,
+    showEditors, hasMD, hasHTML, hasCSS, hasJS,
+    editEmbed, darkUI, seeThrough, hasResult, offset, tsCode, tsCompileCode, sass = new Sass(),
+    activeEditor = document.querySelector("[data-action=activeEditor]"),
+    checkStatus = function() {
+      if (navigator.onLine) {
+        // user is online
+        if ($(".checkStatus").hasClass("hide")) {
+          $(".checkStatus").removeClass("hide");
+        }
+      } else {
+        // user is offline
+        $(".checkStatus").addClass("hide");
+      }
+    },
     welcomeDialog = function() {
       // Use localStorage for Welcome dialog
       // If user closed it prevent show upon every reload
@@ -53,19 +59,6 @@ var timeout, delay, server, selected_text, str, mynum,
         localStorage.setItem("closedWelcome", $(this).prop("checked"));
       });
     },
-    checkStatus = function() {
-      if (navigator.onLine) {
-        // user is online
-        if ($(".checkStatus").hasClass("hide")) {
-          $(".checkStatus").removeClass("hide");
-        }
-        document.getElementById("charmenu").style.left = "";
-      } else {
-        // user is offline
-        $(".checkStatus").addClass("hide");
-        document.getElementById("charmenu").style.left = "153px";
-      }
-    },
     loadgist = function(gistid) {
       $.ajax({
         url: "https://api.github.com/gists/" + gistid,
@@ -77,8 +70,13 @@ var timeout, delay, server, selected_text, str, mynum,
         var jadeVal        = gistdata.data.files["index.jade"];
         var cssVal         = gistdata.data.files["index.css"];
         var stylusVal      = gistdata.data.files["index.styl"];
+        var lessVal        = gistdata.data.files["index.less"];
+        var scssVal        = gistdata.data.files["index.scss"];
+        var sassVal        = gistdata.data.files["index.sass"];
         var jsVal          = gistdata.data.files["index.js"];
         var coffeeVal      = gistdata.data.files["index.coffee"];
+        var typescriptVal  = gistdata.data.files["index.ts"];
+        var babelVal       = gistdata.data.files["index.jsx"];
         var mdVal      = gistdata.data.files["README.md"];
         var settings   = gistdata.data.files["settings.json"].content;
         var libraries  = gistdata.data.files["libraries.json"].content;
@@ -114,40 +112,88 @@ var timeout, delay, server, selected_text, str, mynum,
         if (mdVal) {
           mdEditor.setValue(mdVal.content);
         }
-        if (!mdVal) {
-          mdEditor.setValue("");
-        }
         if (htmlVal) {
           htmlEditor.setValue(htmlVal.content);
-          $("#html-preprocessor").val("none").change();
+          $("#html-preprocessor").val("none").trigger("change");
         }
         if (jadeVal) {
-          htmlEditor.setValue("");
-          $(".htmlSetting").trigger("click");
+          htmlEditor.setValue(jadeVal.content);
+          $("#html-preprocessor").val("jade").trigger("change");
         }
         if (!htmlVal && !jadeVal) {
           htmlEditor.setValue("");
         }
+        if (!htmlVal && !jadeVal && mdVal) {
+          var selectEditor = document.getElementById("selectEditor");
+          if (!selectEditor.checked) {
+            $("#selectEditor").trigger("click");
+            // Change grid to only show markdown
+            $("#splitContainer").jqxSplitter({
+              height: "auto",
+              width: "100%",
+              orientation: "vertical",
+              showSplitBar: true,
+              panels: [{ size: "50%",collapsible:false },
+                       { size: "50%" }]
+            });
+            $("#leftSplitter").jqxSplitter({
+              width: "100%",
+              height: "100%",
+              orientation: "horizontal",
+              showSplitBar: true,
+              panels: [{ size: "50%",collapsible:false },
+                       { size: "0%" }]
+            }).jqxSplitter("collapse");
+            $("#rightSplitter").jqxSplitter({
+              width: "100%",
+              height: "100%",
+              orientation: "horizontal",
+              showSplitBar: true,
+              panels: [{ size: "0%",collapsible:false },
+                       { size: "50%" }]
+            });
+          }
+        }
         if (cssVal) {
           cssEditor.setValue(cssVal.content);
-          $("#css-preprocessor").val("none").change();
+          $("#css-preprocessor").val("none").trigger("change");
         }
         if (stylusVal) {
-          cssEditor.setValue("");
-          $(".htmlSetting").trigger("click");
+          cssEditor.setValue(stylusVal.content);
+          $("#css-preprocessor").val("stylus").trigger("change");
         }
-        if (!cssVal && !stylusVal) {
+        if (lessVal) {
+          cssEditor.setValue(lessVal.content);
+          $("#css-preprocessor").val("less").trigger("change");
+        }
+        if (scssVal) {
+          cssEditor.setValue(scssVal.content);
+          $("#css-preprocessor").val("scss").trigger("change");
+        }
+        if (sassVal) {
+          cssEditor.setValue(sassVal.content);
+          $("#css-preprocessor").val("sass").trigger("change");
+        }
+        if (!cssVal && !stylusVal && !lessVal && !scssVal && !sassVal) {
           cssEditor.setValue("");
         }
         if (jsVal) {
           jsEditor.setValue(jsVal.content);
-          $("#js-preprocessor").val("none").change();
+          $("#js-preprocessor").val("none").trigger("change");
         }
         if (coffeeVal) {
-          jsEditor.setValue("");
-          $(".htmlSetting").trigger("click");
+          jsEditor.setValue(coffeeVal.content);
+          $("#js-preprocessor").val("coffeescript").trigger("change");
         }
-        if (!jsVal && !coffeeVal) {
+        if (typescriptVal) {
+          jsEditor.setValue(typescriptVal.content);
+          $("#js-preprocessor").val("typescript").trigger("change");
+        }
+        if (babelVal) {
+          jsEditor.setValue(babelVal.content);
+          $("#js-preprocessor").val("babel").trigger("change");
+        }
+        if (!jsVal && !coffeeVal && !typescriptVal && !babelVal) {
           jsEditor.setValue("");
         }
 
@@ -157,80 +203,228 @@ var timeout, delay, server, selected_text, str, mynum,
           cssEditor.setOption("paletteHints", "true");
           jsEditor.setOption("paletteHints", "true");
         }, 300);
-        
-        $(".preloader").remove();
       }).error(function(e) {
         // ajax error
         console.warn("Error: Could not load weave!", e);
         alertify.error("Error: Could not load weave!");
       });
     },
+    renderYourHTML = function() {
+      var htmlSelected  = $("#html-preprocessor option:selected").val();
+
+      if ( htmlSelected == "none") {
+        yourHTML = htmlEditor.getValue();
+      } else if ( htmlSelected == "jade") {
+        var options = {
+            pretty: true
+        };
+        yourHTML = jade.render(htmlEditor.getValue(), options);
+      }
+    },
+    renderYourCSS = function() {
+      cssSelected = $("#css-preprocessor option:selected").val();
+
+      if ( cssSelected == "none") {
+        yourCSS = cssEditor.getValue();
+      } else if ( cssSelected == "stylus") {
+        stylus(cssEditor.getValue()).render(function(err, out) {
+          if(err !== null) {
+            console.error("something went wrong");
+          } else {
+            yourCSS = out;
+          }
+        });
+      } else if ( cssSelected == "less") {
+        less.render(cssEditor.getValue(), function (e, output) {
+          yourCSS = output.css;
+        });
+      } else if (cssSelected == "scss" || cssSelected == "sass") {
+        var cssVal = cssEditor.getValue();
+
+        sass.compile(cssVal, function(result) {
+          yourCSS = result.text;
+        });
+      }
+    },
+    renderYourJS = function() {
+      var jsSelected = $("#js-preprocessor option:selected").val();
+      
+      if ( jsSelected == "none") {
+        yourJS = jsEditor.getValue();
+      } else if ( jsSelected == "coffeescript") {
+        yourJS = CoffeeScript.compile(jsEditor.getValue(), { bare: true });
+      } else if ( jsSelected == "typescript") {
+        yourJS = jsEditor.getValue();
+      } else if ( jsSelected == "babel") {
+        var result = Babel.transform(jsEditor.getValue(), {
+          presets: ['latest', 'stage-2', 'react']
+        });
+        yourJS = result.code;
+      }
+    },
     singleFileDownload = function() {
       document.querySelector(".savehtml").onclick = function() {
-        app.requestInterstitial(true);
-        saveFile("source.html", htmlEditor.getValue());
+        var htmlSelected = $("#html-preprocessor option:selected").val();
+
+        if ( htmlSelected == "none") {
+          yourHTML = htmlEditor.getValue();
+          blob = new Blob([ yourHTML ], {type: "text/html"});
+          saveFile(blob, "source.html");
+        } else if ( htmlSelected == "jade") {
+          blob = new Blob([ htmlEditor.getValue() ], {type: "text/x-jade"});
+          saveFile(blob, "source.jade");
+        }
+        
+        // Ask to support open source software.
+        if (navigator.onLine) {
+          alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\"><img src=\"assets/model-2.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
+        }
       };
       document.querySelector(".savecss").onclick = function() {
-        app.requestInterstitial(true);
-        saveFile("source.css", cssEditor.getValue());
+        cssSelected = $("#css-preprocessor option:selected").val();
+
+        if ( cssSelected == "none") {
+          yourCSS = cssEditor.getValue();
+          blob = new Blob([ yourCSS ], {type: "css"});
+          saveFile(blob, "source.css");
+        } else if ( cssSelected == "stylus") {
+          blob = new Blob([ cssEditor.getValue() ], {type: "text/x-styl"});
+          saveFile(blob, "source.styl");
+        } else if ( cssSelected == "less") {
+          blob = new Blob([ cssEditor.getValue() ], {type: "text/x-less"});
+          saveFile(blob, "source.less");
+        } else if ( cssSelected == "scss") {
+          blob = new Blob([ cssEditor.getValue() ], {type: "text/x-scss"});
+          saveFile(blob, "source.scss");
+        } else if ( cssSelected == "sass") {
+          blob = new Blob([ cssEditor.getValue() ], {type: "text/x-sass"});
+          saveFile(blob, "source.sass");
+        }
+        
+        // Ask to support open source software.
+        if (navigator.onLine) {
+          alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\"><img src=\"assets/model-2.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
+        }
       };
       document.querySelector(".savejs").onclick = function() {
-        app.requestInterstitial(true);
-        saveFile("source.js", jsEditor.getValue());
+        var jsSelected = $("#js-preprocessor option:selected").val();
+
+        if ( jsSelected == "none") {
+          blob = new Blob([ jsEditor.getValue() ], {type: "text/javascript"});
+          saveFile(blob, "source.js");
+        } else if ( jsSelected == "coffeescript") {
+          blob = new Blob([ jsEditor.getValue() ], {type: "text/x-coffeescript"});
+          saveFile(blob, "source.coffee");
+        } else if ( jsSelected == "typescript") {
+          blob = new Blob([ jsEditor.getValue() ], {type: "text/typescript"});
+          saveFile(blob, "source.ts");
+        } else if ( jsSelected == "babel") {
+          blob = new Blob([ jsEditor.getValue() ], {type: "text/javascript"});
+          saveFile(blob, "source.jsx");
+        }
+        
+        // Ask to support open source software.
+        if (navigator.onLine) {
+          alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\"><img src=\"assets/model-2.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
+        }
       };
       document.querySelector(".savemd").onclick = function() {
-	    app.requestInterstitial(true);
         var blob = new Blob([ mdEditor.getValue() ], {type: "text/x-markdown"});
-        saveAs(blob, "source.md");
+        saveFile(blob, "source.md");
+        
+        // Ask to support open source software.
+        if (navigator.onLine) {
+          alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\"><img src=\"assets/model-2.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
+        }
       };
     },
-    applyLowercase = function() {
+    applyLowercase = function() {      
+      if ($(".editoractionlist").is(':visible')) {
+        $(".editoractionlist").addClass('hide');
+      }
       if ( activeEditor.value === "htmlEditor" ) {
         selected_text = htmlEditor.getSelection().toLowerCase();  // Need to grab the Active Selection
 
-        htmlEditor.replaceSelection(selected_text);
-        htmlEditor.focus();
+        htmlEditor.replaceSelection(selected_text).focus();
       } else if ( activeEditor.value === "cssEditor" ) {
         selected_text = cssEditor.getSelection().toLowerCase();  // Need to grab the Active Selection
 
-        cssEditor.replaceSelection(selected_text);
-        cssEditor.focus();
+        cssEditor.replaceSelection(selected_text).focus();
       } else if ( activeEditor.value === "jsEditor" ) {
         selected_text = jsEditor.getSelection().toLowerCase();  // Need to grab the Active Selection
 
-        jsEditor.replaceSelection(selected_text);
-        jsEditor.focus();
+        jsEditor.replaceSelection(selected_text).focus();
       } else if ( activeEditor.value === "mdEditor" ) {
         selected_text = mdEditor.getSelection().toLowerCase();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection(selected_text);
-        mdEditor.focus();
+        mdEditor.replaceSelection(selected_text).focus();
       }
     },
-    applyUppercase = function() {
+    applyUppercase = function() {      
+      if ($(".editoractionlist").is(':visible')) {
+        $(".editoractionlist").addClass('hide');
+      }
       if ( activeEditor.value === "htmlEditor" ) {
         selected_text = htmlEditor.getSelection().toUpperCase();  // Need to grab the Active Selection
 
-        htmlEditor.replaceSelection(selected_text);
-        htmlEditor.focus();
+        htmlEditor.replaceSelection(selected_text).focus();
       } else if ( activeEditor.value === "cssEditor" ) {
         selected_text = cssEditor.getSelection().toUpperCase();  // Need to grab the Active Selection
 
-        cssEditor.replaceSelection(selected_text);
-        cssEditor.focus();
+        cssEditor.replaceSelection(selected_text).focus();
       } else if ( activeEditor.value === "jsEditor" ) {
         selected_text = jsEditor.getSelection().toUpperCase();  // Need to grab the Active Selection
 
-        jsEditor.replaceSelection(selected_text);
-        jsEditor.focus();
+        jsEditor.replaceSelection(selected_text).focus();
       } else if ( activeEditor.value === "mdEditor" ) {
         selected_text = mdEditor.getSelection().toUpperCase();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection(selected_text);
-        mdEditor.focus();
+        mdEditor.replaceSelection(selected_text).focus();
       }
     },
-    applyMinify = function() {
+    applyDuplication = function() {
+      if ( activeEditor.value === "htmlEditor" ) {
+        selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
+        
+        if (!selected_text) {
+          var selectedText = htmlEditor.getLine(htmlEditor.getCursor().line)
+          htmlEditor.replaceSelection('\n' + selectedText).focus();
+        } else {
+          htmlEditor.replaceSelection(selected_text + '\n' + selected_text).focus();
+        }
+      } else if ( activeEditor.value === "cssEditor" ) {
+        selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
+
+        if (!selected_text) {
+          var selectedText = cssEditor.getLine(cssEditor.getCursor().line)
+          cssEditor.replaceSelection('\n' + selectedText).focus();
+        } else {
+          cssEditor.replaceSelection(selected_text + '\n' + selected_text).focus();
+        }
+      } else if ( activeEditor.value === "jsEditor" ) {
+        selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
+
+        if (!selected_text) {
+          var selectedText = jsEditor.getLine(jsEditor.getCursor().line)
+          jsEditor.replaceSelection('\n' + selectedText).focus();
+        } else {
+          jsEditor.replaceSelection(selected_text + '\n' + selected_text).focus();
+        }
+      } else if ( activeEditor.value === "mdEditor" ) {
+        selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
+
+        if (!selected_text) {
+          var selectedText = mdEditor.getLine(mdEditor.getCursor().line)
+          mdEditor.replaceSelection('\n' + selectedText).focus();
+        } else {
+          mdEditor.replaceSelection(selected_text + '\n' + selected_text).focus();
+        }
+      }
+    },
+    applyMinify = function() {      
+      if ($(".editoractionlist").is(':visible')) {
+        $(".editoractionlist").addClass('hide');
+      }
       if ( activeEditor.value === "htmlEditor" ) {
         htmlEditor.setValue(htmlEditor.getValue().replace(/\<\!--\s*?[^\s?\[][\s\S]*?--\>/g,'').replace(/\>\s*\</g,'><'));
         $("input[name=menubar].active").trigger("click");
@@ -240,7 +434,10 @@ var timeout, delay, server, selected_text, str, mynum,
         jsEditor.setValue( jsEditor.getValue().replace(/\/\*[\s\S]*?\*\/|\/\/.*\n|\s{2,}|\n|\t|\v|\s(?=function\(.*?\))|\s(?=\=)|\s(?=\{)/g,"").replace(/\s?function\s?\(/g,"function(").replace(/\s?\{\s?/g,"{").replace(/\s?\}\s?/g,"}").replace(/\,\s?/g,",").replace(/if\s?/g,"if") );
       }
     },
-    applyBeautify = function() {
+    applyBeautify = function() {      
+      if ($(".editoractionlist").is(':visible')) {
+        $(".editoractionlist").addClass('hide');
+      }
       if ( activeEditor.value === "htmlEditor" ) {
         beautifyHTML();
       } else if ( activeEditor.value === "cssEditor" ) {
@@ -333,14 +530,13 @@ var timeout, delay, server, selected_text, str, mynum,
         // }
 
         applyBeautify();
-
-        $("input[name=menubar].active").trigger("click");
+        $(".editoractionlist").addClass('hide');
       };
 
       // Minify Code
       document.querySelector("[data-action=minify]").onclick = function() {
         applyMinify();
-        $("input[name=menubar].active").trigger("click");
+        $(".editoractionlist").addClass('hide');
       };
 
       // Go To Line
@@ -354,7 +550,6 @@ var timeout, delay, server, selected_text, str, mynum,
         } else if ( activeEditor.value === "mdEditor" ) {
           mdEditor.execCommand("gotoLine");
         }
-
         $("input[name=menubar].active").trigger("click");
       };
 
@@ -369,20 +564,19 @@ var timeout, delay, server, selected_text, str, mynum,
         } else if ( activeEditor.value === "mdEditor" ) {
           mdEditor.execCommand("emmet.toggle_comment");
         }
-
         $("input[name=menubar].active").trigger("click");
       };
 
       // Make text selection lowercase
       document.querySelector("[data-action=lowercase]").onclick = function() {
         applyLowercase();
-        $("input[name=menubar].active").trigger("click");
+        $(".editoractionlist").addClass('hide');
       };
 
       // Make text selection uppercase
       document.querySelector("[data-action=uppercase]").onclick = function() {
         applyUppercase();
-        $("input[name=menubar].active").trigger("click");
+        $(".editoractionlist").addClass('hide');
       };
 
       document.querySelector("[data-action=search]").onclick = function() {
@@ -442,200 +636,12 @@ var timeout, delay, server, selected_text, str, mynum,
         localStorage.removeItem("saveDesc");
         // localStorage.removeItem("saveAuthor");
         // localStorage.removeItem("gridSetting");
-        location.reload(true);
-      };
-    },
-    appDemos = function() {
-      var clearPreview = function() {
-        var previewFrame = document.getElementById("preview");
-        var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
-        preview.open();
-        preview.write("");
-        preview.close();
-      };
-      $(".adddemos-tablets a").click(function() {
-        $("#jquery").trigger("keyup");
-        app.requestInterstitial(true);
-      });
-      document.querySelector("[data-action=alphabetizer]").onclick = function() {
-        clearPreview();
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("Alphabetizer").trigger("change");
-        htmlEditor.setValue("<div class=\"grid\">\n  <div class=\"grid__col--12\">\n    <button class=\"btn--default\" data-action=\"alphabetize\">Alphabetize</button>\n    <textarea class=\"form__input\" data-action=\"input-list\" rows=\"7\" placeholder=\"Alphabetize your text here...\">China\nIndia\nUnited States of America\nIndonesia\nBrazil\nPakistan\nNigeria\nBangladesh\nRussia\nJapan\nMexico\nPhilippines\nEthiopia\nVietnam\nEgypt\nGermany\nIran\nTurkey\nDemocratic Republic of the Congo\nFrance</textarea>\n  </div>\n</div>");
-        cssEditor.setValue("");
-        jsEditor.setValue("var txt = document.querySelector(\"[data-action=input-list]\")\n\ndocument.querySelector(\"[data-action=alphabetize]\").addEventListener(\"click\", function() {\n  txt.value = (txt.value.split(\"\\n\").sort(caseInsensitive).join(\"\\n\"))\n\n  function caseInsensitive(a, b) {\n    return a.toLowerCase().localeCompare(b.toLowerCase())\n  }\n})");
-        $(".hide-demos, #polyui").trigger("click");
-      };
-      document.querySelector("[data-action=angular]").onclick = function() {
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("Angular JS Demo").trigger("change");
-        htmlEditor.setValue("<div class=\"page-wrap\" ng-app>\n  <h1 class=\"headline\">Simple content toggle with AngularJS</h1>\n  <p>\n    Choose what to display:\n    <select class=\"content-select\" ng-model=\"selection\">\n      <option value=\"content1\">Content #1</option>\n      <option value=\"content2\">Content #2</option>\n    </select>\n  </p>\n\n  <div class=\"container\">\n    <article ng-show=\"selection == 'content1'\">\n      <h2 class=\"h2\">Content #1</h2>\n      <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</p>\n    </article>\n    <article ng-show=\"selection == 'content2'\">\n      <h2 class=\"h2\">Content #2</h2>\n      <p>Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>\n    </article>\n  </div>\n</div>");
-        cssEditor.setValue("body {\n  padding: 3em 2em;\n  font-size: 1em;\n  line-height: 1;\n}\n\n/* Pen specific CSS */\n.page-wrap {\n  margin: 0 auto;\n  max-width: 700px;\n}\n\n.headline {\n  margin: 0 0 .7em 0;\n  font-size: 1.7em;\n  font-weight: bold;\n}\n\n.content-select {\n  margin: 0 0 0 1em;\n}\n\narticle {\n  margin: 3em 0 0 0;\n}\narticle p {\n  margin: 0 0 .5em 0;\n  line-height: 1.3;\n}\narticle .h2 {\n  margin: 0 0 .5em 0;\n  font-size: 1.2em;\n}");
-        jsEditor.setValue("");
-        $(".hide-demos, #normalize, #angular").trigger("click");
-      };
-      document.querySelector("[data-action=applicator]").onclick = function() {
-        clearPreview();
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("Code Applicator").trigger("change");
-        htmlEditor.setValue("<textarea id=\"addcode\" placeholder=\"Encode here...\"></textarea>\n<textarea id=\"encode\" readonly=\"\" placeholder=\"Encoded code goes here...\">#decode Preview code here.</textarea>");
-        cssEditor.setValue("body {\n  margin: 0;\n}\n\n::-webkit-input-placeholder {\n  color: #555;\n}\n\n:-moz-placeholder {\n  color: #555;\n}\n\n::-moz-placeholder {\n  color: #555;\n}\n\n:-ms-input-placeholder {\n  color: #555;\n}\n\n#addcode, #encode, #decode {\n  position: absolute;\n  font-family: monospace;\n  line-height: 1.4em;\n  font-size: 1em;\n  overflow: auto;\n  resize: none;\n  margin: 0;\n  padding: 0;\n  border: 0;\n}\n\n#encode, #decode {\n  left: 0;\n  width: 50%;\n  height: 50%;\n  background-color: #fff;\n}\n\n#addcode {\n  top: 0;\n  right: 0;\n  bottom: 0;\n  margin: 0;\n  width: 50%;\n  height: 100%;\n  min-height: 1.4em;\n  border: 0;\n  border-radius: 0;\n  resize: none;\n  color: #ccc;\n  background-color: #111;\n}\n\n#encode {\n  top: 0;\n}\n\n#decode {\n  bottom: 0;\n}\n");
-        jsEditor.setValue("document.querySelector('#addcode').onkeyup = function() {\n  document.querySelector('#encode').textContent = this.value;\n  document.querySelector('#encode').textContent = document.querySelector('#encode').innerHTML;\n  if (this.value === '') {\n    document.querySelector('#decode').innerHTML = 'Preview code here.';\n  } else {\n    document.querySelector('#decode').innerHTML = this.value;\n  }\n  return false;\n};\n\ndocument.querySelector('#encode').onclick = function() {\n  this.select();\n  return false;\n};");
-        $(".hide-demos").trigger("click");
-      };
-      document.querySelector("[data-action=charactermap]").onclick = function() {
-        clearPreview();
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("Character Map").trigger("change");
-        htmlEditor.setValue("<iframe src=\"http://dev.w3.org/html5/html-author/charref\"></iframe>");
-        cssEditor.setValue("html, body {\n  margin: 0;\n  height: 100%;\n}\niframe {\n  width: 100%;\n  height: calc(100% - 4px);\n  border: 0;\n}");
-        jsEditor.setValue("");
-        $(".hide-demos").trigger("click");
-      };
-      document.querySelector("[data-action=codeeditor]").onclick = function() {
-        clearPreview();
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("Code Editor").trigger("change");
-        htmlEditor.setValue("<textarea id=\"code\"><!doctype html>\n<html>\n  <head>\n    <meta charset=utf-8>\n    <title>HTML5 canvas demo</title>\n    <style>\n      p {\n        font: 12px Verdana, sans-serif;\n        color: #935033;\n      }\n    </style>\n  </head>\n  <body>\n    <p>Canvas pane goes here:</p>\n    <canvas id=\"pane\" width=\"300\" height=\"200\"></canvas>\n\n    <script>\n      var canvas = document.getElementById(\"pane\")\n      var context = canvas.getContext(\"2d\")\n\n      context.fillStyle = \"rgb(250,0,0)\"\n      context.fillRect(10, 10, 55, 50)\n\n      context.fillStyle = \"rgba(0, 0, 250, 0.5)\"\n      context.fillRect(30, 30, 55, 50)\n    </script>\n  </body>\n</html></textarea>\n\n<iframe id=\"preview\"></iframe>");
-        cssEditor.setValue(".CodeMirror {\n  float: left;\n  width: 50%;\n  border: 1px solid #000;\n}\n\niframe {\n  width: 49%;\n  float: left;\n  height: 300px;\n  border: 1px solid #000;\n  border-left: 0;\n}");
-        jsEditor.setValue("var delay\n\n// Initialize CodeMirror editor\nvar editor = CodeMirror.fromTextArea(document.getElementById(\"code\"), {\n  mode: \"text/html\",\n  tabMode: \"indent\",\n  styleActiveLine: true,\n  lineNumbers: true,\n  lineWrapping: true,\n  autoCloseTags: true,\n  foldGutter: true,\n  dragDrop: true,\n  lint: true,\n  gutters: [\"CodeMirror-lint-markers\", \"CodeMirror-linenumbers\", \"CodeMirror-foldgutter\"]\n})\nInlet(editor)\nemmetCodeMirror(editor)\n\n// Live preview\neditor.on(\"change\", function() {\n  clearTimeout(delay)\n  delay = setTimeout(updatePreview, 300)\n})\n\nfunction updatePreview() {\n  var previewFrame = document.getElementById(\"preview\")\n  var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document\n  preview.open()\n  preview.write(editor.getValue())\n  preview.close()\n}\nsetTimeout(updatePreview, 300)");
-        $(".hide-demos, #codemirror").trigger("click");
-      };
-      document.querySelector("[data-action=convertforvalues]").onclick = function() {
-        clearPreview();
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("Convert for Values").trigger("change");
-        htmlEditor.setValue("<textarea class=\"editor\" placeholder=\"Code with multiple lines here...\"></textarea>\n<textarea class=\"preview\" placeholder=\"Generated result here...\"></textarea>");
-        cssEditor.setValue("body {\n  margin: 0;\n  background: #333;\n}\n\n.editor, .preview {\n  position: absolute;\n  width: 50%;\n  height: 100%;\n  padding: 0;\n  font-family: monospace;\n  min-height: 1.4em;\n  line-height: 1.4em;\n  font-size: 1em;\n  border: 0;\n  border-radius: 0;\n  resize: none;\n}\n\n.editor {\n  left: 0;\n  color: #0b0;\n  background-color: #000;\n}\n\n::-webkit-input-placeholder { /* WebKit browsers */\n  color: #0f6;\n}\n:-moz-placeholder { /* Mozilla Firefox 4 to 18 */\n  color: #0f6;\n}\n::-moz-placeholder { /* Mozilla Firefox 19+ */\n  color: #0f6;\n}\n:-ms-input-placeholder { /* Internet Explorer 10+ */\n  color: #0f6;\n}\n\n.preview {\n  right: 0;\n  background-color: #fff;\n}");
-        jsEditor.setValue("$(document).ready(function() {\n  var editor = $(\".editor\"),\n      preview = $(\".preview\");\n  \n  // Remove new line and insert new line showing the text in value\n  editor.keyup(function() {\n    preview.val( this.value.replace(/\"/g,'\\\\\"').replace(/\\n/g,\"\\\\n\") )\n  }).click(function() {\n    this.select()\n  })\n  \n  // Easily Select Converted Code\n  preview.click(function() {\n    this.select()\n  })\n})");
-        $(".hide-demos, #normalize, #jquery").trigger("click");
-      };
-      document.querySelector("[data-action=dateclock]").onclick = function() {
-        clearPreview();
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("Date and Time").trigger("change");
-        htmlEditor.setValue("<span data-action=\"leftdate\" class=\"date\"></span><span data-action=\"rightdate\" class=\"date fr\"></span>\n<div data-action=\"clock\" class=\"clock\"></div>");
-        cssEditor.setValue(".date {\n  font-family: arial;\n}\n.fr {\n  float: right;\n}\n.clock {\n  font: bold 1.5em sans;\n  text-align: center;\n}");
-        jsEditor.setValue("// Define a function to display the current time\nfunction displayTime() {\n  var now = new Date();\n  document.querySelector('[data-action=clock]').innerHTML =  now.toLocaleTimeString();\n  setTimeout(displayTime, 1000);\n}\ndisplayTime();\n\n// Date\nvar currentTime = new Date();\nvar month = currentTime.getMonth() + 1;\nvar date = currentTime.getDate();\nvar year = currentTime.getFullYear();\ndocument.querySelector('[data-action=leftdate]').innerHTML = month + '/' + date + '/' + year;\n\nvar today = new Date();\nif (year < 1000)\n  year += 1900;\nvar day = today.getDay();\nvar monthname = today.getMonth();\nif (date < 10)\n  date = '0' + date;\nvar dayarray = new Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');\nvar montharray = new Array('January','February','March','April','May','June','July','August','September','October','November','December');\ndocument.querySelector('[data-action=rightdate]').innerHTML = dayarray[day] + ', ' + montharray[monthname] + ' ' + date + ', ' + year;");
-        $(".hide-demos").trigger("click");
-      };
-      document.querySelector("[data-action=detectorientation]").onclick = function() {
-        clearPreview();
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("Detect Orientation").trigger("change");
-        htmlEditor.setValue("<h1 class=\"portrait\">Portrait</h1>\n<h1 class=\"landscape\">Landscape</h1>\n<footer class=\"foot\"></footer>");
-        cssEditor.setValue("body {\n  font: 26px arial;\n}\n.portrait, .landscape, .foot {\n  text-align: center;\n}\n.foot {\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  padding: 26px;\n}");
-        jsEditor.setValue("var detectOrientation = function() {\n  if ( window.innerWidth > window.innerHeight ) {\n    document.querySelector(\".landscape\").style.display = \"block\"\n    document.querySelector(\".portrait\").style.display = \"none\"\n  } else if ( window.innerWidth < window.innerHeight ) {\n    document.querySelector(\".landscape\").style.display = \"none\"\n    document.querySelector(\".portrait\").style.display = \"block\"\n  }\n  document.querySelector(\".foot\").innerHTML =  window.innerWidth + \"px, \" + window.innerHeight + \"px\"\n}\n\nwindow.addEventListener(\"resize\", function() {\n  detectOrientation()\n})\n\ndetectOrientation()");
-        $(".hide-demos").trigger("click");
-      };
-      document.querySelector("[data-action=osdisplay]").onclick = function() {
-        clearPreview();
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("Detect Operating System").trigger("change");
-        htmlEditor.setValue("<div data-output=\"os\"></div>");
-        cssEditor.setValue("");
-        jsEditor.setValue("var yourOS = document.querySelector(\"[data-output=os]\");\n\ndocument.addEventListener(\"DOMContentLoaded\", function() {\n  yourOS.innerHTML = \"<strong>Operating System</strong>: \" + navigator.platform;\n});");
-        $(".hide-demos").trigger("click");
-      };
-      document.querySelector("[data-action=markdowneditor]").onclick = function() {
-        clearPreview();
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("Live Markdown Editor").trigger("change");
-        htmlEditor.setValue("<div class=\"editor-and-preview-container\">\n  <div class=\"editor-container\">Markdown Editor</div>\n  <div class=\"preview-container\">Preview</div>\n</div>\n<div class=\"editor-and-preview-container\">\n  <div class=\"editor-container\">\n    <textarea id=\"editor\">Welcome!\n===================\n\n![Placer text](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAN1wAADdcBQiibeAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAABOdSURBVHic7Z15lFTVtYe/36nqAZp5kBkbBREwPhNnQYWoKPLENoIoiOIYoyvGaMAsY5JCiRrHRNEoRmOMcQIRjVFARJOAUVGXkZCYFwdiDA5hULCB7q6++/3RdNNzDXeo6tZvLRZ969579q5zfrXPufdMop1hIPYaMwTHSIgN8RylIjYY0Ru5nqCeSMWgQqQS5EAqB1Ui7UBuI9hG5D4x6d/OaR3E3sW8v7P6sfcEluvvGCTKtQN+sb0OHYBnoz250UIHIu2D1BkJEEjsLOR6xynO1R03ObcVaY3JrXZoFc5bpVUPr8/l9/dLmxOAlY4thvKxnpggp+NAe9UVZLOFGKgAmp6T/mHoGedYQqduL+iZ2ypylzuZ0yYEYKNGFbI1Pt5T7BRJJyJ1abYgcyOA+uc/M7knnLlH2RZbptfmV+Uqz9IlrwVgA/cb5mHnyDETqU/KQs69AOqf+9jQI85pvp6/e21ucjA1eSkA6z9qjDldjjQRpF2Z36YEUO+YVZL7KSvuekp51ojMGwEYiH4jyszpR6D9ms3cNiuAun+vS7GrWH77k/kihLwQgPXda4JJVyPt36Qg25cAAAfSq0JXavm8pdHndkNyKgDrP3y4ed5NoIktFnL7FEDtv+VC39WyW/8afe7XkBMBWP/+HUkWX43cxSbFWy3k9iwAhElVyN3iuiihBbdsj7osXNQGrc8eR1NVtAZ0KRCP2n4eUgA229tqb1ZN+N7XozYeWQSw0tJiykkAs8C52l+BpfqVt/8IUP+cId3t4p2/q98ltkVRLpFEAOs+cF+2eq9idnlUNtsoAs73qstfshMuHxWFwdALw7oPOg2nF4FIvlD7wL7ied7q5MTZZ4ZtKbQqwCBGjwE3gi5pGiZ3hcFIq4DCQujZHXbrVfP/i69B0sunKqCpHcdNbv+Os5VIeGGUUygCMEYV0n3zb0CnNJ9JIQsgHoeRw+ArI9HQUigdCLsPhH59wO36yjbuNNi8Jb8FICGnx7WleJpeSOwIuqwCb4Vb796dSG56DNP4SB8ydx8I40ajcaPhq6OguDj1PYUF4fsVAGacROfKp21CokzPJLYEmXagArCS3fpQydOIrwWZbov06wOTjkWTjoPhe2Z+fxsRAIDBOCuoWmEnJY7X44lPgko3MAFYt76leN6zoKFBpdksMQdfPxydPgXGHATORzu2oO0IYCf7e5ZcaWWJ8VqcWBdEgoE8BVinvr2prl4ChFf4xUVwxlT0wmI0/yY44hB/hQ9tKgLUYQzzqF5uUxJ9g0jOtwCsR48ukFwCDA/An6bE43DWNLTy92jObBjYP7i0C0J8ESnBCUfC1PHQuSTo1Pf0kt5SK0t085uQLwEYFFKphaHV+aMPRs8uRInZ0Ktn8On7jSCtcfwYdOnp6ILJ6OFr4fTja8QcFMa+JhbZhFuL/CSTdQ4YOEp6PAAc48eBZnEO/eBS9Nu7YM8hgSdfh0J6TOneBV0wZddxhyJ01iR05xUwao/AzBg2zjpsetimPBrLNo3sfwIlPW4CpqS8LguUuBwuOCvcXyiEJgB9+zTo3LHpidJ+6GeXonPLIJ51mTXAoMyzt67J9v6scthKukwDuyRbo63SoRhmnhZK0k0Io/wP2ReOOqgVm4KpR6NbL4NBfYKxacxKTp57Yja3ZiwAK+m+L6a7szGWFj26h//LryXoCFBchC6dkd61QwehO2ahcfsHYVkyu8dOnTso0xszymmDYjzvAaCZ+BYQRb7aNBkSrAB0dhn07ZX+DUWF6PtnoPNOrHm/4Y+e1UktsPPvyujZNjOrHTrdAPaVjO7JlMLCUJNvQJARYMgAmDw+OzdOHod+fA4U+fvuwg72Nm24OpN70haAFZccjemizN3KEJ+ZkBFBlb+ELpnhq2GnA0fi5p4HJWn0YbSaELNtyjVHpnt5WgIw6Ai6k5B6DxsQpQCCamuMPwy+NsJ/OvvsgZt7PnTwVQ3KgzvSrQrSy4GikquBLHpbssAF83gUGSUd0IVTg0tv+GDcVedCsa8fwkhv86a0ntJSCsAKO40Avu3Hm7wlgDaAzp8CPX2/kW3IyFI0a5o//0TCpt24e6rL0ogA3s1AdL0mUY4h8MvwUjjpqFCS1sEj0VnH+0mioyWTN6a6qFUBWKzjBOA4P17kNX7aAE7ospmhvrPQN45Ah2Y/lNLE5KpTf9qqQlv03kA4m5O19baAn2jzv2NhVLhDHwD0rTJfjULhrmrtfMvyLSwsAw7M2nK2hNVBE6Strp3Qt04N1peW6N4ZjUhZlbeIsMPs1OsPb+l8ywIw/Shrq22G7ASgC6dB104B+9IClVXY2//xlYShK1s616wALF58NLCfL6ttgWwiwD7DasJ/RNjS1bCl3F8aMN6m3thsNG8hAniX+bLoh0irgAyvdw7NOqfB0PJQ2VKOPbQ8kKTMcUVznzcRgFE0DDg2EKvZkM9tgMnHwl6lobjSHHb/UtgazBRBgxNt6vVNXuY1jQBxO5e29TQeDT26ovNCGf/SPG9/gC1bHWSK8mLxsxt/2EAABgUYZwRpNWPyNALoO2eEMbizeczw7lwMXsCzwWRnN+4jaBgBYrHjwAIZbtwmSFcA+4+CY8eE60s97NnV8Nb7ISRM3+S28gYvhhpVAe6U4K1mSJQRIB1iMXTZ2dH5tWUb9qunQ0vemRr0XNUJwKAYbFJolvORdAp1+gkwdHD4vuzE7n7S92NfCgtlNiVR19W4KwLE42OBLiFaTo8oA0AqAfTphc6eHI0vAGvewVa8FraVbsmCrkfUHuwSgMeEsC3nHSnKX987Gzr6HKGTLlVJvNsWgoW/fKCT6jr46rcB8kQAefIUcOhXYezBkbliDy+Hfwc26TcFXl1ZOwCDAWDDIrKeR7QggMICNOvc6Nz4z3+xhc9FZw+NtNNv6Qd1ESAW3TNOKvLhVfDMk2FwgJNQW8MMu+1RqExGY28n1egwqBWAs8MitZ4vNCe2gX3RzG9E5oI9+wr2xj8js1eLYDTUCsAUfb9/PtCMADTrvOjmJmwpx375ZDS2GmFwEIAzcKFP9siEKKuAxr16Rx0GYw6IzLzNXwyffR6ZvfoI7WOYHLAHENHohjwjXu+1eHERurRJX0l4/PUdePaV6Ow1wboy7fbBDghgRkOARBkB6i0RowumQb/dorFb7WHzFkTyzN+qG3Eb6YAQV2DIc4p2CmDvPWF6hG/BFyyHd/0N8woCeVbqwGU/4rCNo/59YMyBaN6cYJdvaY2PNmIPLInGVmqGxMEG59X4jyirgOllaHpZdPYAu2MhVFTmR6+nY3cHRFTxpUke5EtorPoLvPhmrr2oQ0ZvB4Sw/NaXNKGiEvvFglx70QCDng7okWtHvgjYr5+Cjzbm2o1GqKcjzOVesiEf6sag+XADPLYi1140g3V0QIQrMqRBOxSA3bkQktF29qRJUf4JoL2x9l1Y+UauvWiJoi/37wkZu3dxzt/4tYYDKnPtRLsm6NVDgqUi/wSQx7+WbNDU8YEtCxsCFQ4Icwzyl+w5EKblyXDLppQ7YFOuvWhAO4sAAJoxEYZmvIprFGx0wIZce9HuiTk064y8qwokNuSfANpfAKhh6CA4JfitFfxgNRFAIcxC/JLm0IyJUBrRaON0MFvnwFuXaz8a0A7bAHUUxNH386gqMK1zwHu59uMLxdBBcHLku8Q3i4e954C/5dqRBrTnCLATnTkRdu+XazeIF8TX1kaAQLcj/ZIUFMTRZdOi2xmlWfQZv7rwA6eaRUH/mkNPGhJlBHjjb/Byjjpq9i6Fb4zNjW3AsDVCViNBWaCrEbUVbNVr2Dd/gM2dB170VY/OnAgDczMiT+JlqJ0a5mlVTrxojigjQEVFzf+PLYHfPB6d3VqKCnDfm56TqsB2lvlOy9X5I4Aoqayq+9N+8Vv4Vw7G6o8oRZNaXMo3NGIF8T/DTgEI1oP+L3Ivcs2Oil1/V1RiP/55bqqCsyZC/wx2G/PPWt130UfQcIWQZ6L0oGUiLIDKRj3hb74FC8JboatFigrRd6ZGNxxOu8p6lwBcvgggQqqajtOz2+6HDz6K3BXtOxQdf2gktjxzdVOTdgkgmXwB+CwSD1ojygjcXLjfvgP7yR05eSGlc0+AvqFP0/g0Xrn5T7UHdQIQVICeCNt6XtHSUqyr34QnglmlOyOKC9HFk0OuCmyRFiTq6r5Gzx/eoyFaTo8of3mt2LJb7oNPop/Iof2GoWPCW6TCQ4/UP24ogOrqpaAPQ7Oeb7S2GHP5Nuzau6LzpR46dxL06hpCwnwULyl5vv5HruF5koj7g7ecAVFGgFSPfCtfgyV/av2aMCgpRheFslDVPZr/zar6HzR9BZXUL8nluJxIq4DUy7HbzffC5ujbxjpwBDp83yCTNGfu3sYfNhGAqHibvHknEDLVaazH/+lW7MYm+RYJOn+S/82ka9OCp/Tgd99t/HkLL6HdTYFYzXfSjTbPvgh/yEF/WffOaGowO5PKvBua+7xZASi5YwXweiCWMyXSNkD6O3LY9b+ErdFPodCk0TDE3+ARg5f18OxmGzMtd0PJWt1xMjTyqRFYnw2bsdsfDM+Xlog5dPBIf2m4lsuyRQGosvIJIJcL2YVPGo3ABjzxHLwe8Qi6rduwZ17O+naD1bEHZ7XYpmu9I9pc+949NNOePzPsJ3fC9orU1wZBshq7/kFfq4ma9H2hFr9oqwJQsnwpEG33WJQPoNlUN+s/we55LHhfmsHmP4m98baPFPRIwUOzWl2aJPVQFFV/h3ybQRwU2W7L9tDv4e9NnqgCxRb/EXv6JT9JbHVeVcodYFMKQBUVbwM/8+NJRuRrI7DBfR527d2QrA7Wn53YqjXYvT4Dr1lCC65MOcQpvcFoFeUJwE8sSh8vnExtlkwbgfV5+3144HfB+bITe/Ut7Prf+t00cq3r3vO2dC5MSwCC7cA3iaKGroiwtvE5/MvuWwzr1gfkDNjr/8Dm/tpvZPGc8a3G7/xbIu3hqNrx+Qpkt2bvV5pEKgCfW7NWJbFr5geyxav9eQ02594GA1WzS8iu08Ir0u7Bymw88vbPLwf7S8ZOZUJFRI9YEEx742/vwCJ/Gz7Zohewuff53jfIxEuuR+9EJvdkJABBBTGbTpjLyjQeqBkmAY0AtrsWwEdZLLNQUYVd/5uanUP8RhFjQ6w6OSXd0F9LxjMS9PnnazHNIKz2wMbNobWumxDU7tzbd2A33JfZPe+txy6+CXvu1SA8MINztCjxQaY3ZjUlRds/fRzs5mzuTUlFBcy7O5SkmxDkI+cra2DJyvRsPrYC+/aN8F5ADUjZdfFFP8xq96ns5ySVfzobeCTldVlgN87DfnQtVPlsEKUiqAiwE5v3EGxqZfDIug+xS27G7lzkv7G3i4fdPnZltjdnLQCBR/mmGcDSbNNolV89iI0/GZY9n/rabAn6pdOWcuzae5qmu20Hds9i7IJrapaODQjBCre9x0wlElkr2desREEVxZoChLPl9TvrsHMvwaaeA2+G0AsXcAQA4OU18Oiymr+3bYdFK7AZP4QHlwS6YLTBq4rrRD1zsa/HpkAGoFvn/r2gaiXScCSQq0la9f7VP8bV/W2NzzW+t/Zv5+CoI9GZU2HMwYGMnbcJM+HD/zb1r+7YpT7X5LsJYjHYYyCs3wA7Khvd2/A+a+lcK3mG9I7zqkfryWs+9psHgc1AsG59S/G8ZUjDQhFA/XOlg9GpZTC1DLp1yd7nY8+AjzcGL4CWzgUhAKd/OmfHaNFP/pX1F69HoFNQrPOAnrjkU8gdEqoAao87lcBRR6DxR8IRh0LHDpn5O34GfLKpzQjApFdjsYKJejwR2D7zgQoAwHr37kQyvhDTsaELoP754mIYfRA65gg4ZH8Y0De1r6MnQ/n2NiEAoRVKFp2kZxKBrucUuAAAjFGFdN38a5xOjUwAjc917QIjhsHIYWjvYbDXHjU7g3btXONkMokdMGnXPXksAIlF2tphul5I7Ai6rEIRAICBo/vAaxGzkBS5ABqfqz3u2AEG9IFOnWrWA0inkHMnAEPuOndA8ZV+HvVaIzQB1GI9+x8NsQdAffJCAOmcyw8BbDBxZvypG0Idkhf66kTauH455h2ASOM96ZcAGPaKq44dGHbhQwQCANCm/3zAhvfHgeYAoYSydoIhuzX28dYxWnLduigMhl4FNMZ6lR4J7nacRn1ZBTSoAtY400Vaekuk05EjX6BOG9b9gQ2D90N2CbA1avt5yDakOa5ztwOiLnzIQQSoj/Ua3t+L23WCGV/ICGDuKaGLtPzn70ef+zXkVAC1WJ+9jjKnHyMd/sUQgHtJjh9o2byc7yebFwKoxfqNOMKkK1C9t4jtSwCvyIvN0fO352AxwubJKwHUYgNG/Y8nXSZpGijWxgVgSM9JulUr7gp+IoFP8lIAtVj/fQYR1zQzXYhzg9uYAD40cb9zsbu1Yv47ucnB1OS1AGoxxsYp3XK0B1OFypC65akANhssdrhHiO3+nF5I5OWW4fVpEwKoj40aVci2Dkd64jjJHQcamVsBsNbMLXFOS9i8/Y9au6BNTaRtcwJojJUe2JcCN9qTGy3PHYTTPkhdQxLAZ8itMVjtcCsxW6WXH/I9KieXtHkBNIftPbYUz0YQY4iHK8UxWLjdQD2ReiJ1BMWROu8s5K2gJNI2pI1IG834GOf+7eTeA/ceBdV/14uL/pXr7xY0/w8REJPfjzLKBgAAAABJRU5ErkJggg==)  \n\nHey! I'm your placement Markdown text.\n\n----------\n\n\nTypography\n-------------\n\n[kodeWeave Link](https://mikethedj4.github.io/kodeWeave/)  \n**bold text**  \n*italic text*  \n\n### Blockquote:\n\n> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\n### Bullet List\n\n - Green\n - Eggs\n - and\n - Ham\n\n### Numbered List\n\n 1. Green\n 2. Eggs\n 3. and\n 4. Ham\n</textarea>\n  </div>\n  <div class=\"preview-container\">\n    <div id=\"preview\"></div>\n  </div>\n</div>");
-        cssEditor.setValue("* {\n  box-sizing: border-box;\n}\n\nbody {\n  line-height: 1.4;\n}\n\n.editor-and-preview-container {\n  padding: 1em;\n  width: 100%;\n  height: 100%;\n}\n\n.editor-container, .preview-container {\n  display: inline;\n  overflow: hidden;\n  float: left;\n  width: 50%;\n  height: 100%;\n}\n\n#editor {\n  display: inline-block;\n  width: 100%;\n  height: 500px;\n  resize: none;\n  padding: 1em;\n  line-height: 1.5;\n}\n#editor:focus {\n  outline: none;\n}\n\n#preview {\n  width: 100%;\n  height: 500px;\n  border: 1px green solid;\n  padding: 0 1em;\n  overflow: auto;\n}");
-        jsEditor.setValue("var mdconverter = new Showdown.converter,\n    editor = $('#editor'),\n    preview = $('#preview'),\n    updatePreview = function() {\n      preview.html(mdconverter.makeHtml(editor.val()));\n    };\n\nupdatePreview();\neditor.on('keyup', function() {\n  updatePreview();\n});");
-        $(".hide-demos, #normalize, #jquery, #showdown").trigger("click");
-      };
-      document.querySelector("[data-action=keylogger]").onclick = function() {
-        clearPreview();
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("Keylogger").trigger("change");
-        htmlEditor.setValue("<div class=\"container-fluid\">\n  <div class=\"row\">\n    <div class=\"col-lg-12\">\n      <input type=\"text\" data-action=\"input\" placeholder=\"Type here for keyCode\" class=\"form-control\"/>\n    </div>\n  </div>\n</div>");
-        cssEditor.setValue("html, body {\n  height: 100%;\n}\nbody {\n  padding: 1em 0;\n  background: #0072ff;\n}\n.form-control {\n  border-radius: 5px;\n  box-shadow: 0 0 25px #00162d;\n}");
-        jsEditor.setValue("$('[data-action=input]').keydown(function(e) {\n  this.value = e.which;\n  e.preventDefault();\n});");
-        $(".hide-demos, #jquery, #bootstrap").trigger("click");
-      };
-      newDocument();
-      document.querySelector("[data-action=packagezipfiles]").onclick = function() {
-        clearPreview();
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("Package Zip Files [JSZip Demo]").trigger("change");
-        htmlEditor.setValue("<div class=\"grid\">\n  <div class=\"grid__col--12\">\n    <button class=\"btn--default download\">Run</button>\n    <textarea class=\"form__input\" id=\"jszipdemo\" rows=\"7\" placeholder=\"Demo code here...\">var zip = new JSZip();\nzip.file(\"Hello.txt\", \"Hello World\");\nvar folder = zip.folder(\"images\");\nfolder.file(\"folder.txt\", \"I'm a file in a new folder\");\nvar content = zip.generate({type:\"blob\"});\n// see FileSaver.js\nsaveAs(content, \"example.zip\");</textarea>\n  </div>\n</div>\n");
-        cssEditor.setValue("");
-        jsEditor.setValue("$('.download').click(function() {\n  setTimeout($('#jszipdemo').val(), 0);\n});");
-        $(".hide-demos, #polyui, #jquery, #jszip").trigger("click");
-      };
-      document.querySelector("[data-action=passwordgen]").onclick = function() {
-        clearPreview();
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("Password Generator").trigger("change");
-        htmlEditor.setValue("<div class=\"container-fluid\">\n  <div class=\"row\">\n    <div class=\"col-lg-12\">\n      <div class=\"input-group\">\n        <input type=\"text\" class=\"form-control\" data-action=\"genoutput\" />\n        <span class=\"input-group-btn\">\n          <button class=\"btn btn-default btn-primary\" type=\"button\" data-action=\"gen\">\n            Generate!\n          </button>\n        </span>\n      </div>\n    </div>\n  </div>\n</div>");
-        cssEditor.setValue("html, body {\n  height: 100%;\n}\n\nbody {\n  padding: 1em 0;\n  background: #0072ff;\n}\n\n.input-group {\n  box-shadow: 0 0 25px #00162d;\n}\n\n.input-group, .form-control, .input-group-btn, .btn {\n  border-radius: 5px;\n}");
-        jsEditor.setValue("function PasswordGen() {\n  var char = \"0123456789abcdefghijklmnopqrstuvwxyz\",\n  fullchar = \"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\",\n  genHash  = \"\",\n             i;\n\n  for (i = 0; i < 8; i++) {\n    var rnum = Math.floor(Math.random() * char.length)\n    genHash += char.substring(rnum, rnum + 1)\n  }\n\n  $(\"[data-action=genoutput]\").val(genHash)\n}\n\n$(\"[data-action=gen]\").click(function() {\n  PasswordGen()\n})\n\nPasswordGen()");
-        $(".hide-demos, #jquery, #bootstrap").trigger("click");
-      };
-      document.querySelector("[data-action=pdfembed]").onclick = function() {
-        clearPreview();
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("Embed a PDF Example").trigger("change");
-        htmlEditor.setValue("<iframe src=\"http://docs.google.com/gview?url=http://www.usconstitution.net/const.pdf&embedded=true\"></iframe>");
-        cssEditor.setValue("html, body {\n  height: 100%;\n  overflow: hidden;\n}\n\niframe {\n  width: 100%;\n  height: 100%;\n  border: 0;\n}");
-        jsEditor.setValue("");
-        $(".hide-demos, #normalize").trigger("click");
-      };
-      document.querySelector("[data-action=pictureviewer]").onclick = function() {
-        clearPreview();
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("FileReader Picture Viewer").trigger("change");
-        htmlEditor.setValue("<div id=\"holder\">\n  Drag and drop image <a data-action=\"call\" href=\"javascript:void()\">here</a>...\n</div> \n\n<div class=\"fill check hide\" align=\"center\">\n  <canvas class=\"logo\" width=\"128\" height=\"128\"></canvas>\n</div>\n\n<div class=\"hide\">\n  <input type=\"file\" data-action=\"load\">\n</div>\n\n<p id=\"status\">\n  File API &amp; FileReader API not supported\n</p>");
-        cssEditor.setValue("#holder {\n  border: 10px dashed #ccc;\n  margin: 20px auto;\n  text-align: center;\n}\n#holder.hover {\n  border: 10px dashed #333;\n}\n\n.hide {\n  display: none;\n}\n.fill {\n  width: 100%;\n}");
-        jsEditor.setValue("var canvas = $(\".logo\"),\n    ctx = canvas[0].getContext(\"2d\"),\n    holder = document.getElementById(\"holder\"),\n    state = document.getElementById(\"status\");\n\nif (typeof window.FileReader === \"undefined\") {\n  state.className = \"fail\"\n} else {\n  state.className = \"success\"\n  state.innerHTML = \"File API & FileReader available\"\n}\n\nfunction displayPreview(file) {\n  var reader = new FileReader()\n\n  reader.onload = function(e) {\n    var img = new Image()\n    img.src = e.target.result\n    img.onload = function() {\n      // x, y, width, height\n      ctx.clearRect(0, 0, 128, 128)\n      ctx.drawImage(img, 0, 0, 128, 128)\n    }\n  }\n  reader.readAsDataURL(file)\n}\n\n$(\"[data-action=call]\").click(function() {\n  $(\"[data-action=load]\").trigger(\"click\")\n})\n\n$(\"[data-action=load]\").change(function(e) {\n  var file = e.target.files[0]\n  displayPreview(file)\n  $(\".check\").removeClass(\"hide\")\n})\n\n// Drag and drop image load\nholder.ondragover = function () {\n  this.className = \"hover\"\n  return false\n}\nholder.ondragend = function () {\n  this.className = \"\"\n  return false\n}\nholder.ondrop = function(e) {\n  this.className = \"\"\n  e.preventDefault()\n  var file = e.dataTransfer.files[0]\n  displayPreview(file)\n  $(\".check\").removeClass(\"hide\")\n}");
-        $(".hide-demos, #jquery").trigger("click");
-      };
-      document.querySelector("[data-action=polyui]").onclick = function() {
-        clearPreview();
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("Poly UI Kit").trigger("change");
-        htmlEditor.setValue("<div class=\"grid\">\n  <header class=\"grid__col--12 panel--padded--centered\" role=\"banner\"> \n    <a class=\"site-logo\" href=\"javascript:void(0)\">\n      <b class=\"srt\">Poly - UI Toolkit</b>\n    </a>\n    <nav class=\"navbar\" role=\"navigation\">\n      <span id=\"toggle\" class=\"icn--nav-toggle is-displayed-mobile\">\n        <b class=\"srt\">Toggle</b>\n      </span>   \n      <ul class=\"nav is-collapsed-mobile\" role=\"navigation\">\n        <li class=\"nav__item\"><a href=\"#type\">Typography</a></li>\n        <li class=\"nav__item\"><a href=\"#buttons\">Buttons</a></li>\n        <li class=\"nav__item\"><a href=\"#forms\">Form</a></li>\n        <li class=\"nav__item\"><a href=\"#images\">Images</a></li>\n        <li class=\"nav__item\"><a href=\"#grid\">Grid</a></li>\n        <li class=\"nav__item--current\"><a href=\"#nav\">Navigation</a></li>\n        <!-- Current Page Class Style -->\n        <!-- <li class=\"nav__item--current\"><a href=\"#nav\">Navigation</a></li> -->\n      </ul>\n    </nav>\n  </header>\n</div>\n\n<div class=\"grid is-hidden-mobile\">\n  <div class=\"grid__col--12\">\n    <img class=\"img--hero\" src=\"http://treehouse-code-samples.s3.amazonaws.com/poly/img/hero.jpg\" alt=\"Poly - A simple UI Kit\">\n  </div>\n</div>\n\n<h4 id=\"type\" class=\"grid\">Typography</h4>\n\n<div class=\"grid\">\n  <div class=\"centered grid__col--8\">\n    <h1 class=\"headline-primary--grouped\">Take a look at this amazing headline</h1>\n    <h2 class=\"headline-secondary--grouped\">Don't forget about the subtitle</h2>\n    <p>This is a typical paragraph for the UI Kit. <a href=\"#\">Here is what a link might look like</a>. The typical font family for this kit is Helvetica Neue.  This kit is intended for clean and refreshing web layouts. No jazz hands here, just the essentials to make dreams come true, with minimal clean web design. The kit comes fully equipped with everything from full responsive media styling to buttons to form fields. <em>I enjoy using italics as well from time to time</em>. Fell free to create the most amazing designs ever with this kit. I truly hope you enjoy not only the kit but this amazing paragraph as well. :)</p>\n    <blockquote>You know what really gets me going? A really nice set of block quotes.  That's right, block quotes that say, \"Hey, I'm an article you want to read and nurture.\"</blockquote>\n  </div>\n</div>\n\n<h4 id=\"buttons\" class=\"grid\">Buttons</h4>\n\n<div class=\"grid\">\n  <div class=\"grid__col--12\">\n    <a class=\"btn--default\" href=\"#\">Button Default</a>\n    <a class=\"btn--success\" href=\"#\">Button Success</a>\n    <a class=\"btn--error\" href=\"#\">Button Error</a>\n    <button class=\"btn--warning\">Button Warning</button>\n    <button class=\"btn--info\">Button Info</button>\n  </div>\n</div>\n\n<h4 id=\"forms\" class=\"grid\">Form Elements</h4>\n\n<div class=\"grid\">\n  <div class=\"grid__col--7\"> \n    <form class=\"form\">\n      <label class=\"form__label--hidden\" for=\"name\">Name:</label> \n      <input class=\"form__input\" type=\"text\" id=\"name\" placeholder=\"Name\">\n\n      <label class=\"form__label--hidden\" for=\"email\">Email:</label>\n      <input class=\"form__input\" type=\"email\" id=\"email\" placeholder=\"email@website.com\">\n\n      <label class=\"form__label--hidden\" for=\"msg\">Message:</label>\n      <textarea class=\"form__input\" id=\"msg\" placeholder=\"Message...\" rows=\"7\"></textarea>\n\n      <input class=\"btn--default\" type=\"submit\" value=\"Submit\">\n      <input class=\"btn--warning\" type=\"reset\" value=\"Reset\">\n    </form>\n  </div>\n  <div class=\"grid__col--4\">\n    <img class=\"img--avatar\" src=\"http://treehouse-code-samples.s3.amazonaws.com/poly/img/avatar.png\" alt=\"Avatar\">\n    <form>\n      <label class=\"form__label--hidden\" for=\"username\">Username:</label> \n      <input class=\"form__input\" type=\"text\" id=\"username\" placeholder=\"Username\">\n      <label class=\"form__label--hidden\" for=\"password\">Password:</label>\n      <input class=\"form__input\" type=\"password\" id=\"password\" placeholder=\"Password\">\n      <input class=\"form__btn\" type=\"submit\" value=\"Login\">\n    </form>\n  </div>\n</div>\n\n<h4 id=\"images\" class=\"grid\">Images</h4>\n\n<div class=\"grid\">\n  <div class=\"grid__col--5\">\n    <img src=\"http://treehouse-code-samples.s3.amazonaws.com/poly/img/sample.jpg\" alt=\"sample image\">\n  </div>\n  <div class=\"grid__col--5\">\n    <img class=\"img--wrap\" src=\"http://treehouse-code-samples.s3.amazonaws.com/poly/img/sample.jpg\" alt=\"sample image\">\n  </div>\n  <div class=\"grid__col--2\">\n    <img class=\"img--avatar\" src=\"http://treehouse-code-samples.s3.amazonaws.com/poly/img/avatar.png\" alt=\"Avatar\">\n  </div>\n</div>\n\n<h4 id=\"grid\" class=\"grid\">Grid System</h4>\n\n<div class=\"theme__poly\">\n  <div class=\"grid\">\n    <div class=\"grid__col--12\">.grid__col--12</div>\n  </div>\n  <div class=\"grid\">\n    <div class=\"grid__col--6\">.grid__col--6</div>\n    <div class=\"grid__col--6\">.grid__col--6</div>\n  </div>\n  <div class=\"grid\">\n    <div class=\"grid__col--4\">.grid__col--4</div>\n    <div class=\"grid__col--4\">.grid__col--4</div>\n    <div class=\"grid__col--4\">.grid__col--4</div>\n  </div>\n  <div class=\"grid\">\n    <div class=\"grid__col--3\">.grid__col--3</div>\n    <div class=\"grid__col--3\">.grid__col--3</div>\n    <div class=\"grid__col--3\">.grid__col--3</div>\n    <div class=\"grid__col--3\">.grid__col--3</div>\n  </div>\n  <div class=\"grid\">\n    <div class=\"grid__col--5\">.grid__col--5</div>\n    <div class=\"grid__col--7\">.grid__col--7</div>\n  </div>\n  <div class=\"grid\">\n    <div class=\"grid__col--8\">.grid__col--8</div>\n    <div class=\"grid__col--4\">.grid__col--4</div>\n  </div>\n  <div class=\"grid\">\n    <div class=\"centered grid__col--7\">.centered .grid__col--7</div>\n  </div>\n</div>\n\n<div class=\"grid\">\n  <div class=\"grid__col--7\">\n    <h4 id=\"nav\">Navigation</h4>\n    <ul class=\"nav\" role=\"navigation\">\n      <li class=\"nav__item\"><a href=\"#\">Nav Link</a></li>\n      <li class=\"nav__item\"><a href=\"#\">Nav Link 2</a></li>\n      <li class=\"nav__item--current\"><a href=\"#\">Nav Current</a></li>\n    </ul>\n    <p>This is what the navigation menu looks like when the screen is at 769px or higher. When the screen is less than 769px, you will have the option to display a toggle menu icon.</p>\n  </div>\n\n  <div class=\"grid__col--4\">\n    <h4>Offcanvas Menu</h4>\n    <div class=\"offcanvas\">\n      <span class=\"icn--close\">\n        <b class=\"srt\">close</b>\n      </span>\n      <ul class=\"menu\" role=\"navigation\">\n        <a class=\"menu__link\" href=\"#\">Link 1</a>\n        <a class=\"menu__link\" href=\"#\">Link 2</a>\n        <a class=\"menu__link\" href=\"#\">Link 3</a>\n        <a class=\"menu__link--end\" href=\"#\">Link 4</a>\n      </ul>\n    </div>\n  </div>\n</div>");
-        cssEditor.setValue("");
-        jsEditor.setValue("// Toggle Menu for Phones\n$(\"#toggle\").click(function() {\n  $(this).next(\".nav\").toggleClass(\"is-collapsed-mobile\")\n})\n\n// Handles Navigation Style Classes\n$(\".nav__item\").on(\"click\", function() {\n  $(this).parent().find(\"li\").removeClass(\"nav__item--current\").addClass(\"nav__item\")\n  $(this).addClass(\"nav__item--current\").removeClass(\"nav__item\")\n})");
-        $(".hide-demos, #polyui, #jquery").trigger("click");
-      };
-      document.querySelector("[data-action=simpleslideshow]").onclick = function() {
-        clearPreview();
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("Simplest jQuery Slideshow").trigger("change");
-        htmlEditor.setValue("<div class=\"fadelinks\">\n  <a>\n    <img src=\"http://farm3.static.flickr.com/2610/4148988872_990b6da667.jpg\">\n  </a>\n  <a>\n    <img src=\"http://farm3.static.flickr.com/2597/4121218611_040cd7b3f2.jpg\">\n  </a>\n  <a>\n    <img src=\"http://farm3.static.flickr.com/2531/4121218751_ac8bf49d5d.jpg\">\n  </a>\n</div>\n");
-        cssEditor.setValue("body {\n  font-family: arial, helvetica, sans-serif;\n  font-size: 12px;\n}\n\n.fadelinks {\n  position: relative;\n  height: 332px;\n  width: 500px;\n}\n\n.fadelinks > a {\n  display: block;\n  position: absolute;\n  top: 0;\n  left: 0;\n}");
-        jsEditor.setValue("$(document).ready(function() {\n  $(\".fadelinks > :gt(0)\").hide()\n  setInterval(function() {\n    $(\".fadelinks > :first-child\").fadeOut().next().fadeIn().end().appendTo(\".fadelinks\")\n  }, 3000)\n})");
-        $(".hide-demos, #normalize, #jquery").trigger("click");
-      };
-      document.querySelector("[data-action=splitter]").onclick = function() {
-        clearPreview();
-        $(".check").attr("checked", false).trigger("change");
-        $("[data-action=library-code]").val("").trigger("change");
-        $("[data-action=sitetitle]").val("JQWidgets Splitter").trigger("change");
-        htmlEditor.setValue("<div id=\"mainSplitter\">\n  <div>\n    <div id=\"firstNested\">\n      <div>\n        <div id=\"secondNested\">\n          <div>\n            <span>Panel 1</span></div>\n          <div>\n            <span>Panel 2</span></div>\n        </div>\n      </div>\n      <div>\n        <span>Panel 3</span></div>\n    </div>\n  </div>\n  <div>\n    <div id=\"thirdNested\">\n      <div>\n        <span>Panel 4</span></div>\n      <div>\n        <span>Panel 5</span></div>\n    </div>\n  </div>\n</div>\n");
-        cssEditor.setValue("");
-        jsEditor.setValue("$(document).ready(function () {\n  $(\"#mainSplitter\").jqxSplitter({\n    width: 850,\n    height: 850,\n    orientation: \"horizontal\",\n    panels: [{\n      size: 300,\n      collapsible: false\n    }]\n  });\n  $(\"#firstNested\").jqxSplitter({\n    width: \"100%\",\n    height: \"100%\",\n    orientation: \"vertical\",\n    panels: [{\n      size: 300,\n      collapsible: false\n    }]\n  });\n  $(\"#secondNested\").jqxSplitter({\n    width: \"100%\", \n    height: \"100%\", \n    orientation: \"horizontal\",\n    panels: [{ size: 150 }]\n  });\n  $(\"#thirdNested\").jqxSplitter({\n    width: \"100%\",\n    height: \"100%\", \n    orientation: \"horizontal\",\n    panels: [{\n      size: 150,\n      collapsible: false\n    }]\n  });\n});\n");
-        $(".hide-demos, #jquery, #jqxsplitter").trigger("click");
+        localStorage.removeItem("closedWelcome");
+        if (window.location.hash) {
+          window.location.href = window.location.toString().split(/\?|#/)[0];
+        } else {
+          location.reload(true);
+        }
       };
     },
     activateMD = function() {
@@ -674,44 +680,33 @@ var timeout, delay, server, selected_text, str, mynum,
       };
       document.getElementById("tabindent").onclick = function() {
         if ( activeEditor.value === "htmlEditor" ) {
-          htmlEditor.execCommand("indentMore");
-          htmlEditor.focus();
+          htmlEditor.execCommand("indentMore").focus();
         } else if ( activeEditor.value === "cssEditor" ) {
-          cssEditor.execCommand("indentMore");
-          cssEditor.focus();
+          cssEditor.execCommand("indentMore").focus();
         } else if ( activeEditor.value === "jsEditor" ) {
-          jsEditor.execCommand("indentMore");
-          jsEditor.focus();
+          jsEditor.execCommand("indentMore").focus();
         } else if ( activeEditor.value === "mdEditor" ) {
-          mdEditor.execCommand("indentMore");
-          mdEditor.focus();
+          mdEditor.execCommand("indentMore").focus();
         }
       };
       document.getElementById("taboutdent").onclick = function() {
         if ( activeEditor.value === "htmlEditor" ) {
-          htmlEditor.execCommand("indentLess");
-          htmlEditor.focus();
+          htmlEditor.execCommand("indentLess").focus();
         } else if ( activeEditor.value === "cssEditor" ) {
-          cssEditor.execCommand("indentLess");
-          cssEditor.focus();
+          cssEditor.execCommand("indentLess").focus();
         } else if ( activeEditor.value === "jsEditor" ) {
-          jsEditor.execCommand("indentLess");
-          jsEditor.focus();
+          jsEditor.execCommand("indentLess").focus();
         } else if ( activeEditor.value === "mdEditor" ) {
-          mdEditor.execCommand("indentLess");
-          mdEditor.focus();
+          mdEditor.execCommand("indentLess").focus();
         }
       };
       document.getElementById("zeninit").onclick = function() {
         if ( activeEditor.value === "htmlEditor" ) {
-          htmlEditor.execCommand("emmet.expand_abbreviation_with_tab");
-          htmlEditor.focus();
+          htmlEditor.execCommand("emmet.expand_abbreviation_with_tab").focus();
         } else if ( activeEditor.value === "cssEditor" ) {
-          cssEditor.execCommand("emmet.expand_abbreviation_with_tab");
-          cssEditor.focus();
+          cssEditor.execCommand("emmet.expand_abbreviation_with_tab").focus();
         } else if ( activeEditor.value === "jsEditor" ) {
-          jsEditor.execCommand("emmet.expand_abbreviation_with_tab");
-          jsEditor.focus();
+          jsEditor.execCommand("emmet.expand_abbreviation_with_tab").focus();
         }
       };
       document.getElementById("charsym1").onclick = function() {
@@ -720,8 +715,7 @@ var timeout, delay, server, selected_text, str, mynum,
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("", htmlEditor.getCursor());
-            htmlEditor.replaceRange("<>", htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange("<>", htmlEditor.getCursor()).focus();
             str = ">";
             mynum = str.length;
             start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
@@ -730,21 +724,18 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor()).focus();
           } else {
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-            htmlEditor.replaceSelection("<" + selected_text + ">");
-            htmlEditor.focus();
+            htmlEditor.replaceSelection("<" + selected_text + ">").focus();
           }
         } else if ( activeEditor.value === "cssEditor" ) {
           if (!cssEditor.getSelection().split(" ").join("")) {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("", cssEditor.getCursor());
-            cssEditor.replaceRange("<>", cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange("<>", cssEditor.getCursor()).focus();
             str = ">";
             mynum = str.length;
             start_cursor = cssEditor.getCursor();  // Need to get the cursor position
@@ -753,21 +744,18 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            cssEditor.replaceRange(selected_text, cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange(selected_text, cssEditor.getCursor()).focus();
           } else {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-            cssEditor.replaceSelection("<" + selected_text + ">");
-            cssEditor.focus();
+            cssEditor.replaceSelection("<" + selected_text + ">").focus();
           }
         } else if ( activeEditor.value === "jsEditor" ) {
           if (!jsEditor.getSelection().split(" ").join("")) {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("", jsEditor.getCursor());
-            jsEditor.replaceRange("<>", jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange("<>", jsEditor.getCursor()).focus();
             str = ">";
             mynum = str.length;
             start_cursor = jsEditor.getCursor();  // Need to get the cursor position
@@ -776,21 +764,18 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            jsEditor.replaceRange(selected_text, jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange(selected_text, jsEditor.getCursor()).focus();
           } else {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-            jsEditor.replaceSelection("<" + selected_text + ">");
-            jsEditor.focus();
+            jsEditor.replaceSelection("<" + selected_text + ">").focus();
           }
         } else if ( activeEditor.value === "mdEditor" ) {
           if (!mdEditor.getSelection().split(" ").join("")) {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("", mdEditor.getCursor());
-            mdEditor.replaceRange("<>", mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange("<>", mdEditor.getCursor()).focus();
             str = ">";
             mynum = str.length;
             start_cursor = mdEditor.getCursor();  // Need to get the cursor position
@@ -799,13 +784,11 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            mdEditor.replaceRange(selected_text, mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange(selected_text, mdEditor.getCursor()).focus();
           } else {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-            mdEditor.replaceSelection("<" + selected_text + ">");
-            mdEditor.focus();
+            mdEditor.replaceSelection("<" + selected_text + ">").focus();
           }
         }
       };
@@ -815,8 +798,7 @@ var timeout, delay, server, selected_text, str, mynum,
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("", htmlEditor.getCursor());
-            htmlEditor.replaceRange("{}", htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange("{}", htmlEditor.getCursor()).focus();
             str = "}";
             mynum = str.length;
             start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
@@ -825,21 +807,18 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor()).focus();
           } else {
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-            htmlEditor.replaceSelection("{" + selected_text + "}");
-            htmlEditor.focus();
+            htmlEditor.replaceSelection("{" + selected_text + "}").focus();
           }
         } else if ( activeEditor.value === "cssEditor" ) {
           if (!cssEditor.getSelection().split(" ").join("")) {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("", cssEditor.getCursor());
-            cssEditor.replaceRange("{}", cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange("{}", cssEditor.getCursor()).focus();
             str = "}";
             mynum = str.length;
             start_cursor = cssEditor.getCursor();  // Need to get the cursor position
@@ -848,21 +827,18 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            cssEditor.replaceRange(selected_text, cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange(selected_text, cssEditor.getCursor()).focus();
           } else {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-            cssEditor.replaceSelection("{" + selected_text + "}");
-            cssEditor.focus();
+            cssEditor.replaceSelection("{" + selected_text + "}").focus();
           }
         } else if ( activeEditor.value === "jsEditor" ) {
           if (!jsEditor.getSelection().split(" ").join("")) {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("", jsEditor.getCursor());
-            jsEditor.replaceRange("{}", jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange("{}", jsEditor.getCursor()).focus();
             str = "}";
             mynum = str.length;
             start_cursor = jsEditor.getCursor();  // Need to get the cursor position
@@ -871,21 +847,18 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            jsEditor.replaceRange(selected_text, jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange(selected_text, jsEditor.getCursor()).focus();
           } else {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-            jsEditor.replaceSelection("{" + selected_text + "}");
-            jsEditor.focus();
+            jsEditor.replaceSelection("{" + selected_text + "}").focus();
           }
         } else if ( activeEditor.value === "mdEditor" ) {
           if (!mdEditor.getSelection().split(" ").join("")) {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("", mdEditor.getCursor());
-            mdEditor.replaceRange("{}", mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange("{}", mdEditor.getCursor()).focus();
             str = "}";
             mynum = str.length;
             start_cursor = mdEditor.getCursor();  // Need to get the cursor position
@@ -894,13 +867,11 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            mdEditor.replaceRange(selected_text, mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange(selected_text, mdEditor.getCursor()).focus();
           } else {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-            mdEditor.replaceSelection("{" + selected_text + "}");
-            mdEditor.focus();
+            mdEditor.replaceSelection("{" + selected_text + "}").focus();
           }
         }
       };
@@ -910,8 +881,7 @@ var timeout, delay, server, selected_text, str, mynum,
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("", htmlEditor.getCursor());
-            htmlEditor.replaceRange('""', htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange('""', htmlEditor.getCursor()).focus();
             str = '"';
             mynum = str.length;
             start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
@@ -920,21 +890,18 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor()).focus();
           } else {
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-            htmlEditor.replaceSelection('"' + selected_text + '"');
-            htmlEditor.focus();
+            htmlEditor.replaceSelection('"' + selected_text + '"').focus();
           }
         } else if ( activeEditor.value === "cssEditor" ) {
           if (!cssEditor.getSelection().split(" ").join("")) {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("", cssEditor.getCursor());
-            cssEditor.replaceRange('""', cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange('""', cssEditor.getCursor()).focus();
             str = '"';
             mynum = str.length;
             start_cursor = cssEditor.getCursor();  // Need to get the cursor position
@@ -943,21 +910,18 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            cssEditor.replaceRange(selected_text, cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange(selected_text, cssEditor.getCursor()).focus();
           } else {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-            cssEditor.replaceSelection('"' + selected_text + '"');
-            cssEditor.focus();
+            cssEditor.replaceSelection('"' + selected_text + '"').focus();
           }
         } else if ( activeEditor.value === "jsEditor" ) {
           if (!jsEditor.getSelection().split(" ").join("")) {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("", jsEditor.getCursor());
-            jsEditor.replaceRange('""', jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange('""', jsEditor.getCursor()).focus();
             str = '"';
             mynum = str.length;
             start_cursor = jsEditor.getCursor();  // Need to get the cursor position
@@ -966,21 +930,18 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            jsEditor.replaceRange(selected_text, jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange(selected_text, jsEditor.getCursor()).focus();
           } else {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-            jsEditor.replaceSelection('"' + selected_text + '"');
-            jsEditor.focus();
+            jsEditor.replaceSelection('"' + selected_text + '"').focus();
           }
         } else if ( activeEditor.value === "mdEditor" ) {
           if (!mdEditor.getSelection().split(" ").join("")) {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("", mdEditor.getCursor());
-            mdEditor.replaceRange('""', mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange('""', mdEditor.getCursor()).focus();
             str = '"';
             mynum = str.length;
             start_cursor = mdEditor.getCursor();  // Need to get the cursor position
@@ -989,13 +950,11 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            mdEditor.replaceRange(selected_text, mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange(selected_text, mdEditor.getCursor()).focus();
           } else {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-            mdEditor.replaceSelection('"' + selected_text + '"');
-            mdEditor.focus();
+            mdEditor.replaceSelection('"' + selected_text + '"').focus();
           }
         }
       };
@@ -1005,8 +964,7 @@ var timeout, delay, server, selected_text, str, mynum,
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("", htmlEditor.getCursor());
-            htmlEditor.replaceRange("''", htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange("''", htmlEditor.getCursor()).focus();
             str = "'";
             mynum = str.length;
             start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
@@ -1015,21 +973,18 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor()).focus();
           } else {
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-            htmlEditor.replaceSelection("'" + selected_text + "'");
-            htmlEditor.focus();
+            htmlEditor.replaceSelection("'" + selected_text + "'").focus();
           }
         } else if ( activeEditor.value === "cssEditor" ) {
           if (!cssEditor.getSelection().split(" ").join("")) {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("", cssEditor.getCursor());
-            cssEditor.replaceRange("''", cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange("''", cssEditor.getCursor()).focus();
             str = "'";
             mynum = str.length;
             start_cursor = cssEditor.getCursor();  // Need to get the cursor position
@@ -1038,21 +993,18 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            cssEditor.replaceRange(selected_text, cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange(selected_text, cssEditor.getCursor()).focus();
           } else {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-            cssEditor.replaceSelection("'" + selected_text + "'");
-            cssEditor.focus();
+            cssEditor.replaceSelection("'" + selected_text + "'").focus();
           }
         } else if ( activeEditor.value === "jsEditor" ) {
           if (!jsEditor.getSelection().split(" ").join("")) {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("", jsEditor.getCursor());
-            jsEditor.replaceRange("''", jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange("''", jsEditor.getCursor()).focus();
             str = "'";
             mynum = str.length;
             start_cursor = jsEditor.getCursor();  // Need to get the cursor position
@@ -1061,21 +1013,18 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            jsEditor.replaceRange(selected_text, jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange(selected_text, jsEditor.getCursor()).focus();
           } else {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-            jsEditor.replaceSelection("'" + selected_text + "'");
-            jsEditor.focus();
+            jsEditor.replaceSelection("'" + selected_text + "'").focus();
           }
         } else if ( activeEditor.value === "mdEditor" ) {
           if (!mdEditor.getSelection().split(" ").join("")) {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("", mdEditor.getCursor());
-            mdEditor.replaceRange("''", mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange("''", mdEditor.getCursor()).focus();
             str = "'";
             mynum = str.length;
             start_cursor = mdEditor.getCursor();  // Need to get the cursor position
@@ -1084,13 +1033,11 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            mdEditor.replaceRange(selected_text, mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange(selected_text, mdEditor.getCursor()).focus();
           } else {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-            mdEditor.replaceSelection("'" + selected_text + "'");
-            mdEditor.focus();
+            mdEditor.replaceSelection("'" + selected_text + "'").focus();
           }
         }
       };
@@ -1100,8 +1047,7 @@ var timeout, delay, server, selected_text, str, mynum,
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("", htmlEditor.getCursor());
-            htmlEditor.replaceRange("()", htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange("()", htmlEditor.getCursor()).focus();
             str = ")";
             mynum = str.length;
             start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
@@ -1110,21 +1056,18 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor()).focus();
           } else {
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-            htmlEditor.replaceSelection("(" + selected_text + ")");
-            htmlEditor.focus();
+            htmlEditor.replaceSelection("(" + selected_text + ")").focus();
           }
         } else if ( activeEditor.value === "cssEditor" ) {
           if (!cssEditor.getSelection().split(" ").join("")) {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("", cssEditor.getCursor());
-            cssEditor.replaceRange("()", cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange("()", cssEditor.getCursor()).focus();
             str = ")";
             mynum = str.length;
             start_cursor = cssEditor.getCursor();  // Need to get the cursor position
@@ -1133,21 +1076,18 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            cssEditor.replaceRange(selected_text, cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange(selected_text, cssEditor.getCursor()).focus();
           } else {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-            cssEditor.replaceSelection("(" + selected_text + ")");
-            cssEditor.focus();
+            cssEditor.replaceSelection("(" + selected_text + ")").focus();
           }
         } else if ( activeEditor.value === "jsEditor" ) {
           if (!jsEditor.getSelection().split(" ").join("")) {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("", jsEditor.getCursor());
-            jsEditor.replaceRange("()", jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange("()", jsEditor.getCursor()).focus();
             str = ")";
             mynum = str.length;
             start_cursor = jsEditor.getCursor();  // Need to get the cursor position
@@ -1156,21 +1096,18 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            jsEditor.replaceRange(selected_text, jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange(selected_text, jsEditor.getCursor()).focus();
           } else {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-            jsEditor.replaceSelection("(" + selected_text + ")");
-            jsEditor.focus();
+            jsEditor.replaceSelection("(" + selected_text + ")").focus();
           }
         } else if ( activeEditor.value === "mdEditor" ) {
           if (!mdEditor.getSelection().split(" ").join("")) {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("", mdEditor.getCursor());
-            mdEditor.replaceRange("()", mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange("()", mdEditor.getCursor()).focus();
             str = ")";
             mynum = str.length;
             start_cursor = mdEditor.getCursor();  // Need to get the cursor position
@@ -1179,13 +1116,11 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            mdEditor.replaceRange(selected_text, mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange(selected_text, mdEditor.getCursor()).focus();
           } else {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-            mdEditor.replaceSelection("(" + selected_text + ")");
-            mdEditor.focus();
+            mdEditor.replaceSelection("(" + selected_text + ")").focus();
           }
         }
       };
@@ -1195,8 +1130,7 @@ var timeout, delay, server, selected_text, str, mynum,
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
             htmlEditor.replaceSelection("", htmlEditor.getCursor());
-            htmlEditor.replaceRange("[]", htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange("[]", htmlEditor.getCursor()).focus();
             str = "]";
             mynum = str.length;
             start_cursor = htmlEditor.getCursor();  // Need to get the cursor position
@@ -1205,21 +1139,18 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             htmlEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor());
-            htmlEditor.focus();
+            htmlEditor.replaceRange(selected_text, htmlEditor.getCursor()).focus();
           } else {
             selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-            htmlEditor.replaceSelection("[" + selected_text + "]");
-            htmlEditor.focus();
+            htmlEditor.replaceSelection("[" + selected_text + "]").focus();
           }
         } else if ( activeEditor.value === "cssEditor" ) {
           if (!cssEditor.getSelection().split(" ").join("")) {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
             cssEditor.replaceSelection("", cssEditor.getCursor());
-            cssEditor.replaceRange("[]", cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange("[]", cssEditor.getCursor()).focus();
             str = "]";
             mynum = str.length;
             start_cursor = cssEditor.getCursor();  // Need to get the cursor position
@@ -1228,21 +1159,18 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             cssEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            cssEditor.replaceRange(selected_text, cssEditor.getCursor());
-            cssEditor.focus();
+            cssEditor.replaceRange(selected_text, cssEditor.getCursor()).focus();
           } else {
             selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-            cssEditor.replaceSelection("[" + selected_text + "]");
-            cssEditor.focus();
+            cssEditor.replaceSelection("[" + selected_text + "]").focus();
           }
         } else if ( activeEditor.value === "jsEditor" ) {
           if (!jsEditor.getSelection().split(" ").join("")) {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
             jsEditor.replaceSelection("", jsEditor.getCursor());
-            jsEditor.replaceRange("[]", jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange("[]", jsEditor.getCursor()).focus();
             str = "]";
             mynum = str.length;
             start_cursor = jsEditor.getCursor();  // Need to get the cursor position
@@ -1251,21 +1179,18 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             jsEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            jsEditor.replaceRange(selected_text, jsEditor.getCursor());
-            jsEditor.focus();
+            jsEditor.replaceRange(selected_text, jsEditor.getCursor()).focus();
           } else {
             selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-            jsEditor.replaceSelection("[" + selected_text + "]");
-            jsEditor.focus();
+            jsEditor.replaceSelection("[" + selected_text + "]").focus();
           }
         } else if ( activeEditor.value === "mdEditor" ) {
           if (!mdEditor.getSelection().split(" ").join("")) {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
             mdEditor.replaceSelection("", mdEditor.getCursor());
-            mdEditor.replaceRange("[]", mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange("[]", mdEditor.getCursor()).focus();
             str = "]";
             mynum = str.length;
             start_cursor = mdEditor.getCursor();  // Need to get the cursor position
@@ -1274,13 +1199,11 @@ var timeout, delay, server, selected_text, str, mynum,
 
             // Code to move cursor back [x] amount of spaces. [x] is the data-val value.
             mdEditor.setCursor({line: cursorLine , ch : cursorCh -mynum });
-            mdEditor.replaceRange(selected_text, mdEditor.getCursor());
-            mdEditor.focus();
+            mdEditor.replaceRange(selected_text, mdEditor.getCursor()).focus();
           } else {
             selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-            mdEditor.replaceSelection("[" + selected_text + "]");
-            mdEditor.focus();
+            mdEditor.replaceSelection("[" + selected_text + "]").focus();
           }
         }
       };
@@ -1288,38 +1211,32 @@ var timeout, delay, server, selected_text, str, mynum,
         if ( activeEditor.value === "htmlEditor" ) {
           selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-          htmlEditor.replaceSelection("function() {}");
-          htmlEditor.focus();
+          htmlEditor.replaceSelection("function() {}").focus();
         } else if ( activeEditor.value === "cssEditor" ) {
           alertify.alert("Can't add <strong>\"function() {}\"</strong> into CSS").set("basic", true);
         } else if ( activeEditor.value === "jsEditor" ) {
           selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-          jsEditor.replaceSelection("function() {}");
-          jsEditor.focus();
+          jsEditor.replaceSelection("function() {}").focus();
         }
       };
       $("[data-add=sym]").on("click", function() {
         if ( activeEditor.value === "htmlEditor" ) {
           selected_text = htmlEditor.getSelection();  // Need to grab the Active Selection
 
-          htmlEditor.replaceSelection(selected_text + this.textContent);
-          htmlEditor.focus();
+          htmlEditor.replaceSelection(selected_text + this.textContent).focus();
         } else if ( activeEditor.value === "cssEditor" ) {
           selected_text = cssEditor.getSelection();  // Need to grab the Active Selection
 
-          cssEditor.replaceSelection(selected_text + this.textContent);
-          cssEditor.focus();
+          cssEditor.replaceSelection(selected_text + this.textContent).focus();
         } else if ( activeEditor.value === "jsEditor" ) {
           selected_text = jsEditor.getSelection();  // Need to grab the Active Selection
 
-          jsEditor.replaceSelection(selected_text + this.textContent);
-          jsEditor.focus();
+          jsEditor.replaceSelection(selected_text + this.textContent).focus();
         } else if ( activeEditor.value === "mdEditor" ) {
           selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-          mdEditor.replaceSelection(selected_text + this.textContent);
-          mdEditor.focus();
+          mdEditor.replaceSelection(selected_text + this.textContent).focus();
         }
       });
 
@@ -1327,26 +1244,22 @@ var timeout, delay, server, selected_text, str, mynum,
       document.getElementById("lorem").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam impedit dolore magnam dolor, atque quia dicta voluptatum. Nam impedit distinctio, tempore molestiae voluptatibus ducimus ullam! Molestiae consectetur, recusandae labore? Cupiditate.");
-        mdEditor.focus();
+        mdEditor.replaceSelection("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam impedit dolore magnam dolor, atque quia dicta voluptatum. Nam impedit distinctio, tempore molestiae voluptatibus ducimus ullam! Molestiae consectetur, recusandae labore? Cupiditate.").focus();
       };
       document.getElementById("bold").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("**" + selected_text + "**");
-        mdEditor.focus();
+        mdEditor.replaceSelection("**" + selected_text + "**").focus();
       };
       document.getElementById("italic").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("*" + selected_text + "*");
-        mdEditor.focus();
+        mdEditor.replaceSelection("*" + selected_text + "*").focus();
       };
       document.getElementById("strike").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("<strike>" + selected_text + "</strike>");
-        mdEditor.focus();
+        mdEditor.replaceSelection("<strike>" + selected_text + "</strike>").focus();
       };
       document.getElementById("anchor").onclick = function() {
         alertify.prompt("Enter URL Below", "",
@@ -1354,8 +1267,7 @@ var timeout, delay, server, selected_text, str, mynum,
           selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
           mdEditor.replaceSelection("");
-          mdEditor.replaceSelection("["+ selected_text +"]("+ value +")");
-          mdEditor.focus();
+          mdEditor.replaceSelection("["+ selected_text +"]("+ value +")").focus();
         },
         function() {
           // User clicked cancel
@@ -1364,14 +1276,12 @@ var timeout, delay, server, selected_text, str, mynum,
       document.getElementById("quote").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("\n  > " + selected_text.replace(/\n/g,'\n  > '));
-        mdEditor.focus();
+        mdEditor.replaceSelection("\n  > " + selected_text.replace(/\n/g,'\n  > ')).focus();
       };
       document.getElementById("code").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("`" + selected_text + "`");
-        mdEditor.focus();
+        mdEditor.replaceSelection("`" + selected_text + "`").focus();
       };
       document.getElementById("img").onclick = function() {
         alertify.prompt("Enter Image URL Below", "",
@@ -1379,8 +1289,7 @@ var timeout, delay, server, selected_text, str, mynum,
           selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
           mdEditor.replaceSelection("");
-          mdEditor.replaceSelection("!["+ selected_text +"]("+ value +")");
-          mdEditor.focus();
+          mdEditor.replaceSelection("!["+ selected_text +"]("+ value +")").focus();
         },
         function() {
           // User clicked cancel
@@ -1393,56 +1302,47 @@ var timeout, delay, server, selected_text, str, mynum,
         for (i = 0, len = selected_text.split("\n").length, text = ""; i < len; i++) {
             text += i + 1 + ". " + selected_text.split("\n")[i] + "\n  ";
         }
-        mdEditor.replaceSelection("\n  " + text);
-        mdEditor.focus();
+        mdEditor.replaceSelection("\n  " + text).focus();
       };
       document.getElementById("list-ul").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("\n  - " + selected_text.replace(/\n/g,'\n  - '));
-        mdEditor.focus();
+        mdEditor.replaceSelection("\n  - " + selected_text.replace(/\n/g,'\n  - ')).focus();
       };
       document.getElementById("h1").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("# " + selected_text);
-        mdEditor.focus();
+        mdEditor.replaceSelection("# " + selected_text).focus();
       };
       document.getElementById("h2").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("## " + selected_text);
-        mdEditor.focus();
+        mdEditor.replaceSelection("## " + selected_text).focus();
       };
       document.getElementById("h3").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("### " + selected_text);
-        mdEditor.focus();
+        mdEditor.replaceSelection("### " + selected_text).focus();
       };
       document.getElementById("h4").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("#### " + selected_text);
-        mdEditor.focus();
+        mdEditor.replaceSelection("#### " + selected_text).focus();
       };
       document.getElementById("h5").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("##### " + selected_text);
-        mdEditor.focus();
+        mdEditor.replaceSelection("##### " + selected_text).focus();
       };
       document.getElementById("h6").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection("###### " + selected_text);
-        mdEditor.focus();
+        mdEditor.replaceSelection("###### " + selected_text).focus();
       };
       document.getElementById("hr").onclick = function() {
         selected_text = mdEditor.getSelection();  // Need to grab the Active Selection
 
-        mdEditor.replaceSelection(selected_text + "\n\n----------\n\n");
-        mdEditor.focus();
+        mdEditor.replaceSelection(selected_text + "\n\n----------\n\n").focus();
       };
     },
     initdataURLGrabber = function() {
@@ -1523,12 +1423,288 @@ var timeout, delay, server, selected_text, str, mynum,
       $("#mainSplitter, #splitContainer, #leftSplitter, #rightSplitter").jqxSplitter({
         theme: "metro"
       });
+      
+      // Handle dropdown list for Editors
+      $("[data-call=dropdown]").click(function(e) {
+        $("input[name=menubar].active").trigger("click");
+        
+        if ($(this).hasClass('openeddropdown')) {
+          $(".editoractionlist").addClass('hide');
+          $(this).removeClass('openeddropdown');
+          return false;
+        } else if ($("[data-call=dropdown].openeddropdown").is(":visible")) {
+          $("[data-call=dropdown]").removeClass('openeddropdown');
+          return false;
+        }
+
+        // If no preprocessor is selected dont show compile
+        var htmlSelected = $("#html-preprocessor option:selected").val();
+        var cssSelected  = $("#css-preprocessor  option:selected").val();
+        var jsSelected   = $("#js-preprocessor   option:selected").val();
+        
+        // Check HTML
+        if ($(this).hasClass("htmlarea")) {
+          if ( activeEditor.value == "mdEditor") {
+            mdEditor.focus();
+            $(".editoractionlist li").addClass('hide');
+            $(".texttransform").removeClass('hide');
+            offset = $(this).offset();
+            $(".editoractionlist").css({
+              top: offset.top + 21 - 4,
+              left: offset.left - $(".editoractionlist").width() + 10
+            });
+          } else {
+            htmlEditor.focus();
+            activeEditor.value = 'htmlEditor';
+          }
+          if (activeEditor.value == "htmlEditor") {
+            if ( htmlSelected == "none") {
+              htmlEditor.focus();
+              activeEditor.value = 'htmlEditor';
+              $(".viewcompiledcode").text('Run html2jade');
+              $(".minifycode, .tidycode").removeClass('hide');
+              $("[data-action=tidy]").text('Tidy HTML');
+              $("[data-action=minify]").text('Minify HTML');
+              offset = $(this).offset();
+              $(".editoractionlist").css({
+                top: offset.top + 21 - 4,
+                left: offset.left - $(".editoractionlist").width() + 10
+              });
+            } else if ( htmlSelected == "jade") {
+              htmlEditor.focus();
+              activeEditor.value = 'htmlEditor';
+              $(".viewcompiledcode").removeClass('hide');
+              $(".minifycode, .tidycode").removeClass('hide');
+              if (htmlSelected == "jade") {
+                $(".minifycode, .tidycode").addClass('hide');
+              }
+              $(".viewcompiledcode").text('Convert ' + $("#html-preprocessor option:selected").val() + ' to HTML');
+              $("[data-action=tidy]").text('Tidy ' + $("#html-preprocessor option:selected").val());
+              $("[data-action=minify]").text('Minify ' + $("#html-preprocessor option:selected").val());
+              offset = $(this).offset();
+              $(".editoractionlist").css({
+                top: offset.top + 21 - 4,
+                left: offset.left - $(".editoractionlist").width() + 10
+              });
+            }
+          }
+        }
+        // Check CSS
+        if ($(this).hasClass("cssarea")) {
+          cssEditor.focus();
+          activeEditor.value = 'cssEditor';
+          if (activeEditor.value == "cssEditor") {
+            if (cssSelected == "none") {
+              $(".viewcompiledcode").removeClass('hide');
+              $(".viewcompiledcode").text('Run css2stylus');
+              $(".minifycode, .tidycode").removeClass('hide');
+              $("[data-action=tidy]").text('Tidy CSS');
+              $("[data-action=minify]").text('Minify CSS');
+              offset = $(this).offset();
+              $(".editoractionlist").css({
+                top: offset.top + 21 - 4,
+                left: offset.left - $(".editoractionlist").width() + 10
+              });
+            } else {
+              $(".viewcompiledcode").removeClass('hide');
+              $(".minifycode, .tidycode").removeClass('hide');
+              if (cssSelected == "stylus") {
+                $(".minifycode, .tidycode").addClass('hide');
+              }
+              $(".viewcompiledcode").text('Convert ' + $("#css-preprocessor option:selected").val() + ' to CSS');
+              $("[data-action=tidy]").text('Tidy ' + $("#css-preprocessor option:selected").val());
+              $("[data-action=minify]").text('Minify ' + $("#css-preprocessor option:selected").val());
+              offset = $(this).offset();
+              $(".editoractionlist").css({
+                top: offset.top + 21 - 4,
+                left: offset.left - $(".editoractionlist").width() + 10
+              });
+            }
+          }
+        }
+        // Check Javascript
+        if ($(this).hasClass("jsarea")) {
+          jsEditor.focus();
+          activeEditor.value = 'jsEditor';
+          if (activeEditor.value == "jsEditor") {
+            if ( jsSelected == "none") {
+              $(".viewcompiledcode").text('Run js2Coffee');
+              $(".minifycode, .tidycode").removeClass('hide');
+              $("[data-action=tidy]").text('Tidy Javascript');
+              $("[data-action=minify]").text('Minify Javascript');
+              offset = $(this).offset();
+              $(".editoractionlist").css({
+                top: offset.top + 21 - 4,
+                left: offset.left - $(".editoractionlist").width() + 10
+              });
+            } else {
+              $(".viewcompiledcode").removeClass('hide');
+              $(".minifycode, .tidycode").removeClass('hide');
+              if (jsSelected == "typescript") {
+                $(".minifycode, .tidycode, .viewcompiledcode").addClass('hide');
+              } else if (jsSelected == "coffeescript") {
+                $(".minifycode, .tidycode").addClass('hide');
+              } else if (jsSelected == "babel") {
+                $(".minifycode, .tidycode").addClass('hide');
+              }
+              $(".viewcompiledcode").text('Convert ' + $("#js-preprocessor option:selected").val() + ' to Javascript');
+              $("[data-action=tidy]").text('Tidy ' + $("#js-preprocessor option:selected").val());
+              $("[data-action=minify]").text('Minify ' + $("#js-preprocessor option:selected").val());
+              offset = $(this).offset();
+              $(".editoractionlist").css({
+                top: offset.top + 21 - 4,
+                left: offset.left - $(".editoractionlist").width() + 10
+              });
+            }
+          }
+        }
+        
+        if ($('.editoractionlist').is(':visible')) {
+          offset = $(this).offset();
+          $(".editoractionlist").css({
+            top: offset.top + 21 - 4,
+            left: offset.left - $(".editoractionlist").width() + 10
+          });
+          return false;
+        } else if ($('.editoractionlist').hasClass('hide')) {
+          $(".editoractionlist").removeClass('hide');
+          $(this).addClass('openeddropdown');
+          return false;
+        }
+        return false;
+      });
+      $('[data-action=compile]').click(function() {
+        $(".editoractionlist").removeClass('hide');
+        
+        // If no preprocessor is selected dont show compile
+        var htmlSelected = $("#html-preprocessor option:selected").val();
+        var cssSelected = $("#css-preprocessor  option:selected").val();
+        var jsSelected   = $("#js-preprocessor   option:selected").val();
+        
+        // Check HTML
+        if (activeEditor.value === "htmlEditor") {
+          if ( htmlSelected == "none") {
+            $("#html-preprocessor").val("jade").trigger("change");
+            var options = {
+                pretty: true
+            };
+            Html2Jade.convertHtml(htmlEditor.getValue(), {selectById: true}, function (err, jadeString) {
+              if(err) {
+                console.error(err);
+              } else {
+                if (!/<html>/.test(htmlEditor.getValue())) {
+                  jadeString = jadeString
+                                .replace('html\n', '')
+                                .replace('head\n', '')
+                                .replace(/^\s\s/, '')
+                                .replace(/\n\s\s/, '\n');
+                }
+
+                if (!/<body>/.test(htmlEditor.getValue())) {
+                  jadeString = jadeString
+                                .replace(/.*body\n/, '')
+                                .replace(/^\s\s/, '')
+                                .replace(/\n\s\s/, '\n');
+                };
+                htmlEditor.setValue(jadeString);
+              }
+            });
+            $(".editoractionlist").addClass('hide');
+          } else if ( htmlSelected == "jade") {
+            $("#html-preprocessor").val("none").trigger("change");
+            htmlContent = jade.render(htmlEditor.getValue(), options);
+            htmlEditor.setValue(htmlContent);
+            beautifyHTML();
+            $(".editoractionlist").addClass('hide');
+          }
+        }
+
+        // Check CSS
+        if (activeEditor.value === "cssEditor") {
+          if ( cssSelected == "none") {
+            $("#css-preprocessor").val("stylus").trigger("change");
+            $(".viewcompiledcode").removeClass('hide');
+            var css = cssEditor.getValue();
+            var converter = new Css2Stylus.Converter(css);
+            converter.processCss();
+            cssEditor.setValue(converter.getStylus());
+            $(".editoractionlist").addClass('hide');
+          } else if (cssSelected == "stylus") {
+            $("#css-preprocessor").val("none").trigger("change");
+            $(".viewcompiledcode").removeClass('hide');
+            var cssVal = cssEditor.getValue();
+            stylus(cssVal).render(function(err, out) {
+              if(err !== null) {
+                console.error("something went wrong");
+              } else {
+                cssEditor.setValue(out);
+                $('#css-preprocessor option').filter(function() { 
+                  return ($(this).text() == 'None');
+                }).prop('selected', true);
+              }
+            });
+            $(".editoractionlist").addClass('hide');
+          } else if (cssSelected == "less") {
+            $("#css-preprocessor").val("none").trigger("change");
+            $(".viewcompiledcode").removeClass('hide');
+            var cssVal = cssEditor.getValue();
+            less.render(cssVal, function (e, output) {
+              cssEditor.setValue(output.css);
+              $('#css-preprocessor option').filter(function() { 
+                return ($(this).text() == 'None');
+              }).prop('selected', true);
+            });
+            $(".editoractionlist").addClass('hide');
+          }
+        }
+
+        // Check Javascript
+        if (activeEditor.value === "jsEditor") {
+          if ( jsSelected == "none") {
+            $("#js-preprocessor").val("coffeescript").trigger("change");
+            result = js2coffee.build(jsEditor.getValue());
+            jsEditor.setValue(result.code);
+            $(".editoractionlist").addClass('hide');
+          } else if ( jsSelected == "coffeescript") {
+            $("#js-preprocessor").val("none").trigger("change");
+            jsContent = CoffeeScript.compile(jsEditor.getValue(), { bare: true });
+            jsEditor.setValue(jsContent);
+            beautifyJS();
+            $(".editoractionlist").addClass('hide');
+          } else if ( jsSelected == "babel") {
+            $("#js-preprocessor").val("none").trigger("change");
+            var result = Babel.transform(jsEditor.getValue(), {
+              presets: ['latest', 'stage-2', 'react']
+            });
+            jsContent = result.code;
+            jsEditor.setValue(jsContent);
+            beautifyJS();
+            $(".editoractionlist").addClass('hide');
+            $("#js-preprocessor").val("none").trigger("change");
+          }
+        }
+      });
+      
+      // Hide dropdown if other elements are clicked
+      $("header a, header label").click(function() {
+        if ($(".editoractionlist").is(':visible')) {
+          $(".editoractionlist").addClass('hide');
+        }
+      });
+      $(".sidebtns a:not([data-call=dropdown])").click(function() {
+        if ($(".editoractionlist").is(':visible')) {
+          $(".editoractionlist").addClass('hide');
+        }
+      });
 
       // Select active editor when clicked/touched
       $("#htmlEditor, #cssEditor, #jsEditor, #mdEditor").on("mousedown touchend", function() {
         $("input[name=menubar].active").trigger("click");
+        if ($(".editoractionlist").is(':visible')) {
+          $(".editoractionlist").addClass('hide');
+        }
 
-        if ( this.id === "htmlEditor" ) {
+        if ( $(this).attr("id") === "htmlEditor" ) {
           activeEditor.value = "htmlEditor";
           if ($("#function").is(":hidden")) {
             $("#function").show();
@@ -1537,7 +1713,7 @@ var timeout, delay, server, selected_text, str, mynum,
           if ( $(".md-chars").is(":visible") ) {
             $(".md-chars").addClass("hide");
           }
-        } else if ( this.id === "cssEditor" ) {
+        } else if ( $(this).attr("id") === "cssEditor" ) {
           activeEditor.value = "cssEditor";
           if ($("#function").is(":visible")) {
             $("#function").hide();
@@ -1546,7 +1722,7 @@ var timeout, delay, server, selected_text, str, mynum,
           if ( $(".md-chars").is(":visible") ) {
             $(".md-chars").addClass("hide");
           }
-        } else if ( this.id === "jsEditor" ) {
+        } else if ( $(this).attr("id") === "jsEditor" ) {
           activeEditor.value = "jsEditor";
           $(".main-editor-chars").removeClass("hide");
           if ( $(".md-chars").is(":visible") ) {
@@ -1555,7 +1731,7 @@ var timeout, delay, server, selected_text, str, mynum,
           if ($("#function").is(":hidden")) {
             $("#function").show();
           }
-        } else if ( this.id === "mdEditor" ) {
+        } else if ( $(this).attr("id") === "mdEditor" ) {
           activeEditor.value = "mdEditor";
           if ($("#function").is(":hidden")) {
             $("#function").show();
@@ -1665,6 +1841,10 @@ var timeout, delay, server, selected_text, str, mynum,
         var checkbox = document.getElementById("changeGrid");
         (checkbox.checked) ? gridChecked() : gridNotChecked();
         (checkbox.checked) ? localStorage.setItem("gridSetting", "true") : localStorage.setItem("gridSetting", "false");
+        
+        if ($("[data-toggle=previewdimensions]").is(":visible")) {
+          $("[data-output=dimensions]").text($(".preview-editor").css('width') + ", " + $(".preview-editor").css('height'));
+        }
       }
       $("#changeGrid").on("change", function() {
         GridScheme();
@@ -1832,6 +2012,9 @@ var timeout, delay, server, selected_text, str, mynum,
             panels: [{ size: "0%"},
                      { size: "100%"}]
           });
+          if ($("[data-toggle=previewdimensions]").is(":visible")) {
+            $("[data-output=dimensions]").text($(".preview-editor").css('width') + ", " + $(".preview-editor").css('height'));
+          }
         }
       };
       
@@ -1866,8 +2049,6 @@ var timeout, delay, server, selected_text, str, mynum,
         alertify.prompt("Enter project code below!", "",
           function(evt, value) {
           localStorage.clear();
-          $(document.body).append('<div class="fixedfill preloader" style="background: radial-gradient(ellipse at center, rgba(122, 188, 255, 0.85) 0%, rgba(64, 150, 238, 0.87) 100%)!important; color: #fff!important;"></div>');
-          $(".preloader").html('<div class="table"><div class="cell"><h1>Loading Weave!</h1><div class="spinner"><div class="bounce1" style="background: #fff!important;"></div><div class="bounce2" style="background: #fff!important;"></div><div class="bounce3" style="background: #fff!important;"></div></div></div></div>');
           loadgist(value);
         },
         function() {
@@ -1888,21 +2069,72 @@ var timeout, delay, server, selected_text, str, mynum,
           // var path = input.value.replace(/.*(\/|\\)/, '');
           var path = input.value;
           if (path.toLowerCase().substring(path.length - 5) === ".html") {
+            htmlEditor.setValue("");
             htmlEditor.setValue( e.target.result );
+            $("#html-preprocessor").val("none").trigger("change");
           } else if (path.toLowerCase().substring(path.length - 5) === ".jade") {
-            $(".htmlSetting").trigger("click");
-          } else if (path.toLowerCase().substring(path.length - 4) === ".css") {
-            cssEditor.setValue( e.target.result );
-          } else if (path.toLowerCase().substring(path.length - 5) === ".styl") {
-            $(".htmlSetting").trigger("click");
-          } else if (path.toLowerCase().substring(path.length - 3) === ".js") {
-            jsEditor.setValue( e.target.result );
-          } else if (path.toLowerCase().substring(path.length - 7) === ".coffee") {
-            $(".htmlSetting").trigger("click");
-          } else if (path.toLowerCase().substring(path.length - 3) === ".md") {
-            mdEditor.setValue( e.target.result );
-          } else if (path.toLowerCase().substring(path.length - 3) === ".svg") {
+            htmlEditor.setValue("");
             htmlEditor.setValue( e.target.result );
+            $("#html-preprocessor").val("jade").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 4) === ".pug") {
+            htmlEditor.setValue("");
+            htmlEditor.setValue( e.target.result );
+            $("#html-preprocessor").val("jade").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 4) === ".css") {
+            cssEditor.setValue("");
+            cssEditor.setValue( e.target.result );
+            $("#css-preprocessor").val("none").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 5) === ".styl") {
+            cssEditor.setValue("");
+            cssEditor.setValue( e.target.result );
+            $("#css-preprocessor").val("stylus").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 5) === ".less") {
+            cssEditor.setValue("");
+            cssEditor.setValue( e.target.result );
+            $("#css-preprocessor").val("less").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 5) === ".scss") {
+            cssEditor.setValue("");
+            cssEditor.setValue( e.target.result );
+            $("#css-preprocessor").val("scss").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 5) === ".sass") {
+            cssEditor.setValue("");
+            cssEditor.setValue( e.target.result );
+            $("#css-preprocessor").val("sass").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 3) === ".js") {
+            jsEditor.setValue("");
+            jsEditor.setValue( e.target.result );
+            $("#js-preprocessor").val("none").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 7) === ".coffee") {
+            jsEditor.setValue("");
+            jsEditor.setValue( e.target.result );
+            $("#js-preprocessor").val("coffeescript").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 3) === ".ts") {
+            jsEditor.setValue("");
+            jsEditor.setValue( e.target.result );
+            $("#js-preprocessor").val("typescript").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 4) === ".jsx") {
+            jsEditor.setValue("");
+            jsEditor.setValue( e.target.result );
+            $("#js-preprocessor").val("babel").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 3) === ".es") {
+            jsEditor.setValue("");
+            jsEditor.setValue( e.target.result );
+            $("#js-preprocessor").val("babel").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 4) === ".es6") {
+            jsEditor.setValue("");
+            jsEditor.setValue( e.target.result );
+            $("#js-preprocessor").val("babel").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 5) === ".json") {
+            jsEditor.setValue("");
+            jsEditor.setValue( e.target.result );
+            $("#js-preprocessor").val("none").trigger("change");
+          } else if (path.toLowerCase().substring(path.length - 3) === ".md") {
+            mdEditor.setValue("");
+            mdEditor.setValue( e.target.result );
+          } else if (path.toLowerCase().substring(path.length - 4) === ".svg") {
+            htmlEditor.setValue("");
+            htmlEditor.setValue( e.target.result );
+            $("#html-preprocessor").val("none").trigger("change");
           } else {
             alertify.error("Sorry kodeWeave does not support that file type!");
           }
@@ -1919,6 +2151,121 @@ var timeout, delay, server, selected_text, str, mynum,
 
       singleFileDownload();
     },
+    preprocessors = function() {
+      $("[data-call=settings]").click(function() {
+        $("input[name=menubar].active").trigger("click");
+        if ($(this).hasClass("htmlSetting")) {
+          $("#html-preprocessors").attr("checked", true);
+        } else if ($(this).hasClass("cssSetting")) {
+          $("#css-preprocessors").attr("checked", true);
+        } else if ($(this).hasClass("jsSetting")) {
+          $("#js-preprocessors").attr("checked", true);
+        }
+        $("[data-action=preprocessors]").fadeIn();
+      });
+      $(".confirm-preprocessor").click(function() {
+        // Default fadeout speed is 400ms
+        $("[data-action=preprocessors]").fadeOut();
+      });
+      // Preprocessors (Doesn't compile to preview)
+      $("#html-preprocessor").on("change", function() {
+        var valueSelected = this.value;
+        localStorage.setItem("htmlPreprocessorVal", this.value);
+        if ( valueSelected == "none") {
+          htmlEditor.setOption("mode", "text/html");
+          htmlEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
+          // htmlEditor.refresh();
+          $(".html-editor").css('background-image', 'url("assets/html5.svg")');
+        } else if ( valueSelected == "jade") {
+          htmlEditor.setOption("mode", "text/x-jade");
+          htmlEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
+          // htmlEditor.refresh();
+          $(".html-editor").css('background-image', 'url("assets/jade.svg")');
+        } else {
+          htmlEditor.setOption("mode", "text/html");
+          htmlEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
+          // htmlEditor.refresh();
+        }
+        updatePreview();
+      }).trigger("change");
+      $("#css-preprocessor").on("change", function() {
+        var valueSelected = this.value;
+        localStorage.setItem("cssPreprocessorVal", this.value);
+
+        if ( valueSelected == "none") {
+          cssEditor.setOption("mode", "css");
+          cssEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
+          // cssEditor.setOption("lint", true);
+          // cssEditor.refresh();
+          $(".css-editor").css('background-image', 'url("assets/css3.svg")');
+        } else if ( valueSelected == "stylus") {
+          cssEditor.setOption("mode", "text/x-styl");
+          cssEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
+          setTimeout(function() {
+            $(".CodeMirror-lint-mark-error, .CodeMirror-lint-mark-error-metro").removeClass("CodeMirror-lint-mark-error CodeMirror-lint-mark-error-metro");
+            $(".CodeMirror-lint-mark-warning, .CodeMirror-lint-mark-warning-metro").removeClass("CodeMirror-lint-mark-warning CodeMirror-lint-mark-warning-metro");
+          }, 300);
+          // cssEditor.setOption("lint", false);
+          // cssEditor.refresh();
+          $(".css-editor").css('background-image', 'url("assets/stylus.svg")');
+        } else if ( valueSelected == "less") {
+          cssEditor.setOption("mode", "text/x-less");
+          cssEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
+          setTimeout(function() {
+            $(".CodeMirror-lint-mark-error, .CodeMirror-lint-mark-error-metro").removeClass("CodeMirror-lint-mark-error CodeMirror-lint-mark-error-metro");
+            $(".CodeMirror-lint-mark-warning, .CodeMirror-lint-mark-warning-metro").removeClass("CodeMirror-lint-mark-warning CodeMirror-lint-mark-warning-metro");
+          }, 300);
+          // cssEditor.setOption("lint", false);
+          // cssEditor.refresh();
+          $(".css-editor").css('background-image', 'url("assets/scss.svg")');
+        } else if ( valueSelected == "scss") {
+          cssEditor.setOption("mode", "text/x-scss");
+          cssEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
+          setTimeout(function() {
+            $(".CodeMirror-lint-mark-error, .CodeMirror-lint-mark-error-metro").removeClass("CodeMirror-lint-mark-error CodeMirror-lint-mark-error-metro");
+            $(".CodeMirror-lint-mark-warning, .CodeMirror-lint-mark-warning-metro").removeClass("CodeMirror-lint-mark-warning CodeMirror-lint-mark-warning-metro");
+          }, 300);
+          // cssEditor.setOption("lint", false);
+          // cssEditor.refresh();
+          $(".css-editor").css('background-image', 'url("assets/scss.svg")');
+        } else if ( valueSelected == "sass") {
+          cssEditor.setOption("mode", "text/x-sass");
+          cssEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
+          setTimeout(function() {
+            $(".CodeMirror-lint-mark-error, .CodeMirror-lint-mark-error-metro").removeClass("CodeMirror-lint-mark-error CodeMirror-lint-mark-error-metro");
+            $(".CodeMirror-lint-mark-warning, .CodeMirror-lint-mark-warning-metro").removeClass("CodeMirror-lint-mark-warning CodeMirror-lint-mark-warning-metro");
+          }, 300);
+          // cssEditor.setOption("lint", false);
+          // cssEditor.refresh();
+          $(".css-editor").css('background-image', 'url("assets/sass.svg")');
+        } else {
+          cssEditor.setOption("mode", "css");
+          cssEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
+          // cssEditor.setOption("lint", true);
+          // cssEditor.refresh();
+        }
+        updatePreview();
+      }).trigger("change");
+      $("#js-preprocessor").on("change", function() {
+        var valueSelected = this.value;
+        localStorage.setItem("jsPreprocessorVal", this.value);
+        if ( valueSelected == "none") {
+          jsEditor.setOption("mode", "javascript");
+          jsEditor.refresh();
+          $(".js-editor").css('background-image', 'url("assets/js.svg")');
+        } else if ( valueSelected == "coffeescript") {
+          jsEditor.setOption("mode", "text/x-coffeescript");
+          $(".js-editor").css('background-image', 'url("assets/coffeescript.svg")');
+        } else if ( valueSelected == "typescript") {
+          jsEditor.setOption("mode", "text/typescript");
+          $(".js-editor").css('background-image', 'url("assets/typescript.svg")');
+        } else if ( valueSelected == "babel") {
+          jsEditor.setOption("mode", "text/javascript");
+          $(".js-editor").css('background-image', 'url("assets/babel.svg")');
+        }
+        updatePreview();
+      }).trigger("change");
+    },
     miscellaneous = function() {
       // Tool Inputs
       $("[data-action=sitedesc], [data-action=siteauthor]").bind("keyup change", function() {
@@ -1931,13 +2278,18 @@ var timeout, delay, server, selected_text, str, mynum,
         $("[data-action=sitedesc], [data-action=siteauthor]").trigger("change");
       });
       
+      // Show Preloader
+      $("[data-action=download-as-win-app], [data-action=download-as-win32-app], [data-action=download-as-mac-app], [data-action=download-as-lin-app], [data-action=download-as-lin32-app], [data-action=app-confirm], [data-action=ext-confirm]").click(function() {
+        $(document.body).append('<div class="fixedfill preloader hide"></div>');
+        $(".preloader").html('<div class="table"><div class="cell"><h1>Exporting application!</h1><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div></div>').removeClass("hide");
+      });
+      
       // If textbox has a value...
       // a clear icon will display to clear the input
       $(".metaboxes .heading").not("input[type=number]").clearSearch();
       
       // Show Twitter Feed
       document.querySelector("[data-action=feed]").onclick = function() {
-        $("input[name=menubar].active").trigger("click");
         $("#tab3").trigger("click");
       };
       
@@ -1946,10 +2298,9 @@ var timeout, delay, server, selected_text, str, mynum,
         $("[data-action=socialdialog]").fadeOut();
         document.getElementById("clearSharePreview").innerHTML = "";
       };
+      
+      welcomeDialog();
     },
-    myarray = [],
-    current = 1,
-    activeEditor = document.querySelector("[data-action=activeEditor]"),
     storeValues = function() {
       // Save Site Title Value for LocalStorage
       if ( localStorage.getItem("siteTitle")) {
@@ -1966,13 +2317,6 @@ var timeout, delay, server, selected_text, str, mynum,
       
       document.title = "kodeWeave: " + document.querySelector("[data-action=sitetitle]").value;
 
-      // Save App Version for LocalStorage
-      if ( localStorage.getItem("appVersion")) {
-        document.querySelector("[data-value=version]").value = localStorage.getItem("appVersion");
-      }
-      $("[data-value=version]").on("keyup change", function() {
-        localStorage.setItem("appVersion", this.value);
-      });
       // Save FontSize for LocalStorage
       if ( localStorage.getItem("fontSize")) {
         document.querySelector("[data-editor=fontSize]").value = localStorage.getItem("fontSize");
@@ -1997,6 +2341,22 @@ var timeout, delay, server, selected_text, str, mynum,
       $("[data-action=siteauthor]").on("keyup change", function() {
         localStorage.setItem("saveAuthor", this.value);
       });
+      // Save Preprocessors
+      if ( localStorage.getItem("htmlPreprocessorVal")) {
+        $("#html-preprocessor").val(localStorage.getItem("htmlPreprocessorVal"));
+      }
+      if ( localStorage.getItem("cssPreprocessorVal")) {
+        $("#css-preprocessor").val(localStorage.getItem("cssPreprocessorVal"));
+      }
+      if ( localStorage.getItem("jsPreprocessorVal")) {
+        document.getElementById("js-preprocessor").value = localStorage.getItem("jsPreprocessorVal");
+      }
+      
+      // Save Weave for Offline Usage
+      if ( localStorage.getItem("savedWeaves")) {
+        $("[data-saved=libraries]").html(localStorage.getItem("savedWeaves"));
+        handleWeaves();
+      }
     },
     checkedLibs = function() {
       if ( $("#alertify").is(":checked") ) {
@@ -2024,6 +2384,33 @@ var timeout, delay, server, selected_text, str, mynum,
         $('.angularjs, .angularzip').clear();
       }
 
+      if ( $("#angularmaterial").is(":checked") ) {
+        $('.angularmaterial').clear();
+        download_to_textbox('libraries/angular-material/angular-material.min.css', $('.angularmaterial1'));
+        download_to_textbox('libraries/angular-material/angular.min.js', $('.angularmaterial2'));
+        download_to_textbox('libraries/angular-material/angular-material.min.js', $('.angularmaterial3'));
+        download_to_textbox('libraries/angular-animate.min.js', $('.angularmaterial4'));
+        download_to_textbox('libraries/angular-material/angular-aria.min.js', $('.angularmaterial5'));
+        $(".angularmaterialzip").val("zip.file('libraries/angular-material/angular-material.min.css', $(\".angularmaterial1\").val());\n zip.file('libraries/angular-material/angular.min.js', $(\".angularmaterial2\").val());\n zip.file('libraries/angular-material/angular-material.min.js', $(\".angularmaterial3\").val());\n zip.file('libraries/angular-material/angular-animate.min.js', $(\".angularmaterial4\").val());\n zip.file('libraries/angular-material/angular-aria.min.js', $(\".angularmaterial5\").val());");
+      } else {
+        $('.angularmaterial, .angularmaterialzip').clear();
+      }
+      
+      if ( $("#animatecss").is(":checked") ) {
+        $('.animatecss').clear();
+        download_to_textbox('libraries/animateCSS/animate.min.css', $('.animatecss'));
+        $(".animatecsszip").val("zip.file('libraries/animateCSS/animate.min.css', $(\".animatecss\").val());");
+      } else {
+        $('.animatecss, .animatecsszip').clear();
+      }
+      if ( $("#backbone").is(":checked") ) {
+        $('.backbone').clear();
+        download_to_textbox('libraries/backbone/backbone.js', $('.backbone'));
+        $('.backbone').trigger("change");
+        $(".backbonezip").val("zip.file('libraries/backbone/backbone.js', $('.backbone').val());");
+      } else {
+        $('.backbone, .backbonezip').clear();
+      }
       if ( $("#bootstrap").is(":checked") ) {
         $('.bootstrap').clear();
         download_to_textbox('libraries/bootstrap/bootstrap.css', $('.bootstrap1'));
@@ -2033,7 +2420,6 @@ var timeout, delay, server, selected_text, str, mynum,
       } else {
         $('.bootstrap, .bootstrapzip').clear();
       }
-
       if ( $("#chartjs").is(":checked") ) {
         $('.chartjs').clear();
         download_to_textbox('libraries/chartjs/chart.min.js', $('.chartjs'));
@@ -2184,6 +2570,14 @@ var timeout, delay, server, selected_text, str, mynum,
       } else {
         $('.dojo, .dojozip').clear();
       }
+      if ( $("#enhance").is(":checked") ) {
+        $('.enhance').clear();
+        download_to_textbox('libraries/enhance/enhance.js', $('.enhance'));
+        $('.enhance').trigger("change");
+        $(".enhancezip").val("zip.file('libraries/enhance/enhance.js', $('.enhance').val());");
+      } else {
+        $('.enhance, .enhancezip').clear();
+      }
       if ( $("#fabric").is(":checked") ) {
         $('.fabric').clear();
         download_to_textbox('libraries/fabric/fabric.min.js', $('.fabric'));
@@ -2192,11 +2586,53 @@ var timeout, delay, server, selected_text, str, mynum,
       } else {
         $('.fabric, .fabriczip').clear();
       }
+      if ( $("#foundation").is(":checked") ) {
+        $('.foundation').clear();
+        download_to_textbox('libraries/foundation/foundation.min.css', $('.foundation1'));
+        download_to_textbox('libraries/foundation/foundation.min.js', $('.foundation2'));
+        $('.foundation').trigger("change");
+        $(".fabriczip").val("zip.file('libraries/foundation/foundation.min.css', $(\".foundation1\").val());\nzip.file('libraries/foundation/foundation.min.js', $(\".foundation2\").val());");
+      } else {
+        $('.foundation, .foundationzip').clear();
+      }
+      if ( $("#handlebars").is(":checked") ) {
+        $('.handlebars').clear();
+        download_to_textbox('libraries/handlebars/handlebars.min.js', $('.handlebars'));
+        $('.handlebars').trigger("change");
+        $(".handlebarszip").val("zip.file('libraries/handlebars/handlebars.min.js', $(\".handlebars\").val());");
+      } else {
+        $('.handlebars, .handlebarszip').clear();
+      }
+      if ( $("#hintcss").is(":checked") ) {
+        $('.hintcss').clear();
+        download_to_textbox('libraries/hintCSS/hint.min.css', $('.hintcss'));
+        $('.hintcss').trigger("change");
+        $(".hintcsszip").val("zip.file('libraries/hintCSS/hint.min.css', $(\".hintcss\").val());");
+      } else {
+        $('.hintcss, .hintcsszip').clear();
+      }
+      if ( $("#immutable").is(":checked") ) {
+        $('.immutable').clear();
+        download_to_textbox('libraries/immutable/immutable.min.js', $('.immutable'));
+        $('.immutable').trigger("change");
+        $(".immutablezip").val("zip.file('libraries/immutable/immutable.min.js', $('.immutable').val());");
+      } else {
+        $('.immutable, .immutablezip').clear();
+      }
+      if ( $("#jarallax").is(":checked") ) {
+        $('.jarallax').clear();
+        download_to_textbox('libraries/jarallax/jarallax.js', $('.jarallax'));
+        $('.jarallax').trigger("change");
+        $(".jarallaxzip").val("zip.file('libraries/jarallax/jarallax.js', $(\".jarallax\").val());");
+      } else {
+        $('.jarallax, .jarallaxzip').clear();
+      }
       if ( $("#jquery").is(":checked") ) {
         $('.jquery').clear();
-        download_to_textbox('libraries/jquery/jquery.js', $('.jquery'));
+        download_to_textbox('libraries/jquery/jquery.js', $('.jquery1'));
+        download_to_textbox('libraries/jquery/jquery-migrate-1.2.1.min.js', $('.jquery2'));
         $('.jquery').trigger("change");
-        $(".jqueryzip").val("zip.file('libraries/jquery/jquery.js', $(\".jquery\").val());");
+        $(".jqueryzip").val("zip.file('libraries/jquery/jquery.js', $(\".jquery1\").val());\nzip.file('libraries/jquery/jquery-migrate-1.2.1.min.js', $(\".jquery2\").val());");
       } else {
         $('.jquery, .jqueryzip').clear();
       }
@@ -2319,6 +2755,42 @@ var timeout, delay, server, selected_text, str, mynum,
       } else {
         $('.knockout, .knockoutzip').clear();
       }
+      if ( $("#immutable").is(":checked") ) {
+        $('.immutable').clear();
+        download_to_textbox('libraries/immutable/lodash.core.js', $('.lodash'));
+        $('.lodash').trigger("change");
+        $(".lodashzip").val("zip.file('libraries/immutable/lodash.core.js', $('.lodash').val());");
+      } else {
+        $('.lodash, .lodashzip').clear();
+      }
+      if ( $("#mdl").is(":checked") ) {
+        $('.mdl').clear();
+        download_to_textbox('libraries/mdl/material.min.css', $('.mdl1'));
+        download_to_textbox('libraries/mdl/material.min.js', $('.mdl2'));
+        $('.mdl1, .mdl2').trigger("change");
+        $(".mdlzip").val("zip.file('libraries/mdl/material.min.css', $('.mdl1').val());\n  zip.file('libraries/mdl/material.min.js', $('.mdl2').val());");
+      } else {
+        $('.mdl, .mdlzip').clear();
+      }
+      if ( $("#moment").is(":checked") ) {
+        $('.moment').clear();
+        download_to_textbox('libraries/moment/moment.js', $('.moment'));
+        download_to_textbox('libraries/moment/moment-with-locales.js', $('.moment'));
+        $('.moment').trigger("change");
+        $(".momentzip").val("zip.file('libraries/moment/moment.js', $(\".moment1\").val());\nzip.file('libraries/moment/moment-with-locales.js', $(\".moment2\").val());");
+      } else {
+        $('.moment, .momentzip').clear();
+      }
+      if ( $("#momenttimezone").is(":checked") ) {
+        $('.momenttimezone').clear();
+        download_to_textbox('libraries/moment-timezone/moment-timezone-with-data-2012-2022.js', $('.momenttimezone1'));
+        download_to_textbox('libraries/moment-timezone/moment-timezone-with-data.js', $('.momenttimezone2'));
+        download_to_textbox('libraries/moment-timezone/moment-timezone.js', $('.momenttimezone3'));
+        $('.momenttimezone').trigger("change");
+        $(".momenttimezonezip").val("zip.file('libraries/moment/moment.js', $(\".momenttimezone1\").val());\nzip.file('libraries/moment/moment.js', $(\".momenttimezone2\").val());\nzip.file('libraries/moment/moment.js', $(\".momenttimezone3\").val());");
+      } else {
+        $('.momenttimezone, .momenttimezonezip').clear();
+      }
       if ( $("#modernizer").is(":checked") ) {
         $('.modernizer').clear();
         download_to_textbox('libraries/modernizer/modernizer.js', $('.modernizer'));
@@ -2432,6 +2904,14 @@ var timeout, delay, server, selected_text, str, mynum,
       } else {
         $('.scriptaculous, .scriptaculouszip').clear();
       }
+      if ( $("#smoothscroll").is(":checked") ) {
+        $('.smoothscroll').clear();
+        download_to_textbox('libraries/snap-svg/snap-svg.js', $('.smoothscroll'));
+        $('.smoothscroll').trigger("change");
+        $(".smoothscrollzip").val("zip.file('libraries/SmoothScroll/SmoothScroll.js', $(\".smoothscroll\").val());");
+      } else {
+        $('.smoothscroll, .smoothscrollzip').clear();
+      }
       if ( $("#snapsvg").is(":checked") ) {
         $('.snapsvg').clear();
         download_to_textbox('libraries/snap-svg/snap-svg.js', $('.snapsvg'));
@@ -2448,6 +2928,15 @@ var timeout, delay, server, selected_text, str, mynum,
       } else {
         $('.svgjs, .svgjszip').clear();
       }
+      if ( $("#sweetalert2").is(":checked") ) {
+        $('.sweetalert').clear();
+        download_to_textbox('libraries/sweetalert2/sweetalert2.min.css', $('.sweetalert1'));
+        download_to_textbox('libraries/sweetalert2/sweetalert2.min.js', $('.sweetalert2'));
+        $('.sweetalert').trigger("change");
+        $(".sweetalertzip").val("zip.file('libraries/sweetalert2/sweetalert2.min.css', $(\".sweetalert1\").val());\nzip.file('libraries/sweetalert2/sweetalert2.min.js', $(\".sweetalert2\").val());");
+      } else {
+        $('.sweetalert, .sweetalertzip').clear();
+      }
       if ( $("#threejs").is(":checked") ) {
         $('.threejs').clear();
         download_to_textbox('libraries/threejs/three.min.js', $('.threejs'));
@@ -2456,6 +2945,16 @@ var timeout, delay, server, selected_text, str, mynum,
       } else {
         $('.threejs, .threejszip').clear();
       }
+      if ( $("#uikit").is(":checked") ) {
+        $('.uikit').clear();
+        download_to_textbox('libraries/uikit/css/uikit.css', $('.uikit1'));
+        download_to_textbox('libraries/uikit/js/uikit.js', $('.uikit2'));
+        download_to_textbox('libraries/uikit/js/uikit-icons.js', $('.uikit3'));
+        $('.uikit').trigger("change");
+        $(".uikitzip").val("zip.file('libraries/uikit/css/uikit.css', $('.uikit1').val());\n  zip.file('libraries/uikit/js/uikit.js', $('.uikit2').val());\n  zip.file('libraries/uikit/js/uikit-icons.js', $('.uikit3').val());");
+      } else {
+        $('.uikit, .uikitzip').clear();
+      }
       if ( $("#underscorejs").is(":checked") ) {
         $('.underscorejs').clear();
         download_to_textbox('libraries/underscore/underscore.js', $('.underscorejs'));
@@ -2463,6 +2962,14 @@ var timeout, delay, server, selected_text, str, mynum,
         $(".underscorejszip").val("zip.file('libraries/underscore/underscore.js', $(\".underscorejs\").val());");
       } else {
         $('.underscorejs, .underscorejszip').clear();
+      }
+      if ( $("#vue").is(":checked") ) {
+        $('.vue').clear();
+        download_to_textbox('libraries/vue/vue.js', $('.vue'));
+        $('.vue').trigger("change");
+        $(".vuezip").val("zip.file('libraries/vue/vue.js', $('.vue').val());");
+      } else {
+        $('.vue, .vuezip').clear();
       }
       if ( $("#webfontloader").is(":checked") ) {
         $('.webfontloader').clear();
@@ -2505,6 +3012,162 @@ var timeout, delay, server, selected_text, str, mynum,
       return $.get(url, null, function (data) {
         el.setValue(data);
       }, "text");
+    },
+    openWeave = function(selector) {
+      var data = {
+        "files": JSON.parse($(selector).nextAll('textarea').val())
+      };
+      
+      var htmlVal       = data.files.files["index.html"];
+      var jadeVal       = data.files.files["index.jade"];
+      var cssVal        = data.files.files["index.css"];
+      var stylusVal     = data.files.files["index.styl"];
+      var lessVal       = data.files.files["index.less"];
+      var scssVal       = data.files.files["index.scss"];
+      var sassVal       = data.files.files["index.sass"];
+      var jsVal         = data.files.files["index.js"];
+      var coffeeVal     = data.files.files["index.coffee"];
+      var typescriptVal = data.files.files["index.ts"];
+      var babelVal      = data.files.files["index.jsx"];
+      var mdVal         = data.files.files["README.md"];
+      var jsonSets      = data.files.files["settings.json"].content;
+      var jsonLibs      = data.files.files["libraries.json"].content;
+
+      // Return font settings from json
+      var siteTitle      = JSON.parse(jsonSets).siteTitle;
+      var WeaveVersion   = JSON.parse(jsonSets).version;
+      var editorFontSize = JSON.parse(jsonSets).editorFontSize;
+      var WeaveDesc      = JSON.parse(jsonSets).description;
+      var WeaveAuthor    = JSON.parse(jsonSets).author;
+      
+      $("[data-action=sitetitle]").val(siteTitle);
+      $("[data-value=version]").val(WeaveVersion);
+      $("[data-editor=fontSize]").val(editorFontSize);
+      $("[data-action=sitedesc]").val(WeaveDesc);
+      $("[data-action=siteauthor]").val(WeaveAuthor);
+      storeValues();
+
+      // Return settings from the json
+      $(".metaboxes input.heading").trigger("keyup");
+      $(".addlibrary-tablets input.check:checked").trigger('click');
+
+      // Return libraries from json
+      $.each(JSON.parse(jsonLibs), function(name, value) {
+        $(".ldd-submenu #" + name).prop("checked", value).trigger("keyup");
+      });
+
+      // Set checked libraries into preview
+      $("#jquery").trigger("keyup");
+
+      // Return the editor's values
+      if (mdVal) {
+        mdEditor.setValue(mdVal.content);
+      }
+      if (htmlVal) {
+        htmlEditor.setValue(htmlVal.content);
+        $("#html-preprocessor").val("none").trigger("change");
+      }
+      if (jadeVal) {
+        htmlEditor.setValue(jadeVal.content);
+        $("#html-preprocessor").val("jade").trigger("change");
+      }
+      if (!htmlVal && !jadeVal) {
+        htmlEditor.setValue("");
+      }
+      if (!htmlVal && !jadeVal && mdVal) {
+        var selectEditor = document.getElementById("selectEditor");
+        if (!selectEditor.checked) {
+          $("#selectEditor").trigger("click");
+          // Change grid to only show markdown
+          $("#splitContainer").jqxSplitter({
+            height: "auto",
+            width: "100%",
+            orientation: "vertical",
+            showSplitBar: true,
+            panels: [{ size: "50%",collapsible:false },
+                     { size: "50%" }]
+          });
+          $("#leftSplitter").jqxSplitter({
+            width: "100%",
+            height: "100%",
+            orientation: "horizontal",
+            showSplitBar: true,
+            panels: [{ size: "50%",collapsible:false },
+                     { size: "0%" }]
+          }).jqxSplitter("collapse");
+          $("#rightSplitter").jqxSplitter({
+            width: "100%",
+            height: "100%",
+            orientation: "horizontal",
+            showSplitBar: true,
+            panels: [{ size: "0%",collapsible:false },
+                     { size: "50%" }]
+          });
+        }
+      }
+      if (cssVal) {
+        cssEditor.setValue(cssVal.content);
+        $("#css-preprocessor").val("none").trigger("change");
+      }
+      if (stylusVal) {
+        cssEditor.setValue(stylusVal.content);
+        $("#css-preprocessor").val("stylus").trigger("change");
+      }
+      if (lessVal) {
+        cssEditor.setValue(lessVal.content);
+        $("#css-preprocessor").val("less").trigger("change");
+      }
+      if (scssVal) {
+        cssEditor.setValue(scssVal.content);
+        $("#css-preprocessor").val("scss").trigger("change");
+      }
+      if (sassVal) {
+        cssEditor.setValue(sassVal.content);
+        $("#css-preprocessor").val("sass").trigger("change");
+      }
+      if (!cssVal && !stylusVal && !lessVal && !scssVal && !sassVal) {
+        cssEditor.setValue("");
+      }
+      if (jsVal) {
+        jsEditor.setValue(jsVal.content);
+        $("#js-preprocessor").val("none").trigger("change");
+      }
+      if (coffeeVal) {
+        jsEditor.setValue(coffeeVal.content);
+        $("#js-preprocessor").val("coffeescript").trigger("change");
+      }
+      if (typescriptVal) {
+        jsEditor.setValue(typescriptVal.content);
+        $("#js-preprocessor").val("typescript").trigger("change");
+      }
+      if (babelVal) {
+        jsEditor.setValue(babelVal.content);
+        $("#js-preprocessor").val("babel").trigger("change");
+      }
+      if (!jsVal && !coffeeVal && !typescriptVal && !babelVal) {
+        jsEditor.setValue("");
+      }
+
+      setTimeout(function() {
+        mdEditor.setOption("paletteHints", "true");
+        htmlEditor.setOption("paletteHints", "true");
+        cssEditor.setOption("paletteHints", "true");
+        jsEditor.setOption("paletteHints", "true");
+      }, 300);
+      return false;
+    },
+    handleWeaves = function() {
+      $(".savedweave").on('click', function() {
+        $("input[name=menubar].active").trigger("click");
+        openWeave(this);
+      });
+      $(".delweave").on('click', function() {
+        $(this).parent().remove();
+        if (!$("[data-saved=libraries]").html()) {
+          $("[data-saved=libraries]").text("No weave's have been saved");
+        }
+        localStorage.setItem("savedWeaves", $("[data-saved=libraries]").html());
+      });
     };
 
 // Rules Specified for HTML Validation
@@ -2555,8 +3218,10 @@ var htmlEditor = CodeMirror(document.getElementById("htmlEditor"), {
     "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); },
     "Ctrl-'": function(){ applyLowercase(); },
     "Ctrl-\\": function(){ applyUppercase(); },
+    "Ctrl-I": function(){ applyDuplication(); },
     "Cmd-'": function(){ applyLowercase(); },
     "Cmd-\\": function(){ applyUppercase(); },
+    "Cmd-I": function(){ applyDuplication(); },
     "Shift-Ctrl-'": function(){ applyMinify(); },
     "Shift-Ctrl-\\": function(){ applyBeautify(); },
     "Shift-Cmd-'": function(){ applyMinify(); },
@@ -2605,8 +3270,10 @@ var cssEditor = CodeMirror(document.getElementById("cssEditor"), {
     "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); },
     "Ctrl-'": function(){ applyLowercase(); },
     "Ctrl-\\": function(){ applyUppercase(); },
+    "Ctrl-I": function(){ applyDuplication(); },
     "Cmd-'": function(){ applyLowercase(); },
     "Cmd-\\": function(){ applyUppercase(); },
+    "Cmd-I": function(){ applyDuplication(); },
     "Shift-Ctrl-'": function(){ applyMinify(); },
     "Shift-Ctrl-\\": function(){ applyBeautify(); },
     "Shift-Cmd-'": function(){ applyMinify(); },
@@ -2647,28 +3314,21 @@ var jsEditor = CodeMirror(document.getElementById("jsEditor"), {
   autoCloseTags: true,
   foldGutter: true,
   dragDrop: true,
-  lint: {
-    options: {
-      "asi": true
-    }
-  },
-  gutters: ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+  lint: false,
+  gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
   extraKeys: {
-    "Ctrl-Space": function(cm) { server.complete(cm); },
-    "Ctrl-I": function(cm) { server.showType(cm); },
-    "Ctrl-O": function(cm) { server.showDocs(cm); },
-    "Alt-.": function(cm) { server.jumpToDef(cm); },
-    "Alt-,": function(cm) { server.jumpBack(cm); },
-    "Ctrl-Q": function(cm) { server.rename(cm); },
-    "Ctrl-.": function(cm) { server.selectName(cm); },
+    "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); },
     "Ctrl-'": function(){ applyLowercase(); },
     "Ctrl-\\": function(){ applyUppercase(); },
+    "Ctrl-I": function(){ applyDuplication(); },
     "Cmd-'": function(){ applyLowercase(); },
     "Cmd-\\": function(){ applyUppercase(); },
+    "Cmd-I": function(){ applyDuplication(); },
     "Shift-Ctrl-'": function(){ applyMinify(); },
     "Shift-Ctrl-\\": function(){ applyBeautify(); },
     "Shift-Cmd-'": function(){ applyMinify(); },
     "Shift-Cmd-\\": function(){ applyBeautify(); },
+    "Ctrl-Space": "autocomplete",
     "Cmd-L": function(){ $("[data-action=gotoline]").trigger("click"); },
     "Ctrl-L": function(){ $("[data-action=gotoline]").trigger("click"); },
     "Alt-Delete": function(cm){ cm.execCommand("delWordAfter"); },
@@ -2722,8 +3382,10 @@ var mdEditor = CodeMirror(document.getElementById("mdEditor"), {
     "Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); },
     "Ctrl-'": function(){ applyLowercase(); },
     "Ctrl-\\": function(){ applyUppercase(); },
+    "Ctrl-I": function(){ applyDuplication(); },
     "Cmd-'": function(){ applyLowercase(); },
     "Cmd-\\": function(){ applyUppercase(); },
+    "Cmd-I": function(){ applyDuplication(); },
     "Shift-Ctrl-'": function(){ applyMinify(); },
     "Shift-Ctrl-\\": function(){ applyBeautify(); },
     "Shift-Cmd-'": function(){ applyMinify(); },
@@ -2753,127 +3415,6 @@ var mdEditor = CodeMirror(document.getElementById("mdEditor"), {
     }
   }
 });
-
-// Autocomplete for JS and CSS
-/*
-var ExcludedIntelliSenseTriggerKeysCSS = {
-    "8": "backspace",
-    "9": "tab",
-    "13": "enter",
-    "16": "shift",
-    "17": "ctrl",
-    "18": "alt",
-    "19": "pause",
-    "20": "capslock",
-    "27": "escape",
-    "33": "pageup",
-    "34": "pagedown",
-    "35": "end",
-    "36": "home",
-    "37": "left",
-    "38": "up",
-    "39": "right",
-    "40": "down",
-    "45": "insert",
-    "46": "delete",
-    "91": "left window key",
-    "92": "right window key",
-    "93": "select",
-    "107": "add",
-    "109": "subtract",
-    "110": "decimal point",
-    "111": "divide",
-    "112": "f1",
-    "113": "f2",
-    "114": "f3",
-    "115": "f4",
-    "116": "f5",
-    "117": "f6",
-    "118": "f7",
-    "119": "f8",
-    "120": "f9",
-    "121": "f10",
-    "122": "f11",
-    "123": "f12",
-    "144": "numlock",
-    "145": "scrolllock",
-    "186": "semicolon",
-    "187": "equalsign",
-    "188": "comma",
-    "189": "dash",
-    "190": "period",
-    "191": "slash",
-    "192": "graveaccent",
-    "219": "left bracket",
-    "221": "right bracket",
-    "220": "backslash",
-    "222": "quote"
-},
-    ExcludedIntelliSenseTriggerKeysJS = {
-    "8": "backspace",
-    "9": "tab",
-    "13": "enter",
-    "16": "shift",
-    "17": "ctrl",
-    "18": "alt",
-    "19": "pause",
-    "20": "capslock",
-    "27": "escape",
-    "33": "pageup",
-    "34": "pagedown",
-    "35": "end",
-    "36": "home",
-    "37": "left",
-    "38": "up",
-    "39": "right",
-    "40": "down",
-    "45": "insert",
-    "46": "delete",
-    "91": "left window key",
-    "92": "right window key",
-    "93": "select",
-    "107": "add",
-    "109": "subtract",
-    "110": "decimal point",
-    "111": "divide",
-    "112": "f1",
-    "113": "f2",
-    "114": "f3",
-    "115": "f4",
-    "116": "f5",
-    "117": "f6",
-    "118": "f7",
-    "119": "f8",
-    "120": "f9",
-    "121": "f10",
-    "122": "f11",
-    "123": "f12",
-    "144": "numlock",
-    "145": "scrolllock",
-    "186": "semicolon",
-    "187": "equalsign",
-    "188": "comma",
-    "189": "dash",
-    "190": "period",
-    "191": "slash",
-    "192": "graveaccent",
-    "220": "backslash",
-    "222": "quote"
-};
-
-cssEditor.on("keyup", function (cm, event) {
-  if (!cm.state.completionActive &&
-      !ExcludedIntelliSenseTriggerKeysCSS[(event.keyCode || event.which).toString()]) {
-    CodeMirror.commands.autocomplete(cm, null, {completeSingle: false});
-  }
-});
-jsEditor.on("keyup", function (cm, event) {
-  if (!cm.state.completionActive &&
-      !ExcludedIntelliSenseTriggerKeysJS[(event.keyCode || event.which).toString()]) {
-    CodeMirror.commands.autocomplete(cm, null, {completeSingle: false});
-  }
-});
-*/
 
 if ( localStorage.getItem("htmlData")) {
   htmlEditor.setValue(localStorage.getItem("htmlData"));
@@ -2908,28 +3449,86 @@ var closeFinal = CodeMirror(document.getElementById("closeFinal"), {
   value: "\n  </body>\n</html>"
 });
 
+// Render Chosen CSS Preprocessor
+function cssPreProcessor(cssSelected) {
+  cssSelected = $("#css-preprocessor  option:selected").val();
+
+  if (cssSelected == "none") {
+    cssContent = cssEditor.getValue();
+    $("#preview").contents().find("#b8c770cc").html(cssContent);
+  } else if (cssSelected == "stylus") {
+    var cssVal = cssEditor.getValue();
+    stylus(cssVal).render(function(err, out) {
+      if(err !== null) {
+        console.error("something went wrong");
+      } else {
+        cssContent = out;
+        $("#preview").contents().find("#b8c770cc").html(cssContent);
+      }
+    });
+  } else if (cssSelected == "less") {
+    var cssVal = cssEditor.getValue();
+    less.render(cssVal, function (e, output) {
+      cssContent = output.css;
+      $("#preview").contents().find("#b8c770cc").html(cssContent);
+    });
+  } else if (cssSelected == "scss" || cssSelected == "sass") {
+    var cssVal = cssEditor.getValue();
+
+    sass.compile(cssVal, function(result) {
+      cssContent = result.text;
+      $("#preview").contents().find("#b8c770cc").html(cssContent);
+    });
+  }
+}
+
 // Live preview
 function updatePreview() {
   $(".preview-editor").empty();
   var frame = document.createElement("iframe");
   frame.setAttribute("id", "preview");
-  frame.setAttribute("sandbox", "allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts");
+  frame.setAttribute("sandbox", "allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts");
   document.querySelector(".preview-editor").appendChild(frame);
   var previewFrame = document.getElementById("preview");
   var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
-  var heading = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\">\n" + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\">\n";
+  var heading = openHTML.getValue() + document.querySelector("[data-action=sitetitle]").value + closeHTML.getValue() + document.querySelector("[data-action=library-code]").value + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/font-awesome.css\">\n" + "    <link rel=\"stylesheet\" href=\"libraries/font-awesome/macset.css\">\n" + "<script src=\"    lib/screenlog.js\"></script>";
   preview.open();
+  var htmlSelected = $("#html-preprocessor option:selected").val();
+  var jsSelected   = $("#js-preprocessor   option:selected").val();
+  
+  cssPreProcessor();
+  
+  if ( jsSelected == "none") {
+    jsContent = "<script>screenLog.init({ autoScroll: false });\n\n" + jsEditor.getValue() + "</script>";
+  } else if ( jsSelected == "coffeescript") {
+    jsContent = "<script>screenLog.init({ autoScroll: false });</script><script>" + CoffeeScript.compile(jsEditor.getValue(), { bare: true }) + "</script>";
+  } else if ( jsSelected == "typescript") {
+    jsContent = "<script>screenLog.init({ autoScroll: false });</script><script type='text/typescript'>" + jsEditor.getValue() + "</script>\n    <script src='lib/typescript.min.js'></script>\n    <script src='lib/typescript.compile.min.js'></script>";
+  } else if ( jsSelected == "babel") {
+    var result = Babel.transform(jsEditor.getValue(), {
+      presets: ['latest', 'stage-2', 'react']
+    });
+    jsContent = "<script>screenLog.init({ autoScroll: false });\n\n" + result.code + "</script>";
+  }
 
-  htmlContent = heading + "<style id='b8c770cc'>" + cssEditor.getValue() + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    <scr"+"ipt>" + jsEditor.getValue() + "<"+"/scr"+"ipt>" + closeFinal.getValue();
-  preview.write(htmlContent);
-
+  if ( htmlSelected == "none") {
+    htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + htmlEditor.getValue() + "\n\n    " + jsContent + closeFinal.getValue();
+    preview.write(htmlContent);
+  } else if ( htmlSelected == "jade") {
+    var options = {
+        pretty: true
+    };
+    var jade2HTML = jade.render(htmlEditor.getValue(), options);
+    htmlContent = heading + "<style id='b8c770cc'>" + cssContent + "</style>" + closeRefs.getValue() + "\n" + jade2HTML + jsContent + closeFinal.getValue();
+    preview.write(htmlContent);
+  }
   preview.close();
 }
 function markdownPreview() {
   $(".preview-editor").empty();
   var frame = document.createElement("iframe");
   frame.setAttribute("id", "preview");
-  frame.setAttribute("sandbox", "allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts");
+  frame.setAttribute("sandbox", "allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts");
   document.querySelector(".preview-editor").appendChild(frame);
   var mdconverter = new Showdown.converter(),
       previewFrame = document.getElementById("preview"),
@@ -2946,40 +3545,80 @@ var cancel = setTimeout(function() {
   updatePreview();
 }, 300);
 
-htmlEditor.on("change", function() {
-  clearTimeout(cancel);
-  setTimeout(function() {
-    updatePreview();
-  }, 300);
-  localStorage.setItem("htmlData", htmlEditor.getValue());
-  
-  setTimeout(function() {
-    htmlEditor.setOption("paletteHints", "true");
-  }, 300);
-});
-cssEditor.on("change", function() {
-  $("#preview").contents().find("#b8c770cc").html(cssEditor.getValue());
-  localStorage.setItem("cssData", cssEditor.getValue());
-  
-  setTimeout(function() {
-    cssEditor.setOption("paletteHints", "true");
-  }, 300);
-});
-jsEditor.on("change", function() {
-  clearTimeout(cancel);
-  setTimeout(function() {
-    updatePreview();
-  }, 300);
-  localStorage.setItem("jsData", jsEditor.getValue());
-  
-  setTimeout(function() {
-    jsEditor.setOption("paletteHints", "true");
-  }, 300);
-});
+// Toggle Auto Update Preview
+var checkedPrev = JSON.parse(localStorage.getItem("autoUpdate"));
+// If checkedPrev === null then the use has never been here before.
+// Make checkedPrev default to true
+checkedPrev = checkedPrev === null ? true : false;
+var changePrev = document.getElementById("changePrev");
+changePrev.checked = checkedPrev;
+(changePrev.checked) ? $("#runeditor").hide() : $("#runeditor").show();
+
+$("#changePrev").on("change", function() {
+  (this.checked) ? localStorage.setItem("autoUpdate", "true") : localStorage.setItem("autoUpdate", "false");
+  callPrev();
+  (this.checked) ? $("#runeditor").hide() : $("#runeditor").show();
+  $("input[name=menubar].active").trigger("click");
+}).trigger("change");
+
+function callPrev() {
+  htmlEditor.on("change", function() {
+    if (changePrev.checked) {
+      clearTimeout(cancel);
+      setTimeout(function() {
+        updatePreview();
+      }, 300);
+      localStorage.setItem("htmlData", htmlEditor.getValue());
+
+      setTimeout(function() {
+        htmlEditor.setOption("paletteHints", "true");
+      }, 300);
+      return false;
+    } else {
+      localStorage.setItem("htmlData", htmlEditor.getValue());
+
+      setTimeout(function() {
+        htmlEditor.setOption("paletteHints", "true");
+      }, 300);
+    }
+  });
+  cssEditor.on("change", function() {
+    cssPreProcessor();
+    $("#preview").contents().find("#b8c770cc").html(cssContent);
+    localStorage.setItem("cssData", cssEditor.getValue());
+
+    setTimeout(function() {
+      cssEditor.setOption("paletteHints", "true");
+    }, 300);
+    return false;
+  });
+  jsEditor.on("change", function() {
+    if (changePrev.checked) {
+      clearTimeout(cancel);
+      setTimeout(function() {
+        updatePreview();
+      }, 300);
+      localStorage.setItem("jsData", jsEditor.getValue());
+
+      setTimeout(function() {
+        jsEditor.setOption("paletteHints", "true");
+      }, 300);
+      return false;
+    } else {
+      localStorage.setItem("jsData", jsEditor.getValue());
+
+      setTimeout(function() {
+        jsEditor.setOption("paletteHints", "true");
+      }, 300);
+    }
+  });
+  return false;
+}
+
 mdEditor.on("change", function() {
   markdownPreview();
   localStorage.setItem("mdData", mdEditor.getValue());
-  
+
   setTimeout(function() {
     mdEditor.setOption("paletteHints", "true");
   }, 300);
@@ -2998,6 +3637,14 @@ jsEditor.on("drop", function() {
 mdEditor.on("drop", function() {
   mdEditor.setValue("");
 });
+
+// Run Preview Button Click
+document.getElementById("runeditor").onclick = function() {
+  clearTimeout(cancel);
+  setTimeout(function() {
+    updatePreview();
+  }, 300);
+};
 
 responsiveUI();
 loadFiles();
@@ -3068,8 +3715,7 @@ storeValues();
 // Save as a Gist Online
 document.querySelector("[data-action=save-gist]").onclick = function() {
   $("input[name=menubar].active").trigger("click");
-  app.requestInterstitial(true);
-
+  
   // Return checked libraries
   var arr = {};
   $(".ldd-submenu input[type=checkbox]").each(function() {
@@ -3079,13 +3725,12 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
 
   // check if description and markdown editor have a value
   if ( !document.querySelector("[data-action=sitedesc]").value) {
-    $("[data-action=sitedesc]").val("Saved from kodeWeave!");
+     document.querySelector("[data-action=sitedesc]").value = "Saved from kodeWeave!";
   }
 
   // Return user settings
   var sArr = {
     "siteTitle": document.querySelector("[data-action=sitetitle]").value,
-    "version": document.querySelector("[data-value=version]").value,
     "editorFontSize": document.querySelector("[data-editor=fontSize]").value,
     "description": document.querySelector("[data-action=sitedesc]").value,
     "author": document.querySelector("[data-action=siteauthor]").value
@@ -3093,16 +3738,52 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
 
   var files = {};
 	if (htmlEditor.getValue()) {
-    yourHTML = htmlEditor.getValue();
-    files["index.html"] = htmlEditor.getValue() ? { content: yourHTML } : null;
+      var htmlSelected = $("#html-preprocessor option:selected").val();
+
+      if ( htmlSelected == "none") {
+        yourHTML = htmlEditor.getValue();
+        files["index.html"] = htmlEditor.getValue() ? { content: yourHTML } : null;
+      } else if ( htmlSelected == "jade") {
+        yourHTML = htmlEditor.getValue();
+        files["index.jade"] = htmlEditor.getValue() ? { content: yourHTML } : null;
+      }
 	}
 	if (cssEditor.getValue()) {
-    yourCSS = cssEditor.getValue();
-    files["index.css"] = cssEditor.getValue() ? { content: yourCSS } : null;
+      cssSelected = $("#css-preprocessor option:selected").val();
+
+      if ( cssSelected == "none") {
+        yourCSS = cssEditor.getValue();
+        files["index.css"] = cssEditor.getValue() ? { content: yourCSS } : null;
+      } else if ( cssSelected == "stylus") {
+        yourCSS = cssEditor.getValue();
+        files["index.styl"] = cssEditor.getValue() ? { content: yourCSS } : null;
+      } else if ( cssSelected == "less") {
+        yourCSS = cssEditor.getValue();
+        files["index.less"] = cssEditor.getValue() ? { content: yourCSS } : null;
+      } else if ( cssSelected == "scss") {
+        yourCSS = cssEditor.getValue();
+        files["index.scss"] = cssEditor.getValue() ? { content: yourCSS } : null;
+      } else if ( cssSelected == "sass") {
+        yourCSS = cssEditor.getValue();
+        files["index.sass"] = cssEditor.getValue() ? { content: yourCSS } : null;
+      }
 	}
 	if (jsEditor.getValue()) {
-    yourJS = jsEditor.getValue();
-    files["index.js"] = jsEditor.getValue() ? { content: yourJS } : null;
+      var jsSelected = $("#js-preprocessor option:selected").val();
+
+      if ( jsSelected == "none") {
+        yourJS = jsEditor.getValue();
+        files["index.js"] = jsEditor.getValue() ? { content: yourJS } : null;
+      } else if ( jsSelected == "coffeescript") {
+        yourJS = jsEditor.getValue();
+        files["index.coffee"] = jsEditor.getValue() ? { content: yourJS } : null;
+      } else if ( jsSelected == "typescript") {
+        yourJS = jsEditor.getValue();
+        files["index.ts"] = jsEditor.getValue() ? { content: yourJS } : null;
+      } else if ( jsSelected == "babel") {
+        yourJS = jsEditor.getValue();
+        files["index.jsx"] = jsEditor.getValue() ? { content: yourJS } : null;
+      }
 	}
 	if (mdEditor.getValue()) {
 		files["README.md"] = mdEditor.getValue() ? { content: mdEditor.getValue() } : null;
@@ -3143,9 +3824,9 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
   // editEmbed = "edit,";
   // darkUI = "dark,";
   // seeThrough = "transparent,";
-  hasResult = "result";
+   hasResult = "result";
   // showEditors = hasMD + hasHTML + hasCSS + hasJS + editEmbed + darkUI + seeThrough + hasResult;
-  var showEditors = hasMD + hasHTML + hasCSS + hasJS + hasResult;
+   showEditors = hasMD + hasHTML + hasCSS + hasJS + hasResult;
 
   // Post on Github via JQuery Ajax
   $.ajax({
@@ -3154,16 +3835,16 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
     dataType: "json",
     data: JSON.stringify(data)
   }).success(function(e) {
+    urlStr = e.html_url.split("https://gist.github.com/").join("");
+    hash = urlStr.replace(/#/g,"");
+    
     embedProject = e.html_url.split("https://gist.github.com/").join("");
     document.querySelector("[data-output=projectURL]").value = "https://mikethedj4.github.io/kodeWeave/editor/#" + embedProject;
+    document.querySelector("[data-output=projectString]").value = embedProject;
     document.querySelector("[data-output=projectURL]").onclick = function() {
       this.select(true);
     };
-    document.querySelector("[data-output=projectString]").value = embedProject;
-    document.querySelector("[data-output=projectString]").onclick = function() {
-      this.select(true);
-    };
-    
+
     // Toggle Editor's Visibility for Embed
     $("[data-target=editorURL]").on("change", function() {
       if (document.getElementById("mdurl").checked) {
@@ -3208,6 +3889,11 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
       } else {
         hasResult = "";
       }
+      if (document.getElementById("norerun").checked) {
+        noRerun = "norerun,";
+      } else {
+        noRerun = "";
+      }
       if (document.getElementById("transparentembed").checked) {
         seeThrough = "transparent,";
       } else {
@@ -3223,12 +3909,12 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
       } else {
         editEmbed = "";
       }
-      var showEditors = hasMD + hasHTML + hasCSS + hasJS + editEmbed + darkUI + seeThrough + hasResult;
+      showEditors = hasMD + hasHTML + hasCSS + hasJS + editEmbed + darkUI + noRerun + seeThrough + hasResult;
 
       document.getElementById("clearSharePreview").innerHTML = "";
       var shareFrame = document.createElement("iframe");
       shareFrame.setAttribute("id", "shareWeavePreview");
-      shareFrame.setAttribute("sandbox", "allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts");
+      shareFrame.setAttribute("sandbox", "allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts");
       shareFrame.style.width = "calc(100% + 1.5em)";
       shareFrame.style.height = "300px";
       document.getElementById("clearSharePreview").appendChild(shareFrame);
@@ -3240,7 +3926,7 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
     document.getElementById("clearSharePreview").innerHTML = "";
     var shareFrame = document.createElement("iframe");
     shareFrame.setAttribute("id", "shareWeavePreview");
-    shareFrame.setAttribute("sandbox", "allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts");
+    shareFrame.setAttribute("sandbox", "allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts");
     shareFrame.style.width = "calc(100% + 1.5em)";
     shareFrame.style.height = "300px";
     document.getElementById("clearSharePreview").appendChild(shareFrame);
@@ -3251,19 +3937,113 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
       this.select(true);
     };
 
-    $(".share-facebook").attr("href", "https://www.facebook.com/sharer/sharer.php?u=https%3A//mikethedj4.github.io/kodeWeave/editor/%23" + embedProject);
-    $(".share-twitter").attr("href", "https://twitter.com/home?status=Checkout%20my%20"+ document.querySelector("[data-action=sitetitle]").value.split(" ").join("%20") +"%20%23weave%20on%20%23kodeWeave%20%23kodeWeaveShare%20-%20https://mikethedj4.github.io/kodeWeave/editor/%23" + embedProject);
-    $(".share-gplus").attr("href", "https://plus.google.com/share?url=https%3A//mikethedj4.github.io/kodeWeave/editor/%23" + embedProject);
-    $(".share-linkedin").attr("href", "https://www.linkedin.com/shareArticle?mini=true&url=https%3A//mikethedj4.github.io/kodeWeave/editor/%23"+ embedProject +"&title=Checkout%20my%20%23weave%20on%20%23kodeWeave%3A%20&summary=&source=");
+    $(".share-facebook").attr("href", "https://www.facebook.com/sharer/sharer.php?u=https%3A//mikethedj4.github.io/kodeWeave/editor/%23" + hash);
+    $(".share-twitter").attr("href", "https://twitter.com/home?status=Checkout%20my%20"+ document.querySelector("[data-action=sitetitle]").value.split(" ").join("%20") +"%20%23weave%20on%20%23kodeWeave%20%23kodeWeaveShare%20-%20https%3A//mikethedj4.github.io/kodeWeave/e/%23" + hash);
+    $(".share-gplus").attr("href", "https://plus.google.com/share?url=https%3A//mikethedj4.github.io/kodeWeave/editor/%23" + hash);
+    $(".share-linkedin-square").attr("href", "https://www.linkedin.com/shareArticle?mini=true&url=https%3A//mikethedj4.github.io/kodeWeave/editor/%23"+ hash +"&title=Checkout%20my%20%23weave%20on%20%23kodeWeave%3A%20&summary=&source=");
     $("[data-action=socialdialog]").fadeIn();
 
-    // Let user view gist
-    alertify.success("Your weave is saved!");
+    // Successfully saved weave. 
+    // Ask to support open source software.
+    alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\"><img src=\"assets/model-2.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
   }).error(function(e) {
     console.warn("Error: Could not save weave!", e);
     alertify.error("Error: Could not save weave!");
   });
 };
+
+// Save weave for offline usage
+document.querySelector("[data-action=save-weave]").onclick = function() {
+  $("input[name=menubar].active").trigger("click");
+  
+  // Return checked libraries
+  var arr = {};
+  $(".ldd-submenu input[type=checkbox]").each(function() {
+    var id = this.id;
+    arr[id] = (this.checked ? true : false);
+  });
+
+  // check if description and markdown editor have a value
+  if ( !document.querySelector("[data-action=sitedesc]").value) {
+     document.querySelector("[data-action=sitedesc]").value = "Saved from kodeWeave!";
+  }
+
+  // Return user settings
+  var sArr = {
+    "siteTitle": document.querySelector("[data-action=sitetitle]").value,
+    "editorFontSize": document.querySelector("[data-editor=fontSize]").value,
+    "description": document.querySelector("[data-action=sitedesc]").value,
+    "author": document.querySelector("[data-action=siteauthor]").value
+  };
+
+  var files = {};
+	if (htmlEditor.getValue()) {
+      var htmlSelected = $("#html-preprocessor option:selected").val();
+
+      if ( htmlSelected == "none") {
+        yourHTML = htmlEditor.getValue();
+        files["index.html"] = htmlEditor.getValue() ? { content: yourHTML } : null;
+      } else if ( htmlSelected == "jade") {
+        yourHTML = htmlEditor.getValue();
+        files["index.jade"] = htmlEditor.getValue() ? { content: yourHTML } : null;
+      }
+	}
+	if (cssEditor.getValue()) {
+      cssSelected = $("#css-preprocessor option:selected").val();
+
+      if ( cssSelected == "none") {
+        yourCSS = cssEditor.getValue();
+        files["index.css"] = cssEditor.getValue() ? { content: yourCSS } : null;
+      } else if ( cssSelected == "stylus") {
+        yourCSS = cssEditor.getValue();
+        files["index.styl"] = cssEditor.getValue() ? { content: yourCSS } : null;
+      } else if ( cssSelected == "less") {
+        yourCSS = cssEditor.getValue();
+        files["index.less"] = cssEditor.getValue() ? { content: yourCSS } : null;
+      } else if ( cssSelected == "scss") {
+        yourCSS = cssEditor.getValue();
+        files["index.scss"] = cssEditor.getValue() ? { content: yourCSS } : null;
+      } else if ( cssSelected == "sass") {
+        yourCSS = cssEditor.getValue();
+        files["index.sass"] = cssEditor.getValue() ? { content: yourCSS } : null;
+      }
+	}
+	if (jsEditor.getValue()) {
+      var jsSelected = $("#js-preprocessor option:selected").val();
+
+      if ( jsSelected == "none") {
+        yourJS = jsEditor.getValue();
+        files["index.js"] = jsEditor.getValue() ? { content: yourJS } : null;
+      } else if ( jsSelected == "coffeescript") {
+        yourJS = jsEditor.getValue();
+        files["index.coffee"] = jsEditor.getValue() ? { content: yourJS } : null;
+      } else if ( jsSelected == "typescript") {
+        yourJS = jsEditor.getValue();
+        files["index.ts"] = jsEditor.getValue() ? { content: yourJS } : null;
+      } else if ( jsSelected == "babel") {
+        yourJS = jsEditor.getValue();
+        files["index.jsx"] = jsEditor.getValue() ? { content: yourJS } : null;
+      }
+	}
+	if (mdEditor.getValue()) {
+		files["README.md"] = mdEditor.getValue() ? { content: mdEditor.getValue() } : null;
+	}
+	files["libraries.json"] = { "content": JSON.stringify(arr) };
+	files["settings.json"] = { "content": JSON.stringify(sArr) };
+
+  data = {
+    "files": files
+  };
+  
+  if ($("[data-saved=libraries]").text() === "No weave's have been saved") {
+    $("[data-saved=libraries]").empty();
+  }
+  $("[data-saved=libraries]").append('<div data-contain="weave" style="padding: 0 1em;"><a class="savedweave fl">'+ document.querySelector("[data-action=sitetitle]").value +'</a><a class="delweave fr"><i class="fa fa-times"></i></a><textarea class="hide">'+ JSON.stringify(data) +'</textarea></div>');
+  
+  localStorage.setItem("savedWeaves", $("[data-saved=libraries]").html());
+  handleWeaves();
+};
+handleWeaves();
 
 // Save Checked Libraries for LocalStorage
 var textarea = document.querySelector("[data-action=library-code]");
@@ -3276,12 +4056,59 @@ if (localStorage.getItem("checkedLibraries")) {
  }
 }
 
+// Search Libraries
+$("[data-search=libraries]").on("keyup change", function(e) {
+  if(this.value.toLowerCase()) {
+    $("[data-clear=search]").show();
+    $(".ldd-submenu ul > div").hide();
+    $(".ldd-submenu ul").attr('style', '');
+    $(".ldd-submenu ul").css({
+      'float': 'none',
+      'border': '0'
+    });
+    $(".ldd-submenu ul > div."+ this.value.charAt(0).toLowerCase()).css('display', 'inline-block');
+  } else {
+    $("[data-clear=search]").hide();
+    $(".ldd-submenu ul").attr('style', '');
+    $(".ldd-submenu ul > div").attr('style', '');
+  }
+}).trigger('change');
+$("[data-clear=search]").click(function() {
+  $("[data-search=libraries]").val('').trigger('change');
+});
+
+// Add libraries to autocomplete search
+$("#libraries").empty();
+$.each($("[type=checkbox].check"), function(id, value) {
+  $("#libraries").append('<option value="'+ $(this).next().text() +'">'+ $(this).next().text() +'</option>')
+});
+
+// Show preview dimensions
+$("[data-toggle=dimensions]").click(function() {
+  if ($("[data-toggle=previewdimensions]").is(":visible")) {
+    $("[data-toggle=previewdimensions]").addClass('hide');
+    $(this).find(".fa").removeClass('fa-eye-slash').addClass('fa-eye')
+  } else {
+    $("[data-toggle=previewdimensions]").removeClass('hide');
+    $("[data-output=dimensions]").text($(".preview-editor").css('width') + ", " + $(".preview-editor").css('height'));
+    $(this).find(".fa").removeClass('fa-eye').addClass('fa-eye-slash')
+  }
+});
+$('#splitContainer, #rightSplitter').on('collapsed expanded resize', function() {
+  if ($("[data-toggle=previewdimensions]").is(":visible")) {
+    $("[data-output=dimensions]").text($(".preview-editor").css('width') + ", " + $(".preview-editor").css('height'));
+  }
+});
+$(window).resize(function() {
+  if ($("[data-toggle=previewdimensions]").is(":visible")) {
+    $("[data-output=dimensions]").text($(".preview-editor").css('width') + ", " + $(".preview-editor").css('height'));
+  }
+});
+
 // Add/Remove Libraries
 $("[data-action=check]").on("change keyup", function() {
   var value = $(this).parent().nextAll("div").children(".libsources:first").val() + "\n";
   checkedLibs();
-
-  var libsTextarea = $("[data-action=libstextarea]");
 
   if ( $(this).prop("checked") === true ) {
     textarea.value = textarea.value + value;
@@ -3289,7 +4116,9 @@ $("[data-action=check]").on("change keyup", function() {
     textarea.value = textarea.value.replace( value, "");
   }
 
-  updatePreview();
+  if (!changePrev.checked) {
+    $("#runeditor").trigger("click");
+  }
 
   var checked = $("[type=checkbox].check:checked");
   var lsChecked = [];
@@ -3301,15 +4130,19 @@ $("[data-action=check]").on("change keyup", function() {
 });
 $("#jquery").trigger("keyup");
 
-welcomeDialog();
 shortcutKeys();
 initGenerators();
 checkedLibs();
-appDemos();
 charGeneration();
 initdataURLGrabber();
 miscellaneous();
 newDocument();
+preprocessors();
+
+// Buy kodeWeave T-Shirt Ad
+if (navigator.onLine) {
+  alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/0rtzt?msg=31&r=tw\" target=\"_blank\"><img src=\"assets/model-1.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/0rtzt?msg=31&r=tw\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
+}
 
 // Scroll Character Menu
 (function() {

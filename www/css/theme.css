@@ -134,10 +134,7 @@ header > label:hover {
   background: rgb(255, 255, 255);
   background: rgba(255, 255, 255, 0.25);
 }
-.chromeappwindow, 
-.socialdialog, 
-.preprocessors, 
-.loaddialog {
+.chromeappwindow, .socialdialog, .preprocessors {
   background: rgb(255, 255, 255);
 }
 .preprocessors h4 {

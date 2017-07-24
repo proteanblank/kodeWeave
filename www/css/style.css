@@ -4,7 +4,7 @@
 @import url("../libraries/codemirror/lib/codemirror.css");
 @import url("../libraries/codemirror/addon/fold/foldgutter.css");
 @import url("../libraries/codemirror/addon/lint/lint.css");
-@import url("../libraries/codemirror/addon/dialog/dialog.css");
+@import url("../libraries/codemirror/addon/dialog/dialog-custom.css");
 @import url("../libraries/codemirror/addon/hint/show-hint.css");
 @import url("../libraries/codemirror/addon/tern/tern.css");
 @import url("../libraries/alertifyjs/css/alertify.min.css");
@@ -15,6 +15,10 @@
 @import url("../libraries/codemirror/inlet.css");
 @import url("polyui.css");
 @import url("jqueryminicolors.css");
+
+input::-webkit-calendar-picker-indicator {
+  display: none;
+}
 
 @font-face {
   font-family: Lato;
@@ -128,12 +132,56 @@ header > label {
   padding: 5px;
   text-align: center;
   overflow: auto;
-  z-index: 100;
+  z-index: 1;
   bottom: auto;
 }
 .download-dialog {
-  width: 325px;
+  width: 300px;
   left: 154.359px;
+}
+
+/* Preprocessor Tabs */
+.preprocessor-tabs {
+  position: relative;   
+  min-height: 200px; /* This part sucks */
+  clear: both;
+  margin: 25px 0;
+}
+.preprocessor-tab {
+  display: inline-block;
+}
+.preprocessor-tab > label {
+  cursor: pointer;
+  position: relative;
+  top: 4px;
+  margin: 0 12px;
+  font-size: 1.25em;
+  padding: 0.5em;
+  background: #eee; 
+  border: 1px solid #ccc; 
+  border-bottom: 1px solid transparent;
+}
+.preprocessor-tab [type=radio] {
+  display: none;   
+}
+.content {
+  position: absolute;
+  top: 35px;
+  left: 0;
+  background: white;
+  right: 0;
+  bottom: -84px;
+  padding: 20px;
+  border: 1px solid #ccc; 
+  overflow: auto;
+}
+.preprocessors [type=radio]:checked ~ label {
+  background: white;
+  border-bottom: 1px solid white;
+  z-index: 2;
+}
+.preprocessors [type=radio]:checked ~ label ~ .content {
+  z-index: 1;
 }
 
 /* Libraries & Demos Dialog */
@@ -156,17 +204,31 @@ header > label {
   text-align: left;
 }
 .addlibrary-tablets {
-  width: 600px;
+  width: 655px;
   overflow-x: visible;
   overflow-y: visible;
 }
 .adddemos-tablets {
   width: 390px;
 }
-.addlibrary-tablets li a, .adddemos-tablets li a {
+.addlibrary-tablets li a {
   float: none;
   text-align: left;
   text-transform: capitalize;
+}
+.savedweave {
+  font-weight: 300!important;
+  font-size: 16px!important;
+  line-height: 1.7!important;
+  font-family: Lato!important;
+  width: calc(100% - 40px)!important;
+  overflow: hidden!important;
+  height: 30px!important;
+  text-align: left!important;
+}
+.delweave {
+  font-size: 1.25em!important;
+  margin: 3px 0!important;
 }
 
 .ldd-menu {
@@ -195,7 +257,7 @@ header > label {
   float: left;
   margin: 0;
   padding: 10px;
-  width: 170px;
+  width: 196px;
 }
 .ldd-heading {
   font-family: Georgia, serif;
@@ -217,6 +279,14 @@ header > label {
 }
 #open-demos:checked ~ .demos-dialog {
   display: block;
+}
+
+@media all and (max-width:430px) {
+  .preprocessor-tab > label {
+    top: 8px;
+    margin: 0;
+    font-size: 1em;
+  }
 }
 
 .dataurlbg, .dataurl {
@@ -265,12 +335,12 @@ header > label {
 }
 
 /* Toolbox Queries */
-@media all and (min-height:462px) {
+@media all and (min-height:548px) {
   .toolbox {
     bottom: auto;
   }
 }
-@media all and (max-height:462px) {
+@media all and (max-height:466px) {
   .toolbox {
     bottom: 40px;
   }
@@ -293,7 +363,7 @@ header > label {
     width: 100%!important;
   }
 }
-@media all and (max-height:570px) {
+@media all and (max-height:800px) {
   .libraries-dialog {
     bottom: 25px;
   }
@@ -317,13 +387,6 @@ header > label {
   .adddemos-tablets {
     width: 100%;
   }
-
-  .adddemos-tablets .ldd-menu ul {
-    display: block!important;
-    border-left: 0!important;
-    margin: 0!important;
-    width: 100%!important;
-  }
 }
 @media all and (max-height:454px) {
   .demos-dialog {
@@ -343,6 +406,7 @@ header > label {
 /* Download Dialog */
 .download-dialog li:not(.hide) {
   display: table;
+  padding: 5px 0;
 }
 
 /* Chrome Dialog */
@@ -355,6 +419,7 @@ header > label {
 .loaddialog {
   padding: 2em;
   border-radius: 0.4em;
+  background: #fff;
 }
 .chromeappwindow input .chromeappwindow textarea {
   display: block;
@@ -388,7 +453,7 @@ nav {
 #dataurlholder.hover {
   border: 7px dashed #fff;
 }
-.txtcenter {
+.txtcenter, .tc {
   text-align: center;
 }
 textarea {
@@ -446,57 +511,58 @@ textarea {
   margin-right: 7px;
 }
 
-.fullscreen-html-toggle,
-.fullscreen-css-toggle,
-.fullscreen-js-toggle,
-.preview-mode-toggle,
-.savefile,
-.settings {
-  display: block;
+.sidebtns {
   position: absolute;
-  right: 20px;
+  top: 0;
+  right: 10px;
+  text-align: center;
+}
+.sidebtns a {
+  display: block;
   opacity: 0.6;
   font-size: 1.75em;
   z-index: 0;
+  margin: 0 5px 10px 5px;
 }
-.fullscreen-html-toggle:hover,
-.fullscreen-css-toggle:hover,
-.fullscreen-js-toggle:hover,
-.preview-mode-toggle:hover {
+.sidebtns a:hover {
   opacity: 1;
 }
-.fullscreen-html-toggle,
-.fullscreen-css-toggle,
-.fullscreen-js-toggle {
-  top: 15px;
+.sidebtns a > label:hover {
+  border: 0;
+  outline: 0;
 }
-.savefile {
-  top: 50px;
+.sidebtns a > label:hover:before {
+  border: 0!important;
 }
-.settings {
-  top: 87px;
-}
-.savefile:hover,
-.settings:hover {
-  opacity: 1;
-}
-.selectEditor {
-  display: block;
-  position: absolute;
-  top: 125px;
-  right: 15px;
-  z-index: 0;
+.previewbtns {
+  top: auto;
+  bottom: 10px;
+  right: 20px;
+ z-index: 1;
 }
 .selectEditor img {
   width: 30px;
-  opacity: 0.4;
-  margin: 0;
+  opacity: 0.5;
 }
 .selectEditor img:hover {
   opacity: 1;
 }
-.preview-mode-toggle {
-  bottom: 15px;
+.editoractionlist {
+  list-style: none;
+  position: absolute;
+}
+.editoractionlist li {
+  background: #fff;
+  color: #000;
+  padding: 8px 15px 10px;
+  line-height: 1.1;
+  text-shadow: none;
+  text-decoration: none;
+  text-transform: capitalize;
+  font-size: 14px;
+}
+.editoractionlist li:hover {
+  background: #e7e7e7;
 }
 
 /* Toggle Online Switch */
