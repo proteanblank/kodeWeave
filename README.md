@@ -22,12 +22,12 @@ Availability
 [Android](https://play.google.com/store/apps/details?id=com.michael.kodeweave)  
 [Chrome Application](https://chrome.google.com/webstore/detail/kodeweave-touch/blcgppajmopfndnmegepihhkilaejipf)
 
-**No longer Supported** *(desktop version of kodeweave is deprecated)*  
-[Windows 64](http://sourceforge.net/projects/kodeweave/files/v1.1.24/kodeWeave-win.zip/download)  
-[Windows 32](http://sourceforge.net/projects/kodeweave/files/v1.1.24/kodeWeave-win32.zip/download)  
-[Mac](http://sourceforge.net/projects/kodeweave/files/v1.1.24/kodeWeave-mac.zip/download)  
-[Linux 64](http://sourceforge.net/projects/kodeweave/files/v1.1.24/kodeWeave-lin.zip/download)  
-[Linux 32](http://sourceforge.net/projects/kodeweave/files/v1.1.24/kodeWeave-lin32.zip/download) 
+**No longer Supported** *(last/final release of kodeWeave for desktops is v1.1.29)*  
+[Windows 64](http://sourceforge.net/projects/kodeweave/files/v1.1.29/kodeWeave-win.zip/download)  
+[Windows 32](http://sourceforge.net/projects/kodeweave/files/v1.1.29/kodeWeave-win32.zip/download)  
+[Mac](http://sourceforge.net/projects/kodeweave/files/v1.1.29/kodeWeave-mac.zip/download)  
+[Linux 64](http://sourceforge.net/projects/kodeweave/files/v1.1.29/kodeWeave-lin.zip/download)  
+[Linux 32](http://sourceforge.net/projects/kodeweave/files/v1.1.29/kodeWeave-lin32.zip/download) 
 
 Tech
 -------------
