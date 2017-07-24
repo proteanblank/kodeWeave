@@ -59,6 +59,9 @@ To-Do
 -------------
 
 - Make code editor more responsive for mobile devices
+- Option to change themes
+- Option to change between vim or sublime keymaps
+- Toggle syntax validation for all languages
 
 ### Desktop
  - Save code snippets for offline use
