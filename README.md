@@ -43,22 +43,15 @@ kodeWeave uses a number of open source projects to work properly:
 * [node-webkit](http://nwjs.io/) - makes web apps run on desktops (comes built with [node.js](http://nodejs.org/))
 * [Inlet](https://github.com/mikethedj4/Inlet) - awesome inline color picker and numeric slider for Codemirror
 * [Emmet](http://emmet.io/) - Codemirror Plugin for Zen Coding
-* [Showdown](http://showdownjs.github.io/demo/) - Markdown to HTML converter
 * [js-beautifier](http://jsbeautifier.org/) - HTML/CSS/JS Beautifier
-* [HTMLHint](http://htmlhint.com/) - for html syntax validation
-* [CSSLint](http://csslint.net/) - for css syntax validation
-* [JSHint](http://jslint.com/) - for javascript syntax validation
+* [Showdown](http://showdownjs.github.io/demo/) - Markdown to HTML converter
 * [Jade](http://jade-lang.com/) - an html preprocessor
-* [Stylus](http://stylus-lang.com/) - a css preprocessor
-* [Less](http://lesscss.org/) - a css preprocessor
-* [CoffeeScript](http://coffeescript.org/) - a javascript preprocessor
-* [TypeScript](http://www.typescriptlang.org/) - a javascript preprocessor
-* [Babel](http://babeljs.io/) - a javascript preprocessor used to write ES6
+* [Stylus](http://stylus-lang.com/), [Less], [SASS](https://github.com/medialize/playground.sass.js/) - css preprocessors
+* [CoffeeScript](http://coffeescript.org/), [TypeScript](http://www.typescriptlang.org/), [Babel](http://babeljs.io/) - javascript preprocessors
 * [HTML2Jade](http://html2jade.org/) - Convert HTML to Jade and back
 * [CSS2Stylus](http://dciccale.github.io/css2stylus.js/) - Convert CSS to Stylus and back
 * [JS2Coffee](http://js2.coffee/) - Convert Javascript to CoffeeScript and back
 * [AlertifyJS](http://alertifyjs.com/) - For the awesome and stylish alert notification dialogs
-* [Cordova](https://cordova.apache.org/) - mobile application development framework
 * [DataURL Grabber](https://github.com/mikethedj4/DataURL-Grabber-PhoneGap-Build) - Embed an image directly into the document with data URIs
 * Also comes prebuilt with, "just about every framework you can name off the top of your head" - Says [Web Designer Depot](https://www.webdesignerdepot.com/2017/06/5-essential-open-source-tools-for-web-designers/)
 
