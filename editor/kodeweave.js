@@ -9,7 +9,8 @@ var timeout, delay, selected_text, str, mynum,
     start_cursor, cursorLine, cursorCh, blob,
     jsContent, htmlContent, cssContent, cssSelected,
     showEditors, hasMD, hasHTML, hasCSS, hasJS,
-    editEmbed, darkUI, seeThrough, hasResult, offset, tsCode, tsCompileCode,
+    editEmbed, darkUI, seeThrough, hasResult, offset,
+    tsCode, tsCompileCode, sass = new Sass(), output,
     activeEditor = document.querySelector("[data-action=activeEditor]"),
     welcomeDialog = function() {
       // Stop YouTube Video from playing when other tabs are clicked
@@ -62,6 +63,12 @@ var timeout, delay, selected_text, str, mynum,
         less.render(cssEditor.getValue(), function (e, output) {
           yourCSS = output.css;
         });
+      } else if (cssSelected == "scss" || cssSelected == "sass") {
+        var cssVal = cssEditor.getValue();
+
+        sass.compile(cssVal, function(result) {
+          yourCSS = result.text;
+        });
       }
     },
     renderYourJS = function() {
@@ -109,6 +116,12 @@ var timeout, delay, selected_text, str, mynum,
         } else if ( cssSelected == "less") {
           blob = new Blob([ cssEditor.getValue() ], {type: "text/x-less"});
           saveAs(blob, "source.less");
+        } else if ( cssSelected == "scss") {
+          blob = new Blob([ cssEditor.getValue() ], {type: "text/x-scss"});
+          saveAs(blob, "source.scss");
+        } else if ( cssSelected == "sass") {
+          blob = new Blob([ cssEditor.getValue() ], {type: "text/x-sass"});
+          saveAs(blob, "source.sass");
         }
         
         // Ask to support open source software.
@@ -1912,6 +1925,18 @@ var timeout, delay, selected_text, str, mynum,
               }).prop('selected', true);
             });
             $(".editoractionlist").addClass('hide');
+          } else if (cssSelected == "scss" || cssSelected == "sass") {
+            $("#css-preprocessor").val("none").trigger("change");
+            $(".viewcompiledcode").removeClass('hide');
+            var cssVal = cssEditor.getValue();
+
+            sass.compile(cssVal, function(result) {
+              cssEditor.setValue(result.text);
+            });
+            $('#css-preprocessor option').filter(function() { 
+              return ($(this).text() == 'None');
+            }).prop('selected', true);
+            $(".editoractionlist").addClass('hide');
           }
         }
 
@@ -2527,7 +2552,27 @@ var timeout, delay, selected_text, str, mynum,
           }, 300);
           // cssEditor.setOption("lint", false);
           // cssEditor.refresh();
-          $(".css-editor").css('background-image', 'url("assets/less.svg")');
+          $(".css-editor").css('background-image', 'url("assets/scss.svg")');
+        } else if ( valueSelected == "scss") {
+          cssEditor.setOption("mode", "text/x-scss");
+          cssEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
+          setTimeout(function() {
+            $(".CodeMirror-lint-mark-error, .CodeMirror-lint-mark-error-metro").removeClass("CodeMirror-lint-mark-error CodeMirror-lint-mark-error-metro");
+            $(".CodeMirror-lint-mark-warning, .CodeMirror-lint-mark-warning-metro").removeClass("CodeMirror-lint-mark-warning CodeMirror-lint-mark-warning-metro");
+          }, 300);
+          // cssEditor.setOption("lint", false);
+          // cssEditor.refresh();
+          $(".css-editor").css('background-image', 'url("assets/scss.svg")');
+        } else if ( valueSelected == "sass") {
+          cssEditor.setOption("mode", "text/x-sass");
+          cssEditor.setOption("gutters", ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
+          setTimeout(function() {
+            $(".CodeMirror-lint-mark-error, .CodeMirror-lint-mark-error-metro").removeClass("CodeMirror-lint-mark-error CodeMirror-lint-mark-error-metro");
+            $(".CodeMirror-lint-mark-warning, .CodeMirror-lint-mark-warning-metro").removeClass("CodeMirror-lint-mark-warning CodeMirror-lint-mark-warning-metro");
+          }, 300);
+          // cssEditor.setOption("lint", false);
+          // cssEditor.refresh();
+          $(".css-editor").css('background-image', 'url("assets/sass.svg")');
         } else {
           cssEditor.setOption("mode", "css");
           cssEditor.setOption("gutters", ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"]);
@@ -3660,6 +3705,7 @@ function cssPreProcessor(cssSelected) {
 
   if (cssSelected == "none") {
     cssContent = cssEditor.getValue();
+    $("#preview").contents().find("#b8c770cc").html(cssContent);
   } else if (cssSelected == "stylus") {
     var cssVal = cssEditor.getValue();
     stylus(cssVal).render(function(err, out) {
@@ -3667,12 +3713,21 @@ function cssPreProcessor(cssSelected) {
         console.error("something went wrong");
       } else {
         cssContent = out;
+        $("#preview").contents().find("#b8c770cc").html(cssContent);
       }
     });
   } else if (cssSelected == "less") {
     var cssVal = cssEditor.getValue();
     less.render(cssVal, function (e, output) {
       cssContent = output.css;
+      $("#preview").contents().find("#b8c770cc").html(cssContent);
+    });
+  } else if (cssSelected == "scss" || cssSelected == "sass") {
+    var cssVal = cssEditor.getValue();
+
+    sass.compile(cssVal, function(result) {
+      cssContent = result.text;
+      $("#preview").contents().find("#b8c770cc").html(cssContent);
     });
   }
 }
@@ -3779,7 +3834,6 @@ function callPrev() {
   });
   cssEditor.on("change", function() {
     cssPreProcessor();
-    $("#preview").contents().find("#b8c770cc").html(cssContent);
     localStorage.setItem("cssData", cssEditor.getValue());
 
     setTimeout(function() {
@@ -3865,6 +3919,8 @@ function loadgist(gistid) {
     var cssVal         = gistdata.data.files["index.css"];
     var stylusVal      = gistdata.data.files["index.styl"];
     var lessVal        = gistdata.data.files["index.less"];
+    var scssVal        = gistdata.data.files["index.scss"];
+    var sassVal        = gistdata.data.files["index.sass"];
     var jsVal          = gistdata.data.files["index.js"];
     var coffeeVal      = gistdata.data.files["index.coffee"];
     var typescriptVal  = gistdata.data.files["index.ts"];
@@ -3951,7 +4007,15 @@ function loadgist(gistid) {
       cssEditor.setValue(lessVal.content);
       $("#css-preprocessor").val("less").trigger("change");
     }
-    if (!cssVal && !stylusVal && !lessVal) {
+    if (scssVal) {
+      cssEditor.setValue(scssVal.content);
+      $("#css-preprocessor").val("scss").trigger("change");
+    }
+    if (sassVal) {
+      cssEditor.setValue(sassVal.content);
+      $("#css-preprocessor").val("sass").trigger("change");
+    }
+    if (!cssVal && !stylusVal && !lessVal && !scssVal && !sassVal) {
       cssEditor.setValue("");
     }
     if (jsVal) {
@@ -4052,6 +4116,12 @@ document.querySelector("[data-action=save-gist]").onclick = function() {
       } else if ( cssSelected == "less") {
         yourCSS = cssEditor.getValue();
         files["index.less"] = cssEditor.getValue() ? { content: yourCSS } : null;
+      } else if ( cssSelected == "scss") {
+        yourCSS = cssEditor.getValue();
+        files["index.scss"] = cssEditor.getValue() ? { content: yourCSS } : null;
+      } else if ( cssSelected == "sass") {
+        yourCSS = cssEditor.getValue();
+        files["index.sass"] = cssEditor.getValue() ? { content: yourCSS } : null;
       }
 	}
 	if (jsEditor.getValue()) {
@@ -4256,6 +4326,10 @@ document.querySelector("[data-action=download-zip]").onclick = function() {
     renderYourHTML();
     renderYourCSS();
     renderYourJS();
+    
+    if (typeof yourCSS == "undefined") {
+      $("[data-action=download-zip]").trigger('click');
+    }
     
     var typeScriptCode = function() {
       zip.file("js/index.ts", yourJS);

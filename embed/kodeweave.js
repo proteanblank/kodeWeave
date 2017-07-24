@@ -29,8 +29,9 @@ var closeFinal = CodeMirror(document.querySelector("#closeFinal"), {
   value: "\n  </body>\n</html>"
 });
 
-var str = window.location.href,
-    url = window.location.hash,
+var sass = new Sass(),
+    str  = window.location.href,
+    url  = window.location.hash,
     hash = window.location.hash,
     htmlContent, cssContent, jsContent, cssSelected;
 
@@ -95,6 +96,8 @@ function loadgist(gistid) {
     var cssVal     = gistdata.data.files["index.css"];
     var stylusVal  = gistdata.data.files["index.styl"];
     var lessVal    = gistdata.data.files["index.less"];
+    var scssVal    = gistdata.data.files["index.scss"];
+    var sassVal    = gistdata.data.files["index.sass"];
     var jsVal      = gistdata.data.files["index.js"];
     var coffeeVal  = gistdata.data.files["index.coffee"];
     var tsVal      = gistdata.data.files["index.ts"];
@@ -150,7 +153,17 @@ function loadgist(gistid) {
       $("#css-preprocessor").val("less").change();
       $("[data-target=cssEditor]").text("LESS");
     }
-    if (!cssVal && !stylusVal && !lessVal) {
+    if (scssVal) {
+      cssEditor.setValue(scssVal.content);
+      $("#css-preprocessor").val("scss").change();
+      $("[data-target=cssEditor]").text("SCSS");
+    }
+    if (sassVal) {
+      cssEditor.setValue(sassVal.content);
+      $("#css-preprocessor").val("sass").change();
+      $("[data-target=cssEditor]").text("SASS");
+    }
+    if (!cssVal && !stylusVal && !lessVal && !scssVal && !sassVal) {
       $("[data-target=cssEditor]").addClass("hide");
     }
     if (jsVal) {
@@ -217,6 +230,7 @@ function cssPreProcessor(cssSelected) {
 
   if (cssSelected == "none") {
     cssContent = cssEditor.getValue();
+    $("#preview").contents().find("#b8c770cc").html(cssContent);
   } else if (cssSelected == "stylus") {
     var cssVal = cssEditor.getValue();
     stylus(cssVal).render(function(err, out) {
@@ -224,11 +238,19 @@ function cssPreProcessor(cssSelected) {
         console.error("something went wrong");
       } else {
         cssContent = out;
+        $("#preview").contents().find("#b8c770cc").html(cssContent);
       }
     });
   } else if ( cssSelected == "less") {
     less.render(cssEditor.getValue(), function (e, output) {
       yourCSS = output.css;
+      $("#preview").contents().find("#b8c770cc").html(yourCSS);
+    });
+  } else if (cssSelected == "scss" || cssSelected == "sass") {
+    var cssVal = cssEditor.getValue();
+
+    sass.compile(cssVal, function(result) {
+      yourCSS = result.text; $("#preview").contents().find("#b8c770cc").html(yourCSS);
     });
   }
 }
@@ -321,7 +343,6 @@ if (!url) {
       });
       cssEditor.on("change", function() {
         cssPreProcessor();
-        $("#preview").contents().find("#b8c770cc").html(cssContent);
 
         setTimeout(function() {
           cssEditor.setOption("paletteHints", "true");
@@ -385,7 +406,6 @@ if (!url) {
       });
       cssEditor.on("change", function() {
         cssPreProcessor();
-        $("#preview").contents().find("#b8c770cc").html(cssContent);
 
         setTimeout(function() {
           cssEditor.setOption("paletteHints", "true");
