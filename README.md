@@ -46,7 +46,7 @@ kodeWeave uses a number of open source projects to work properly:
 * [js-beautifier](http://jsbeautifier.org/) - HTML/CSS/JS Beautifier
 * [Showdown](http://showdownjs.github.io/demo/) - Markdown to HTML converter
 * [Jade](http://jade-lang.com/) - an html preprocessor
-* [Stylus](http://stylus-lang.com/), [Less], [SASS](https://github.com/medialize/playground.sass.js/) - css preprocessors
+* [Stylus](http://stylus-lang.com/), [LESS](http://lesscss.org/), [SASS](https://github.com/medialize/playground.sass.js/) - css preprocessors
 * [CoffeeScript](http://coffeescript.org/), [TypeScript](http://www.typescriptlang.org/), [Babel](http://babeljs.io/) - javascript preprocessors
 * [HTML2Jade](http://html2jade.org/) - Convert HTML to Jade and back
 * [CSS2Stylus](http://dciccale.github.io/css2stylus.js/) - Convert CSS to Stylus and back
