@@ -58,15 +58,7 @@ kodeWeave uses a number of open source projects to work properly:
 To-Do
 -------------
 
-- Make code editor more responsive for mobile devices
-- Option to change themes
-- Option to change between vim or sublime keymaps
-- Toggle syntax validation for all languages
-
-### Desktop
- - Save code snippets for offline use
- - Incorporate [WebDGap](https://mikethedj4.github.io/WebDGap/) for desktop exportation
- - Release v1.1.29 for desktops
+- Add syntax validation for all languages/preprocessors
 
 [Export Your Web App for Desktop or Mobile!](https://mikethedj4.github.io/WebDGap/)
 -------------
