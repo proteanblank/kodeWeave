@@ -1,9 +1,12 @@
 kodeWeave
 ===================
 
-kodeWeave is a realtime coding playground for Markdown, HTML, CSS and Javascript. Similar to JSFiddle and JSBin, but kodeWeave was made specifically to work not just for mobile devices, but also to work offline as well.
+kodeWeave is a realtime coding playground for Markdown, HTML, CSS and Javascript. Similar to JSFiddle and JSBin, but kodeWeave was made specifically to work offline for multiple devices (including mobile).
 
 If you've ever used jsfiddle, jsbin, dabblet, liveweave, codepen, cssdeck, cssdesk, tinkerbin, d3 playground, plunker and/or pastebin kodeWeave is the tool for you when you're away from a computer!
+
+*<u>As of July 25th 2017 kodeWeave is no longer an active project.  
+All updates as of that date and on are solely contributor based implementations.</u>*
 
 Version
 -------------
@@ -70,10 +73,11 @@ Development
 
 Want to contribute? Great!  
 
+*<u>As of July 25th 2017 kodeWeave is no longer an active project.  
+All updates as of that date and on are solely contributor based implementations.</u>*
+
 You can submit a pull request or simply share the project :)
 
 Of course kodeWeave is free and open source, so you can always fork the project and have fun :)
 
-If kodeWeave was at all helpful for you. [Would you consider donating to the project?](https://cash.me/$mschwar4)
-
-[You can donate via PayPal too!](https://www.paypal.me/mikethedj4)
+If kodeWeave was at all helpful for you. You can show your appreciation by [Donating via SquareCash](https://cash.me/$mschwar4) and/or [PayPal](https://www.paypal.me/mikethedj4)
