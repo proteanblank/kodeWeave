@@ -11,7 +11,7 @@ All updates as of that date and on are solely contributor based implementations.
 Version
 -------------
 
-1.1.29
+1.1.30
 
 License
 -------------

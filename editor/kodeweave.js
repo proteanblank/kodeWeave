@@ -3813,21 +3813,17 @@ var cancel = setTimeout(function() {
 
 // Toggle Auto Update Preview
 var checkedPrev = JSON.parse(localStorage.getItem("autoUpdate"));
-// If checkedPrev === null then the use has never been here before.
-// Make checkedPrev default to true
-checkedPrev = checkedPrev === null ? true : false;
-var changePrev = document.getElementById("changePrev");
-changePrev.checked = checkedPrev;
-(changePrev.checked) ? $("#runeditor").hide() : $("#runeditor").show();
-
+document.getElementById("changePrev").checked = checkedPrev;
 $("#changePrev").on("change", function() {
-  (this.checked) ? localStorage.setItem("autoUpdate", "true") : localStorage.setItem("autoUpdate", "false");
   callPrev();
-  (this.checked) ? $("#runeditor").hide() : $("#runeditor").show();
   $("input[name=menubar].active").trigger("click");
-}).trigger("change");
+}).trigger('change');
 
 function callPrev() {
+  var changePrev = document.getElementById("changePrev");
+  (changePrev.checked) ? $("#runeditor").hide() : $("#runeditor").show();
+  (changePrev.checked) ? localStorage.setItem("autoUpdate", "true") : localStorage.setItem("autoUpdate", "false");
+  
   htmlEditor.on("change", function() {
     if (changePrev.checked) {
       clearTimeout(cancel);
