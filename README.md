@@ -80,4 +80,4 @@ You can submit a pull request or simply share the project :)
 
 Of course kodeWeave is free and open source, so you can always fork the project and have fun :)
 
-If kodeWeave was at all helpful for you. You can show your appreciation by [Donating via SquareCash](https://cash.me/$mschwar4) and/or [PayPal](https://www.paypal.me/mikethedj4)
+If kodeWeave was at all helpful for you. You can show your appreciation by [Donating via SquareCash](https://cash.me/$michaelsboost) and/or [PayPal](https://www.paypal.me/mikethedj4)
