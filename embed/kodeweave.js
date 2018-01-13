@@ -459,7 +459,7 @@ if (!url) {
       $(".mainmenu a:not(.hide):first").trigger("click");
     }, 500);
   } else {
-    window.location.href = "https://mikethedj4.github.io/kodeWeave/embed/" + url + "?md,html,css,js,result";
+    window.location.href = "https://michaelsboost.github.io/kodeWeave/embed/" + url + "?md,html,css,js,result";
   }
   
   // Handles Menubar
@@ -576,7 +576,7 @@ if (!url) {
   updatePreview();
 
   // Edit on kodeWeave Link
-  $(".logo").attr("href", "https://mikethedj4.github.io/kodeWeave/editor/#" + hash.substring(0, hash.indexOf('?'))).attr("target", "_blank");
+  $(".logo").attr("href", "https://michaelsboost.github.io/kodeWeave/editor/#" + hash.substring(0, hash.indexOf('?'))).attr("target", "_blank");
 
   // Setup Preprocessors
   $(".settings").on("click", function() {
