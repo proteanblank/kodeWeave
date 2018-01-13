@@ -63,10 +63,10 @@ To-Do
 
 - Add syntax validation for all languages/preprocessors
 
-[Export Your Web App for Desktop or Mobile!](https://mikethedj4.github.io/WebDGap/)
+[Export Your Web App for Desktop or Mobile!](https://michaelsboost.github.io/WebDGap/)
 -------------
 
- - [WebDGap](https://mikethedj4.github.io/WebDGap/) allows you to convert any html/css/javascript web application as a native Win/Lin/Mac/Chrome application & extention. In addition you can also export as a PhoneGap Build application!
+ - [WebDGap](https://michaelsboost.github.io/WebDGap/) allows you to convert any html/css/javascript web application as a native Win/Lin/Mac/Chrome application & extention. In addition you can also export as a PhoneGap Build application!
 
 Development
 -------------
