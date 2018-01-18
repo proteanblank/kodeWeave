@@ -2,13 +2,13 @@
 <widget xmlns = "http://www.w3.org/ns/widgets"
   xmlns:gap   = "http://phonegap.com/ns/1.0"
   id          = "com.michael.kodeweavepro"
-  version     = "1.1.32"
-  versionCode = "43">
+  version     = "1.1.33"
+  versionCode = "44">
   <name>kodeWeave</name>
   <description>
     HTML/CSS/JS and Markdown Code Playground For Web Designers and Developers
   </description>
-  <author email="mikethedj4@yahoo.com" href="http://mikethedj4.github.io/">
+  <author email="mikethedj4@yahoo.com" href="http://michaelsboost.github.io/">
     Michael Schwartz
   </author>
 
