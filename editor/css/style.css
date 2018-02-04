@@ -665,6 +665,9 @@ textarea {
   z-index: 99999!important;
   color: #4E92A2;
 }
+.donatebanner {
+  background: #ebfff1;
+}
 .fixedfill {
   position: fixed;
   top: 0;

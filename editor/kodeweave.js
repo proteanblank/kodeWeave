@@ -4084,6 +4084,9 @@ if (window.location.hash) {
 document.querySelector("[data-action=save-gist]").onclick = function() {
   $("input[name=menubar].active").trigger("click");
   
+  // Show Donate Dialog
+  $(".donatebanner").removeClass("hide");
+  
   // Return checked libraries
   var arr = {};
   $(".ldd-submenu input[type=checkbox]").each(function() {
@@ -4401,6 +4404,11 @@ document.querySelector("[data-action=download-zip]").onclick = function() {
     return false;
   });
 };
+
+// Hide Donate Dialog
+$("[data-close=donation]").click(function () {
+  $(".donatebanner").addClass("hide");
+});
 
 // Save Checked Libraries for LocalStorage
 var textarea = document.querySelector("[data-action=library-code]");
