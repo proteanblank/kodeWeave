@@ -4081,246 +4081,246 @@ if (window.location.hash) {
 }
 
 // Save as a Gist Online
-document.querySelector("[data-action=save-gist]").onclick = function() {
-  $("input[name=menubar].active").trigger("click");
-  
-  // Show Donate Dialog
-  $(".donatebanner").removeClass("hide");
-  
-  // Return checked libraries
-  var arr = {};
-  $(".ldd-submenu input[type=checkbox]").each(function() {
-    var id = this.id;
-    arr[id] = (this.checked ? true : false);
-  });
-
-  // check if description and markdown editor have a value
-  if ( !document.querySelector("[data-action=sitedesc]").value) {
-     document.querySelector("[data-action=sitedesc]").value = "Saved from kodeWeave!";
-  }
-
-  // Return user settings
-  var sArr = {
-    "siteTitle": document.querySelector("[data-action=sitetitle]").value,
-    "editorFontSize": document.querySelector("[data-editor=fontSize]").value,
-    "description": document.querySelector("[data-action=sitedesc]").value,
-    "author": document.querySelector("[data-action=siteauthor]").value
-  };
-
-  var files = {};
-	if (htmlEditor.getValue()) {
-      var htmlSelected = $("#html-preprocessor option:selected").val();
-
-      if ( htmlSelected == "none") {
-        yourHTML = htmlEditor.getValue();
-        files["index.html"] = htmlEditor.getValue() ? { content: yourHTML } : null;
-      } else if ( htmlSelected == "jade") {
-        yourHTML = htmlEditor.getValue();
-        files["index.jade"] = htmlEditor.getValue() ? { content: yourHTML } : null;
-      }
-	}
-	if (cssEditor.getValue()) {
-      cssSelected = $("#css-preprocessor option:selected").val();
-
-      if ( cssSelected == "none") {
-        yourCSS = cssEditor.getValue();
-        files["index.css"] = cssEditor.getValue() ? { content: yourCSS } : null;
-      } else if ( cssSelected == "stylus") {
-        yourCSS = cssEditor.getValue();
-        files["index.styl"] = cssEditor.getValue() ? { content: yourCSS } : null;
-      } else if ( cssSelected == "less") {
-        yourCSS = cssEditor.getValue();
-        files["index.less"] = cssEditor.getValue() ? { content: yourCSS } : null;
-      } else if ( cssSelected == "scss") {
-        yourCSS = cssEditor.getValue();
-        files["index.scss"] = cssEditor.getValue() ? { content: yourCSS } : null;
-      } else if ( cssSelected == "sass") {
-        yourCSS = cssEditor.getValue();
-        files["index.sass"] = cssEditor.getValue() ? { content: yourCSS } : null;
-      }
-	}
-	if (jsEditor.getValue()) {
-      var jsSelected = $("#js-preprocessor option:selected").val();
-
-      if ( jsSelected == "none") {
-        yourJS = jsEditor.getValue();
-        files["index.js"] = jsEditor.getValue() ? { content: yourJS } : null;
-      } else if ( jsSelected == "coffeescript") {
-        yourJS = jsEditor.getValue();
-        files["index.coffee"] = jsEditor.getValue() ? { content: yourJS } : null;
-      } else if ( jsSelected == "typescript") {
-        yourJS = jsEditor.getValue();
-        files["index.ts"] = jsEditor.getValue() ? { content: yourJS } : null;
-      } else if ( jsSelected == "babel") {
-        yourJS = jsEditor.getValue();
-        files["index.jsx"] = jsEditor.getValue() ? { content: yourJS } : null;
-      }
-	}
-	if (mdEditor.getValue()) {
-		files["README.md"] = mdEditor.getValue() ? { content: mdEditor.getValue() } : null;
-	}
-	files["libraries.json"] = { "content": JSON.stringify(arr) };
-	files["settings.json"] = { "content": JSON.stringify(sArr) };
-
-  data = {
-    "description": document.querySelector("[data-action=sitedesc]").value,
-    "public": true,
-    "files": files
-  };
-  
-  if (!mdEditor.getValue().trim()) {
-    $("#mdurl").prop("checked", false);
-    hasMD = "";
-  } else {
-    hasMD = "md,";
-  }
-  if (!htmlEditor.getValue().trim()) {
-    $("#htmlurl").prop("checked", false);
-    hasHTML = "";
-  } else {
-    hasHTML = "html,";
-  }
-  if (!cssEditor.getValue().trim()) {
-    $("#cssurl").prop("checked", false);
-    hasCSS = "";
-  } else {
-    hasCSS = "css,";
-  }
-  if (!jsEditor.getValue().trim()) {
-    $("#jsurl").prop("checked", false);
-    hasJS = "";
-  } else {
-    hasJS = "js,";
-  }
-  // editEmbed = "edit,";
-  // darkUI = "dark,";
-  // seeThrough = "transparent,";
-   hasResult = "result";
-  // showEditors = hasMD + hasHTML + hasCSS + hasJS + editEmbed + darkUI + seeThrough + hasResult;
-   showEditors = hasMD + hasHTML + hasCSS + hasJS + hasResult;
-
-  // Post on Github via JQuery Ajax
-  $.ajax({
-    url: "https://api.github.com/gists",
-    type: "POST",
-    dataType: "json",
-    data: JSON.stringify(data)
-  }).success(function(e) {
-    window.location.hash = e.html_url.split("https://gist.github.com/").join("");
-    hash = window.location.hash.replace(/#/g,"");
-    
-    embedProject = e.html_url.split("https://gist.github.com/").join("");
-    document.querySelector("[data-output=projectURL]").value = "https://michaelsboost.github.io/kodeWeave/editor/#" + embedProject;
-    document.querySelector("[data-output=projectURL]").onclick = function() {
-      this.select(true);
-    };
-
-    // Toggle Editor's Visibility for Embed
-    $("[data-target=editorURL]").on("change", function() {
-      if (document.getElementById("mdurl").checked) {
-        hasMD = "md,";
-      } else {
-        hasMD = "";
-      }
-      if (document.getElementById("htmlurl").checked) {
-        hasHTML = "html,";
-      } else {
-        hasHTML = "";
-      }
-      if (document.getElementById("cssurl").checked) {
-        hasCSS = "css,";
-      } else {
-        hasCSS = "";
-      }
-      if (document.getElementById("jsurl").checked) {
-        hasJS = "js,";
-      } else {
-        hasJS = "";
-      }
-      if (document.getElementById("resulturl").checked) {
-        hasResult = "result";
-      } else {
-        hasResult = "";
-      }
-      if (document.getElementById("jsurl").checked && !document.getElementById("resulturl").checked) {
-        hasJS = "js";
-      }
-      if (document.getElementById("cssurl").checked && !document.getElementById("jsurl").checked && !document.getElementById("resulturl").checked) {
-        hasCSS = "css";
-      }
-      if (document.getElementById("htmlurl").checked && !document.getElementById("cssurl").checked && !document.getElementById("jsurl").checked && !document.getElementById("resulturl").checked) {
-        hasHTML = "html";
-      }
-      if (document.getElementById("mdurl").checked && !document.getElementById("htmlurl").checked && !document.getElementById("cssurl").checked && !document.getElementById("jsurl").checked && !document.getElementById("resulturl").checked) {
-        hasMD = "md";
-      }
-      if (document.getElementById("resulturl").checked) {
-        hasResult = "result";
-      } else {
-        hasResult = "";
-      }
-      if (document.getElementById("norerun").checked) {
-        noRerun = "norerun,";
-      } else {
-        noRerun = "";
-      }
-      if (document.getElementById("transparentembed").checked) {
-        seeThrough = "transparent,";
-      } else {
-        seeThrough = "";
-      }
-      if (document.getElementById("darkembed").checked) {
-        darkUI = "dark,";
-      } else {
-        darkUI = "";
-      }
-      if (document.getElementById("editembed").checked) {
-        editEmbed = "edit,";
-      } else {
-        editEmbed = "";
-      }
-      showEditors = hasMD + hasHTML + hasCSS + hasJS + editEmbed + darkUI + noRerun + seeThrough + hasResult;
-
-      document.getElementById("clearSharePreview").innerHTML = "";
-      var shareFrame = document.createElement("iframe");
-      shareFrame.setAttribute("id", "shareWeavePreview");
-      shareFrame.setAttribute("sandbox", "allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts");
-      shareFrame.style.width = "calc(100% + 1.5em)";
-      shareFrame.style.height = "300px";
-      document.getElementById("clearSharePreview").appendChild(shareFrame);
-      var previewWeave = document.getElementById("shareWeavePreview");
-      previewWeave.src = "https://michaelsboost.github.io/kodeWeave/embed/#" + embedProject + "?" + showEditors;
-      document.querySelector("[data-output=embedProject]").value = "<iframe width=\"100%\" height=\"300\" src=\"https://michaelsboost.github.io/kodeWeave/embed/#" + embedProject + "?" + showEditors + "\" allowfullscreen=\"allowfullscreen\" frameborder=\"0\"></iframe>";
-    });
-    
-    document.getElementById("clearSharePreview").innerHTML = "";
-    var shareFrame = document.createElement("iframe");
-    shareFrame.setAttribute("id", "shareWeavePreview");
-    shareFrame.setAttribute("sandbox", "allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts");
-    shareFrame.style.width = "calc(100% + 1.5em)";
-    shareFrame.style.height = "300px";
-    document.getElementById("clearSharePreview").appendChild(shareFrame);
-    var previewWeave = document.getElementById("shareWeavePreview");
-    previewWeave.src = "https://michaelsboost.github.io/kodeWeave/embed/#" + embedProject + "?" + showEditors;
-    document.querySelector("[data-output=embedProject]").value = "<iframe width=\"100%\" height=\"300\" src=\"https://michaelsboost.github.io/kodeWeave/embed/#" + embedProject + "?" + showEditors + "\" allowfullscreen=\"allowfullscreen\" frameborder=\"0\"></iframe>";
-    document.querySelector("[data-output=embedProject]").onclick = function() {
-      this.select(true);
-    };
-
-    $(".share-facebook").attr("href", "https://www.facebook.com/sharer/sharer.php?u=https%3A//michaelsboost.github.io/kodeWeave/editor/%23" + hash);
-    $(".share-twitter").attr("href", "https://twitter.com/home?status=Checkout%20my%20"+ document.querySelector("[data-action=sitetitle]").value.split(" ").join("%20") +"%20%23weave%20on%20%23kodeWeave%20%23kodeWeaveShare%20-%20https%3A//michaelsboost.github.io/kodeWeave/e/%23" + hash);
-    $(".share-gplus").attr("href", "https://plus.google.com/share?url=https%3A//michaelsboost.github.io/kodeWeave/editor/%23" + hash);
-    $(".share-linkedin-square").attr("href", "https://www.linkedin.com/shareArticle?mini=true&url=https%3A//michaelsboost.github.io/kodeWeave/editor/%23"+ hash +"&title=Checkout%20my%20%23weave%20on%20%23kodeWeave%3A%20&summary=&source=");
-    $("[data-action=socialdialog]").fadeIn();
-
-    // Successfully saved weave. 
-    // Ask to support open source software.
-    alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\"><img src=\"../assets/images/model-2.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
-  }).error(function(e) {
-    console.warn("Error: Could not save weave!", e);
-    alertify.error("Error: Could not save weave!");
-  });
-};
+//document.querySelector("[data-action=save-gist]").onclick = function() {
+//  $("input[name=menubar].active").trigger("click");
+//  
+//  // Show Donate Dialog
+//  $(".donatebanner").removeClass("hide");
+//  
+//  // Return checked libraries
+//  var arr = {};
+//  $(".ldd-submenu input[type=checkbox]").each(function() {
+//    var id = this.id;
+//    arr[id] = (this.checked ? true : false);
+//  });
+//
+//  // check if description and markdown editor have a value
+//  if ( !document.querySelector("[data-action=sitedesc]").value) {
+//     document.querySelector("[data-action=sitedesc]").value = "Saved from kodeWeave!";
+//  }
+//
+//  // Return user settings
+//  var sArr = {
+//    "siteTitle": document.querySelector("[data-action=sitetitle]").value,
+//    "editorFontSize": document.querySelector("[data-editor=fontSize]").value,
+//    "description": document.querySelector("[data-action=sitedesc]").value,
+//    "author": document.querySelector("[data-action=siteauthor]").value
+//  };
+//
+//  var files = {};
+//	if (htmlEditor.getValue()) {
+//      var htmlSelected = $("#html-preprocessor option:selected").val();
+//
+//      if ( htmlSelected == "none") {
+//        yourHTML = htmlEditor.getValue();
+//        files["index.html"] = htmlEditor.getValue() ? { content: yourHTML } : null;
+//      } else if ( htmlSelected == "jade") {
+//        yourHTML = htmlEditor.getValue();
+//        files["index.jade"] = htmlEditor.getValue() ? { content: yourHTML } : null;
+//      }
+//	}
+//	if (cssEditor.getValue()) {
+//      cssSelected = $("#css-preprocessor option:selected").val();
+//
+//      if ( cssSelected == "none") {
+//        yourCSS = cssEditor.getValue();
+//        files["index.css"] = cssEditor.getValue() ? { content: yourCSS } : null;
+//      } else if ( cssSelected == "stylus") {
+//        yourCSS = cssEditor.getValue();
+//        files["index.styl"] = cssEditor.getValue() ? { content: yourCSS } : null;
+//      } else if ( cssSelected == "less") {
+//        yourCSS = cssEditor.getValue();
+//        files["index.less"] = cssEditor.getValue() ? { content: yourCSS } : null;
+//      } else if ( cssSelected == "scss") {
+//        yourCSS = cssEditor.getValue();
+//        files["index.scss"] = cssEditor.getValue() ? { content: yourCSS } : null;
+//      } else if ( cssSelected == "sass") {
+//        yourCSS = cssEditor.getValue();
+//        files["index.sass"] = cssEditor.getValue() ? { content: yourCSS } : null;
+//      }
+//	}
+//	if (jsEditor.getValue()) {
+//      var jsSelected = $("#js-preprocessor option:selected").val();
+//
+//      if ( jsSelected == "none") {
+//        yourJS = jsEditor.getValue();
+//        files["index.js"] = jsEditor.getValue() ? { content: yourJS } : null;
+//      } else if ( jsSelected == "coffeescript") {
+//        yourJS = jsEditor.getValue();
+//        files["index.coffee"] = jsEditor.getValue() ? { content: yourJS } : null;
+//      } else if ( jsSelected == "typescript") {
+//        yourJS = jsEditor.getValue();
+//        files["index.ts"] = jsEditor.getValue() ? { content: yourJS } : null;
+//      } else if ( jsSelected == "babel") {
+//        yourJS = jsEditor.getValue();
+//        files["index.jsx"] = jsEditor.getValue() ? { content: yourJS } : null;
+//      }
+//	}
+//	if (mdEditor.getValue()) {
+//		files["README.md"] = mdEditor.getValue() ? { content: mdEditor.getValue() } : null;
+//	}
+//	files["libraries.json"] = { "content": JSON.stringify(arr) };
+//	files["settings.json"] = { "content": JSON.stringify(sArr) };
+//
+//  data = {
+//    "description": document.querySelector("[data-action=sitedesc]").value,
+//    "public": true,
+//    "files": files
+//  };
+//  
+//  if (!mdEditor.getValue().trim()) {
+//    $("#mdurl").prop("checked", false);
+//    hasMD = "";
+//  } else {
+//    hasMD = "md,";
+//  }
+//  if (!htmlEditor.getValue().trim()) {
+//    $("#htmlurl").prop("checked", false);
+//    hasHTML = "";
+//  } else {
+//    hasHTML = "html,";
+//  }
+//  if (!cssEditor.getValue().trim()) {
+//    $("#cssurl").prop("checked", false);
+//    hasCSS = "";
+//  } else {
+//    hasCSS = "css,";
+//  }
+//  if (!jsEditor.getValue().trim()) {
+//    $("#jsurl").prop("checked", false);
+//    hasJS = "";
+//  } else {
+//    hasJS = "js,";
+//  }
+//  // editEmbed = "edit,";
+//  // darkUI = "dark,";
+//  // seeThrough = "transparent,";
+//   hasResult = "result";
+//  // showEditors = hasMD + hasHTML + hasCSS + hasJS + editEmbed + darkUI + seeThrough + hasResult;
+//   showEditors = hasMD + hasHTML + hasCSS + hasJS + hasResult;
+//
+//  // Post on Github via JQuery Ajax
+//  $.ajax({
+//    url: "https://api.github.com/gists",
+//    type: "POST",
+//    dataType: "json",
+//    data: JSON.stringify(data)
+//  }).success(function(e) {
+//    window.location.hash = e.html_url.split("https://gist.github.com/").join("");
+//    hash = window.location.hash.replace(/#/g,"");
+//    
+//    embedProject = e.html_url.split("https://gist.github.com/").join("");
+//    document.querySelector("[data-output=projectURL]").value = "https://michaelsboost.github.io/kodeWeave/editor/#" + embedProject;
+//    document.querySelector("[data-output=projectURL]").onclick = function() {
+//      this.select(true);
+//    };
+//
+//    // Toggle Editor's Visibility for Embed
+//    $("[data-target=editorURL]").on("change", function() {
+//      if (document.getElementById("mdurl").checked) {
+//        hasMD = "md,";
+//      } else {
+//        hasMD = "";
+//      }
+//      if (document.getElementById("htmlurl").checked) {
+//        hasHTML = "html,";
+//      } else {
+//        hasHTML = "";
+//      }
+//      if (document.getElementById("cssurl").checked) {
+//        hasCSS = "css,";
+//      } else {
+//        hasCSS = "";
+//      }
+//      if (document.getElementById("jsurl").checked) {
+//        hasJS = "js,";
+//      } else {
+//        hasJS = "";
+//      }
+//      if (document.getElementById("resulturl").checked) {
+//        hasResult = "result";
+//      } else {
+//        hasResult = "";
+//      }
+//      if (document.getElementById("jsurl").checked && !document.getElementById("resulturl").checked) {
+//        hasJS = "js";
+//      }
+//      if (document.getElementById("cssurl").checked && !document.getElementById("jsurl").checked && !document.getElementById("resulturl").checked) {
+//        hasCSS = "css";
+//      }
+//      if (document.getElementById("htmlurl").checked && !document.getElementById("cssurl").checked && !document.getElementById("jsurl").checked && !document.getElementById("resulturl").checked) {
+//        hasHTML = "html";
+//      }
+//      if (document.getElementById("mdurl").checked && !document.getElementById("htmlurl").checked && !document.getElementById("cssurl").checked && !document.getElementById("jsurl").checked && !document.getElementById("resulturl").checked) {
+//        hasMD = "md";
+//      }
+//      if (document.getElementById("resulturl").checked) {
+//        hasResult = "result";
+//      } else {
+//        hasResult = "";
+//      }
+//      if (document.getElementById("norerun").checked) {
+//        noRerun = "norerun,";
+//      } else {
+//        noRerun = "";
+//      }
+//      if (document.getElementById("transparentembed").checked) {
+//        seeThrough = "transparent,";
+//      } else {
+//        seeThrough = "";
+//      }
+//      if (document.getElementById("darkembed").checked) {
+//        darkUI = "dark,";
+//      } else {
+//        darkUI = "";
+//      }
+//      if (document.getElementById("editembed").checked) {
+//        editEmbed = "edit,";
+//      } else {
+//        editEmbed = "";
+//      }
+//      showEditors = hasMD + hasHTML + hasCSS + hasJS + editEmbed + darkUI + noRerun + seeThrough + hasResult;
+//
+//      document.getElementById("clearSharePreview").innerHTML = "";
+//      var shareFrame = document.createElement("iframe");
+//      shareFrame.setAttribute("id", "shareWeavePreview");
+//      shareFrame.setAttribute("sandbox", "allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts");
+//      shareFrame.style.width = "calc(100% + 1.5em)";
+//      shareFrame.style.height = "300px";
+//      document.getElementById("clearSharePreview").appendChild(shareFrame);
+//      var previewWeave = document.getElementById("shareWeavePreview");
+//      previewWeave.src = "https://michaelsboost.github.io/kodeWeave/embed/#" + embedProject + "?" + showEditors;
+//      document.querySelector("[data-output=embedProject]").value = "<iframe width=\"100%\" height=\"300\" src=\"https://michaelsboost.github.io/kodeWeave/embed/#" + embedProject + "?" + showEditors + "\" allowfullscreen=\"allowfullscreen\" frameborder=\"0\"></iframe>";
+//    });
+//    
+//    document.getElementById("clearSharePreview").innerHTML = "";
+//    var shareFrame = document.createElement("iframe");
+//    shareFrame.setAttribute("id", "shareWeavePreview");
+//    shareFrame.setAttribute("sandbox", "allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts");
+//    shareFrame.style.width = "calc(100% + 1.5em)";
+//    shareFrame.style.height = "300px";
+//    document.getElementById("clearSharePreview").appendChild(shareFrame);
+//    var previewWeave = document.getElementById("shareWeavePreview");
+//    previewWeave.src = "https://michaelsboost.github.io/kodeWeave/embed/#" + embedProject + "?" + showEditors;
+//    document.querySelector("[data-output=embedProject]").value = "<iframe width=\"100%\" height=\"300\" src=\"https://michaelsboost.github.io/kodeWeave/embed/#" + embedProject + "?" + showEditors + "\" allowfullscreen=\"allowfullscreen\" frameborder=\"0\"></iframe>";
+//    document.querySelector("[data-output=embedProject]").onclick = function() {
+//      this.select(true);
+//    };
+//
+//    $(".share-facebook").attr("href", "https://www.facebook.com/sharer/sharer.php?u=https%3A//michaelsboost.github.io/kodeWeave/editor/%23" + hash);
+//    $(".share-twitter").attr("href", "https://twitter.com/home?status=Checkout%20my%20"+ document.querySelector("[data-action=sitetitle]").value.split(" ").join("%20") +"%20%23weave%20on%20%23kodeWeave%20%23kodeWeaveShare%20-%20https%3A//michaelsboost.github.io/kodeWeave/e/%23" + hash);
+//    $(".share-gplus").attr("href", "https://plus.google.com/share?url=https%3A//michaelsboost.github.io/kodeWeave/editor/%23" + hash);
+//    $(".share-linkedin-square").attr("href", "https://www.linkedin.com/shareArticle?mini=true&url=https%3A//michaelsboost.github.io/kodeWeave/editor/%23"+ hash +"&title=Checkout%20my%20%23weave%20on%20%23kodeWeave%3A%20&summary=&source=");
+//    $("[data-action=socialdialog]").fadeIn();
+//
+//    // Successfully saved weave. 
+//    // Ask to support open source software.
+//    alertify.message("<div class=\"grid\"><div class=\"centered grid__col--12 tc\"><h2>Help keep this free!</h2><a href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\"><img src=\"../assets/images/model-2.jpg\" width=\"100%\"></a><a class=\"btn--success\" href=\"https://snaptee.co/t/2nezt/?r=fb&teeId=2nezt\" target=\"_blank\" style=\"display: block;\">Buy Now</a></div></div>");
+//  }).error(function(e) {
+//    console.warn("Error: Could not save weave!", e);
+//    alertify.error("Error: Could not save weave!");
+//  });
+//};
 
 // Download as zip
 document.querySelector("[data-action=download-zip]").onclick = function() {
