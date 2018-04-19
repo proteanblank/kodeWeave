@@ -8,7 +8,7 @@ If you've ever used jsfiddle, jsbin, dabblet, liveweave, codepen, cssdeck, cssde
 *<u>As of July 25th 2017 kodeWeave is no longer an active project.  
 All updates as of that date and on are solely contributor based implementations.</u>*
 
-![](https://raw.githubusercontent.com/michaelsboost/kodeWeave/gh-pages/screenshot.png)
+![](https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/5d493564623097.5ad83edee093f.png)
 
 Version
 -------------
