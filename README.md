@@ -5,10 +5,15 @@ kodeWeave is a realtime coding playground for Markdown, HTML, CSS and Javascript
 
 If you've ever used jsfiddle, jsbin, dabblet, liveweave, codepen, cssdeck, cssdesk, tinkerbin, d3 playground, plunker and/or pastebin kodeWeave is the tool for you when you're away from a computer!
 
+![](https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/5d493564623097.5ad83edee093f.png)
+
 *<u>As of July 25th 2017 kodeWeave is no longer an active project.  
 All updates as of that date and on are solely contributor based implementations.</u>*
 
-![](https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/5d493564623097.5ad83edee093f.png)
+Did you know?
+-------------
+
+kodeWeave was the very first open source coding playground released for Android & desktop operating systems.
 
 Version
 -------------
@@ -23,16 +28,13 @@ MIT
 Availability
 -------------
 
-**Stable Releases**  
-[Android](https://play.google.com/store/apps/details?id=com.michael.kodeweave)  
-[Chrome Application](https://chrome.google.com/webstore/detail/kodeweave-touch/blcgppajmopfndnmegepihhkilaejipf)
-
-**No longer Supported** *(last/final release of kodeWeave for desktops is v1.1.29)*  
-[Windows 64](http://sourceforge.net/projects/kodeweave/files/v1.1.29/kodeWeave-win.zip/download)  
-[Windows 32](http://sourceforge.net/projects/kodeweave/files/v1.1.29/kodeWeave-win32.zip/download)  
-[Mac](http://sourceforge.net/projects/kodeweave/files/v1.1.29/kodeWeave-mac.zip/download)  
-[Linux 64](http://sourceforge.net/projects/kodeweave/files/v1.1.29/kodeWeave-lin.zip/download)  
-[Linux 32](http://sourceforge.net/projects/kodeweave/files/v1.1.29/kodeWeave-lin32.zip/download) 
+[Android](https://play.google.com/store/apps/details?id=com.michael.kodeweavepro) (deprecated)  
+[Chrome Application](https://chrome.google.com/webstore/detail/kodeweave-touch/blcgppajmopfndnmegepihhkilaejipf)  (deprecated)  
+[Windows 64](http://sourceforge.net/projects/kodeweave/files/v1.1.29/kodeWeave-win.zip/download)  (deprecated)  
+[Windows 32](http://sourceforge.net/projects/kodeweave/files/v1.1.29/kodeWeave-win32.zip/download)  (deprecated)  
+[Mac](http://sourceforge.net/projects/kodeweave/files/v1.1.29/kodeWeave-mac.zip/download)  (deprecated)  
+[Linux 64](http://sourceforge.net/projects/kodeweave/files/v1.1.29/kodeWeave-lin.zip/download)  (deprecated)  
+[Linux 32](http://sourceforge.net/projects/kodeweave/files/v1.1.29/kodeWeave-lin32.zip/download) (deprecated)  
 
 Tech
 -------------
@@ -58,7 +60,8 @@ kodeWeave uses a number of open source projects to work properly:
 * [JS2Coffee](http://js2.coffee/) - Convert Javascript to CoffeeScript and back
 * [AlertifyJS](http://alertifyjs.com/) - For the awesome and stylish alert notification dialogs
 * [DataURL Grabber](https://github.com/mikethedj4/DataURL-Grabber-PhoneGap-Build) - Embed an image directly into the document with data URIs
-* Also comes prebuilt with, "just about every framework you can name off the top of your head" - Says [Web Designer Depot](https://www.webdesignerdepot.com/2017/06/5-essential-open-source-tools-for-web-designers/)
+
+> Also comes prebuilt with, "just about every framework you can name off the top of your head" - [Web Designer Depot](https://www.webdesignerdepot.com/2017/06/5-essential-open-source-tools-for-web-designers/)
 
 To-Do
 -------------
