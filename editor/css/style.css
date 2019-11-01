@@ -821,6 +821,7 @@ textarea {
 #close-walkthrough:checked ~ .walkthrough-dialog {
   opacity: 0;
   height: 0;
+  display: none;
 }
 #close-walkthrough:checked ~ .walkthrough-menu {
   top: -48px;
