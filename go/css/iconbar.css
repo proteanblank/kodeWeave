@@ -1,0 +1,45 @@
+/* button iconbar */
+.iconbar {
+  position: absolute;
+  padding: 1rem;
+}
+.iconbar.top {
+  top: 0;
+}
+.iconbar.bottom {
+  bottom: 0;
+  /* bottom: 3rem; */
+}
+.iconbar.right {
+  right: 0;
+}
+.iconbar.left {
+  left: 0;
+}
+.iconbar button {
+  width: 3rem;
+  height: 3rem;
+  color: var(--color);
+  background-color: var(--iconbar-background-color);
+  margin-left: -0.25rem;
+  margin-right: -0.25rem;
+}
+.iconbar button:first-child {
+  border-top-left-radius: var(--btn-radius);
+  border-bottom-left-radius: var(--btn-radius);
+}
+.iconbar button:last-child {
+  border-top-right-radius: var(--btn-radius);
+  border-bottom-right-radius: var(--btn-radius);
+}
+.iconbar.bottom button:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.iconbar .active {
+  color: var(--active-color);
+}
+.iconbar button.donate,
+.iconbar button .donate {
+  color: var(--donate-color);
+}

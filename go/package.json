@@ -1,0 +1,33 @@
+{
+  "name": "kodeweave",
+  "version": "1.1.4",
+  "description": "Your on the go code playground!",
+  "main": "index.js",
+  "dependencies": {
+    "codemirror-colorpicker": "^1.9.80"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "serve": "http-server -p 1336 build -c-1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michaelsboost/kodeWeave.git"
+  },
+  "keywords": [
+    "html",
+    "js",
+    "javascript",
+    "code",
+    "coding",
+    "playground",
+    "realtime",
+    "editor"
+  ],
+  "author": "michael schwartz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/michaelsboost/kodeWeave/issues"
+  },
+  "homepage": "https://github.com/michaelsboost/kodeWeave#readme"
+}

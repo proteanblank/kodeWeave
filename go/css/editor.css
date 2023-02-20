@@ -1,0 +1,116 @@
+@import url('../libraries/codemirror/lib/codemirror.css');
+@import url("../libraries/codemirror/addon/fold/foldgutter.css");
+@import url("../libraries/codemirror/addon/lint/lint.css");
+@import url("../libraries/codemirror/theme/dark.css");
+@import url("../node_modules/codemirror-colorpicker/dist/codemirror-colorpicker.css");
+@import url("../libraries/codemirror/addon/hint/show-hint.css");
+@import url("../libraries/codemirror/addon/dialog/dialog.css");
+@import url("../libraries/codemirror/addon/search/matchesonscrollbar.css");
+
+/* close */
+.dialog {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  background-color: var(--editors-background-color-alpha);
+  z-index: 1;
+}
+.dialog nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  text-align: center;
+}
+.dialog button {
+  font-size: 1.875rem;
+  line-height: 1;
+  color: var(--color);
+  background-color: transparent;
+  border-radius: var(--btn-radius);
+}
+.dialog nav:first-child span:last-child button {
+  margin-left: 1rem;
+}
+.dialog textarea {
+  background-color: transparent;
+  border: 0;
+}
+
+/* Codemirror */
+.editor-container {
+  height: calc(100% - 6.5rem);
+  /* height: calc(100% - 9rem); */
+  margin: 1rem 0;
+  overflow: auto;
+}
+.editor-container > * {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+.editor {
+  width: 100%;
+  height: 100%;
+}
+.CodeMirror {
+  font-family: monospace;
+  font-size: inherit;
+  font-weight: 100;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+.CodeMirror, .CodeMirror-gutters {
+  border-right: 0;
+}
+.CodeMirror-scroll, .CodeMirror-sizer {
+  min-height: 100%!important;
+}
+.CodeMirror-line {
+  color: var(--color)!important;
+}
+
+.breakpoints {width: .8em;}
+.breakpoint { color: var(--color); }
+.CodeMirror-linewidget {
+  left: auto!important;
+  padding-left: 0!important;
+  width: 100%!important;
+}
+.lint-error {
+  font-family: arial;
+  font-size: 70%;
+  background: var(--lint-background);
+  color: var(--lint-color);
+  padding: 2px 5px;
+}
+.lint-error-icon {
+  color: var(--lint-error-icon);
+  font-weight: bold;
+  border-radius: 50%;
+  margin-right: 7px;
+}
+
+/* dialog */
+.CodeMirror-dialog input {
+  font-size: inherit;
+  line-height: inherit;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+}
+.CodeMirror-dialog button {
+  font-size: inherit;
+  line-height: inherit;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+}

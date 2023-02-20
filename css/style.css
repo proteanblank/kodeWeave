@@ -1,0 +1,85 @@
+/* imports */
+@import url('../go/libraries/font-awesome/css/all.min.css');
+@import url('../go/libraries/pico/pico.classless.min.css');
+
+/* header navigation */
+.logo {
+  height: 50px;
+  margin-right: 1rem;
+}
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  max-width: 90%!important;
+  padding: 0!important;
+  background-color: hsla(206, 30%, 9%, 0.5);
+  backdrop-filter: blur(20px);
+}
+header nav {
+  margin: 0;
+}
+header ul:last-child li {
+  padding: 0 1rem;
+}
+header ul:last-child li:last-child {
+  padding-right: 0;
+}
+header nav [role=button] {
+  padding: 0.5rem 1rem;
+}
+
+/* main */
+main {
+  margin-top: 1.5rem;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+main article {
+  margin-bottom: 0;
+  padding-top: 3rem;
+  padding-bottom: .75rem;
+}
+.heading {
+  font-size: 3rem;
+  padding: 3rem 0;
+}
+.screenshots {
+  white-space: nowrap;
+  overflow: auto;
+}
+main img {
+  border: 1px solid hsla(205, 14%, 74%, 0.25);
+}
+main > img {
+  display: inline-block;
+  margin: 1rem 0;
+}
+main li img {
+  margin: 1rem auto;
+}
+main nav a[role=button] {
+  padding: 1rem 1rem;
+}
+
+/* footer */
+body > footer {
+  margin-top: 0;
+  margin-bottom: 3rem;
+  padding: 0;
+  max-width: 100%;
+}
+footer img {
+  height: 135px;
+  margin-bottom: 2rem;
+  border-radius: 100%;
+}
+
+/* utilities */
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}

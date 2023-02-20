@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>kodeWeave: Your on the go code playground!</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="kodeWeave is your on the go coding playground! Design with TailwindCSS or PicoCSS, see how your app or website will look and behave on a desktop.">
+    <meta name="author" content="Michael Schwartz">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="kodeWeave">
+    <meta name="apple-mobile-web-app-title" content="kodeWeave">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="hsl(207, 31%, 11%)">
+    <meta name="msapplication-navbutton-color" content="hsl(207, 31%, 11%)">
+    <meta name="msapplication-starturl" content="./index.html">
+    <link rel="apple-touch-icon" href="imgs/logo.png">
+    <link rel="icon" href="imgs/logo.svg" type="image/x-icon" />
+    <meta property="og:url"         content="https://michaelsboost.com/kodeWeave" />
+    <meta property="og:type"        content="website" />
+    <meta property="og:title"       content="kodeWeave" />
+    <meta property="og:description" content="kodeWeave is your on the go coding playground! Design with TailwindCSS or PicoCSS, see how your app or website will look and behave on a desktop." />
+    <meta property="og:image"       content="https://camo.githubusercontent.com/37ac978fcbd71970b6e1baa029de7447608d3392/68747470733a2f2f6d69722d73332d63646e2d63662e626568616e63652e6e65742f70726f6a6563745f6d6f64756c65732f6d61785f313230302f35643439333536343632333039372e356164383365646565303933662e706e67" />
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script src="libraries/panzoom/panzoom.mod.js" defer></script>
+    <script src="libraries/jszip/Blob.js" defer></script>
+    <script src="libraries/jszip/FileSaver.js" defer></script>
+    <script src="libraries/jszip/jszip-utils.js" defer></script>
+    <script src="libraries/jszip/jszip.min.js" defer></script>
+    <script src="libraries/codemirror/lib/codemirror.js" defer></script>
+    <script src="node_modules/@emmetio/codemirror-plugin/dist/browser.js" defer></script>
+    <script src="node_modules/codemirror-colorpicker/dist/codemirror-colorpicker.min.js" defer></script>
+    <script src="libraries/codemirror/mode/xml/xml.js" defer></script>
+    <script src="libraries/codemirror/mode/javascript/javascript.js" defer></script>
+    <script src="libraries/codemirror/mode/htmlmixed/htmlmixed.js" defer></script>
+    <script src="libraries/codemirror/addon/edit/closetag.js" defer></script>
+    <script src="libraries/codemirror/addon/edit/closebrackets.js" defer></script>
+    <script src="libraries/codemirror/addon/edit/matchbrackets.js" defer></script>
+    <script src="libraries/codemirror/addon/edit/matchtags.js" defer></script>
+    <script src="libraries/codemirror/addon/edit/closetag.js" defer></script>
+    <script src="libraries/codemirror/addon/selection/active-line.js" defer></script>
+    <script src="libraries/codemirror/addon/fold/foldcode.js" defer></script>
+    <script src="libraries/codemirror/addon/fold/foldgutter.js" defer></script>
+    <script src="libraries/codemirror/addon/fold/brace-fold.js" defer></script>
+    <script src="libraries/codemirror/addon/fold/xml-fold.js" defer></script>
+    <script src="libraries/codemirror/addon/fold/comment-fold.js" defer></script>
+    <script src="libraries/codemirror/addon/search/search.js" defer></script>
+    <script src="libraries/codemirror/addon/search/searchcursor.js" defer></script>
+    <script src="libraries/codemirror/addon/search/match-highlighter.js" defer></script>
+    <script src="libraries/codemirror/addon/lint/lint.js" defer></script>
+    <script src="libraries/codemirror/addon/lint/HTMLHint.js" defer></script>
+    <script src="libraries/codemirror/addon/lint/html-lint.js" defer></script>
+    <script src="libraries/codemirror/addon/lint/jshint.js" defer></script>
+    <script src="libraries/codemirror/addon/lint/javascript-lint.js" defer></script>
+    <script src="libraries/codemirror/addon/hint/show-hint.js" defer></script>
+    <script src="libraries/codemirror/addon/hint/html-hint.js" defer></script>
+    <script src="libraries/codemirror/addon/hint/javascript-hint.js" defer></script>
+    <script src="libraries/codemirror/addon/dialog/dialog.js" defer></script>
+    <script src="libraries/codemirror/addon/search/searchcursor.js" defer></script>
+    <script src="libraries/codemirror/addon/search/search.js" defer></script>
+    <script src="libraries/codemirror/addon/scroll/annotatescrollbar.js" defer></script>
+    <script src="libraries/codemirror/addon/search/matchesonscrollbar.js" defer></script>
+    <script src="libraries/codemirror/addon/search/jump-to-line.js" defer></script>
+    <script src="js/app.js" defer></script>
+  </head>
+  <body>
+    <!-- side Menus -->
+    <div data-opened="left" class="menu meta">
+      <article>
+        <button aria-close>
+          <i class="fa fa-times"></i>
+        </button>
+
+        <div class="hidden">
+          <input id="import"     type="file" accept="application/json" onchange="loadFile(this)">
+          <input id="importlogo" type="file" accept="image/png, image/jpeg, image/svg+xml" onchange="loadLogo(this)">
+        </div>
+
+        <h5>
+          meta
+
+          <label for="importlogo">
+            <img id="logo" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgdmlld0JveD0iMCAwIDUxMS45OTk5OSA1MTEuOTk5OTkiCiAgIGhlaWdodD0iNTEyIgogICB3aWR0aD0iNTEyIgogICB2ZXJzaW9uPSIxLjEiCiAgIGlkPSJzdmc0MTkwIgogICBzb2RpcG9kaTpkb2NuYW1lPSJsb2dvLnN2ZyIKICAgaW5rc2NhcGU6dmVyc2lvbj0iMS4yLjIgKDE6MS4yLjIrMjAyMjEyMDUxNTUwK2IwYTg0ODY1NDEpIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiCiAgIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyI+CiAgPHNvZGlwb2RpOm5hbWVkdmlldwogICAgIGlkPSJuYW1lZHZpZXcxMiIKICAgICBwYWdlY29sb3I9IiM1MDUwNTAiCiAgICAgYm9yZGVyY29sb3I9IiNmZmZmZmYiCiAgICAgYm9yZGVyb3BhY2l0eT0iMSIKICAgICBpbmtzY2FwZTpzaG93cGFnZXNoYWRvdz0iMCIKICAgICBpbmtzY2FwZTpwYWdlb3BhY2l0eT0iMCIKICAgICBpbmtzY2FwZTpwYWdlY2hlY2tlcmJvYXJkPSIxIgogICAgIGlua3NjYXBlOmRlc2tjb2xvcj0iIzUwNTA1MCIKICAgICBzaG93Z3JpZD0iZmFsc2UiCiAgICAgaW5rc2NhcGU6em9vbT0iMC40NjA5Mzc1IgogICAgIGlua3NjYXBlOmN4PSItMjMuODY0NDA3IgogICAgIGlua3NjYXBlOmN5PSIyNTcuMDg0NzUiCiAgICAgaW5rc2NhcGU6d2luZG93LXdpZHRoPSIxNDQwIgogICAgIGlua3NjYXBlOndpbmRvdy1oZWlnaHQ9IjgwMyIKICAgICBpbmtzY2FwZTp3aW5kb3cteD0iMCIKICAgICBpbmtzY2FwZTp3aW5kb3cteT0iMzAiCiAgICAgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMSIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJzdmc0MTkwIiAvPgogIDxtZXRhZGF0YQogICAgIGlkPSJtZXRhZGF0YTQxOTYiPgogICAgPHJkZjpSREY+CiAgICAgIDxjYzpXb3JrCiAgICAgICAgIHJkZjphYm91dD0iIj4KICAgICAgICA8ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD4KICAgICAgICA8ZGM6dHlwZQogICAgICAgICAgIHJkZjpyZXNvdXJjZT0iaHR0cDovL3B1cmwub3JnL2RjL2RjbWl0eXBlL1N0aWxsSW1hZ2UiIC8+CiAgICAgICAgPGRjOnRpdGxlIC8+CiAgICAgIDwvY2M6V29yaz4KICAgIDwvcmRmOlJERj4KICA8L21ldGFkYXRhPgogIDxkZWZzCiAgICAgaWQ9ImRlZnM0MTk0Ij4KICAgIDxsaW5lYXJHcmFkaWVudAogICAgICAgaWQ9ImxpbmVhckdyYWRpZW50NDI3NiI+CiAgICAgIDxzdG9wCiAgICAgICAgIGlkPSJzdG9wNDI3OCIKICAgICAgICAgb2Zmc2V0PSIwIgogICAgICAgICBzdHlsZT0ic3RvcC1jb2xvcjojMDMxNTRkO3N0b3Atb3BhY2l0eToxOyIgLz4KICAgICAgPHN0b3AKICAgICAgICAgaWQ9InN0b3A0MjgwIgogICAgICAgICBvZmZzZXQ9IjEiCiAgICAgICAgIHN0eWxlPSJzdG9wLWNvbG9yOiMwMDAwMDA7c3RvcC1vcGFjaXR5OjE7IiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudAogICAgICAgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiCiAgICAgICB5Mj0iMjU3LjMxMjUiCiAgICAgICB4Mj0iMC4xMzQwNDE2NSIKICAgICAgIHkxPSIyNTcuMzEyNSIKICAgICAgIHgxPSI1MTEuNzE4NzUiCiAgICAgICBpZD0ibGluZWFyR3JhZGllbnQ0MjgyIgogICAgICAgeGxpbms6aHJlZj0iI2xpbmVhckdyYWRpZW50NDI3NiIgLz4KICA8L2RlZnM+CiAgPGcKICAgICBpZD0iZzQyODQiPgogICAgPGNpcmNsZQogICAgICAgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOnVybCgjbGluZWFyR3JhZGllbnQ0MjgyKTtmaWxsLW9wYWNpdHk6MTtzdHJva2U6bm9uZTtzdHJva2Utd2lkdGg6MTI7c3Ryb2tlLWxpbmVjYXA6cm91bmQ7c3Ryb2tlLWxpbmVqb2luOnJvdW5kO3N0cm9rZS1taXRlcmxpbWl0OjQ7c3Ryb2tlLWRhc2hhcnJheTo3MiwgNzI7c3Ryb2tlLWRhc2hvZmZzZXQ6MDtzdHJva2Utb3BhY2l0eToxIgogICAgICAgaWQ9InBhdGg0MjcwIgogICAgICAgY3g9IjI1NiIKICAgICAgIGN5PSIyNTYiCiAgICAgICByPSIyNTYiIC8+CiAgICA8cGF0aAogICAgICAgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiNmZmZmZmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjEyO3N0cm9rZS1saW5lY2FwOnJvdW5kO3N0cm9rZS1saW5lam9pbjpyb3VuZDtzdHJva2UtbWl0ZXJsaW1pdDo0O3N0cm9rZS1kYXNoYXJyYXk6NzIsIDcyO3N0cm9rZS1kYXNob2Zmc2V0OjA7c3Ryb2tlLW9wYWNpdHk6MSIKICAgICAgIGQ9Im0gMjUxLjA2MDY4LDU4LjY3ODI3MiBjIC00LjU2MDMyLDAuMDcwMzUgLTIwLjc2MDYxLDIuMDQxOTQ1IC0yOS4yOTc5MiwzLjY1NTk4NCAtMjguMzQzOTEsNS4zNTg2MiAtNjYuODgwODEsMjIuNjE5ODE0IC03My4wMzY5OSwzMi43MTkwNjEgLTEuODk3NTUsMy4xMTI5MzUgLTEuOTQ2MTYsNy4xNDcwMTMgLTEuOTQ2MTYsMTYwLjgxNzAyMyAwLDE1Mi4yNTg4IDAuMDY3MSwxNTcuNzI0NjQgMS44OTk5OCwxNjAuNzMxMjEgNS4yMDU5OSw4LjUzOTg5IDM2LjcyMDAzLDIzLjcwOTM0IDYzLjQ1MTMzLDMwLjU0MTM0IDkuNzY1NzIsMi40OTU5MyAzNC4zMzUwOSw2LjM0NDggMzguNTA3NTQsNi4wMzE2OSAyLjAwMzg4LC0wLjE1MDM2IDIuMDMyMDMsLTAuOTc0NjkgMi4yODkyMSwtNzMuMDkzMjQgMC4xNDU1OCwtNDAuODM3NTkgMC42NTY0MywtNzMuMzM0MTQgMS4xNjEwOSwtNzMuODM4OTYgMS4zNzc1MSwtMS4zNzc5NSA3LjM0NzM5LDEuODg0NzMgMTAuMzU3NTIsNS42NjIxNSAxLjQ2MjAyLDEuODM0NjggMTMuNzk3NTUsMjAuNjU1MjggMjcuNDE3NzQsNDEuODE5NDMgNTEuNDQ0NTIsNzkuOTM4NDcgNTAuNDY1MTEsNzguNDc3OTggNTMuMzA0OTQsNzkuMTkwOTQgMy4zMjQ3OCwwLjgzNDc0IDEyLjU2NzA4LC0zLjc4OTQ3IDI3LjU3NjA2LC0xMy43ODU4MyAxNC4yNDMzOCwtOS40ODY0NiAyMy44ODU1LC0xNy43ODMxIDM0LjgxOTcyLC0yOS45NjcxNyAxMS4yOTUwMiwtMTIuNTg2MTUgMTQuODMwMzksLTE3LjQxNzg1IDE0LjgzMDM5LC0yMC4yNTMwOCAwLC0xLjIyMDA5IC0xNC45NzA2LC0yNC41NDAzMyAtMzMuNDAxMzMsLTUyLjAyODQ2IC0xOC4zNzA1NywtMjcuMzk4MzcgLTM0LjEwMTA3LC01MS4xNjg3NiAtMzQuOTU4MjgsLTUyLjgyNjk2IC0wLjg1NzIzLC0xLjY1ODIgLTEuNTU2OTMsLTQuMDczMzUgLTEuNTU2OTMsLTUuMzY1MTkgMCwtMS4zMjEyMyAxMi40ODk1OSwtMjIuMjk0ODcgMjguNTQ1ODQsLTQ3Ljk0MzUyIDQ0LjQ4MzE1LC03MS4wNTg1NiA0MS45MzgzMywtNjYuMjkxNzggMzguODMwODEsLTcyLjg0MjQ3IC0yLjU1NzU1LC01LjM5MTM2IC0xNS4zNjI2MiwtMTkuNjU4MDkgLTI2LjEzMTI5LC0yOS4xMTU4NyAtMTEuNDU0NTksLTEwLjA2MDE5MSAtMzUuMDY0MTMsLTI1Ljk1MDI3NiAtMzkuOTA2MTIsLTI2Ljg1ODkzNCAtMi45NDE1NCwtMC41NTIwMSAtMy45NzUxOSwtMC4yNDY3ODggLTUuOTE3NjYsMS43NDIyMDEgLTEuMjk1NjQsMS4zMjY2NDggLTIwLjM1MDEyLDMyLjM0ODMwMyAtNDIuMzQwNDgsNjguOTM1NzIzIC0yMS45OTAzNiwzNi41ODc0IC00MS4wNjUzOSw2Ny45OTE2NyAtNDIuMzg2NjUsNjkuNzg3MDIgLTIuNjE5NTQsMy41NTkzNyAtNi43MzI4MSw2LjA5MzA2IC04LjczNDYzLDUuMzc4MzggLTAuOTk5NDcsLTAuMzU2ODMgLTEuMjY2NjUsLTE4LjE3MDM1IC0xLjI2NjY1LC04NC40NDM5NCAwLC00OS41MTMxOTYgLTAuMzc4NjQsLTg0LjIxOTIyNiAtMC45MjM2LC04NC41NTYxMzggLTAuMTE5ODQsLTAuMDc0MSAtMC41MzYwMSwtMC4xMDI0NDYgLTEuMTg3NDgsLTAuMDkyMzggeiIKICAgICAgIGlkPSJwYXRoNDI2MCIgLz4KICA8L2c+Cjwvc3ZnPgo=" class="icon">
+          </label>
+        </h5>
+
+        <div class="metascroll">
+          <input    id="title"   type="text"   placeholder="Title..."                 onkeyup="app.updateStorage()" onchange="app.updateStorage()">
+          <textarea id="description"           placeholder="Description..."           onkeyup="app.updateStorage()" onchange="app.updateStorage()"></textarea>
+          <input    id="version" type="number" placeholder="0.1" min="0.1" step="0.1" onkeyup="app.updateStorage()" onchange="app.updateStorage()">
+          <input    id="author"  type="text"   placeholder="author name"              onkeyup="app.updateStorage()" onchange="app.updateStorage()">
+          <input    id="website" type="text"   placeholder="https://yourwebsite.com/" onkeyup="app.updateStorage()" onchange="app.updateStorage()">
+          <textarea id="googleanalytics"       placeholder="Paste your Google Analytics code snippet here or paste any other code that you want to have on every page immediately after the opening <body> tag." onkeyup="app.updateStorage()" onchange="app.updateStorage()"></textarea>
+
+          <h5>
+            scratchpad
+          </h5>
+          <textarea id="scratchpad"            placeholder="Type something..."        onkeyup="app.updateStorage()" onchange="app.updateStorage()"></textarea>
+        </div>
+
+        <div class="menuiconbar">
+          <button id="newproject">
+            <i class="fa fa-file-text"></i>
+            <span>
+              new project
+            </span>
+          </button>
+          <label for="import">
+            <span id="importjson">
+              <i class="fa fa-file-import"></i>
+              <span>
+                import json
+              </span>
+            </span>
+          </label>
+          <button id="exportjson">
+            <i class="fa fa-file-export"></i>
+            <span>
+              save json
+            </span>
+          </button>
+          <button id="exportzip">
+            <i class="fa fa-download"></i>
+            <span>
+              export zip
+            </span>
+          </button>
+          <a href="https://michaelsboost.com/donate/" class="donate">
+            <i class="fa fa-heart"></i>
+            <span>
+              donate
+            </span>
+          </a>
+        </div>
+      </article>
+    </div>
+    <div data-opened="right" class="menu right settings">
+      <article>
+        <button aria-close>
+          <i class="fa fa-times"></i>
+        </button>
+
+        <h5>
+          css
+        </h5>
+        <label for="css">
+          <select id="css">
+            <option value="picocss" selected>PicoCSS</option>
+            <option value="tailwind">Tailwind CSS</option>
+            <option value="both">Both</option>
+          </select>
+        </label>
+
+        <h5>
+          dark theme
+
+          <label class="switch">
+            <input type="checkbox" id="theme">
+            <span class="slider"></span>
+          </label>
+        </h5>
+
+        <h5>
+          auto update
+
+          <label class="switch">
+            <input type="checkbox" id="autoupdate">
+            <span class="slider"></span>
+          </label>
+        </h5>
+
+        <h5>
+          console
+
+          <label class="switch">
+            <input type="checkbox" id="toggleconsole" checked>
+            <span class="slider"></span>
+          </label>
+        </h5>
+
+        <h5>
+          chartjs
+
+          <label class="switch">
+            <input type="checkbox" id="charts">
+            <span class="slider"></span>
+          </label>
+        </h5>
+      </article>
+    </div>
+
+    <!-- full page screens -->
+    <div data-opened="htmleditor" class="dialog">
+      <nav>
+        <span>
+          <button data-open="modal">
+            <i class="fa fa-bars"></i>
+          </button>
+        </span>
+
+        <span>
+          <button aria-close>
+            <i class="fa fa-times"></i>
+          </button>
+        </span>
+      </nav>
+
+      <div class="editor-container">
+        <textarea id="htmlEditor" class="editor" spellcheck="false"></textarea>
+      </div>
+
+      <nav>
+        <span>
+          <button data-undo>
+            <i class="fa fa-undo"></i>
+          </button>
+        </span>
+
+        <span>
+          <button data-redo>
+            <i class="fa fa-redo"></i>
+          </button>
+        </span>
+      </nav>
+    </div>
+    <div data-opened="jseditor" class="dialog">
+      <nav>
+        <span>
+          <button data-open="modal">
+            <i class="fa fa-bars"></i>
+          </button>
+        </span>
+
+        <span>
+          <button aria-close>
+            <i class="fa fa-times"></i>
+          </button>
+        </span>
+      </nav>
+
+      <div class="editor-container">
+        <textarea id="jsEditor" class="editor" spellcheck="false"></textarea>
+      </div>
+
+      <nav>
+        <span>
+          <button data-undo>
+            <i class="fa fa-undo"></i>
+          </button>
+        </span>
+
+        <span>
+          <button data-redo>
+            <i class="fa fa-redo"></i>
+          </button>
+        </span>
+      </nav>
+    </div>
+
+    <!-- modal window -->
+    <div data-opened="modal" class="modal">
+      <article data-opened="modal">
+        <div>
+          <button id="selectall">
+            select all
+          </button>
+          <button id="search">
+            search
+          </button>
+          <button id="replace">
+            replace
+          </button>
+          <button id="replaceall">
+            replace all
+          </button>
+          <button id="fold">
+            fold
+          </button>
+          <button id="unfold">
+            unfold
+          </button>
+          <button id="goto">
+            go to line
+          </button>
+
+          <div class="decoration-none" data-jsmodals>
+            <button data-insert="1">.querySelector()</button>
+            <button data-insert="1">.querySelectorAll()</button>
+            <button data-insert="1">.getAttribute()</button>
+            <button data-insert="1">.setAttribute()</button>
+            <button data-insert id="forin">forIn</button>
+            <button data-insert id="forof">forOf</button>
+            <button data-insert="3">.forEach((child, index) => {});</button>
+            <button data-insert="2">.onclick = () => {};</button>
+            <button data-insert="2">.onchange = () => {};</button>
+            <button data-insert="2">.onkeyup = () => {};</button>
+            <button data-insert="2">.preventDefault();</button>
+            <button data-insert="1">if () {}</button>
+            <button data-insert id="ajaxfunction">XMLHttpRequest</button>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- canvas -->
+    <div class="canvas-container">
+      <div data-canvas class="canvas" id="previewElm"></div>
+      <div id="fill" class="fill"></div>
+    </div>
+
+    <!-- top left iconbar -->
+    <div class="iconbar top left">
+      <button data-open="left">
+        <i class="fa fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- top right iconbar -->
+    <div class="iconbar top right">
+      <button data-zoom="true" class="active">
+        <i class="fa fa-light fa-magnifying-glass-plus"></i>
+      </button>
+      <button id="reload" onclick="location.reload(true)">
+        <i class="fa fa-rotate"></i>
+      </button>
+      <button id="rotate">
+        <i class="fa fa-rotate-right"></i>
+      </button>
+      <button data-device="mobile">
+        <i class="fa fa-mobile"></i>
+      </button>
+      <button id="settings" data-open="right">
+        <i class="fa fa-cog"></i>
+      </button>
+    </div>
+
+    <!-- bottom iconbar -->
+    <div class="iconbar bottom right">
+      <button id="run">
+        <i class="fa fa-play"></i>
+      </button>
+      <button data-open="htmleditor">
+        <i class="fa-brands fa-html5"></i>
+      </button>
+      <button data-open="jseditor">
+        <i class="fa-brands fa-js"></i>
+      </button>
+      <button id="share">
+        <i class="fa fa-share"></i>
+      </button>
+      <a href="https://michaelsboost.com/donate/" target="_blank">
+        <button class="donate">
+          <i class="fa fa-heart"></i>
+        </button>
+      </a>
+    </div>
+
+    <script>
+      // service worker for progressive web app
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js');
+        });
+      }
+    </script>
+  </body>
+</html>
