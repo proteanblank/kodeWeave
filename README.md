@@ -10,7 +10,7 @@ If you've ever used jsfiddle, jsbin, dabblet, liveweave, codepen, cssdeck, cssde
 Did you know?
 -------------
 
-kodeWeave was the very first open source coding playground released for Android & desktop operating systems?
+kodeWeave was the very first open source coding playground released for Android & desktop operating systems.
 
 Version
 -------------
