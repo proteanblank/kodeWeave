@@ -5,7 +5,7 @@ kodeWeave is your on the go coding playground! Design with TailwindCSS or PicoCS
 
 If you've ever used jsfiddle, jsbin, dabblet, liveweave, codepen, cssdeck, cssdesk, tinkerbin, d3 playground, plunker and/or pastebin kodeWeave is the tool for you when you're away from a computer!
 
-![](https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/5d493564623097.5ad83edee093f.png)
+![](https://raw.githubusercontent.com/michaelsboost/kodeWeave/gh-pages/imgs/screenshots/screenshot.png)
 
 Did you know?
 -------------
